@@ -1,7 +1,7 @@
 import Image from "next/image";
 import brandConfig from "@/config/brand.json";
-import HeroCarousel from "./components/HeroCarousel";
 import Header from "./components/Header";
+import HeroCarousel from "./components/HeroCarousel";
 
 export default function Home() {
 
