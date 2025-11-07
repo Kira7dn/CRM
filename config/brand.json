@@ -1,7 +1,7 @@
 {
   "brand": {
     "name": "Hải sản Ngày mới Cô Tô",
-    "shortName": "Hải sản Ngày mới",
+    "shortName": "Ngày mới Cô Tô",
     "tagline": "Ngày sáng tươi mới, Cô Tô trọn vị",
     "description": "Vẹn nguyên hồn biển trong từng bữa ăn.",
     "positioning": "Hải sản tươi - tiện lợi - an toàn cho gia đình Việt"
@@ -9,6 +9,7 @@
   "assets": {
     "logoFull": "/logo-full.png",
     "logoShort": "/logo-short.png",
+    "logoPage": "/logo-page.svg",
     "wallpaper": "/wallpaper.png"
   },
   "contact": {

@@ -6,10 +6,13 @@ import brandConfig from "@/config/brand.json";
 import { Tabs, TabsList, TabsTrigger } from "@shared/ui/tabs";
 
 const navTabs = [
-    { id: "about", label: "Giới thiệu" },
-    { id: "sustainability", label: "Bền vững" },
-    { id: "csr", label: "CSR" },
+    { id: "value-props", label: "Giá trị" },
     { id: "products", label: "Sản phẩm" },
+    { id: "traceability", label: "Truy xuất" },
+    { id: "coto-story", label: "Cô Tô" },
+    { id: "sustainability", label: "Bền vững" },
+    { id: "testimonials", label: "Đánh giá" },
+    { id: "csr", label: "CSR" },
     { id: "contact", label: "Liên hệ" },
 ];
 
@@ -75,26 +78,36 @@ export default function Header() {
 
     return (
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
-            <nav className="container mx-auto px-8 md:px-12 lg:px-16 py-4 flex items-center justify-between">
+            <nav className="container mx-auto px-8 md:px-12 lg:px-16 py-2 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <div className="relative">
-                        <Image
-                            src={brandConfig.assets.logoFull}
-                            alt={brandConfig.brand.shortName}
-                            width={60}
-                            height={60}
-                            priority
-                            className="relative z-10 rounded-full shadow-lg"
+                        {/* Nền ánh nắng */}
+                        <div
+                            className="absolute left-0 top-0 w-10 h-10 rounded-full blur-sm animate-pulse"
                             style={{
-                                boxShadow: '0 0 30px rgba(243, 174, 0, 0.95), 0 0 50px rgba(255,255,255,0.4)',
-                                filter: 'drop-shadow(0 0 12px rgba(243, 174, 0, 0.8))',
+                                background: 'radial-gradient(circle at 20% 20%, rgba(250,222,63,0.9) 0%, rgba(250,222,63,0.7) 20%, rgba(250,222,63,0.4) 40%, rgba(250,222,63,0.2) 60%, rgba(250,222,63,0.1) 80%, transparent 100%)',
+                                boxShadow: '0 0 40px rgba(250,222,63,0.9), 0 0 80px rgba(250,222,63,0.7), 0 0 120px rgba(250,222,63,0.5), 0 0 160px rgba(250,222,63,0.3)',
+                                filter: 'brightness(1.3) saturate(1.4)',
+                                transform: 'translate(4px, 8px) scale(1.2)'
+                            }}
+                        ></div>
+                        <Image
+                            src={brandConfig.assets.logoPage}
+                            alt={brandConfig.brand.shortName}
+                            width={200}
+                            height={120}
+                            priority
+                            className="relative z-10"
+                            style={{
+                                // boxShadow: '0 0 30px rgba(243, 174, 0, 0.95), 0 0 50px rgba(255,255,255,0.4)',
+                                // filter: 'drop-shadow(0 0 12px rgba(243, 174, 0, 0.8))',
                                 transform: 'scale(1.05)',
                                 animation: 'glowPulse 3s ease-in-out infinite alternate',
                                 animationDelay: '1.5s',
                             }}
                         />
                     </div>
-                    <span className="font-bold text-3xl text-blue-900">{brandConfig.brand.shortName}</span>
+                    {/* <span className="font-bold text-3xl text-blue-900">{brandConfig.brand.shortName}</span> */}
                     <div className="flex items-center gap-2">
                         <span className="px-1 py-1 text-blue-600 text-xs font-medium">#HảiSảnTươi</span>
                         <span className="px-1 py-1 text-green-600 text-xs font-medium">#AnToàn</span>
