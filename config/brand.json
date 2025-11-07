@@ -4,20 +4,37 @@
     "shortName": "Ngày mới Cô Tô",
     "tagline": "Ngày sáng tươi mới, Cô Tô trọn vị",
     "description": "Vẹn nguyên hồn biển trong từng bữa ăn.",
-    "positioning": "Hải sản tươi - tiện lợi - an toàn cho gia đình Việt"
+    "positioning": "Hải sản tươi - tiện lợi - an toàn cho gia đình Việt",
+    "mission": "Mang hương vị biển Cô Tô đến mọi gia đình Việt với sự minh bạch và bền vững",
+    "vision": "Trở thành thương hiệu hải sản cao cấp hàng đầu Việt Nam với truy xuất nguồn gốc 100%",
+    "values": [
+      "Minh bạch 100% - Mỗi sản phẩm có mã QR truy xuất",
+      "Chất lượng cao cấp - Hải sản từ vùng biển lạnh Cô Tô",
+      "Bền vững - 1% doanh thu cho Quỹ Biển Sạch",
+      "Tận tâm - Phục vụ khách hàng như người thân"
+    ]
   },
   "assets": {
     "logoFull": "/logo-full.png",
     "logoShort": "/logo-short.png",
     "logoPage": "/logo-page.svg",
-    "wallpaper": "/wallpaper.png"
+    "wallpaper": "/wallpaper.png",
+    "heroImages": {
+      "desktop": "/images/hero/co-to-desktop.jpg",
+      "mobile": "/images/hero/co-to-mobile.jpg"
+    }
   },
   "contact": {
-    "phone": "0123 456 789",
-    "email": "contact@haisanngaymoi.vn",
+    "phone": "1900 xxxx",
+    "phoneDisplay": "1900 xxxx",
+    "email": "hello@ngaymoi-coto.vn",
+    "address": "Quảng Ninh, Việt Nam",
     "region": "Đông Bắc Bộ, Việt Nam",
-    "facebook": "https://facebook.com",
-    "zalo": "https://zalo.me"
+    "workingHours": "8:00 - 20:00 (Hàng ngày)",
+    "facebook": "https://www.facebook.com/ngaymoicoto",
+    "instagram": "https://instagram.com/ngaymoicoto",
+    "youtube": "https://youtube.com/@ngaymoicoto",
+    "zalo": "https://zalo.me/3103930951570612059"
   },
   "hero": {
     "title": {
@@ -34,38 +51,97 @@
         "text": "Xem sản phẩm",
         "link": "#products"
       }
-    }
+    },
+    "trustBadges": [
+      {
+        "icon": "check-circle",
+        "text": "Truy xuất 100%"
+      },
+      {
+        "icon": "snowflake",
+        "text": "Tươi <30 phút"
+      },
+      {
+        "icon": "recycle",
+        "text": "Bền vững"
+      }
+    ]
   },
-  "benefits": {
-    "title": "Tại sao chọn Hải sản Ngày mới?",
-    "subtitle": "Cam kết mang đến hải sản tươi ngon, an toàn và tiện lợi cho mọi gia đình Việt",
+  "valueProps": {
+    "title": "Tại sao chọn Ngày Mới - Cô Tô?",
+    "subtitle": "Ba trụ cột xây dựng niềm tin và sự khác biệt của Ngày Mới",
     "items": [
       {
-        "id": "fresh",
-        "icon": "check-circle",
-        "title": "Cam kết tươi ngon",
-        "description": "Hải sản được nhập trực tiếp từ Cô Tô, bảo quản trong kho lạnh hiện đại, đảm bảo độ tươi ngon tối đa",
-        "color": "blue"
+        "id": "transparency",
+        "icon": "qr-code",
+        "title": "MINH BẠCH 100%",
+        "description": "Mỗi sản phẩm có mã truy xuất QR. Biết rõ nguồn gốc, ngày đánh bắt, và hành trình từ biển đến tay bạn.",
+        "link": "#traceability",
+        "color": "crystal"
       },
       {
-        "id": "fast-delivery",
-        "icon": "lightning",
-        "title": "Giao hàng nhanh",
-        "description": "Dịch vụ giao hàng nhanh chóng trong khu vực Đông Bắc Bộ, đảm bảo hải sản đến tay bạn trong tình trạng tốt nhất",
-        "color": "green"
+        "id": "special-flavor",
+        "icon": "sparkles",
+        "title": "HƯƠNG VỊ ĐẶC BIỆT",
+        "description": "Biển lạnh Cô Tô tạo nên vị ngọt tự nhiên đặc trưng. Hải sản phát triển chậm, thịt chắc, dinh dưỡng cao.",
+        "link": "#coto-story",
+        "color": "golden"
       },
       {
-        "id": "convenient",
-        "icon": "clock",
-        "title": "Tiện lợi - Chế biến sẵn",
-        "description": "Sản phẩm chế biến sẵn như chả mực, sashimi giúp tiết kiệm thời gian mà vẫn đảm bảo chất lượng dinh dưỡng",
-        "color": "yellow"
+        "id": "positive-impact",
+        "icon": "heart",
+        "title": "TÁC ĐỘNG TÍCH CỰC",
+        "description": "1% doanh thu cho Quỹ Biển Sạch. Hỗ trợ ngư dân địa phương. Cam kết đánh bắt bền vững.",
+        "link": "#csr",
+        "color": "red"
       }
     ]
   },
   "products": {
-    "title": "Danh mục Sản phẩm",
-    "subtitle": "Đa dạng các loại hải sản tươi sống, đông lạnh và chế biến sẵn",
+    "title": "Sản Phẩm Nổi Bật",
+    "subtitle": "Hải sản tươi sống, đánh bắt hàng ngày từ vùng biển lạnh Cô Tô",
+    "featured": [
+      {
+        "id": "tom-hum",
+        "name": "Tôm Hùm Cô Tô Tươi",
+        "price": "850.000đ",
+        "originalPrice": "950.000đ",
+        "image": "/images/products/tom-hum.jpg",
+        "badge": "bestseller",
+        "rating": 4.9,
+        "reviews": 127,
+        "unit": "kg"
+      },
+      {
+        "id": "ca-mu",
+        "name": "Cá Mú Đỏ Cao Cấp",
+        "price": "380.000đ",
+        "image": "/images/products/ca-mu.jpg",
+        "badge": "new",
+        "rating": 4.8,
+        "reviews": 89,
+        "unit": "kg"
+      },
+      {
+        "id": "ghe-xanh",
+        "name": "Ghẹ Xanh Biển Lạnh",
+        "price": "220.000đ",
+        "image": "/images/products/ghe-xanh.jpg",
+        "badge": "premium",
+        "rating": 4.7,
+        "reviews": 156,
+        "unit": "kg"
+      },
+      {
+        "id": "muc-ong",
+        "name": "Mực Ống Tươi",
+        "price": "180.000đ",
+        "image": "/images/products/muc-ong.jpg",
+        "rating": 4.9,
+        "reviews": 203,
+        "unit": "kg"
+      }
+    ],
     "categories": [
       {
         "id": "fresh-seafood",
@@ -79,7 +155,7 @@
           "Cá tươi",
           "Ghẹ"
         ],
-        "link": "#"
+        "link": "/products/fresh"
       },
       {
         "id": "frozen-seafood",
@@ -93,7 +169,7 @@
           "Tôm bóc nõn",
           "Bạch tuộc"
         ],
-        "link": "#"
+        "link": "/products/frozen"
       },
       {
         "id": "processed",
@@ -107,159 +183,364 @@
           "Hải sản nướng",
           "Hải sản chiên"
         ],
-        "link": "#"
+        "link": "/products/processed"
       }
     ]
   },
-  "about": {
-    "title": "Về Hải sản Ngày mới Cô Tô",
-    "intro": [
-      "Chúng tôi tự hào là đơn vị cung cấp hải sản uy tín tại khu vực Đông Bắc Bộ, mang đến cho khách hàng những sản phẩm hải sản tươi ngon nhất từ vùng biển Cô Tô.",
-      "Với hệ thống kho lạnh hiện đại, quy trình bảo quản nghiêm ngặt và đội ngũ chuyên nghiệp, chúng tôi cam kết:"
+  "traceability": {
+    "title": "Truy Xuất Nguồn Gốc 100%",
+    "subtitle": "Quét mã QR trên mỗi sản phẩm để biết toàn bộ hành trình từ biển đến bàn ăn",
+    "demoProduct": {
+      "code": "TH-050125-001",
+      "name": "Tôm Hùm Cô Tô",
+      "weight": "1.2 kg",
+      "fisherman": "Nguyễn Văn A"
+    },
+    "steps": [
+      {
+        "title": "Đánh bắt",
+        "location": "Vùng biển Cô Tô",
+        "time": "06:30 - 05/01/2025",
+        "detail": "Tàu cá CT-12345 đánh bắt tại tọa độ 21.1234, 107.7890"
+      },
+      {
+        "title": "Bảo quản",
+        "location": "Kho lạnh Cô Tô",
+        "time": "08:00 - 05/01/2025",
+        "detail": "Bảo quản nhiệt độ -18°C, đạt chuẩn HACCP"
+      },
+      {
+        "title": "Kiểm định",
+        "location": "Trung tâm QA",
+        "time": "10:30 - 05/01/2025",
+        "detail": "Kiểm tra chất lượng, an toàn thực phẩm"
+      },
+      {
+        "title": "Giao hàng",
+        "location": "Hà Nội",
+        "time": "18:00 - 05/01/2025",
+        "detail": "Giao đến tay khách hàng trong 24h"
+      }
     ],
-    "commitments": [
-      "Hải sản tươi ngon, nguồn gốc rõ ràng",
-      "Bảo quản đạt chuẩn, an toàn vệ sinh thực phẩm",
-      "Giá cả hợp lý, nhiều ưu đãi hấp dẫn",
-      "Phục vụ tận tâm, giao hàng nhanh chóng"
-    ]
+    "trustStatement": "Chúng tôi tin rằng minh bạch là nền tảng của niềm tin"
   },
-  "cta": {
-    "title": "Sẵn sàng thưởng thức hải sản tươi ngon?",
-    "subtitle": "Liên hệ ngay với chúng tôi để được tư vấn và đặt hàng các sản phẩm hải sản chất lượng cao",
-    "buttons": [
+  "coToStory": {
+    "title": "Cô Tô - Vùng biển lạnh phía Bắc",
+    "subtitle": "Nơi hải lưu Bắc mang đến hương vị đặc biệt",
+    "characteristics": [
       {
-        "text": "Nhắn tin Facebook",
-        "link": "https://facebook.com",
-        "icon": "facebook",
-        "style": "primary"
+        "value": "18-22°C",
+        "label": "Nước lạnh nhất VN"
       },
       {
-        "text": "Chat Zalo",
-        "link": "https://zalo.me",
-        "icon": "zalo",
-        "style": "secondary"
+        "value": "10-15m",
+        "label": "Độ trong vắt"
+      },
+      {
+        "value": "Rạn san hô",
+        "label": "phong phú"
       }
     ],
-    "contactCards": [
-      {
-        "emoji": "📞",
-        "title": "Hotline",
-        "value": "0123 456 789"
-      },
-      {
-        "emoji": "📧",
-        "title": "Email",
-        "value": "contact@haisanngaymoi.vn"
-      },
-      {
-        "emoji": "📍",
-        "title": "Khu vực",
-        "value": "Đông Bắc Bộ"
-      }
-    ]
+    "story": [
+      "Cô Tô nằm ở cực Đông Bắc Việt Nam, là hòn đảo xa bờ nhất tỉnh Quảng Ninh. Đây là nơi dòng hải lưu lạnh từ phía Bắc đi qua, mang theo nhiệt độ nước 18-22°C — lạnh nhất cả nước.",
+      "Nước lạnh khiến hải sản phát triển chậm hơn, tích lũy nhiều dưỡng chất, tạo nên thịt chắc và vị ngọt thanh đặc trưng. Đó là lý do tại sao cá, tôm, mực từ Cô Tô có hương vị khác biệt.",
+      "Vùng biển Cô Tô còn có độ trong vắt cao (10-15m), nền đáy cát - san hô giàu khoáng chất, và dòng chảy mạnh giúp nước luôn tuần hoàn. Môi trường tự nhiên thuần khiết này là 'bí mật' tạo nên hải sản cao cấp."
+    ],
+    "quote": {
+      "text": "Biển lạnh tạo nên hải sản chất lượng. Đó là lý do chúng tôi chọn Cô Tô.",
+      "author": "Nguyễn Văn Hải, Thuyền trưởng 25 năm kinh nghiệm"
+    }
   },
-  "footer": {
-    "columns": [
+  "sustainability": {
+    "title": "Bền vững từ biển đến bàn ăn",
+    "subtitle": "Quy trình khai thác và bảo quản có trách nhiệm",
+    "processTimeline": [
       {
-        "title": "Sản phẩm",
-        "links": [
-          {
-            "text": "Hải sản tươi sống",
-            "href": "#"
-          },
-          {
-            "text": "Hải sản đông lạnh",
-            "href": "#"
-          },
-          {
-            "text": "Sản phẩm chế biến",
-            "href": "#"
-          }
+        "title": "KHAI THÁC",
+        "description": "Vùng được phê duyệt",
+        "details": [
+          "Lưới chọn lọc",
+          "Nhật ký điện tử"
         ]
       },
       {
-        "title": "Thông tin",
+        "title": "LÀM LẠNH",
+        "description": "Trong 30 phút",
+        "details": [
+          "Ice slurry system",
+          "Nhiệt độ tự động"
+        ]
+      },
+      {
+        "title": "VẬN CHUYỂN",
+        "description": "Cold chain -18°C",
+        "details": [
+          "Không gián đoạn",
+          "Tem kiểm soát"
+        ]
+      },
+      {
+        "title": "GIAO HÀNG",
+        "description": "Đến tay khách",
+        "details": [
+          "Trong 24h",
+          "Đóng gói sinh học"
+        ]
+      }
+    ],
+    "commitments": [
+      {
+        "title": "KHÔNG ĐÁNH BẮT",
+        "subtitle": "Mùa sinh sản",
+        "description": "Chúng tôi tuân thủ nghiêm ngặt lịch cấm đánh bắt để bảo vệ nguồn lợi hải sản cho thế hệ sau."
+      },
+      {
+        "title": "GIẢM BYCATCH",
+        "subtitle": "Mục tiêu <5%",
+        "description": "Sử dụng lưới chọn lọc và thả ngay cá non, loài cấm. Hiện tại bycatch chỉ 3.2%."
+      },
+      {
+        "title": "BẢO VỆ HỆ SINH THÁI",
+        "subtitle": "",
+        "description": "Không sử dụng phương thức đánh bắt phá hủy đáy biển. Tham gia phục hồi san hô."
+      }
+    ],
+    "certifications": [
+      {
+        "name": "Marine Stewardship Council",
+        "abbr": "MSC",
+        "description": "Cho khai thác tự nhiên bền vững"
+      },
+      {
+        "name": "Aquaculture Stewardship Council",
+        "abbr": "ASC",
+        "description": "Cho nuôi trồng thủy sản có trách nhiệm"
+      }
+    ],
+    "timeline": {
+      "preAssessment": "12 tháng",
+      "fullCertification": "24-36 tháng"
+    }
+  },
+  "csr": {
+    "title": "Tác Động Xã Hội & Môi Trường",
+    "subtitle": "1% doanh thu được dành cho các hoạt động bảo vệ môi trường biển và hỗ trợ cộng đồng",
+    "impacts": [
+      {
+        "value": 500,
+        "suffix": " triệu",
+        "label": "Đóng góp Quỹ Biển Sạch"
+      },
+      {
+        "value": 150,
+        "suffix": "+",
+        "label": "Ngư dân được hỗ trợ"
+      },
+      {
+        "value": 10000,
+        "suffix": " kg",
+        "label": "Rác biển thu gom"
+      },
+      {
+        "value": 200,
+        "suffix": "+",
+        "label": "Trẻ em được học bổng"
+      }
+    ],
+    "story": {
+      "title": "Cùng nhau xây dựng cộng đồng bền vững",
+      "intro": "Chúng tôi tin rằng kinh doanh bền vững phải đi đôi với trách nhiệm xã hội. Mỗi sản phẩm bạn mua không chỉ mang đến hương vị tuyệt vời mà còn góp phần:",
+      "items": [
+        {
+          "title": "Bảo vệ biển",
+          "description": "Thu gom rác thải, bảo vệ san hô và sinh vật biển"
+        },
+        {
+          "title": "Hỗ trợ ngư dân",
+          "description": "Giá thu mua công bằng, đào tạo kỹ năng bền vững"
+        },
+        {
+          "title": "Giáo dục trẻ em",
+          "description": "Học bổng cho con em ngư dân nghèo"
+        }
+      ]
+    }
+  },
+  "testimonials": {
+    "title": "Khách hàng nói gì về chúng tôi?",
+    "subtitle": "Hơn 10,000+ khách hàng hài lòng trên toàn quốc",
+    "items": [
+      {
+        "name": "Nguyễn Thị Lan",
+        "location": "Hà Nội",
+        "rating": 5,
+        "comment": "Hải sản tươi ngon, đóng gói cẩn thận. Đặc biệt là tôm hùm, vị ngọt tự nhiên không cần nêm nhiều gia vị. Sẽ ủng hộ dài dài!",
+        "date": "2 tuần trước"
+      },
+      {
+        "name": "Trần Văn Minh",
+        "location": "TP.HCM",
+        "rating": 5,
+        "comment": "Rất ấn tượng với hệ thống truy xuất nguồn gốc. Quét QR là biết ngay hải sản được đánh bắt ở đâu, khi nào. Yên tâm cho cả nhà!",
+        "date": "1 tháng trước"
+      },
+      {
+        "name": "Phạm Hoài Thu",
+        "location": "Đà Nẵng",
+        "rating": 5,
+        "comment": "Giao hàng nhanh, hải sản vẫn tươi như vừa mới đánh bắt. Giá cả hợp lý so với chất lượng. Cảm ơn team Ngày Mới!",
+        "date": "3 tuần trước"
+      },
+      {
+        "name": "Lê Quang Huy",
+        "location": "Hải Phòng",
+        "rating": 5,
+        "comment": "Là người địa phương biển nhưng vẫn phải công nhận hải sản Cô Tô có gì đó khác biệt. Thịt chắc, ngọt tự nhiên, không tanh.",
+        "date": "1 tuần trước"
+      }
+    ],
+    "stats": {
+      "customers": "10K+",
+      "rating": "4.9",
+      "satisfaction": "98%",
+      "delivery": "24h"
+    }
+  },
+  "finalCTA": {
+    "title": "Sẵn sàng trải nghiệm hương vị biển Bắc?",
+    "subtitle": "Đặt hàng ngay hôm nay và nhận ưu đãi 15% cho đơn đầu tiên",
+    "benefits": [
+      "Miễn phí giao hàng",
+      "Cam kết hoàn tiền 100%",
+      "Hỗ trợ 24/7"
+    ],
+    "buttons": {
+      "primary": {
+        "text": "Mua ngay - Giảm 15% →",
+        "link": "#"
+      },
+      "secondary": {
+        "text": "Liên hệ tư vấn",
+        "link": "#"
+      }
+    },
+    "trustBadge": "Hơn 10,000+ khách hàng tin tưởng • Đánh giá 4.9/5.0 ⭐"
+  },
+  "footer": {
+    "newsletter": {
+      "title": "Nhận tin từ Ngày Mới - Cô Tô",
+      "subtitle": "Ưu đãi đặc biệt • Công thức mới • Câu chuyện biển",
+      "placeholder": "Email của bạn...",
+      "button": "Đăng ký →",
+      "benefit": "Giảm 10% cho đơn đầu tiên khi đăng ký"
+    },
+    "columns": {
+      "company": {
+        "title": "Công ty",
         "links": [
           {
             "text": "Về chúng tôi",
             "href": "#about"
           },
           {
-            "text": "Ưu điểm",
-            "href": "#benefits"
+            "text": "Câu chuyện Cô Tô",
+            "href": "#coto-story"
           },
           {
-            "text": "Liên hệ",
-            "href": "#contact"
+            "text": "Bền vững",
+            "href": "#sustainability"
+          },
+          {
+            "text": "Tác động xã hội",
+            "href": "#csr"
           }
         ]
       },
-      {
-        "title": "Liên hệ",
+      "products": {
+        "title": "Sản phẩm",
         "links": [
           {
-            "text": "📞 0123 456 789",
-            "href": "tel:0123456789"
+            "text": "Tôm & Cua",
+            "href": "/products/shrimp"
           },
           {
-            "text": "📧 contact@haisanngaymoi.vn",
-            "href": "mailto:contact@haisanngaymoi.vn"
+            "text": "Cá tươi",
+            "href": "/products/fish"
           },
           {
-            "text": "📍 Đông Bắc Bộ, Việt Nam",
-            "href": "#"
+            "text": "Hải sản khác",
+            "href": "/products/seafood"
+          },
+          {
+            "text": "Quà tặng",
+            "href": "/products/gifts"
+          }
+        ]
+      },
+      "support": {
+        "title": "Hỗ trợ",
+        "links": [
+          {
+            "text": "Câu hỏi thường gặp",
+            "href": "/faq"
+          },
+          {
+            "text": "Hướng dẫn đặt hàng",
+            "href": "/guide"
+          },
+          {
+            "text": "Chính sách giao hàng",
+            "href": "/shipping"
+          },
+          {
+            "text": "Chính sách đổi trả",
+            "href": "/returns"
+          },
+          {
+            "text": "Truy xuất nguồn gốc",
+            "href": "#traceability"
           }
         ]
       }
-    ],
-    "copyright": "2025 Hải sản Ngày mới Cô Tô. All rights reserved."
-  },
-  "navigation": {
-    "items": [
+    },
+    "legal": [
       {
-        "text": "Sản phẩm",
-        "href": "#products"
+        "text": "Chính sách bảo mật",
+        "href": "/privacy"
       },
       {
-        "text": "Ưu điểm",
-        "href": "#benefits"
+        "text": "Điều khoản sử dụng",
+        "href": "/terms"
       },
       {
-        "text": "Về chúng tôi",
-        "href": "#about"
+        "text": "Cookies",
+        "href": "/cookies"
       }
     ],
-    "ctaButton": {
-      "text": "Liên hệ ngay",
-      "href": "#contact"
-    }
+    "copyright": "© 2025 Ngày Mới - Cô Tô. All rights reserved.",
+    "madeWith": "Made with 💙 in Việt Nam"
   },
-  "theme": {
-    "colors": {
-      "primary": "blue",
-      "secondary": "yellow",
-      "accent": "green"
-    },
-    "fonts": {
-      "heading": "font-bold",
-      "body": "font-normal"
-    }
+  "company": {
+    "legalName": "Công ty TNHH Hải Sản Ngày Mới Cô Tô",
+    "taxCode": "0123456789",
+    "businessLicense": "Giấy CNĐKDN số 0123456789 do Sở KHĐT Quảng Ninh cấp ngày 01/01/2020",
+    "address": "Cô Tô, Vân Đồn, Quảng Ninh, Việt Nam"
   },
   "seo": {
-    "title": "Hải sản Ngày mới Cô Tô - Hải sản tươi ngon từ biển Cô Tô",
-    "description": "Hải sản tươi sống, đông lạnh và chế biến sẵn từ Cô Tô. Cam kết chất lượng, giao hàng nhanh tại khu vực Đông Bắc Bộ.",
+    "title": "Hải Sản Cao Cấp Cô Tô - Minh Bạch 100% | Ngày Mới - Cô Tô",
+    "description": "Hải sản tươi từ biển lạnh Cô Tô. Truy xuất nguồn gốc 100%. Giao trong 24h. 1% doanh thu cho Quỹ Biển Sạch. Đặt hàng ngay!",
     "keywords": [
-      "hải sản",
-      "Cô Tô",
+      "hải sản Cô Tô",
+      "cá tươi",
+      "tôm hùm",
+      "hải sản cao cấp",
+      "truy xuất nguồn gốc",
+      "hải sản bền vững",
       "hải sản tươi sống",
-      "hải sản đông lạnh",
-      "chả mực",
-      "sashimi",
-      "tôm",
-      "cua",
-      "ghẹ"
+      "mua hải sản online",
+      "hải sản Quảng Ninh"
     ],
-    "ogImage": "/wallpaper.png"
+    "ogImage": "/images/og-image.jpg",
+    "twitterCard": "summary_large_image"
   }
 }
