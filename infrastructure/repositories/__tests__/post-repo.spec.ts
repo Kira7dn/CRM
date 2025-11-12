@@ -14,11 +14,15 @@ describe('postRepository (integration)', () => {
     process.env.MONGODB_DB = 'testdb'
     client = new MongoClient(uri)
     await client.connect()
-  })
+  }, 30000) // 30 seconds timeout for MongoMemoryServer
 
   afterAll(async () => {
-    await client.close()
-    await mongo.stop()
+    if (client) {
+      await client.close()
+    }
+    if (mongo) {
+      await mongo.stop()
+    }
   })
 
   it('should insert and fetch posts', async () => {

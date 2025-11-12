@@ -1,4 +1,4 @@
-import type { OrderService } from "@/core/application/services/order-service";
+import { createHmac } from "crypto";
 
 export interface MacRequest {
   amount: number;
@@ -13,12 +13,18 @@ export interface MacResponse {
 }
 
 export class MacRequestUseCase {
-  constructor(private orderService: OrderService) {} // placeholder
-
   async execute(request: MacRequest): Promise<MacResponse> {
-    // Logic tạo MAC như controller
-    // Giả sử có secret key
-    const params: Record<string, unknown> = { amount: request.amount, desc: request.desc, item: request.item, extradata: request.extradata, method: request.method };
+    const { amount, desc, item, extradata, method } = request;
+
+    if (typeof amount !== "number" || Number.isNaN(amount)) {
+      throw new Error("amount phải là số hợp lệ.");
+    }
+
+    if (typeof desc !== "string") {
+      throw new Error("desc là bắt buộc.");
+    }
+
+    const params: Record<string, unknown> = { amount, desc, item, extradata, method };
     const dataMac = Object.keys(params)
       .filter((key) => params[key] !== undefined)
       .sort()
@@ -27,8 +33,14 @@ export class MacRequestUseCase {
         return `${key}=${typeof value === "object" ? JSON.stringify(value) : value}`;
       })
       .join("&");
-    // Tạo MAC với secret
-    const mac = "placeholder"; // Implement HMAC
+
+    const secretKey = process.env.CHECKOUT_SDK_PRIVATE_KEY;
+    if (!secretKey) {
+      throw new Error("Server chưa cấu hình CHECKOUT_SDK_PRIVATE_KEY.");
+    }
+
+    const mac = createHmac("sha256", secretKey).update(dataMac).digest("hex");
+
     return { mac };
   }
 }

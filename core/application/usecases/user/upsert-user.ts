@@ -1,4 +1,4 @@
-import type { UserService } from "@/core/application/services/user-service";
+import type { UserService } from "@/core/application/interfaces/user-service";
 
 export interface UpsertUserRequest {
   id: string;

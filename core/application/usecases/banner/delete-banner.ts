@@ -1,4 +1,4 @@
-import type { BannerService } from "@/core/application/services/banner-service";
+import type { BannerService } from "@/core/application/interfaces/banner-service";
 
 export interface DeleteBannerRequest {
   id: number;

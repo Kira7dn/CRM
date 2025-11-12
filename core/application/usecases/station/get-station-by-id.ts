@@ -1,4 +1,4 @@
-import type { StationService } from "@/core/application/services/station-service";
+import type { StationService } from "@/core/application/interfaces/station-service";
 
 export interface GetStationByIdRequest {
   id: number;

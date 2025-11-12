@@ -1,5 +1,5 @@
 import type { Order } from "@/core/domain/order";
-import type { OrderService, GetOrdersParams, CreateOrderPayload, UpdateOrderPayload } from "@/core/application/services/order-service";
+import type { OrderService, GetOrdersParams, CreateOrderPayload, UpdateOrderPayload } from "@/core/application/interfaces/order-service";
 import clientPromise from "@/infrastructure/db/mongo";
 
 const getNextOrderId = async (): Promise<number> => {

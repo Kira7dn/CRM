@@ -1,5 +1,5 @@
 import type { Category } from "@/core/domain/category";
-import type { CategoryService } from "@/core/application/services/category-service";
+import type { CategoryService } from "@/core/application/interfaces/category-service";
 import clientPromise from "@/infrastructure/db/mongo";
 
 const getNextCategoryId = async (): Promise<number> => {

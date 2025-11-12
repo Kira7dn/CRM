@@ -1,4 +1,4 @@
-import type { OrderService, CreateOrderPayload } from "@/core/application/services/order-service";
+import type { OrderService, CreateOrderPayload } from "@/core/application/interfaces/order-service";
 
 export interface CreateOrderRequest extends CreateOrderPayload {}
 

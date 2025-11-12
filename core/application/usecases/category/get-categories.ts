@@ -1,4 +1,4 @@
-import type { CategoryService } from "@/core/application/services/category-service";
+import type { CategoryService } from "@/core/application/interfaces/category-service";
 
 export interface GetCategoriesResponse {
   categories: { id: number; name: string; image: string; createdAt?: Date; updatedAt?: Date }[];

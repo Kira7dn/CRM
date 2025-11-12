@@ -1,5 +1,5 @@
 import type { Product, SizeOption } from "@/core/domain/product";
-import type { ProductService, FilterProductsParams } from "@/core/application/services/product-service";
+import type { ProductService, FilterProductsParams } from "@/core/application/interfaces/product-service";
 import clientPromise from "@/infrastructure/db/mongo";
 
 const normalizeSizes = (product: any): SizeOption[] | undefined => {

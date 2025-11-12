@@ -23,7 +23,7 @@ The codebase follows a strict layered architecture with clear separation of conc
    - Use cases accept repository interfaces as dependencies (dependency injection)
    - Structure:
      - `usecases/` - Individual use case functions (get-posts, create-post, update-post, delete-post)
-     - `services/` - Interface definitions for repositories
+     - `interfaces/` - Interface definitions for repositories
 
 3. **Infrastructure Layer** (`infrastructure/`)
    - Implements data access and external integrations

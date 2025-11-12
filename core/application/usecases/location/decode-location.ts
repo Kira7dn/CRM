@@ -1,3 +1,5 @@
+import type { LocationService } from "@/core/application/interfaces/location-service";
+
 export interface DecodeLocationRequest {
   token: string;
   accessToken: string;
@@ -9,13 +11,9 @@ export interface DecodeLocationResponse {
 }
 
 export class DecodeLocationUseCase {
+  constructor(private locationService: LocationService) {}
+
   async execute(request: DecodeLocationRequest): Promise<DecodeLocationResponse> {
-    // Call Zalo API logic
-    // Then reverse geocode
-    // Placeholder
-    return {
-      location: { lat: 0, lng: 0 },
-      address: null,
-    };
+    return await this.locationService.decodeLocation(request.token, request.accessToken);
   }
 }

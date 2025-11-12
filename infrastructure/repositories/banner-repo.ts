@@ -1,5 +1,5 @@
 import type { Banner } from "@/core/domain/banner";
-import type { BannerService } from "@/core/application/services/banner-service";
+import type { BannerService } from "@/core/application/interfaces/banner-service";
 import clientPromise from "@/infrastructure/db/mongo";
 import { ObjectId } from "mongodb";
 

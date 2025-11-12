@@ -7,7 +7,8 @@ export default defineConfig({
     globals: true,
     setupFiles: './vitest.setup.ts',
     coverage: { provider: 'v8' },
-    exclude: ['backend/**', 'node_modules/**', '__tests__/integration/**', 'app/**'],
+    exclude: ['backend/**', 'node_modules/**'],
+    include: ['**/*.spec.ts', '**/*.test.ts'],
   },
   resolve: {
     alias: {

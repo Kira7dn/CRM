@@ -1,10 +1,24 @@
-// Dependency Injection Container
+// Domain Services
 import { bannerRepository } from "@/infrastructure/repositories/banner-repo";
 import { categoryRepository } from "@/infrastructure/repositories/category-repo";
 import { productRepository } from "@/infrastructure/repositories/product-repo";
 import { stationRepository } from "@/infrastructure/repositories/station-repo";
 import { userRepository } from "@/infrastructure/repositories/user-repo";
 import { orderRepository } from "@/infrastructure/repositories/order-repo";
+
+// Clean Architecture: Infrastructure implementations
+import { ZaloPayGateway } from "@/infrastructure/gateways/zalopay-gateway";
+import { ZaloLocationGateway } from "@/infrastructure/gateways/zalo-location-gateway";
+import { ZaloPhoneGateway } from "@/infrastructure/gateways/zalo-phone-gateway";
+import { BullMQAdapter } from "@/infrastructure/queue/bullmq-adapter";
+
+// Clean Architecture: Interfaces
+import type { PaymentGateway } from "@/core/application/interfaces/payment-gateway";
+import type { QueueService } from "@/core/application/interfaces/queue-service";
+import type { LocationService } from "@/core/application/interfaces/location-service";
+import type { PhoneService } from "@/core/application/interfaces/phone-service";
+
+// Queue worker will be started by runtime/test explicitly to avoid circular imports
 
 // Services
 export const bannerService = {
@@ -30,6 +44,12 @@ export const userService = {
 export const orderService = {
   ...orderRepository,
 };
+
+// Clean Architecture: Dependency Injection
+export const paymentGateway: PaymentGateway = new ZaloPayGateway();
+export const queueService: QueueService = new BullMQAdapter();
+export const locationService: LocationService = new ZaloLocationGateway();
+export const phoneService: PhoneService = new ZaloPhoneGateway();
 
 // Use Cases
 import { FilterProductsUseCase } from "@/core/application/usecases/product/filter-products";
@@ -64,6 +84,15 @@ import { CreateOrderUseCase } from "@/core/application/usecases/order/create-ord
 import { GetOrderByIdUseCase } from "@/core/application/usecases/order/get-order-by-id";
 import { UpdateOrderUseCase } from "@/core/application/usecases/order/update-order";
 import { DeleteOrderUseCase } from "@/core/application/usecases/order/delete-order";
+import { PaymentCallbackUseCase } from "@/core/application/usecases/order/payment-callback";
+import { LinkOrderUseCase } from "@/core/application/usecases/order/link-order";
+import { CheckPaymentStatusUseCase } from "@/core/application/usecases/order/check-payment-status";
+import { CheckOrderStatusUseCase } from "@/core/application/usecases/checkout/check-order-status";
+import { MacRequestUseCase } from "@/core/application/usecases/checkout/mac-request";
+
+import { DecodeLocationUseCase } from "@/core/application/usecases/location/decode-location";
+
+import { DecodePhoneUseCase } from "@/core/application/usecases/phone/decode-phone";
 
 export const filterProductsUseCase = new FilterProductsUseCase(productService);
 export const createProductUseCase = new CreateProductUseCase(productService);
@@ -97,3 +126,12 @@ export const createOrderUseCase = new CreateOrderUseCase(orderService);
 export const getOrderByIdUseCase = new GetOrderByIdUseCase(orderService);
 export const updateOrderUseCase = new UpdateOrderUseCase(orderService);
 export const deleteOrderUseCase = new DeleteOrderUseCase(orderService);
+export const paymentCallbackUseCase = new PaymentCallbackUseCase(orderService);
+export const checkOrderStatusUseCase = new CheckOrderStatusUseCase(orderService);
+export const macRequestUseCase = new MacRequestUseCase();
+
+// Clean Architecture: Use cases with dependency injection
+export const checkPaymentStatusUseCase = new CheckPaymentStatusUseCase(paymentGateway, queueService);
+export const linkOrderUseCase = new LinkOrderUseCase(orderService, queueService);
+export const decodeLocationUseCase = new DecodeLocationUseCase(locationService);
+export const decodePhoneUseCase = new DecodePhoneUseCase(phoneService);

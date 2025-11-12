@@ -1,3 +1,5 @@
+import type { PhoneService } from "@/core/application/interfaces/phone-service";
+
 export interface DecodePhoneRequest {
   token: string;
   accessToken: string;
@@ -8,9 +10,10 @@ export interface DecodePhoneResponse {
 }
 
 export class DecodePhoneUseCase {
+  constructor(private phoneService: PhoneService) {}
+
   async execute(request: DecodePhoneRequest): Promise<DecodePhoneResponse> {
-    // Call Zalo API logic
-    // Placeholder
-    return { phone: "" };
+    const phone = await this.phoneService.decodePhone(request.token, request.accessToken);
+    return { phone };
   }
 }

@@ -1,5 +1,5 @@
 import type { Station } from "@/core/domain/station";
-import type { StationService } from "@/core/application/services/station-service";
+import type { StationService } from "@/core/application/interfaces/station-service";
 import clientPromise from "@/infrastructure/db/mongo";
 
 const getNextStationId = async (): Promise<number> => {

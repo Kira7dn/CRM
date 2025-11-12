@@ -1,5 +1,5 @@
 import type { Post } from "@/core/domain/post"
-import type { PostService } from "@/core/application/services/post-service"
+import type { PostService } from "@/core/application/interfaces/post-service"
 import clientPromise from "@/infrastructure/db/mongo"
 import { ObjectId } from "mongodb"
 

@@ -1,4 +1,4 @@
-import type { OrderService } from "@/core/application/services/order-service";
+import type { OrderService } from "@/core/application/interfaces/order-service";
 
 export interface PaymentCallbackRequest {
   data: Record<string, unknown>;

@@ -1,5 +1,5 @@
 import type { User } from "@/core/domain/user";
-import type { UserService, UpsertUserPayload } from "@/core/application/services/user-service";
+import type { UserService, UpsertUserPayload } from "@/core/application/interfaces/user-service";
 import clientPromise from "@/infrastructure/db/mongo";
 
 export const userRepository: UserService = {

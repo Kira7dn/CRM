@@ -1,4 +1,4 @@
-import type { ProductService } from "@/core/application/services/product-service";
+import type { ProductService } from "@/core/application/interfaces/product-service";
 
 export interface FilterProductsRequest {
   categoryId?: number | string;
