@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { GET, POST } from "@/app/api/product/route";
+import { GET, POST } from "@/app/api/products/route";
 import { filterProductsUseCase, createProductUseCase } from "@/lib/container";
 
 // Mock use cases
