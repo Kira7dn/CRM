@@ -12,6 +12,9 @@ import { ZaloLocationGateway } from "@/infrastructure/gateways/zalo-location-gat
 import { ZaloPhoneGateway } from "@/infrastructure/gateways/zalo-phone-gateway";
 import { BullMQAdapter } from "@/infrastructure/queue/bullmq-adapter";
 
+// Initialize workers when container loads
+import "@/infrastructure/queue/order-worker";
+
 // Clean Architecture: Interfaces
 import type { PaymentGateway } from "@/core/application/interfaces/payment-gateway";
 import type { QueueService } from "@/core/application/interfaces/queue-service";

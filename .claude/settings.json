@@ -1,16 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Read(*)",
-      "Write(*)",
-      "Bash(*)",
-      "Edit(*)"
+      "Read",
+      "Write",
+      "Bash",
+      "Edit"
     ],
     "deny": [
       "Read(./.env)",
       "Read(./secrets/**)",
-      "Bash(rm*)",
-      "Bash(sudo*)"
+      "Bash(rm:*)",
+      "Bash(sudo:*)"
     ]
   },
   "env": {

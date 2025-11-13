@@ -3,23 +3,12 @@ import path from 'path'
 
 export default defineConfig({
   test: {
-    environment: 'node', // Use node for integration tests with server
+    environment: 'node',
     globals: true,
     setupFiles: './vitest.setup.ts',
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html', 'lcov'],
-      exclude: [
-        '**/.next/**',
-        '**/node_modules/**',
-        '**/__tests__/**',
-        '**/*.spec.*',
-        '**/*.test.*',
-      ],
-    },
-    // Include all test files including integration tests
+    // Only exclude common paths, allow integration tests
     exclude: ['backend/**', 'node_modules/**', '.next/**'],
-    include: ['**/*.spec.ts', '**/*.test.ts'],
+    include: ['__tests__/integration/**/*.test.ts'],
   },
   server: {
     sourcemapIgnoreList(sourcePath, sourcemapPath) {

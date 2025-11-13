@@ -18,9 +18,7 @@ global.vi = vi
 // Ensure environment variables are set
 process.env.MONGODB_URI = process.env.MONGODB_URI
 process.env.MONGODB_DB = process.env.MONGODB_DB
-process.env.REDIS_HOST = process.env.REDIS_HOST
-process.env.REDIS_PORT = process.env.REDIS_PORT
-process.env.REDIS_PASSWORD = process.env.REDIS_PASSWORD
+process.env.REDIS_URL = process.env.REDIS_URL
 process.env.APP_ID = process.env.APP_ID
 process.env.CHECKOUT_SDK_PRIVATE_KEY = process.env.CHECKOUT_SDK_PRIVATE_KEY
 process.env.VITEST = 'true'

@@ -8,13 +8,22 @@ let client: MongoClient
 
 describe('postRepository (integration)', () => {
   beforeAll(async () => {
-    mongo = await MongoMemoryServer.create()
+    mongo = await MongoMemoryServer.create({
+      instance: {
+        port: undefined,
+        ip: '127.0.0.1',
+        storageEngine: 'wiredTiger',
+      },
+      binary: {
+        downloadDir: './node_modules/.cache/mongodb-memory-server',
+      },
+    })
     uri = mongo.getUri()
     process.env.MONGODB_URI = uri
     process.env.MONGODB_DB = 'testdb'
     client = new MongoClient(uri)
     await client.connect()
-  }, 30000) // 30 seconds timeout for MongoMemoryServer
+  }, 60000) // 60 seconds timeout for MongoMemoryServer
 
   afterAll(async () => {
     if (client) {

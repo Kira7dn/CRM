@@ -1,20 +1,26 @@
 import { Queue } from 'bullmq';
-import type { QueueService, QueueJobData } from '@/core/application/interfaces/queue-service';
+import Redis from 'ioredis';
+import type { QueueService } from '@/core/application/interfaces/queue-service';
 
 export class BullMQAdapter implements QueueService {
   private queues: Map<string, Queue> = new Map();
 
+  // Lazy initialization of Redis connection
+  private get redisConnection(): Redis {
+    // Create singleton Redis connection on first access
+    if (!(globalThis as any).__bullmqRedisConnection) {
+      (globalThis as any).__bullmqRedisConnection = new Redis(process.env.REDIS_URL!, {
+        maxRetriesPerRequest: null, // BullMQ requires this to be null
+        lazyConnect: true,
+      });
+    }
+    return (globalThis as any).__bullmqRedisConnection;
+  }
+
   private getQueue(queueName: string): Queue {
     if (!this.queues.has(queueName)) {
-      const connection = {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT || '6379'),
-        password: process.env.REDIS_PASSWORD,
-        username: process.env.REDIS_USERNAME,
-      };
-
       const queue = new Queue(queueName, {
-        connection,
+        connection: this.redisConnection,
         defaultJobOptions: {
           removeOnComplete: 50,
           removeOnFail: 100,
@@ -58,5 +64,6 @@ export class BullMQAdapter implements QueueService {
       await queue.close();
     }
     this.queues.clear();
+    await this.redisConnection.quit();
   }
 }

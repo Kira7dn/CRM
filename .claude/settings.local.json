@@ -1,13 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run test:cov:*)",
-      "Read(*)",
-      "Write(*)",
-      "Bash(*)",
-      "Edit(*)"
+      "Bash(npx:*)",
+      "Bash(where:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "context7",
+    "playwright"
+  ]
 }

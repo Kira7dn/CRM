@@ -10,6 +10,9 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:cov": "vitest run --coverage",
+    "test:unit": "vitest run --exclude='__tests__/integration/**'",
+    "test:unit:cov": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "server": "npm --prefix backend run dev"
   },
   "dependencies": {
@@ -38,6 +41,7 @@
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^4.0.7",
     "@vitest/ui": "^4.0.7",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",

@@ -4,14 +4,14 @@ import { parse } from "url";
 import next from "next";
 import type { AddressInfo } from "net";
 
-// Toggle running API tests (disabled by default to avoid slow Next.js startup)
-const RUN_API_TESTS = process.env.RUN_API_TESTS === 'true';
-
 // Mock DB setup (similar to backend setup)
 beforeAll(async () => {
-  if (!RUN_API_TESTS) return;
-  // Start Next.js server in dev mode to avoid requiring a production build
-  const app = next({ dev: true });
+  // Start Next.js server in dev mode with Turbopack disabled (use webpack instead)
+  // This avoids Turbopack internal errors in test environments
+  const app = next({
+    dev: true,
+    turbo: false, // Disable Turbopack, use webpack
+  });
   await app.prepare();
   const handle = app.getRequestHandler();
 
@@ -27,7 +27,7 @@ beforeAll(async () => {
   const addr = server.address() as AddressInfo;
   (global as any).testServer = server;
   (global as any).baseUrl = `http://127.0.0.1:${addr.port}`;
-}, 30000); // Increase timeout to 30 seconds
+}, 90000); // Increase timeout to 90 seconds for Next.js dev server startup
 
 afterAll(async () => {
   const srv = (global as any).testServer as ReturnType<typeof createServer> | undefined;
@@ -44,9 +44,7 @@ beforeEach(async () => {
 
 const getBaseUrl = () => (global as any).baseUrl as string;
 
-const describeMaybe = RUN_API_TESTS ? describe : describe.skip;
-
-describeMaybe("Next.js API Integration Tests", () => {
+describe("Next.js API Integration Tests", () => {
   it("GET /api/health returns OK", async () => {
     const res = await fetch(`${getBaseUrl()}/api/health`);
     expect(res.status).toBe(200);

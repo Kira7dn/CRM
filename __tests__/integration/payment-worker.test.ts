@@ -25,7 +25,7 @@ vi.mock('bullmq', () => {
   return { Queue: MockQueue, QueueEvents: MockQueueEvents, Worker: MockWorker };
 });
 // Import queue after mocking bullmq (static import để alias '@' hoạt động)
-import { orderQueue, orderQueueEvents } from '@/lib/queue';
+import { orderQueue, orderQueueEvents } from '@/infrastructure/queue/order-queue';
 import type { CreateOrderPayload } from '@/core/application/interfaces/order-service';
 
 // Mock orderService methods
@@ -60,10 +60,7 @@ function maskMongoUri(uri?: string) {
 }
 console.log('[E2E] MongoDB URI:', maskMongoUri(MongoDBURI));
 console.log('[E2E] MongoDB DB :', MongoDBDB);
-console.log('[E2E] Redis Host:', process.env.REDIS_HOST || 'undefined');
-console.log('[E2E] Redis Port:', process.env.REDIS_PORT || 'undefined');
-console.log('[E2E] Redis Password:', process.env.REDIS_PASSWORD ? '***' : 'undefined');
-console.log('[E2E] APP_ID:', process.env.APP_ID || 'undefined');
+console.log('[E2E] Redis URL:', process.env.REDIS_URI || 'undefined');
 async function waitFor<T>(predicate: () => Promise<T | null>, options: { timeoutMs?: number; intervalMs?: number } = {}) {
 
   const timeoutMs = options.timeoutMs ?? 15000;
@@ -84,7 +81,7 @@ describe('E2E: BullMQ worker updates paymentStatus with real Redis + Mongo', () 
 
   beforeAll(async () => {
   // Explicitly start BullMQ worker so jobs are processed in E2E
-  await import('@/lib/queue');
+  await import('@/infrastructure/queue/order-worker');
     // Keep original fetch
     originalFetch = global.fetch;
 
