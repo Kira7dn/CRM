@@ -13,12 +13,35 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
-    const result = await createOrderUseCase.execute(body);
+    const body = await req.json().catch((err) => {
+      console.error('[POST /api/orders] Invalid JSON in request body:', err)
+      throw new Error('Invalid JSON in request body')
+    })
+
+    console.log('[POST /api/orders] Received request:', {
+      method: req.method,
+      url: req.url,
+      headers: Object.fromEntries(req.headers.entries()),
+      body,
+    })
+
+    const result = await createOrderUseCase.execute(body)
+    console.log('[POST /api/orders] Create order result:', result)
+
     return NextResponse.json(result.order, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ message: "Error creating order" }, { status: 500 });
+  } catch (error: any) {
+    console.error('[POST /api/orders] Error creating order:', {
+      error: error.message,
+      stack: error.stack,
+      body: req.body || 'N/A',
+      url: req.url,
+    })
+
+    return NextResponse.json(
+      { message: 'Failed to create order', error: error.message },
+      { status: 500 }
+    )
   }
 }

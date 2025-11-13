@@ -73,10 +73,39 @@ interface CounterDocument {
 const getNextOrderId = async (): Promise<number> => {
   const client = await clientPromise;
   const db = client.db(process.env.MONGODB_DB);
+
+  // First, try to get the current counter
+  let counter = await db.collection<CounterDocument>("counters").findOne({ _id: "orders" });
+
+  if (!counter) {
+    // If no counter exists, find the highest existing order ID
+    const highestOrder = await db.collection<OrderDocument>("orders").find().sort({ _id: -1 }).limit(1).toArray();
+    const nextId = highestOrder.length > 0 ? highestOrder[0]._id + 1 : 1;
+
+    // Create counter with the next ID
+    await db.collection<CounterDocument>("counters").insertOne({ _id: "orders", seq: nextId });
+    return nextId;
+  }
+
+  // If counter exists, check if it's behind the highest existing ID
+  const highestOrder = await db.collection<OrderDocument>("orders").find().sort({ _id: -1 }).limit(1).toArray();
+  const highestId = highestOrder.length > 0 ? highestOrder[0]._id : 0;
+
+  if (counter.seq <= highestId) {
+    // Counter is behind, update it to highestId + 1
+    const nextId = highestId + 1;
+    await db.collection<CounterDocument>("counters").updateOne(
+      { _id: "orders" },
+      { $set: { seq: nextId } }
+    );
+    return nextId;
+  }
+
+  // Counter is ahead, increment normally
   const updated = await db.collection<CounterDocument>("counters").findOneAndUpdate(
     { _id: "orders" },
     { $inc: { seq: 1 } },
-    { returnDocument: "after", upsert: true }
+    { returnDocument: "after" }
   );
   return updated!.seq;
 };
