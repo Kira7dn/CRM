@@ -14,13 +14,10 @@ interface OrderDocument {
   paymentStatus: string;
   createdAt: Date;
   updatedAt: Date;
+  receivedAt?: Date;
   items: Array<{
-    productId: number;
+    product: Record<string, unknown>; // Full product object stored in MongoDB
     quantity: number;
-    price: number;
-    name: string;
-    size?: string;
-    color?: string;
   }>;
   delivery: {
     name: string;
@@ -45,7 +42,7 @@ function toOrder(doc: OrderDocument): Order {
     createdAt: doc.createdAt,
     updatedAt: doc.updatedAt,
     items: doc.items.map(item => ({
-      product: { id: item.productId, name: item.name, price: item.price },
+      product: item.product || {}, // Use the full product object from MongoDB
       quantity: item.quantity,
     })),
     delivery: {
@@ -150,12 +147,8 @@ export const orderRepository: OrderService & {
       createdAt: now,
       updatedAt: payload.updatedAt ?? now,
       items: payload.items.map(item => ({
-        productId: (item.product as any).id || 0,
+        product: item.product || {}, // Store full product object
         quantity: item.quantity,
-        price: (item.product as any).price || 0,
-        name: (item.product as any).name || "",
-        size: (item.product as any).size,
-        color: (item.product as any).color,
       })),
       delivery: {
         name: payload.delivery.name,
@@ -184,12 +177,8 @@ export const orderRepository: OrderService & {
     if (payload.updatedAt !== undefined) updateObj.updatedAt = payload.updatedAt;
     if (payload.items !== undefined) {
       updateObj.items = payload.items.map(item => ({
-        productId: (item.product as any).id || 0,
+        product: item.product || {}, // Store full product object
         quantity: item.quantity,
-        price: (item.product as any).price || 0,
-        name: (item.product as any).name || "",
-        size: (item.product as any).size,
-        color: (item.product as any).color,
       }));
     }
     if (payload.delivery !== undefined) {
