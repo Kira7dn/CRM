@@ -20,7 +20,7 @@ export class LinkOrderUseCase {
     if (!order) throw new Error("Order not found");
     if (order.paymentStatus === "success") throw new Error("Order already paid");
 
-    const updated = await this.orderService.update(request.orderId, { checkoutSdkOrderId: request.checkoutSdkOrderId });
+    const updated = await this.orderService.update({ id: request.orderId, checkoutSdkOrderId: request.checkoutSdkOrderId });
     if (!updated) throw new Error("Update failed");
 
     // Enqueue job logic here or in infrastructure

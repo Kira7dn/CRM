@@ -1,6 +1,5 @@
 // Domain Services
 import { bannerRepository } from "@/infrastructure/repositories/banner-repo";
-import { categoryRepository } from "@/infrastructure/repositories/category-repo";
 import { productRepository } from "@/infrastructure/repositories/product-repo";
 import { stationRepository } from "@/infrastructure/repositories/station-repo";
 import { userRepository } from "@/infrastructure/repositories/user-repo";
@@ -26,10 +25,6 @@ import type { VnpayGateway } from "@/core/application/interfaces/vnpay-gateway";
 // Services
 export const bannerService = {
   ...bannerRepository,
-};
-
-export const categoryService = {
-  ...categoryRepository,
 };
 
 export const productService = {
@@ -111,12 +106,6 @@ export const createBannerUseCase = new CreateBannerUseCase(bannerService);
 export const getBannerByIdUseCase = new GetBannerByIdUseCase(bannerService);
 export const updateBannerUseCase = new UpdateBannerUseCase(bannerService);
 export const deleteBannerUseCase = new DeleteBannerUseCase(bannerService);
-
-export const getCategoriesUseCase = new GetCategoriesUseCase(categoryService);
-export const createCategoryUseCase = new CreateCategoryUseCase(categoryService);
-export const getCategoryByIdUseCase = new GetCategoryByIdUseCase(categoryService);
-export const updateCategoryUseCase = new UpdateCategoryUseCase(categoryService);
-export const deleteCategoryUseCase = new DeleteCategoryUseCase(categoryService);
 
 export const getStationsUseCase = new GetStationsUseCase(stationService);
 export const createStationUseCase = new CreateStationUseCase(stationService);

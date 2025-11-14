@@ -3,17 +3,19 @@ import type { UserService, UpsertUserPayload } from "@/core/application/interfac
 import clientPromise from "@/infrastructure/db/mongo";
 
 /**
- * MongoDB document interface for User collection
+ * MongoDB document - uses User type with _id mapping
  */
-interface UserDocument {
-  _id: string;
-  name: string;
-  avatar: string;
-  phone: string;
-  email: string;
-  address: string;
-  createdAt: Date;
-  updatedAt: Date;
+type UserDocument = Omit<User, 'id'> & { _id: string };
+
+/**
+ * Converts MongoDB document to domain User entity
+ */
+function toUser(doc: UserDocument): User {
+  const { _id, ...userData } = doc;
+  return {
+    ...userData,
+    id: _id, // External ID is stored in _id
+  };
 }
 
 export const userRepository: UserService = {
@@ -35,31 +37,13 @@ export const userRepository: UserService = {
       { upsert: true, returnDocument: "after" }
     );
     if (!doc) throw new Error("Failed to upsert user");
-    return {
-      id: doc._id,
-      name: doc.name,
-      avatar: doc.avatar,
-      phone: doc.phone,
-      email: doc.email,
-      address: doc.address,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
-    };
+    return toUser(doc);
   },
 
   async getById(id: string): Promise<User | null> {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB);
     const doc = await db.collection<UserDocument>("users").findOne({ _id: id });
-    return doc ? {
-      id: doc._id,
-      name: doc.name,
-      avatar: doc.avatar,
-      phone: doc.phone,
-      email: doc.email,
-      address: doc.address,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
-    } : null;
+    return doc ? toUser(doc) : null;
   },
 };

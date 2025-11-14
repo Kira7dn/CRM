@@ -1,14 +1,15 @@
-import type { CategoryService } from "@/core/application/interfaces/category-service";
+import type { Category } from "@/core/domain/category"
+import type { CategoryService } from "@/core/application/interfaces/category-service"
 
 export interface GetCategoriesResponse {
-  categories: { id: number; name: string; image: string; createdAt?: Date; updatedAt?: Date }[];
+  categories: Category[]
 }
 
 export class GetCategoriesUseCase {
   constructor(private categoryService: CategoryService) {}
 
   async execute(): Promise<GetCategoriesResponse> {
-    const categories = await this.categoryService.getAll();
-    return { categories };
+    const categories = await this.categoryService.getAll()
+    return { categories }
   }
 }

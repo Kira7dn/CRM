@@ -1,15 +1,22 @@
 import type { Post } from "@/core/domain/post"
-import type { PostService } from "@/core/application/interfaces/post-service"
+import type { PostService, PostPayload } from "@/core/application/interfaces/post-service"
 import clientPromise from "@/infrastructure/db/mongo"
 import { ObjectId } from "mongodb"
 
 /**
- * MongoDB document interface for Post collection
+ * MongoDB document - uses Post type with _id mapping
  */
-interface PostDocument {
-  _id: ObjectId;
-  title: string;
-  body?: string | null;
+type PostDocument = Omit<Post, 'id'> & { _id: ObjectId };
+
+/**
+ * Converts MongoDB document to domain Post entity
+ */
+function toPost(doc: PostDocument): Post {
+  const { _id, ...postData } = doc;
+  return {
+    ...postData,
+    id: _id.toString(), // Convert ObjectId to string
+  };
 }
 
 export const postRepository: PostService & {
@@ -25,11 +32,7 @@ export const postRepository: PostService & {
       .find({})
       .sort({ _id: -1 })
       .toArray()
-    return docs.map((d) => ({
-      id: String(d._id),
-      title: d.title || "Untitled",
-      body: d.body ?? undefined,
-    }))
+    return docs.map(toPost);
   },
 
   async create(post: Omit<Post, "id">): Promise<Post> {
@@ -37,10 +40,11 @@ export const postRepository: PostService & {
     const db = client.db(process.env.MONGODB_DB)
     const doc: Omit<PostDocument, "_id"> = {
       title: post.title,
-      body: post.body ?? null,
+      body: post.body,
     }
     const { insertedId } = await db.collection<PostDocument>("posts").insertOne(doc as PostDocument)
-    return { id: String(insertedId), title: post.title, body: post.body }
+    const createdDoc = await db.collection<PostDocument>("posts").findOne({ _id: insertedId })
+    return createdDoc ? toPost(createdDoc) : { id: insertedId.toString(), ...post }
   },
 
   async update(id: string, post: Partial<Post>): Promise<boolean> {

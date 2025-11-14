@@ -2,15 +2,12 @@ export type OrderStatus = "pending" | "shipping" | "completed";
 export type PaymentStatus = "pending" | "success" | "failed";
 
 export interface Delivery {
-  alias: string;
-  address: string;
   name: string;
   phone: string;
-  stationId: number;
-  image: string;
-  location: {
+  address: string;
+  location?: {
     lat: number;
-    lng: number;
+    lon: number; // Match MongoDB field name
   };
 }
 
@@ -30,5 +27,5 @@ export interface Order {
   items: OrderItem[];
   delivery: Delivery;
   total: number;
-  note: string;
+  note?: string; // Make optional to match DB schema
 }

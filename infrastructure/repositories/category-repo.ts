@@ -1,102 +1,64 @@
-import type { Category } from "@/core/domain/category";
-import type { CategoryService } from "@/core/application/interfaces/category-service";
-import clientPromise from "@/infrastructure/db/mongo";
+import { BaseRepository } from "@/infrastructure/db/base-repository";
+import { Category } from "@/core/domain/category";
+import type { CategoryService, CategoryPayload } from "@/core/application/interfaces/category-service";
+import { getNextId } from "@/infrastructure/db/auto-increment";
 
-/**
- * MongoDB document interface for Category collection
- */
-interface CategoryDocument {
-  _id: number;
-  name: string;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export class CategoryRepository extends BaseRepository<Category, number> implements CategoryService {
+  protected collectionName = "categories";
 
-const getNextCategoryId = async (): Promise<number> => {
-  const client = await clientPromise;
-  const db = client.db(process.env.MONGODB_DB);
-  const lastCategory = await db.collection<CategoryDocument>("categories").findOne({}, { sort: { _id: -1 } });
-  return lastCategory ? lastCategory._id + 1 : 1;
-};
-
-export const categoryRepository: CategoryService & {
-  getNextId(): Promise<number>;
-} = {
   async getAll(): Promise<Category[]> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const docs = await db.collection<CategoryDocument>("categories").find({}).sort({ _id: 1 }).toArray();
-    return docs.map((d) => ({
-      id: d._id,
-      name: d.name,
-      image: d.image,
-      createdAt: d.createdAt,
-      updatedAt: d.updatedAt,
-    }));
-  },
+    const collection = await this.getCollection();
+    const docs = await collection.find({}).sort({ _id: 1 }).toArray();
+    return docs.map(doc => this.toDomain(doc));
+  }
 
   async getById(id: number): Promise<Category | null> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const doc = await db.collection<CategoryDocument>("categories").findOne({ _id: id });
-    return doc ? {
-      id: doc._id,
-      name: doc.name,
-      image: doc.image,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
-    } : null;
-  },
+    const collection = await this.getCollection();
+    const doc = await collection.findOne({ _id: id } as any);
+    return doc ? this.toDomain(doc) : null;
+  }
 
-  async create(category: Omit<Category, "id" | "createdAt" | "updatedAt">): Promise<Category> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const id = await getNextCategoryId();
+  async create(payload: CategoryPayload): Promise<Category> {
+    const client = await this.getClient();
+    const id = await getNextId(client, this.collectionName);
     const now = new Date();
-    const doc: CategoryDocument = {
-      _id: id,
-      name: category.name,
-      image: category.image,
+
+    const doc = this.toDocument({
+      ...payload,
+      id,
       createdAt: now,
-      updatedAt: now,
-    };
-    await db.collection<CategoryDocument>("categories").insertOne(doc);
-    return { id, name: category.name, image: category.image, createdAt: now, updatedAt: now };
-  },
+      updatedAt: now
+    });
 
-  async update(id: number, category: Partial<Omit<Category, "id" | "createdAt" | "updatedAt">>): Promise<Category | null> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const updateObj: Partial<CategoryDocument> = {
-      ...category,
-      updatedAt: new Date()
+    const collection = await this.getCollection();
+    await collection.insertOne(doc);
+    return this.toDomain(doc);
+  }
+
+  async update(payload: CategoryPayload): Promise<Category | null> {
+    if (!payload.id) throw new Error("Category ID is required for update");
+
+    const now = new Date();
+    const { id, ...updateFields } = payload;
+
+    const updateObj: any = {
+      ...updateFields,
+      updatedAt: now
     };
 
-    const result = await db.collection<CategoryDocument>("categories").findOneAndUpdate(
-      { _id: id },
+    const collection = await this.getCollection();
+    const result = await collection.findOneAndUpdate(
+      { _id: id } as any,
       { $set: updateObj },
       { returnDocument: "after" }
     );
 
-    if (result) {
-      return {
-        id: result._id,
-        name: result.name,
-        image: result.image,
-        createdAt: result.createdAt,
-        updatedAt: result.updatedAt,
-      };
-    }
-    return null;
-  },
+    return result && result.value ? this.toDomain(result.value) : null;
+  }
 
   async delete(id: number): Promise<boolean> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const result = await db.collection<CategoryDocument>("categories").deleteOne({ _id: id });
+    const collection = await this.getCollection();
+    const result = await collection.deleteOne({ _id: id } as any);
     return result.deletedCount > 0;
-  },
-
-  getNextId: getNextCategoryId,
-};
+  }
+}

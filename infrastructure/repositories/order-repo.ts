@@ -1,61 +1,20 @@
 import type { Order } from "@/core/domain/order";
-import type { OrderService, GetOrdersParams, CreateOrderPayload, UpdateOrderPayload } from "@/core/application/interfaces/order-service";
+import type { OrderService, GetOrdersParams, OrderPayload } from "@/core/application/interfaces/order-service";
 import clientPromise from "@/infrastructure/db/mongo";
 
 /**
- * MongoDB document interface for Order collection
- * Note: MongoDB schema differs slightly from domain Order type
+ * MongoDB document - matches domain Order structure
  */
-interface OrderDocument {
-  _id: number;
-  zaloUserId: string;
-  checkoutSdkOrderId?: string;
-  status: string;
-  paymentStatus: string;
-  createdAt: Date;
-  updatedAt: Date;
-  receivedAt?: Date;
-  items: Array<{
-    product: Record<string, unknown>; // Full product object stored in MongoDB
-    quantity: number;
-  }>;
-  delivery: {
-    name: string;
-    phone: string;
-    address: string;
-    location?: { lat: number; lon: number };
-  };
-  total: number;
-  note?: string;
-}
+type OrderDocument = Omit<Order, 'id'> & { _id: number };
 
 /**
- * Helper function to convert MongoDB OrderDocument to domain Order
+ * Converts MongoDB OrderDocument to domain Order
  */
 function toOrder(doc: OrderDocument): Order {
+  const { _id, ...orderData } = doc;
   return {
-    id: doc._id,
-    zaloUserId: doc.zaloUserId,
-    checkoutSdkOrderId: doc.checkoutSdkOrderId,
-    status: doc.status as Order['status'],
-    paymentStatus: doc.paymentStatus as Order['paymentStatus'],
-    createdAt: doc.createdAt,
-    updatedAt: doc.updatedAt,
-    items: doc.items.map(item => ({
-      product: item.product || {}, // Use the full product object from MongoDB
-      quantity: item.quantity,
-    })),
-    delivery: {
-      alias: '',
-      address: doc.delivery.address,
-      name: doc.delivery.name,
-      phone: doc.delivery.phone,
-      stationId: 0,
-      image: '',
-      location: { lat: doc.delivery.location?.lat || 0, lng: doc.delivery.location?.lon || 0 },
-    },
-    total: doc.total,
-    note: doc.note || '',
+    ...orderData,
+    id: _id, // Map _id to id
   };
 }
 
@@ -127,12 +86,9 @@ export const orderRepository: OrderService & {
     return doc ? toOrder(doc) : null;
   },
 
-  async create(payload: CreateOrderPayload): Promise<Order> {
+  async create(payload: OrderPayload): Promise<Order> {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB);
-    if (!payload.items || payload.items.length === 0) {
-      throw new Error("Order must have valid items");
-    }
     if (!payload.delivery) {
       throw new Error("Delivery info is required");
     }
@@ -146,29 +102,28 @@ export const orderRepository: OrderService & {
       paymentStatus: payload.paymentStatus ?? "pending",
       createdAt: now,
       updatedAt: payload.updatedAt ?? now,
-      items: payload.items.map(item => ({
-        product: item.product || {}, // Store full product object
-        quantity: item.quantity,
-      })),
-      delivery: {
-        name: payload.delivery.name,
-        phone: payload.delivery.phone,
-        address: payload.delivery.address,
-        location: payload.delivery.location ? {
-          lat: payload.delivery.location.lat,
-          lon: payload.delivery.location.lng,
-        } : undefined,
+      items: payload.items || [],
+      delivery: payload.delivery || {
+        name: "",
+        phone: "",
+        address: "",
       },
       total: payload.total ?? 0,
-      note: payload.note ?? "",
+      note: payload.note,
     };
     await db.collection<OrderDocument>("orders").insertOne(doc);
     return toOrder(doc);
   },
 
-  async update(id: number, payload: UpdateOrderPayload): Promise<Order | null> {
+  async update(payload: OrderPayload): Promise<Order | null> {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB);
+
+    // For updates, id must be provided
+    if (!payload.id) {
+      throw new Error("Order ID is required for updates");
+    }
+
     const updateObj: Partial<OrderDocument> = {};
     if (payload.zaloUserId !== undefined) updateObj.zaloUserId = payload.zaloUserId;
     if (payload.checkoutSdkOrderId !== undefined) updateObj.checkoutSdkOrderId = payload.checkoutSdkOrderId;
@@ -176,28 +131,13 @@ export const orderRepository: OrderService & {
     if (payload.paymentStatus !== undefined) updateObj.paymentStatus = payload.paymentStatus;
     // Always update the timestamp
     updateObj.updatedAt = new Date();
-    if (payload.items !== undefined) {
-      updateObj.items = payload.items.map(item => ({
-        product: item.product || {}, // Store full product object
-        quantity: item.quantity,
-      }));
-    }
-    if (payload.delivery !== undefined) {
-      updateObj.delivery = {
-        name: payload.delivery.name,
-        phone: payload.delivery.phone,
-        address: payload.delivery.address,
-        location: payload.delivery.location ? {
-          lat: payload.delivery.location.lat,
-          lon: payload.delivery.location.lng,
-        } : undefined,
-      };
-    }
+    if (payload.items !== undefined) updateObj.items = payload.items;
+    if (payload.delivery !== undefined) updateObj.delivery = payload.delivery;
     if (payload.total !== undefined) updateObj.total = payload.total;
     if (payload.note !== undefined) updateObj.note = payload.note;
 
     const result = await db.collection<OrderDocument>("orders").findOneAndUpdate(
-      { _id: id },
+      { _id: payload.id },
       { $set: updateObj },
       { returnDocument: "after" }
     );

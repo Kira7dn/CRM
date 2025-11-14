@@ -63,7 +63,7 @@ export class HandleVnpayIpnUseCase {
     };
 
     try {
-      const updatedOrder = await this.orderService.update(result.orderId, updatePayload);
+      const updatedOrder = await this.orderService.update({ id: result.orderId, ...updatePayload });
       return {
         result,
         order: updatedOrder,

@@ -40,10 +40,7 @@ export class LinkOrderUseCase {
       throw new Error("Đơn hàng đã được thanh toán");
     }
 
-    const updated = await this.orderService.update(orderId, {
-      checkoutSdkOrderId,
-      updatedAt: new Date()
-    });
+    const updated = await this.orderService.update({ id: orderId, checkoutSdkOrderId, updatedAt: new Date() });
 
     if (!updated) {
       throw new Error("Không thể cập nhật đơn hàng");

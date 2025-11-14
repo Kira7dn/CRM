@@ -1,4 +1,4 @@
-import type { OrderService, CreateOrderPayload } from "@/core/application/interfaces/order-service";
+import type { OrderService, OrderPayload } from "@/core/application/interfaces/order-service";
 import type { Order } from "@/core/domain/order";
 
 export interface CreateOrderRequest {
@@ -44,13 +44,10 @@ export class CreateOrderUseCase {
       updatedAt: new Date(),
       checkoutSdkOrderId: request.checkoutSdkOrderId,
       delivery: {
-        alias: '', // Default value
         address: request.delivery.address,
         name: request.delivery.name,
         phone: request.delivery.phone,
-        stationId: 0, // Default value
-        image: '', // Default value
-        location: { lat: 0, lng: 0 }, // Default value
+        // location will be set later by another service
       },
       note: request.note || '',
     };
@@ -59,7 +56,7 @@ export class CreateOrderUseCase {
 
     try {
       // Map Order to CreateOrderPayload for the service (don't set id, let repository generate it)
-      const createPayload: CreateOrderPayload = {
+      const createPayload: OrderPayload = {
         zaloUserId: order.zaloUserId,
         checkoutSdkOrderId: order.checkoutSdkOrderId,
         status: order.status,

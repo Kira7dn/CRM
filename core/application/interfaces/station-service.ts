@@ -1,9 +1,11 @@
 import type { Station } from "@/core/domain/station";
 
+export interface StationPayload extends Partial<Station> {}
+
 export interface StationService {
   getAll(): Promise<Station[]>;
   getById(id: number): Promise<Station | null>;
-  create(station: Omit<Station, "id" | "createdAt" | "updatedAt">): Promise<Station>;
-  update(id: number, station: Partial<Omit<Station, "id" | "createdAt" | "updatedAt">>): Promise<Station | null>;
+  create(payload: StationPayload): Promise<Station>;
+  update(payload: StationPayload): Promise<Station | null>;
   delete(id: number): Promise<boolean>;
 }

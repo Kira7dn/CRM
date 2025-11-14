@@ -1,12 +1,9 @@
 import type { User } from "@/core/domain/user";
 
-export interface UpsertUserPayload {
-  id: string;
-  name?: string;
-  avatar?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
+export interface UserPayload extends Partial<User> {}
+
+export interface UpsertUserPayload extends UserPayload {
+  id: string; // Required for upsert operations
 }
 
 export interface UserService {

@@ -63,10 +63,7 @@ export class PaymentCallbackUseCase {
 
       // Update payment status
       const paymentStatus = resultCode === 1 ? "success" : "failed";
-      const updatedOrder = await this.orderService.update(orderId, {
-        paymentStatus,
-        updatedAt: new Date()
-      });
+      const updatedOrder = await this.orderService.update({ id: orderId, paymentStatus, updatedAt: new Date() });
 
       if (!updatedOrder) {
         return { returnCode: 0, returnMessage: "Order not found" };

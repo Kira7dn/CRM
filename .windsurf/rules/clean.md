@@ -2,6 +2,10 @@
 trigger: always_on
 ---
 
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 ## Project Overview
 
 This is a Next.js 16 frontend application built using **Clean/Onion Architecture** principles. The project demonstrates a full-stack approach with Server Components, Client Components, MongoDB integration, Zustand state management, and Server Actions.
@@ -86,15 +90,16 @@ MONGODB_DB=database_name
 
 ### Adding a New Feature
 
-1. **Create domain entity** in `core/domain/[feature].ts`
-2. **Define repository interface** in `core/application/services/[feature]-service.ts`
-3. **Create use cases** in `core/application/usecases/` (one file per operation)
-4. **Implement repository** in `infrastructure/repositories/[feature]-repo.ts`
+1. **Create domain entity** in `core/domain/[feature].ts` - Define the business entity with validation logic
+2. **Define repository interface** in `core/application/interfaces/[feature]-service.ts` - Create service interface with payload types that extend from domain (`extends Partial<DomainEntity>`)
+3. **Create use cases** in `core/application/usecases/[feature]/` (one file per operation, class-based pattern) - Implement use case classes with Request/Response interfaces that extend payload types
+4. **Implement repository** in `infrastructure/repositories/[feature]-repo.ts` - Provide concrete implementation of the service interface
 5. **Create UI** in `app/(features)/[feature]/`:
-   - `page.tsx` - Server Component
+   - `page.tsx` - Server Component that fetches data
    - `actions.ts` - Server Actions with `revalidatePath()`
    - `components/` - React components
    - `store/` - Zustand stores if needed
+   - **Requirement**: Use https://ui.shadcn.com/docs/components when creating UI components
 
 ### Testing Strategy
 
@@ -123,6 +128,73 @@ export async function createPostAction(formData: FormData) {
   const body = formData.get("body")?.toString() || ""
   await createPostUseCase({ title, body })
   revalidatePath("/posts")
+}
+```
+
+## Use Case Pattern
+
+Use cases must follow the **class-based architecture pattern** with Request/Response interfaces:
+
+### ✅ Correct Pattern (Class-based):
+```typescript
+// core/application/interfaces/feature-service.ts
+export interface FeaturePayload extends Partial<Feature> {}
+
+export interface FeatureService {
+  create(payload: FeaturePayload): Promise<Feature>
+  update(payload: FeaturePayload): Promise<Feature | null>
+}
+
+// core/application/usecases/feature/create-feature.ts
+import type { FeatureService, FeaturePayload } from "@/core/application/interfaces/feature-service"
+
+export interface CreateFeatureRequest extends FeaturePayload {}
+
+export interface CreateFeatureResponse {
+  feature: Feature
+}
+
+export class CreateFeatureUseCase {
+  constructor(private featureService: FeatureService) {}
+
+  async execute(request: CreateFeatureRequest): Promise<CreateFeatureResponse> {
+    // Business logic and validation here
+    const feature = await this.featureService.create(request);
+    return { feature };
+  }
+}
+```
+
+### Key Requirements:
+- **Domain as Single Source of Truth**: Payload interfaces must extend from domain entities (`extends Partial<DomainEntity>`)
+- **Class-based architecture** with constructor injection
+- **Request/Response interfaces** for type safety
+- **Single responsibility** per use case
+- **Validation** at use case level (call domain validation)
+- **Error handling** with descriptive messages
+
+Example:
+```typescript
+// ✅ CORRECT: Use case with validation
+export interface CreateCustomerRequest extends CustomerPayload {}
+
+export interface CreateCustomerResponse {
+  customer: Customer
+}
+
+export class CreateCustomerUseCase {
+  constructor(private customerService: CustomerService) {}
+
+  async execute(request: CreateCustomerRequest): Promise<CreateCustomerResponse> {
+    // Validate at use case level
+    const errors = validateCustomer(request)
+    if (errors.length > 0) {
+      throw new Error(`Validation failed: ${errors.join(', ')}`)
+    }
+
+    const customer = await this.customerService.create(request);
+    return { customer };
+  }
 }
 ```
 

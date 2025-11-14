@@ -102,7 +102,8 @@ export class ZaloPayGateway implements PaymentGateway {
 
     if (paymentResult.success) {
       // Update order status to success
-      const updatedOrder = await orderService.update(orderId, {
+      const updatedOrder = await orderService.update({
+        id: orderId,
         paymentStatus: 'success',
         updatedAt: new Date()
       });
@@ -115,7 +116,8 @@ export class ZaloPayGateway implements PaymentGateway {
       }
     } else if (paymentResult.status === 'failed') {
       // Update order status to failed
-      await orderService.update(orderId, {
+      await orderService.update({
+        id: orderId,
         paymentStatus: 'failed',
         updatedAt: new Date()
       });

@@ -1,26 +1,17 @@
-import type { ProductService } from "@/core/application/interfaces/product-service";
+import type { Product } from "@/core/domain/product"
+import type { ProductService, ProductPayload } from "@/core/application/interfaces/product-service"
 
-export interface CreateProductRequest {
-  id?: number;
-  categoryId: number;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image?: string;
-  detail?: string;
-  sizes?: string[];
-  colors?: string[];
-}
+export interface CreateProductRequest extends ProductPayload {}
 
 export interface CreateProductResponse {
-  product: any; // specific type
+  product: Product
 }
 
 export class CreateProductUseCase {
   constructor(private productService: ProductService) {}
 
   async execute(request: CreateProductRequest): Promise<CreateProductResponse> {
-    const product = await this.productService.create(request as any);
-    return { product };
+    const product = await this.productService.create(request)
+    return { product }
   }
 }

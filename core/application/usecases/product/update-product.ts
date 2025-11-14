@@ -1,28 +1,17 @@
-import type { ProductService } from "@/core/application/interfaces/product-service";
-import type { Product } from "@/core/domain/product";
+import type { Product } from "@/core/domain/product"
+import type { ProductService, ProductPayload } from "@/core/application/interfaces/product-service"
 
-export interface UpdateProductRequest {
-  id: number;
-  categoryId?: number;
-  name?: string;
-  price?: number;
-  originalPrice?: number;
-  image?: string;
-  detail?: string;
-  sizes?: string[];
-  colors?: string[];
-}
+export interface UpdateProductRequest extends ProductPayload {}
 
 export interface UpdateProductResponse {
-  product: Product | null;
+  product: Product | null
 }
 
 export class UpdateProductUseCase {
   constructor(private productService: ProductService) {}
 
   async execute(request: UpdateProductRequest): Promise<UpdateProductResponse> {
-    const { id, ...updateData } = request;
-    const product = await this.productService.update(id, updateData as any);
-    return { product };
+    const product = await this.productService.update(request)
+    return { product }
   }
 }

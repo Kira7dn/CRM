@@ -1,14 +1,11 @@
 import type { Banner } from "@/core/domain/banner";
-import type { BannerService } from "@/core/application/interfaces/banner-service";
+import type { BannerService, BannerPayload } from "@/core/application/interfaces/banner-service";
 import clientPromise from "@/infrastructure/db/mongo";
 
 /**
- * MongoDB document interface for Banner collection
+ * MongoDB document - uses Banner type with _id mapping
  */
-interface BannerDocument {
-  _id: number;
-  url: string;
-}
+type BannerDocument = Omit<Banner, 'id'> & { _id: number };
 
 const getNextBannerId = async (): Promise<number> => {
   const client = await clientPromise;
@@ -25,7 +22,7 @@ export const bannerRepository: BannerService & {
     const db = client.db(process.env.MONGODB_DB);
     const docs = await db.collection<BannerDocument>("banners").find({}).sort({ _id: 1 }).toArray();
     return docs.map((d) => ({
-      id: d._id,
+      id: d._id,  // Map _id to id
       url: d.url,
     }));
   },
@@ -37,26 +34,32 @@ export const bannerRepository: BannerService & {
     return doc ? { id: doc._id, url: doc.url } : null;
   },
 
-  async create(banner: Omit<Banner, "id">): Promise<Banner> {
+  async create(payload: BannerPayload): Promise<Banner> {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB);
     const id = await getNextBannerId();
     const doc: BannerDocument = {
       _id: id,
-      url: banner.url,
+      url: payload.url || "", // Provide default empty string
     };
     await db.collection<BannerDocument>("banners").insertOne(doc);
-    return { id, url: banner.url };
+    return { id, url: payload.url || "" };
   },
 
-  async update(id: number, banner: Partial<Banner>): Promise<Banner | null> {
+  async update(payload: BannerPayload): Promise<Banner | null> {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB);
+
+    // For updates, id must be provided to know which banner to update
+    if (!payload.id) {
+      throw new Error("Banner ID is required for updates");
+    }
+
     const updateObj: Partial<BannerDocument> = {};
-    if (banner.url !== undefined) updateObj.url = banner.url;
+    if (payload.url !== undefined) updateObj.url = payload.url;
 
     const result = await db.collection<BannerDocument>("banners").findOneAndUpdate(
-      { _id: id },
+      { _id: payload.id }, // Find by _id
       { $set: updateObj },
       { returnDocument: "after" }
     );

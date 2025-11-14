@@ -37,7 +37,7 @@ export class PaymentCallbackUseCase {
     if (!orderId) return { returnCode: 0, returnMessage: "OrderId not found" };
 
     const paymentStatus = resultCode === 1 ? "success" : "failed";
-    const updated = await this.orderService.update(orderId, { paymentStatus: paymentStatus as any });
+    const updated = await this.orderService.update({ id: orderId, paymentStatus: paymentStatus as any });
     if (!updated) return { returnCode: 0, returnMessage: "Order not found" };
 
     // Notify webhook logic

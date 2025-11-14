@@ -1,20 +1,19 @@
-import type { CategoryService } from "@/core/application/interfaces/category-service";
+import type { Category } from "@/core/domain/category"
+import type { CategoryService, CategoryPayload } from "@/core/application/interfaces/category-service"
 
-export interface UpdateCategoryRequest {
-  id: number;
-  name?: string;
-  image?: string;
+export interface UpdateCategoryRequest extends CategoryPayload {
+  id: number; // Override to require id
 }
 
 export interface UpdateCategoryResponse {
-  category: { id: number; name: string; image: string; createdAt?: Date; updatedAt?: Date } | null;
+  category: Category | null
 }
 
 export class UpdateCategoryUseCase {
   constructor(private categoryService: CategoryService) {}
 
   async execute(request: UpdateCategoryRequest): Promise<UpdateCategoryResponse> {
-    const category = await this.categoryService.update(request.id, { name: request.name, image: request.image });
-    return { category };
+    const category = await this.categoryService.update(request)
+    return { category }
   }
 }

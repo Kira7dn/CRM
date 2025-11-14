@@ -5,28 +5,12 @@ export interface GetOrdersParams {
   zaloUserId?: string;
 }
 
-export interface CreateOrderPayload {
-  id?: number;
-  zaloUserId?: string;
-  checkoutSdkOrderId?: string;
-  status?: OrderStatus;
-  paymentStatus?: PaymentStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
-  items: OrderItem[];
-  delivery: Delivery;
-  total?: number;
-  note?: string;
-}
-
-export interface UpdateOrderPayload extends Partial<CreateOrderPayload> {
-  id?: never;
-}
+export interface OrderPayload extends Partial<Order> {}
 
 export interface OrderService {
   getAll(params?: GetOrdersParams): Promise<Order[]>;
   getById(id: number): Promise<Order | null>;
-  create(payload: CreateOrderPayload): Promise<Order>;
-  update(id: number, payload: UpdateOrderPayload): Promise<Order | null>;
+  create(payload: OrderPayload): Promise<Order>;
+  update(payload: OrderPayload): Promise<Order | null>;
   delete(id: number): Promise<boolean>;
 }
