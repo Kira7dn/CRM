@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProductByIdUseCase, updateProductUseCase, deleteProductUseCase } from "@/lib/container";
+import { getProductByIdUseCase, updateProductUseCase, deleteProductUseCase } from "../depends";
 
 export async function GET(
   request: NextRequest,
@@ -9,7 +9,9 @@ export async function GET(
     const { id } = await params;
     const productId = Number(id);
     if (isNaN(productId)) return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
-    const result = await getProductByIdUseCase.execute({ id: productId });
+
+    const useCase = await getProductByIdUseCase();
+    const result = await useCase.execute({ id: productId });
     if (!result.product) return NextResponse.json({ message: "Product not found" }, { status: 404 });
     return NextResponse.json(result.product);
   } catch (error) {
@@ -25,8 +27,10 @@ export async function PUT(
     const { id } = await params;
     const productId = Number(id);
     if (isNaN(productId)) return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
+
     const body = await request.json();
-    const result = await updateProductUseCase.execute({ id: productId, ...body });
+    const useCase = await updateProductUseCase();
+    const result = await useCase.execute({ id: productId, ...body });
     if (!result.product) return NextResponse.json({ message: "Product not found" }, { status: 404 });
     return NextResponse.json(result.product);
   } catch (error) {
@@ -42,7 +46,9 @@ export async function DELETE(
     const { id } = await params;
     const productId = Number(id);
     if (isNaN(productId)) return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
-    const result = await deleteProductUseCase.execute({ id: productId });
+
+    const useCase = await deleteProductUseCase();
+    const result = await useCase.execute({ id: productId });
     if (!result.success) return NextResponse.json({ message: "Product not found" }, { status: 404 });
     return new Response(null, { status: 204 });
   } catch (error) {

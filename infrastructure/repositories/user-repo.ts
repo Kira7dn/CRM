@@ -1,29 +1,15 @@
-import type { User } from "@/core/domain/user";
+import { BaseRepository } from "@/infrastructure/db/base-repository";
+import { User } from "@/core/domain/user";
 import type { UserService, UpsertUserPayload } from "@/core/application/interfaces/user-service";
-import clientPromise from "@/infrastructure/db/mongo";
 
-/**
- * MongoDB document - uses User type with _id mapping
- */
-type UserDocument = Omit<User, 'id'> & { _id: string };
+export class UserRepository extends BaseRepository<User, string> implements UserService {
+  protected collectionName = "users";
 
-/**
- * Converts MongoDB document to domain User entity
- */
-function toUser(doc: UserDocument): User {
-  const { _id, ...userData } = doc;
-  return {
-    ...userData,
-    id: _id, // External ID is stored in _id
-  };
-}
-
-export const userRepository: UserService = {
   async upsert(payload: UpsertUserPayload): Promise<User> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
+    const collection = await this.getCollection();
     const now = new Date();
-    const update: Partial<UserDocument> = {
+
+    const update: any = {
       name: payload.name ?? "",
       avatar: payload.avatar ?? "",
       phone: payload.phone ?? "",
@@ -31,19 +17,34 @@ export const userRepository: UserService = {
       address: payload.address ?? "",
       updatedAt: now,
     };
-    const doc = await db.collection<UserDocument>("users").findOneAndUpdate(
-      { _id: payload.id },
+
+    const doc = await collection.findOneAndUpdate(
+      { _id: payload.id } as any,
       { $set: update, $setOnInsert: { createdAt: now } },
       { upsert: true, returnDocument: "after" }
     );
-    if (!doc) throw new Error("Failed to upsert user");
-    return toUser(doc);
-  },
+
+    if (!doc || !doc.value) throw new Error("Failed to upsert user");
+    return this.toDomain(doc.value);
+  }
 
   async getById(id: string): Promise<User | null> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const doc = await db.collection<UserDocument>("users").findOne({ _id: id });
-    return doc ? toUser(doc) : null;
-  },
-};
+    const collection = await this.getCollection();
+    const doc = await collection.findOne({ _id: id } as any);
+    return doc ? this.toDomain(doc) : null;
+  }
+
+  protected toDomain(doc: any): User {
+    const { _id, ...userData } = doc;
+    return new User(
+      _id,
+      userData.name,
+      userData.avatar,
+      userData.phone,
+      userData.email,
+      userData.address,
+      userData.createdAt,
+      userData.updatedAt
+    );
+  }
+}

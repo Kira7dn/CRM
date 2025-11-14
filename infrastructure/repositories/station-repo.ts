@@ -1,97 +1,81 @@
-import type { Station, Location } from "@/core/domain/station";
+import { BaseRepository } from "@/infrastructure/db/base-repository";
+import { Station, Location } from "@/core/domain/station";
 import type { StationService, StationPayload } from "@/core/application/interfaces/station-service";
-import clientPromise from "@/infrastructure/db/mongo";
+import { getNextId } from "@/infrastructure/db/auto-increment";
 
-/**
- * MongoDB document - uses Station type with _id mapping
- */
-type StationDocument = Omit<Station, 'id'> & { _id: number };
+export class StationRepository extends BaseRepository<Station, number> implements StationService {
+  protected collectionName = "stations";
 
-const getNextStationId = async (): Promise<number> => {
-  const client = await clientPromise;
-  const db = client.db(process.env.MONGODB_DB);
-  const lastStation = await db.collection<StationDocument>("stations").findOne({}, { sort: { _id: -1 } });
-  return lastStation ? lastStation._id + 1 : 1;
-};
-
-/**
- * Converts MongoDB document to domain Station entity
- */
-function toStation(doc: StationDocument): Station {
-  const { _id, ...stationData } = doc;
-  return {
-    ...stationData,
-    id: _id, // Map _id to id
-  };
-}
-
-export const stationRepository: StationService & {
-  getNextId(): Promise<number>;
-} = {
   async getAll(): Promise<Station[]> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const docs = await db.collection<StationDocument>("stations").find({}).sort({ _id: 1 }).toArray();
-    return docs.map(toStation);
-  },
+    const collection = await this.getCollection();
+    const docs = await collection.find({}).sort({ _id: 1 }).toArray();
+    return docs.map(doc => this.toDomain(doc));
+  }
 
   async getById(id: number): Promise<Station | null> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const doc = await db.collection<StationDocument>("stations").findOne({ _id: id });
-    return doc ? toStation(doc) : null;
-  },
+    const collection = await this.getCollection();
+    const doc = await collection.findOne({ _id: id } as any);
+    return doc ? this.toDomain(doc) : null;
+  }
 
   async create(payload: StationPayload): Promise<Station> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const id = await getNextStationId();
+    const client = await this.getClient();
+    const id = await getNextId(client, this.collectionName);
     const now = new Date();
-    const doc: StationDocument = {
-      _id: id,
+
+    const doc = this.toDocument({
+      ...payload,
+      id,
       name: payload.name || "",
       image: payload.image,
       address: payload.address || "",
       location: payload.location || { lat: 0, lng: 0 },
       createdAt: now,
-      updatedAt: now,
-    };
-    await db.collection<StationDocument>("stations").insertOne(doc);
-    return toStation(doc);
-  },
+      updatedAt: now
+    });
+
+    const collection = await this.getCollection();
+    await collection.insertOne(doc);
+    return this.toDomain(doc);
+  }
 
   async update(payload: StationPayload): Promise<Station | null> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-
-    // For updates, id must be provided
-    if (!payload.id) {
-      throw new Error("Station ID is required for updates");
-    }
+    if (!payload.id) throw new Error("Station ID is required for update");
 
     const now = new Date();
     const { id, ...updateFields } = payload;
 
-    const updateObj: Partial<StationDocument> = {
+    const updateObj: any = {
       ...updateFields,
-      updatedAt: now,
+      updatedAt: now
     };
 
-    const result = await db.collection<StationDocument>("stations").findOneAndUpdate(
-      { _id: payload.id },
+    const collection = await this.getCollection();
+    const result = await collection.findOneAndUpdate(
+      { _id: id } as any,
       { $set: updateObj },
       { returnDocument: "after" }
     );
 
-    return result ? toStation(result) : null;
-  },
+    return result && result.value ? this.toDomain(result.value) : null;
+  }
 
   async delete(id: number): Promise<boolean> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const result = await db.collection<StationDocument>("stations").deleteOne({ _id: id });
+    const collection = await this.getCollection();
+    const result = await collection.deleteOne({ _id: id } as any);
     return result.deletedCount > 0;
-  },
+  }
 
-  getNextId: getNextStationId,
-};
+  protected toDomain(doc: any): Station {
+    const { _id, ...stationData } = doc;
+    return new Station(
+      _id,
+      stationData.name,
+      stationData.image,
+      stationData.address,
+      stationData.location,
+      stationData.createdAt,
+      stationData.updatedAt
+    );
+  }
+}

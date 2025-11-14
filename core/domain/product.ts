@@ -4,16 +4,18 @@ export interface SizeOption {
   originalPrice?: number;
 }
 
-export interface Product {
-  id: number;
-  categoryId: number;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image?: string;
-  detail?: string;
-  sizes?: SizeOption[];
-  colors?: string[];
-  createdAt?: Date;
-  updatedAt?: Date;
+export class Product {
+  constructor(
+    public readonly id: number,
+    public categoryId: number,
+    public name: string,
+    public price: number,
+    public originalPrice: number | undefined,
+    public image: string | undefined,
+    public detail: string | undefined,
+    public sizes: SizeOption[] | undefined,
+    public colors: string[] | undefined,
+    public readonly createdAt: Date,
+    public updatedAt: Date
+  ) {}
 }

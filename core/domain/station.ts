@@ -3,12 +3,14 @@ export interface Location {
   lng: number;
 }
 
-export interface Station {
-  id: number;
-  name: string;
-  image?: string;
-  address: string;
-  location: Location;
-  createdAt?: Date;
-  updatedAt?: Date;
+export class Station {
+  constructor(
+    public readonly id: number,
+    public name: string,
+    public image: string | undefined,
+    public address: string,
+    public location: Location,
+    public readonly createdAt: Date,
+    public updatedAt: Date
+  ) {}
 }

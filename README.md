@@ -6,7 +6,7 @@
 * Kết hợp **Server Components + Client Components**
 * **Full-stack E-commerce** với MongoDB, Payment Gateway, Queue System
 * Quản lý **state bằng Zustand**
-* **API Routes** với Clean Architecture thay vì Server Actions
+* **API Routes** với Clean Architecture + **Server Actions** cho UI mutations
 * Viết **unit / integration / UI tests** đầy đủ bằng **Vitest**
 * **Payment Integration**: VNPay, ZaloPay với webhook handling
 * **Queue System**: BullMQ cho background job processing
@@ -19,22 +19,27 @@
 .
 ├─ app/
 │  ├─ api/
-│  │  ├─ banners/           # CRUD banners
-│  │  ├─ categories/        # CRUD categories
-│  │  ├─ checkout/          # Payment operations
+│  │  ├─ banners/           # CRUD banners + depends.ts
+│  │  ├─ orders/            # CRUD orders + payment operations
+│  │  │  ├─ [id]/          # Get/Update/Delete order by ID
 │  │  │  ├─ callback/       # Payment callback
 │  │  │  ├─ link/           # Link order to payment
 │  │  │  ├─ mac/            # Generate payment MAC
-│  │  │  └─ status/         # Check payment status
-│  │  ├─ health/            # Health check
-│  │  ├─ ipn/               # VNPay IPN webhook
-│  │  ├─ orders/            # CRUD orders
-│  │  ├─ products/          # CRUD products
-│  │  ├─ stations/          # CRUD stations
-│  │  ├─ user/              # User management
-│  │  └─ utils/             # Utility APIs (location, phone decode)
+│  │  │  ├─ status/         # Check payment status
+│  │  │  ├─ route.ts        # GET/POST orders
+│  │  │  └─ depends.ts      # Consolidated dependencies
+│  │  ├─ products/          # CRUD products + depends.ts
+│  │  ├─ stations/          # CRUD stations + depends.ts
+│  │  ├─ user/              # User management + depends.ts
+│  │  ├─ ipn/               # VNPay IPN webhook + depends.ts
+│  │  └─ utils/             # Utility APIs (location, phone)
+│  │     ├─ location/       # Decode location + depends.ts
+│  │     └─ phone/          # Decode phone + depends.ts
 │  ├─ (features)/
-│  │  └─ posts/             # Demo posts feature
+│  │  └─ posts/             # Demo posts feature (Server Components + Actions)
+│  │     ├─ page.tsx        # Server Component
+│  │     ├─ actions.ts      # Server Actions
+│  │     └─ components/     # Client Components
 │  └─ (policies)/
 │     ├─ cookies/
 │     ├─ privacy/
@@ -59,11 +64,20 @@
 │  │   │  └─ vnpay-gateway.ts
 │  │   └─ usecases/
 │  │       ├─ banner/        # get-banners, create-banner, update-banner, delete-banner
-│  │       ├─ category/      # get-categories, create-category, update-category, delete-category
-│  │       ├─ checkout/      # check-order-status, mac-request
-│  │       ├─ location/      # decode-location
-│  │       ├─ order/         # CRUD + link-order + payment-callback
-│  │       ├─ phone/         # decode-phone
+│  │       ├─ location/      # decode-location (Zalo API)
+│  │       ├─ order/         # CRUD + payment operations
+│  │       │  ├─ get-orders.ts
+│  │       │  ├─ create-order.ts
+│  │       │  ├─ get-order-by-id.ts
+│  │       │  ├─ update-order.ts
+│  │       │  ├─ delete-order.ts
+│  │       │  ├─ link-order.ts           # Link order to payment
+│  │       │  ├─ payment-callback.ts     # Handle payment callback
+│  │       │  ├─ mac-request.ts          # Generate MAC for payment
+│  │       │  └─ check-order-status.ts   # Check payment status
+│  │       ├─ phone/         # decode-phone (Zalo API)
+│  │       ├─ post/          # Demo: CRUD posts
+│  │       ├─ product/       # get-products, create-product, update-product, delete-product
 │  │       ├─ station/       # get-stations, create-station, update-station, delete-station
 │  │       ├─ user/          # upsert-user, get-user-by-id
 │  │       └─ vnpay/         # handle-vnpay-ipn
@@ -83,17 +97,17 @@
 │  │  ├─ order-worker.ts
 │  │  └─ __tests__/
 │  └─ repositories/
+│     ├─ base-repo.ts        # Base repository class with MongoDB client
 │     ├─ banner-repo.ts
-│     ├─ category-repo.ts
 │     ├─ order-repo.ts
+│     ├─ post-repo.ts
 │     ├─ product-repo.ts
 │     ├─ station-repo.ts
 │     └─ user-repo.ts
 │
 ├─ lib/
-│  ├─ container.ts          # Dependency Injection Container
 │  ├─ webhook.ts            # Webhook utilities
-│  └─ utils.ts
+│  └─ utils.ts              # Common utilities
 │
 ├─ @shared/
 │  └─ ui/
@@ -178,17 +192,10 @@ ENABLE_ORDER_WORKER=true
 ### **Use Cases** (Business Logic):
 
 #### **Order Management** (`core/application/usecases/order/`)
-- `get-orders.ts` - List orders with filters
-- `create-order.ts` - Create new order
-- `get-order-by-id.ts` - Get specific order
-- `update-order.ts` - Update order
-- `delete-order.ts` - Delete order
-- `link-order.ts` - Link order to payment
-- `payment-callback.ts` - Handle payment callback
-
-#### **Payment Operations** (`core/application/usecases/checkout/`)
-- `mac-request.ts` - Generate payment MAC
-- `check-order-status.ts` - Check payment status
+All order-related functionality including payment operations:
+- **CRUD**: `get-orders.ts`, `create-order.ts`, `get-order-by-id.ts`, `update-order.ts`, `delete-order.ts`
+- **Payment**: `link-order.ts`, `payment-callback.ts`, `mac-request.ts`, `check-order-status.ts`
+- Note: Payment is part of order lifecycle, not a separate module
 
 #### **External Integrations**:
 - `decode-location.ts` - Decode location from Zalo
@@ -196,10 +203,11 @@ ENABLE_ORDER_WORKER=true
 - `handle-vnpay-ipn.ts` - Process VNPay IPN
 
 #### **CRUD Operations**:
-- **Banner**: get-banners, create-banner, update-banner, delete-banner
-- **Category**: get-categories, create-category, update-category, delete-category
-- **Station**: get-stations, create-station, update-station, delete-station
-- **User**: upsert-user, get-user-by-id
+- **Banner**: `get-banners`, `create-banner`, `update-banner`, `delete-banner`
+- **Product**: `get-products`, `create-product`, `update-product`, `delete-product`
+- **Station**: `get-stations`, `create-station`, `update-station`, `delete-station`
+- **User**: `upsert-user`, `get-user-by-id`
+- **Post** (Demo): `get-posts`, `create-post`, `update-post`, `delete-post`
 
 ### **Interfaces** (Dependency Inversion):
 ```typescript
@@ -302,97 +310,221 @@ export const createOrderWorker = (paymentGateway: PaymentGateway) => {
 ### **Data Access Layer**:
 
 #### **MongoDB Repositories** (`infrastructure/repositories/`)
+All repositories extend `BaseRepository<T, ID>`:
 ```typescript
+// infrastructure/repositories/base-repo.ts
+export abstract class BaseRepository<T, ID> {
+  protected abstract collectionName: string;
+  protected clientPromise = mongoClientPromise;
+
+  protected async getClient(): Promise<MongoClient> { /* ... */ }
+  protected async getCollection(): Promise<Collection<Document>> { /* ... */ }
+  protected abstract convertId(id: ID): ObjectId | ID;
+  protected abstract toDomain(doc: Document): T;
+  protected abstract toDocument(entity: T | Partial<T>): Document;
+}
+
 // infrastructure/repositories/order-repo.ts
-export const orderRepository = {
-  async getById(id: number): Promise<Order | null> {
-    // MongoDB queries for orders
-  },
-  async update(id: number, data: Partial<Order>): Promise<Order | null> {
-    // Update operations
+export class OrderRepository extends BaseRepository<Order, number> implements OrderService {
+  protected collectionName = "orders";
+
+  async create(payload: OrderPayload): Promise<Order> {
+    const collection = await this.getCollection();
+    // Implementation with automatic client management
   }
-};
+}
 ```
-- **Mục đích**: Data access abstraction cho MongoDB
-- **Chức năng**: CRUD operations cho tất cả entities
+- **Mục đích**: Data access abstraction with automatic MongoDB client management
+- **Chức năng**: CRUD operations for all entities with type-safe ID conversion
 
 ---
 
-## 🔗 6. Dependency Injection Container
+## 🔗 6. Dependency Injection Pattern
+
+### **Factory Functions Pattern** (`depends.ts`)
+Each API module has a `depends.ts` file that creates use cases with their dependencies:
 
 ```typescript
-// lib/container.ts
-export const paymentGateway: PaymentGateway = new ZaloPayGateway();
-export const queueService: QueueService = new BullMQAdapter();
-export const locationService: LocationService = new ZaloLocationGateway();
+// app/api/orders/depends.ts
+import { OrderRepository } from '@/infrastructure/repositories/order-repo';
+import { BullMQAdapter } from '@/infrastructure/queue/bullmq-adapter';
+import { ZaloPayGateway } from '@/infrastructure/gateways/zalopay-gateway';
+import { CreateOrderUseCase } from '@/core/application/usecases/order/create-order';
+import { LinkOrderUseCase } from '@/core/application/usecases/order/link-order';
 
-// Use cases with injected dependencies
-export const linkOrderUseCase = new LinkOrderUseCase(orderService, queueService);
-export const handleVnpayIpnUseCase = new HandleVnpayIpnUseCase(vnpayGateway, orderService);
+// Repository factory
+const createOrderRepository = async (): Promise<OrderService> => {
+  return new OrderRepository();
+};
 
-// Worker initialization
-if (process.env.ENABLE_ORDER_WORKER === 'true') {
-  createOrderWorker(paymentGateway);
+// Use case factories
+export const createOrderUseCase = async () => {
+  const service = await createOrderRepository();
+  return new CreateOrderUseCase(service);
+};
+
+export const linkOrderUseCase = async () => {
+  const orderService = await createOrderRepository();
+  const queueService = new BullMQAdapter();
+  return new LinkOrderUseCase(orderService, queueService);
+};
+```
+
+### **Worker Initialization** (`instrumentation.node.ts`)
+Background workers are initialized at startup:
+```typescript
+// instrumentation.node.ts
+export async function register() {
+  if (process.env.ENABLE_ORDER_WORKER === 'true') {
+    const { ZaloPayGateway } = await import('@/infrastructure/gateways/zalopay-gateway');
+    const { createOrderWorker } = await import('@/infrastructure/queue/order-worker');
+    const paymentGateway = new ZaloPayGateway();
+    createOrderWorker(paymentGateway);
+  }
 }
 ```
 
+**Key Principles**:
+- ✅ Single `depends.ts` file per API module
+- ✅ Factory functions create fresh instances for each request
+- ✅ No global singleton container
+- ✅ Type-safe dependency injection
+
 ---
 
-## 🌐 7. API Routes (Clean Architecture)
+## 🌐 7. API Routes with Clean Architecture
 
-### **Order Management**:
+### **Order Management** (CRUD + Payment):
 ```typescript
 // app/api/orders/route.ts
-export async function GET() {
-  const result = await getOrdersUseCase.execute({ status, zaloUserId });
+import { getOrdersUseCase, createOrderUseCase } from "./depends";
+
+export async function GET(request: NextRequest) {
+  const useCase = await getOrdersUseCase();
+  const result = await useCase.execute({ status, zaloUserId });
   return NextResponse.json(result.orders);
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const result = await createOrderUseCase.execute(body);
+  const useCase = await createOrderUseCase();
+  const result = await useCase.execute(await request.json());
   return NextResponse.json(result.order, { status: 201 });
 }
 ```
 
-### **Payment Integration**:
+### **Payment Operations** (Consolidated in Orders Module):
 ```typescript
-// app/api/checkout/callback/route.ts
+// app/api/orders/callback/route.ts
+import { paymentCallbackUseCase } from "../depends";
+
 export async function POST(request: NextRequest) {
-  const { data, overallMac } = await request.json();
-  const result = await paymentCallbackUseCase.execute({ data, overallMac });
-  return NextResponse.json({ returnCode: result.returnCode, returnMessage: result.returnMessage });
+  const useCase = await paymentCallbackUseCase();
+  const result = await useCase.execute(await request.json());
+  return NextResponse.json({
+    returnCode: result.returnCode,
+    returnMessage: result.returnMessage
+  });
 }
 ```
 
-### **Webhook Handling**:
+### **Webhook Handling** (VNPay IPN):
 ```typescript
-// app/api/ipn/route.ts - VNPay IPN
+// app/api/ipn/route.ts
+import { handleVnpayIpnUseCase } from "./depends";
+
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const { result, order } = await handleVnpayIpnUseCase.execute({ body });
+  const useCase = await handleVnpayIpnUseCase();
+  const { result, order } = await useCase.execute({ body: await request.json() });
 
   if (result.isSuccess && order) {
     void notifyOrderWebhook(order);
   }
 
-  return NextResponse.json({ returnCode: result.returnCode, returnMessage: result.returnMessage });
+  return NextResponse.json({
+    returnCode: result.returnCode,
+    returnMessage: result.returnMessage
+  });
 }
 ```
 
-### **Utility APIs**:
+### **External API Integration**:
 ```typescript
 // app/api/utils/location/route.ts
+import { decodeLocationUseCase } from "./depends";
+
 export async function POST(request: NextRequest) {
-  const { token, accessToken } = await request.json();
-  const result = await decodeLocationUseCase.execute({ token, accessToken });
+  const useCase = await decodeLocationUseCase();
+  const result = await useCase.execute(await request.json());
   return NextResponse.json(result);
 }
 ```
 
+### **Server Actions for UI** (Alternative Pattern):
+```typescript
+// app/(features)/posts/actions.ts
+"use server"
+import { revalidatePath } from "next/cache";
+import { createPostUseCase } from "@/app/api/posts/depends";
+
+export async function createPostAction(formData: FormData) {
+  const useCase = await createPostUseCase();
+  await useCase.execute({
+    title: formData.get("title")?.toString() || "",
+    content: formData.get("content")?.toString() || ""
+  });
+  revalidatePath("/posts");
+}
+```
+
+**Key Patterns**:
+- ✅ API Routes for external integrations (webhooks, third-party APIs)
+- ✅ Server Actions for UI-driven mutations (forms, user interactions)
+- ✅ Both patterns call use cases from `depends.ts`
+- ✅ Never call repositories directly from routes/actions
+
 ---
 
-## 🎯 8. Key Features Implemented
+## 📦 8. Module Organization
+
+### **Order & Payment Module Consolidation**
+All order-related functionality (CRUD + checkout/payment) is in the **orders** module:
+
+```
+app/api/orders/
+├── route.ts           # GET (list), POST (create)
+├── [id]/route.ts      # GET (by ID), PATCH (update), DELETE
+├── callback/route.ts  # Payment callback
+├── link/route.ts      # Link order to payment
+├── mac/route.ts       # Generate payment MAC
+├── status/route.ts    # Check payment status
+└── depends.ts         # ✅ Single consolidated dependencies file
+```
+
+**Principles**:
+- ✅ Payment is part of the order lifecycle
+- ✅ Single `depends.ts` manages all order/payment use cases
+- ❌ Do NOT create separate `checkout/` or `payment/` modules
+
+### **BaseRepository Pattern**
+All repositories extend `BaseRepository<T, ID>` for consistent data access:
+
+```typescript
+// Automatic MongoDB client management
+export class ProductRepository extends BaseRepository<Product, number> {
+  protected collectionName = "products";
+  // BaseRepository handles getClient(), getCollection(), etc.
+}
+```
+
+**Benefits**:
+- ✅ Automatic MongoDB client lifecycle
+- ✅ Type-safe ID conversion (ObjectId ↔ number/string)
+- ✅ Consistent domain/document mapping
+- ✅ Less boilerplate code
+
+---
+
+## 🎯 9. Key Features Implemented
 
 | Feature | Implementation | Description |
 |---------|----------------|-------------|
@@ -407,7 +539,7 @@ export async function POST(request: NextRequest) {
 
 ---
 
-## 🧪 9. Testing Strategy
+## 🧪 10. Testing Strategy
 
 ### **Unit Tests**:
 ```typescript
@@ -458,7 +590,7 @@ describe("Order API", () => {
 
 ---
 
-## 🚀 10. Chạy ứng dụng
+## 🚀 11. Chạy ứng dụng
 
 ```bash
 # Development
@@ -479,18 +611,129 @@ npm run test:integration # Integration tests
 
 ---
 
-## ✅ 11. Tổng kết
+## 🔄 12. Migration from Container to Factory Pattern
+
+### **Before (lib/container.ts - Deprecated)**
+```typescript
+// ❌ Global singleton container
+import { OrderRepository } from '@/infrastructure/repositories/order-repo';
+
+export const orderService: OrderService = orderRepository;
+export const linkOrderUseCase = new LinkOrderUseCase(orderService, queueService);
+
+// API routes imported from container
+import { linkOrderUseCase } from '@/lib/container';
+```
+
+**Problems**:
+- ❌ Global state causes issues in serverless environments
+- ❌ Hard to test (need to mock entire container)
+- ❌ All dependencies initialized at startup
+- ❌ Difficult to swap implementations per request
+
+### **After (depends.ts - Current)**
+```typescript
+// ✅ Factory functions per module
+// app/api/orders/depends.ts
+const createOrderRepository = async (): Promise<OrderService> => {
+  return new OrderRepository();
+};
+
+export const linkOrderUseCase = async () => {
+  const orderService = await createOrderRepository();
+  const queueService = new BullMQAdapter();
+  return new LinkOrderUseCase(orderService, queueService);
+};
+
+// API routes call factory functions
+import { linkOrderUseCase } from "./depends";
+const useCase = await linkOrderUseCase();
+```
+
+**Benefits**:
+- ✅ Fresh instances per request (serverless-friendly)
+- ✅ Easy to test (mock individual dependencies)
+- ✅ Lazy initialization (only create what's needed)
+- ✅ Per-module organization (better code locality)
+
+---
+
+## 📐 13. Architecture Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  UI Layer (Next.js App Router)                              │
+├─────────────────────────────────────────────────────────────┤
+│  • Server Components: Fetch data, pass to Client Components │
+│  • Client Components: User interactions, Zustand state      │
+│  • Server Actions: UI mutations with revalidation           │
+│  • API Routes: External webhooks, third-party integrations  │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Dependency Injection (depends.ts)                          │
+├─────────────────────────────────────────────────────────────┤
+│  • Factory functions create use cases with dependencies     │
+│  • Fresh instances per request (no global state)            │
+│  • Type-safe dependency injection                           │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Application Layer (Use Cases)                              │
+├─────────────────────────────────────────────────────────────┤
+│  • Business logic orchestration                             │
+│  • Request/Response interfaces                              │
+│  • Domain validation                                        │
+│  • Depends on repository interfaces (not implementations)   │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Domain Layer (Entities)                                    │
+├─────────────────────────────────────────────────────────────┤
+│  • Pure business entities and types                         │
+│  • Validation rules                                         │
+│  • No dependencies on other layers                          │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Infrastructure Layer (Repositories, Gateways)              │
+├─────────────────────────────────────────────────────────────┤
+│  • MongoDB repositories (extend BaseRepository)             │
+│  • Payment gateways (ZaloPay, VNPay)                        │
+│  • External APIs (Zalo Location/Phone)                      │
+│  • Queue system (BullMQ + Redis)                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## ✅ 14. Tổng kết
 
 | Thành phần | Công nghệ | Vai trò |
 |-----------|-----------|---------|
 | **Framework** | Next.js 16 (App Router) | Full-stack React |
 | **Architecture** | Clean/Onion Architecture | Separation of concerns |
+| **Dependency Injection** | Factory Pattern (`depends.ts`) | Type-safe, per-request instances |
+| **Data Access** | BaseRepository<T, ID> | Automatic MongoDB client management |
 | **Database** | MongoDB | Data persistence |
 | **Payment** | ZaloPay + VNPay | Payment processing |
 | **Queue** | BullMQ + Redis | Background jobs |
 | **External APIs** | Zalo Open API | Location/Phone decode |
 | **State** | Zustand | Client state management |
-| **Testing** | Vitest + RTL | Unit/Integration/UI tests |
-| **Type Safety** | TypeScript | Full type coverage |
+| **Testing** | Vitest + RTL + MongoDB Memory Server | Unit/Integration/UI tests |
+| **Type Safety** | TypeScript (strict) | Full type coverage |
+
+### **🎯 Key Architectural Decisions**
+
+1. **Consolidated Modules**: Payment operations are part of order module (not separate)
+2. **Factory Pattern**: `depends.ts` files replace global DI container
+3. **BaseRepository**: All repositories extend base class for consistency
+4. **Hybrid Approach**: API Routes for external integrations + Server Actions for UI
+5. **Domain-First**: Payload interfaces extend from domain entities
+6. **Class-based Use Cases**: Request/Response interfaces with dependency injection
 
 **🎉 Đây là một full-stack e-commerce application hoàn chỉnh với Clean Architecture!**

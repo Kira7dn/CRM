@@ -257,3 +257,18 @@ export class CreateCustomerUseCase {
 - **ID types**: Category dùng `number`, User có thể dùng `string`, etc.
 - **BaseRepository methods**: `getClient()`, `getCollection()`, `convertId()`, `toDomain()`, `toDocument()`
 - **Vitest config**: Uses path alias, happy-dom environment, and global test utilities
+
+## Module Organization
+
+### Order & Payment Module
+
+All order-related functionality (including checkout/payment operations) is consolidated in the **orders** module:
+
+**Use Cases** (`core/application/usecases/order/`):
+- CRUD Operations: `get-orders.ts`, `create-order.ts`, `get-order-by-id.ts`, `update-order.ts`, `delete-order.ts`
+- Payment Operations: `link-order.ts`, `payment-callback.ts`, `check-payment-status.ts`, `check-order-status.ts`, `mac-request.ts`
+
+**API Routes** (`app/api/orders/`):
+- Base: `route.ts` (GET/POST), `[id]/route.ts` (GET/PATCH/DELETE)
+- Payment: `link/route.ts`, `callback/route.ts`, `status/route.ts`, `mac/route.ts`
+- Dependencies: `depends.ts` - **Single consolidated file** for all order/payment use cases

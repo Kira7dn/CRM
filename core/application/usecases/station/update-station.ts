@@ -1,7 +1,9 @@
 import type { Station } from "@/core/domain/station"
 import type { StationService, StationPayload } from "@/core/application/interfaces/station-service"
 
-export interface UpdateStationRequest extends StationPayload {}
+export interface UpdateStationRequest extends StationPayload {
+  id: number; // Override to make id required
+}
 
 export interface UpdateStationResponse {
   station: Station | null

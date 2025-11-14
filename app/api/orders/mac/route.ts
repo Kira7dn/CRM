@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { macRequestUseCase } from "@/lib/container";
+import { macRequestUseCase } from "../depends";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { amount, desc, item, extradata, method } = body;
 
-    const result = await macRequestUseCase.execute({
+    const useCase = await macRequestUseCase();
+    const result = await useCase.execute({
       amount,
       desc,
       item,

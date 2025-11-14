@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkOrderStatusUseCase } from "@/lib/container";
+import { checkOrderStatusUseCase } from "../depends";
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: "orderId phải là số hợp lệ." }, { status: 400 });
     }
 
-    const result = await checkOrderStatusUseCase.execute({ orderId });
+    const useCase = await checkOrderStatusUseCase();
+    const result = await useCase.execute({ orderId });
 
     return NextResponse.json(result);
   } catch (error) {

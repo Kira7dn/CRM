@@ -1,12 +1,10 @@
 import type { BannerService } from "@/core/application/interfaces/banner-service";
 import type { Banner } from "@/core/domain/banner";
 
-export interface GetBannersRequest {
-  detailed?: boolean;
-}
+export interface GetBannersRequest {}
 
 export interface GetBannersResponse {
-  banners: Banner[] | string[];
+  banners: Banner[];
 }
 
 export class GetBannersUseCase {
@@ -14,10 +12,6 @@ export class GetBannersUseCase {
 
   async execute(request: GetBannersRequest): Promise<GetBannersResponse> {
     const banners = await this.bannerService.getAll();
-    if (request.detailed) {
-      return { banners: banners.map(b => ({ id: b.id, url: b.url })) };
-    } else {
-      return { banners: banners.map(b => b.url) };
-    }
+    return { banners };
   }
 }

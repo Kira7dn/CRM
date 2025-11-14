@@ -1,6 +1,6 @@
 import { createHmac } from "crypto";
 import type { PaymentGateway, PaymentResult } from "@/core/application/interfaces/payment-gateway";
-import { orderService } from "@/lib/container";
+import type { OrderService } from "@/core/application/interfaces/order-service";
 import { notifyOrderWebhook } from "@/lib/webhook";
 
 export interface ZaloPayStatusResponse {
@@ -15,6 +15,8 @@ export interface ZaloPayStatusResponse {
 }
 
 export class ZaloPayGateway implements PaymentGateway {
+  constructor(private orderService: OrderService) {}
+
   private readonly API_URL = "https://payment-mini.zalo.me/api/transaction/get-status";
 
   async checkPaymentStatus(checkoutSdkOrderId: string, miniAppId?: string): Promise<PaymentResult> {
@@ -102,7 +104,7 @@ export class ZaloPayGateway implements PaymentGateway {
 
     if (paymentResult.success) {
       // Update order status to success
-      const updatedOrder = await orderService.update({
+      const updatedOrder = await this.orderService.update({
         id: orderId,
         paymentStatus: 'success',
         updatedAt: new Date()
@@ -116,7 +118,7 @@ export class ZaloPayGateway implements PaymentGateway {
       }
     } else if (paymentResult.status === 'failed') {
       // Update order status to failed
-      await orderService.update({
+      await this.orderService.update({
         id: orderId,
         paymentStatus: 'failed',
         updatedAt: new Date()

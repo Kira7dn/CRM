@@ -1,7 +1,9 @@
 import type { Banner } from "@/core/domain/banner"
 import type { BannerService, BannerPayload } from "@/core/application/interfaces/banner-service"
 
-export interface UpdateBannerRequest extends BannerPayload {}
+export interface UpdateBannerRequest extends BannerPayload {
+  id: number; // Override to make id required
+}
 
 export interface UpdateBannerResponse {
   banner: Banner | null

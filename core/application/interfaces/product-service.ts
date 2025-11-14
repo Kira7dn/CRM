@@ -12,6 +12,6 @@ export interface ProductService {
   getById(id: number): Promise<Product | null>;
   filter(params: FilterProductsParams): Promise<Product[]>;
   create(payload: ProductPayload): Promise<Product>;
-  update(payload: ProductPayload): Promise<Product | null>;
+  update(payload: ProductPayload & { id: number }): Promise<Product | null>;
   delete(id: number): Promise<boolean>;
 }

@@ -16,16 +16,18 @@ export interface OrderItem {
   quantity: number;
 }
 
-export interface Order {
-  id: number;
-  zaloUserId: string;
-  checkoutSdkOrderId?: string;
-  status: OrderStatus;
-  paymentStatus: PaymentStatus;
-  createdAt: Date;
-  updatedAt?: Date;
-  items: OrderItem[];
-  delivery: Delivery;
-  total: number;
-  note?: string; // Make optional to match DB schema
+export class Order {
+  constructor(
+    public readonly id: number,
+    public zaloUserId: string,
+    public checkoutSdkOrderId: string | undefined,
+    public status: OrderStatus,
+    public paymentStatus: PaymentStatus,
+    public readonly createdAt: Date,
+    public updatedAt: Date,
+    public items: OrderItem[],
+    public delivery: Delivery,
+    public total: number,
+    public note: string | undefined
+  ) {}
 }

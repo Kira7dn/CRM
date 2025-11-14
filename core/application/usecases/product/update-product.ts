@@ -1,7 +1,9 @@
 import type { Product } from "@/core/domain/product"
 import type { ProductService, ProductPayload } from "@/core/application/interfaces/product-service"
 
-export interface UpdateProductRequest extends ProductPayload {}
+export interface UpdateProductRequest extends ProductPayload {
+  id: number; // Override to make id required
+}
 
 export interface UpdateProductResponse {
   product: Product | null

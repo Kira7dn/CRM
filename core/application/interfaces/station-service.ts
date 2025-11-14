@@ -6,6 +6,6 @@ export interface StationService {
   getAll(): Promise<Station[]>;
   getById(id: number): Promise<Station | null>;
   create(payload: StationPayload): Promise<Station>;
-  update(payload: StationPayload): Promise<Station | null>;
+  update(payload: StationPayload & { id: number }): Promise<Station | null>;
   delete(id: number): Promise<boolean>;
 }

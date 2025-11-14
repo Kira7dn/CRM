@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { paymentCallbackUseCase } from "@/lib/container";
+import { paymentCallbackUseCase } from "../depends";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +14,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ returnCode: 0, returnMessage: "Thiếu dữ liệu callback" });
     }
 
-    const result = await paymentCallbackUseCase.execute({
+    const useCase = await paymentCallbackUseCase();
+    const result = await useCase.execute({
       data,
       overallMac
     });

@@ -1,99 +1,139 @@
-import { Worker } from 'bullmq';
+import 'server-only';
+import { Queue } from 'bullmq';
 import Redis from 'ioredis';
-import { paymentGateway } from '@/lib/container'; // Direct import for simplicity
 
-// Lazy initialization of Redis connection
+// -----------------------------
+// Redis connection singleton for queues
+// -----------------------------
 const getRedisConnection = (): Redis => {
+  if (!(globalThis as any).__queueRedis) {
+    (globalThis as any).__queueRedis = new Redis(process.env.REDIS_URL!, {
+      maxRetriesPerRequest: null,
+      lazyConnect: true,
+    });
+  }
+  return (globalThis as any).__queueRedis;
+};
+
+// -----------------------------
+// Job types
+// -----------------------------
+export type OrderJobType = 'checkPaymentStatus';
+
+export interface CheckPaymentJobData {
+  orderId: string;
+  checkoutSdkOrderId: string;
+  miniAppId: string;
+}
+
+// -----------------------------
+// Queue instance
+// -----------------------------
+export const orderQueue = new Queue('orders', {
+  connection: getRedisConnection(),
+});
+
+// -----------------------------
+// Helper to enqueue jobs
+// -----------------------------
+export const addCheckPaymentJob = (data: CheckPaymentJobData) =>
+  orderQueue.add('checkPaymentStatus', { type: 'checkPaymentStatus', data });
+
+// -----------------------------
+// Worker Implementation
+// -----------------------------
+import { Worker, Job } from 'bullmq';
+import type { PaymentGateway } from '@/core/application/interfaces/payment-gateway';
+
+// -----------------------------
+// Lazy Redis singleton for workers
+// -----------------------------
+const getWorkerRedisConnection = (): Redis => {
   if (!(globalThis as any).__workerRedisConnection) {
     (globalThis as any).__workerRedisConnection = new Redis(process.env.REDIS_URL!, {
-      maxRetriesPerRequest: null, // BullMQ requires this to be null
+      maxRetriesPerRequest: null,
       lazyConnect: true,
     });
   }
   return (globalThis as any).__workerRedisConnection;
 };
 
+// -----------------------------
+// Worker singleton
+// -----------------------------
 let orderWorkerInstance: Worker | null = null;
+export const getOrderWorker = (): Worker | null => orderWorkerInstance;
 
-// Simplified worker initialization - just like controller used orderQueue
-const initializeWorker = (): Worker => {
+// -----------------------------
+// Worker initialization (internal)
+// -----------------------------
+const initializeOrderWorkerInternal = (paymentGateway: PaymentGateway): Worker => {
   if (orderWorkerInstance) return orderWorkerInstance;
 
-  // Worker to process order jobs
-  orderWorkerInstance = new Worker('orders', async (job) => {
-    const { type, data } = job.data;
+  orderWorkerInstance = new Worker(
+    'orders',
+    async (job: Job<{ type: OrderJobType; data: CheckPaymentJobData }>) => {
+      const { type, data } = job.data;
+      console.log(`[OrderWorker] Processing job ${job.id}: ${type}`, { timestamp: new Date(), data });
 
-    console.log(`[OrderWorker] Processing job ${job.id}: ${type}`, {
-      timestamp: new Date().toISOString(),
-      data
-    });
+      switch (type) {
+        case 'checkPaymentStatus':
+          const { orderId, checkoutSdkOrderId, miniAppId } = data;
+          try {
+            await paymentGateway.processPaymentUpdate(Number(orderId), checkoutSdkOrderId, miniAppId);
+            console.log(`[OrderWorker] Payment status check completed for order ${orderId}`);
+          } catch (err) {
+            console.error(`[OrderWorker] Failed to check payment for order ${orderId}:`, err);
+            throw err;
+          }
+          break;
 
-    switch (type) {
-      case 'checkPaymentStatus':
-        const { orderId, checkoutSdkOrderId, miniAppId } = data;
-
-        try {
-          console.log(`[OrderWorker] Checking payment status for order ${orderId}`);
-
-          // Call payment gateway to check status and update order
-          await paymentGateway.processPaymentUpdate(orderId, checkoutSdkOrderId, miniAppId);
-
-          console.log(`[OrderWorker] Payment status check completed for order ${orderId}`, {
-            checkoutSdkOrderId,
-            miniAppId
-          });
-
-        } catch (error) {
-          console.error(`[OrderWorker] Failed to check payment for order ${orderId}:`, error);
-          throw error; // Re-throw to mark job as failed
-        }
-        break;
-
-      default:
-        console.warn(`[OrderWorker] Unknown job type: ${type}`);
-        throw new Error(`Unknown job type: ${type}`);
-    }
-  }, {
-    connection: getRedisConnection(),
-    concurrency: 5, // Process up to 5 jobs simultaneously
-    limiter: {
-      max: 10,    // Max 10 jobs
-      duration: 1000, // per second
+        default:
+          console.warn(`[OrderWorker] Unknown job type: ${type}`);
+          throw new Error(`Unknown job type: ${type}`);
+      }
     },
-  });
+    {
+      connection: getWorkerRedisConnection(),
+      concurrency: 5,
+      limiter: { max: 10, duration: 1000 },
+    }
+  );
 
-  // Event listeners for monitoring
-  orderWorkerInstance.on('completed', (job) => {
-    console.log(`[OrderWorker] Job ${job?.id} completed successfully`);
-  });
-
-  orderWorkerInstance.on('failed', (job, err) => {
-    console.error(`[OrderWorker] Job ${job?.id || 'unknown'} failed:`, err);
-  });
+  // Event listeners
+  orderWorkerInstance.on('completed', (job) => console.log(`[OrderWorker] Job ${job?.id} completed`));
+  orderWorkerInstance.on('failed', (job, err) => console.error(`[OrderWorker] Job ${job?.id} failed:`, err));
 
   // Graceful shutdown
-  process.on('SIGTERM', async () => {
+  const shutdown = async () => {
     console.log('[OrderWorker] Shutting down gracefully...');
     await orderWorkerInstance?.close();
-    await getRedisConnection().quit();
+    await getWorkerRedisConnection().quit();
     process.exit(0);
-  });
+  };
 
-  process.on('SIGINT', async () => {
-    console.log('[OrderWorker] Shutting down gracefully...');
-    await orderWorkerInstance?.close();
-    await getRedisConnection().quit();
-    process.exit(0);
-  });
+  process.once('SIGTERM', shutdown);
+  process.once('SIGINT', shutdown);
 
-  console.log('[OrderWorker] Order queue worker started successfully');
+  console.log('[OrderWorker] Worker initialized');
   return orderWorkerInstance;
 };
 
-// Auto-start worker when enabled - just like controller used queue
-if (process.env.ENABLE_ORDER_WORKER === 'true') {
-  initializeWorker();
-}
+// -----------------------------
+// Factory pattern: Create worker factory using injected infrastructure
+// -----------------------------
+export const createOrderWorkerFactory = (paymentGateway: PaymentGateway) => {
+  // Receive infrastructure from Application layer
+  return () => initializeOrderWorkerInternal(paymentGateway);
+};
 
-// Export for testing or manual initialization
-export const getOrderWorker = (): Worker | null => orderWorkerInstance;
+// -----------------------------
+// Next.js Instrumentation entry with factory
+// -----------------------------
+export const registerWorkers = (paymentGateway: PaymentGateway) => {
+  // Only run in Node.js runtime (not Edge)
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    const initializeOrderWorker = createOrderWorkerFactory(paymentGateway);
+    initializeOrderWorker();
+  }
+};

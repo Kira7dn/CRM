@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { decodeLocationUseCase } from "@/lib/container";
+import { decodeLocationUseCase } from "./depends";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
     console.log("token", token);
     console.log("accessToken", accessToken);
 
-    const result = await decodeLocationUseCase.execute({
+    const useCase = await decodeLocationUseCase();
+    const result = await useCase.execute({
       token,
       accessToken,
     });

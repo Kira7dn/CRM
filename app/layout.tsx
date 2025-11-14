@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
@@ -81,8 +80,12 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
-  themeColor: '#1CE7ED', // brand-crystal color
+  // themeColor moved to generateViewport
 };
+
+export const generateViewport = () => ({
+  themeColor: '#1CE7ED', // brand-crystal color
+});
 
 export default function RootLayout({
   children,

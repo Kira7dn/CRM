@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { upsertUserUseCase } from '@/lib/container'
+import { upsertUserUseCase } from '../depends'
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'id là bắt buộc.' }, { status: 400 })
     }
 
-    const result = await upsertUserUseCase.execute({ id, name, avatar, phone, email, address })
+    const upsertUseCase = await upsertUserUseCase();
+    const result = await upsertUseCase.execute({ id, name, avatar, phone, email, address })
 
     return NextResponse.json({ user: result.user })
   } catch (err: any) {

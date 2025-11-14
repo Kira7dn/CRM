@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { decodePhoneUseCase } from "@/lib/container";
+import { decodePhoneUseCase } from "./depends";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
     console.log("token", token);
     console.log("accessToken", accessToken);
 
-    const result = await decodePhoneUseCase.execute({
+    const useCase = await decodePhoneUseCase();
+    const result = await useCase.execute({
       token,
       accessToken,
     });

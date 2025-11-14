@@ -1,101 +1,38 @@
-import type { Order } from "@/core/domain/order";
+import { BaseRepository } from "@/infrastructure/db/base-repository";
+import { Order } from "@/core/domain/order";
 import type { OrderService, GetOrdersParams, OrderPayload } from "@/core/application/interfaces/order-service";
-import clientPromise from "@/infrastructure/db/mongo";
+import { getNextId } from "@/infrastructure/db/auto-increment";
 
-/**
- * MongoDB document - matches domain Order structure
- */
-type OrderDocument = Omit<Order, 'id'> & { _id: number };
+export class OrderRepository extends BaseRepository<Order, number> implements OrderService {
+  protected collectionName = "orders";
 
-/**
- * Converts MongoDB OrderDocument to domain Order
- */
-function toOrder(doc: OrderDocument): Order {
-  const { _id, ...orderData } = doc;
-  return {
-    ...orderData,
-    id: _id, // Map _id to id
-  };
-}
-
-/**
- * MongoDB counter document interface
- */
-interface CounterDocument {
-  _id: string;
-  seq: number;
-}
-
-const getNextOrderId = async (): Promise<number> => {
-  const client = await clientPromise;
-  const db = client.db(process.env.MONGODB_DB);
-
-  // First, try to get the current counter
-  let counter = await db.collection<CounterDocument>("counters").findOne({ _id: "orders" });
-
-  if (!counter) {
-    // If no counter exists, find the highest existing order ID
-    const highestOrder = await db.collection<OrderDocument>("orders").find().sort({ _id: -1 }).limit(1).toArray();
-    const nextId = highestOrder.length > 0 ? highestOrder[0]._id + 1 : 1;
-
-    // Create counter with the next ID
-    await db.collection<CounterDocument>("counters").insertOne({ _id: "orders", seq: nextId });
-    return nextId;
-  }
-
-  // If counter exists, check if it's behind the highest existing ID
-  const highestOrder = await db.collection<OrderDocument>("orders").find().sort({ _id: -1 }).limit(1).toArray();
-  const highestId = highestOrder.length > 0 ? highestOrder[0]._id : 0;
-
-  if (counter.seq <= highestId) {
-    // Counter is behind, update it to highestId + 1
-    const nextId = highestId + 1;
-    await db.collection<CounterDocument>("counters").updateOne(
-      { _id: "orders" },
-      { $set: { seq: nextId } }
-    );
-    return nextId;
-  }
-
-  // Counter is ahead, increment normally
-  const updated = await db.collection<CounterDocument>("counters").findOneAndUpdate(
-    { _id: "orders" },
-    { $inc: { seq: 1 } },
-    { returnDocument: "after" }
-  );
-  return updated!.seq;
-};
-
-export const orderRepository: OrderService & {
-  getNextId(): Promise<number>;
-} = {
   async getAll(params: GetOrdersParams = {}): Promise<Order[]> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
+    const collection = await this.getCollection();
     const query: Record<string, unknown> = {};
     if (params.status) query.status = params.status;
     if (params.zaloUserId) query.zaloUserId = params.zaloUserId;
-    const docs = await db.collection<OrderDocument>("orders").find(query).sort({ _id: -1 }).toArray();
-    return docs.map(toOrder);
-  },
+    const docs = await collection.find(query).sort({ _id: -1 }).toArray();
+    return docs.map(doc => this.toDomain(doc));
+  }
 
   async getById(id: number): Promise<Order | null> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const doc = await db.collection<OrderDocument>("orders").findOne({ _id: id });
-    return doc ? toOrder(doc) : null;
-  },
+    const collection = await this.getCollection();
+    const doc = await collection.findOne({ _id: id } as any);
+    return doc ? this.toDomain(doc) : null;
+  }
 
   async create(payload: OrderPayload): Promise<Order> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
     if (!payload.delivery) {
       throw new Error("Delivery info is required");
     }
-    const id = payload.id ?? (await getNextOrderId());
+
+    const client = await this.getClient();
+    const id = payload.id ?? (await getNextId(client, this.collectionName));
     const now = new Date();
-    const doc: OrderDocument = {
-      _id: id,
+
+    const doc = this.toDocument({
+      ...payload,
+      id,
       zaloUserId: payload.zaloUserId || "",
       checkoutSdkOrderId: payload.checkoutSdkOrderId,
       status: payload.status ?? "pending",
@@ -103,54 +40,57 @@ export const orderRepository: OrderService & {
       createdAt: now,
       updatedAt: payload.updatedAt ?? now,
       items: payload.items || [],
-      delivery: payload.delivery || {
-        name: "",
-        phone: "",
-        address: "",
-      },
+      delivery: payload.delivery,
       total: payload.total ?? 0,
-      note: payload.note,
-    };
-    await db.collection<OrderDocument>("orders").insertOne(doc);
-    return toOrder(doc);
-  },
+      note: payload.note
+    });
+
+    const collection = await this.getCollection();
+    await collection.insertOne(doc);
+    return this.toDomain(doc);
+  }
 
   async update(payload: OrderPayload): Promise<Order | null> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
+    if (!payload.id) throw new Error("Order ID is required for update");
 
-    // For updates, id must be provided
-    if (!payload.id) {
-      throw new Error("Order ID is required for updates");
-    }
+    const now = new Date();
+    const { id, ...updateFields } = payload;
 
-    const updateObj: Partial<OrderDocument> = {};
-    if (payload.zaloUserId !== undefined) updateObj.zaloUserId = payload.zaloUserId;
-    if (payload.checkoutSdkOrderId !== undefined) updateObj.checkoutSdkOrderId = payload.checkoutSdkOrderId;
-    if (payload.status !== undefined) updateObj.status = payload.status;
-    if (payload.paymentStatus !== undefined) updateObj.paymentStatus = payload.paymentStatus;
-    // Always update the timestamp
-    updateObj.updatedAt = new Date();
-    if (payload.items !== undefined) updateObj.items = payload.items;
-    if (payload.delivery !== undefined) updateObj.delivery = payload.delivery;
-    if (payload.total !== undefined) updateObj.total = payload.total;
-    if (payload.note !== undefined) updateObj.note = payload.note;
+    const updateObj: any = {
+      ...updateFields,
+      updatedAt: now
+    };
 
-    const result = await db.collection<OrderDocument>("orders").findOneAndUpdate(
-      { _id: payload.id },
+    const collection = await this.getCollection();
+    const result = await collection.findOneAndUpdate(
+      { _id: id } as any,
       { $set: updateObj },
       { returnDocument: "after" }
     );
 
-    return result ? toOrder(result) : null;
-  },
+    return result && result.value ? this.toDomain(result.value) : null;
+  }
 
   async delete(id: number): Promise<boolean> {
-    const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
-    const result = await db.collection<OrderDocument>("orders").deleteOne({ _id: id });
+    const collection = await this.getCollection();
+    const result = await collection.deleteOne({ _id: id } as any);
     return result.deletedCount > 0;
-  },
+  }
 
-  getNextId: getNextOrderId,
-};
+  protected toDomain(doc: any): Order {
+    const { _id, ...orderData } = doc;
+    return new Order(
+      _id,
+      orderData.zaloUserId,
+      orderData.checkoutSdkOrderId,
+      orderData.status,
+      orderData.paymentStatus,
+      orderData.createdAt,
+      orderData.updatedAt,
+      orderData.items,
+      orderData.delivery,
+      orderData.total,
+      orderData.note
+    );
+  }
+}

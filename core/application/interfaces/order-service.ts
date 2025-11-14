@@ -11,6 +11,6 @@ export interface OrderService {
   getAll(params?: GetOrdersParams): Promise<Order[]>;
   getById(id: number): Promise<Order | null>;
   create(payload: OrderPayload): Promise<Order>;
-  update(payload: OrderPayload): Promise<Order | null>;
+  update(payload: OrderPayload & { id: number }): Promise<Order | null>;
   delete(id: number): Promise<boolean>;
 }
