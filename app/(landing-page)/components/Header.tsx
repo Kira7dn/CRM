@@ -92,10 +92,10 @@ export default function Header() {
                             }}
                         ></div>
                         <Image
-                            src={brandConfig.assets.logoPage}
+                            src="/logo-short.svg"
                             alt={brandConfig.brand.shortName}
-                            width={200}
-                            height={120}
+                            width={40}
+                            height={40}
                             priority
                             className="relative z-10"
                             style={{
@@ -107,8 +107,31 @@ export default function Header() {
                             }}
                         />
                     </div>
-                    {/* <span className="font-bold text-3xl text-blue-900">{brandConfig.brand.shortName}</span> */}
-                    <div className="flex items-center gap-2">
+                    {/* Header Title */}
+                    <div className="flex flex-col items-start text-left">
+                        <span
+                            className="text-lg font-bold"
+                            style={{
+                                background: 'var(--brand-golden)',
+                                backgroundSize: '200% 200%',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                                textShadow: '0 0 20px rgba(251,191,36,0.2), 0 0 20px rgba(251,191,36,0.2), 0 0 20px rgba(251,191,36,0.2)',
+                            }}
+                        >
+                            NGÀY MỚI
+                        </span>
+                        <span
+                            className="text-cyan-300 drop-shadow-lg text-sm font-semibold -mt-1"
+                            style={{
+                                textShadow: '0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(6,182,212,0.4)',
+                            }}
+                        >
+                            HẢI SẢN CÔ TÔ
+                        </span>
+                    </div>
+                    <div className="hidden md:flex items-center gap-2">
                         <span className="px-1 py-1 text-blue-600 text-xs font-medium">#HảiSảnTươi</span>
                         <span className="px-1 py-1 text-green-600 text-xs font-medium">#AnToàn</span>
                         <span className="px-1 py-1 text-cyan-600 text-xs font-medium">#BềnVững</span>
