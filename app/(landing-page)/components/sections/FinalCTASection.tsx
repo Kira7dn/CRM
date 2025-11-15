@@ -1,7 +1,8 @@
 import { Container } from "../ui/Container";
 import { Button } from "@shared/ui/button";
-import { CheckCircle2, Phone, Mail } from "lucide-react";
+import { CheckCircle2, Phone } from "lucide-react";
 import brandConfig from "@/config/brand.json";
+import Image from "next/image";
 
 export function FinalCTASection() {
   return (
@@ -50,17 +51,25 @@ export function FinalCTASection() {
           <div className="flex flex-col sm:flex-row justify-center items-center gap-8 pt-2 border-t border-white/20">
             <a
               href={`tel:${brandConfig.contact.phone}`}
-              className="flex items-center gap-2 text-white hover:text-brand-golden transition-colors"
+              className="flex items-center gap-2 text-white hover:text-brand-golden transition-all duration-300 hover:scale-105 hover:drop-shadow-lg"
             >
               <Phone className="w-5 h-5" />
               <span className="font-semibold">{brandConfig.contact.phone}</span>
             </a>
             <a
-              href={`mailto:${brandConfig.contact.email}`}
-              className="flex items-center gap-2 text-white hover:text-brand-golden transition-colors"
+              href={brandConfig.contact.socialMedia.zalo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-white hover:text-brand-golden transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_8px_16px_rgba(0,104,255,0.4)]"
             >
-              <Mail className="w-5 h-5" />
-              <span className="font-semibold">{brandConfig.contact.email}</span>
+              <Image
+                src="/icons/Zalo.svg"
+                alt="Zalo"
+                width={20}
+                height={20}
+                className="transition-all duration-300"
+              />
+              <span className="font-semibold">Zalo OA</span>
             </a>
           </div>
 
