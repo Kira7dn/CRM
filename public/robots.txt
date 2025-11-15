@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://haisan.linkstrategy.io.vn/sitemap.xml

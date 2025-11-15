@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 
 export default function HeroCarousel() {
   const [isMuted, setIsMuted] = useState(true);
@@ -13,22 +14,22 @@ export default function HeroCarousel() {
 
   return (
     <div className="relative">
-      <div className="relative h-[367px] sm:h-[428px] md:h-[530px]">
+      <div className="relative aspect-video rounded-2xl overflow-hidden">
         <video
           src={videoItem.src}
           autoPlay
           loop
           playsInline
           muted={isMuted}
-          className="w-full h-full rounded-2xl object-cover"
+          className="w-full h-full object-cover"
           aria-label={videoItem.alt}
         />
         <button
           onClick={() => setIsMuted(!isMuted)}
           className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 text-white p-3 rounded-full transition-colors"
-          aria-label="Bật âm thanh"
+          aria-label={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
         >
-          {isMuted ? '🔊' : '🔇'}
+          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
         </button>
       </div>
     </div>

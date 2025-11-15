@@ -31,14 +31,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://haisanngaymoi.vn'),
+  metadataBase: new URL('https://haisan.linkstrategy.io.vn'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: "Hải sản Ngày mới Cô Tô - Hải sản tươi ngon từ biển Cô Tô",
     description: "Hải sản tươi sống, đông lạnh và chế biến sẵn từ Cô Tô. Cam kết chất lượng, giao hàng nhanh tại khu vực Đông Bắc Bộ.",
-    url: 'https://haisanngaymoi.vn',
+    url: 'https://haisan.linkstrategy.io.vn',
     siteName: 'Hải sản Ngày mới Cô Tô',
     images: [
       {

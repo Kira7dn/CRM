@@ -88,7 +88,18 @@ export function HeroSection({ className }: HeroSectionProps) {
                 {brandConfig.hero.title.line1}
               </span>
               <span
-                className="animate-pulse"
+                className="text-cyan-300 drop-shadow-lg animate-float -mt-7"
+                style={{
+                  transform: 'rotateX(-20deg) translateZ(30px)',
+                  transformStyle: 'preserve-3d',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(6,182,212,0.4)',
+                  animationDelay: '1.8s',
+                }}
+              >
+                {brandConfig.hero.title.line2}
+              </span>
+              <span
+                className="animate-pulse mt-3"
                 style={{
                   background: 'var(--brand-golden)',
                   backgroundSize: '200% 200%',
@@ -101,29 +112,18 @@ export function HeroSection({ className }: HeroSectionProps) {
                   animationDelay: '1.5s',
                 }}
               >
-                {brandConfig.hero.title.line2}
-              </span>
-              <span
-                className="text-cyan-300 drop-shadow-lg animate-float"
-                style={{
-                  transform: 'rotateX(-20deg) translateZ(30px)',
-                  transformStyle: 'preserve-3d',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(6,182,212,0.4)',
-                  animationDelay: '1.8s',
-                }}
-              >
                 {brandConfig.hero.title.line3}
               </span>
             </h1>
             <p className="text-lg md:text-xl max-w-xl mx-auto animate-fade-in-up" style={{ color: '#2B2B2B', textShadow: '0 2px 4px rgba(255,255,255,0.3)', animationDelay: '2s' }}>
               {brandConfig.brand.tagline}
             </p>
-            <p className="text-lg md:text-xl mb-8 max-w-xl mx-auto animate-fade-in-up" style={{ color: '#2B2B2B', textShadow: '0 2px 4px rgba(255,255,255,0.3)', animationDelay: '2s' }}>
+            <p className="text-lg md:text-xl mb-4 sm:mb-1 max-w-xl mx-auto animate-fade-in-up" style={{ color: '#2B2B2B', textShadow: '0 2px 4px rgba(255,255,255,0.3)', animationDelay: '2s' }}>
               {brandConfig.brand.description}
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 animate-fade-in-up" style={{ animationDelay: '2.2s' }}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4 sm:mb-1 animate-fade-in-up" style={{ animationDelay: '2.2s' }}>
               <a
                 href={brandConfig.hero.cta.primary.link}
                 className="bg-yellow-500 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 transition-all transform hover:scale-105 text-center shadow-lg"

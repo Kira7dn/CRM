@@ -38,9 +38,9 @@
   },
   "hero": {
     "title": {
-      "line1": "HẢI SẢN",
-      "line2": "NGÀY MỚI",
-      "line3": "CÔ TÔ"
+      "line1": "CÔ TÔ",
+      "line2": "HẢI SẢN",
+      "line3": "NGÀY MỚI"
     },
     "cta": {
       "primary": {
