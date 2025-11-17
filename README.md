@@ -207,7 +207,7 @@ All order-related functionality including payment operations:
 - **Product**: `get-products`, `create-product`, `update-product`, `delete-product`
 - **Station**: `get-stations`, `create-station`, `update-station`, `delete-station`
 - **User**: `upsert-user`, `get-user-by-id`
-- **Post** (Demo): `get-posts`, `create-post`, `update-post`, `delete-post`
+- **Post**: `get-posts`, `create-post`, `update-post`, `delete-post`
 
 ### **Interfaces** (Dependency Inversion):
 ```typescript
