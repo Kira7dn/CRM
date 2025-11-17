@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import brandConfig from "@/config/brand.json";
 import { Tabs, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import { Menu, X } from "lucide-react";
@@ -30,11 +29,37 @@ export default function Header() {
 
         const element = document.getElementById(tabId);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Use getBoundingClientRect for accurate positioning
+            const rect = element.getBoundingClientRect();
+            const absoluteTop = window.scrollY + rect.top;
+
+            // Calculate header height dynamically
+            const header = document.querySelector('header');
+            const headerHeight = header ? header.offsetHeight : 64;
+
+            // Different offset for mobile vs desktop
+            const isMobile = window.innerWidth < 768;
+            const extraPadding = isMobile ? 10 : 20; // Less padding on mobile
+
+            const targetPosition = absoluteTop - headerHeight - extraPadding;
+
+            // Prevent scrolling to negative positions
+            const finalPosition = Math.max(0, targetPosition);
+
+            window.scrollTo({
+                top: finalPosition,
+                behavior: 'smooth'
+            });
+
+            // Close mobile menu after navigation
+            setIsMobileMenuOpen(false);
         }
     };
 
     useEffect(() => {
+        // Skip intersection observer on mobile for better performance
+        if (window.innerWidth < 768) return;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 let maxVisible = 0;
@@ -93,79 +118,66 @@ export default function Header() {
 
     return (
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
-            <nav className="container mx-auto px-8 md:px-12 lg:px-16 py-2 flex items-center justify-between">
-                <button
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="flex items-center gap-4 hover:opacity-80 transition-opacity"
-                >
-                    <div className="relative shrink-0" style={{ width: '52px', height: '52px' }}>
+            <div className="container mx-auto px-4 lg:px-6">
+                <div className="flex h-16 shrink-0 items-center justify-between">
+                    <button
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
+                    >
                         <Image
                             src="/logo-short.svg"
                             alt={brandConfig.brand.shortName}
-                            fill
-                            className="relative z-10 object-contain"
-                            style={{
-                                // boxShadow: '0 0 30px rgba(243, 174, 0, 0.95), 0 0 50px rgba(255,255,255,0.4)',
-                                // filter: 'drop-shadow(0 0 12px rgba(243, 174, 0, 0.8))',
-                                transform: 'scale(1.05)',
-                                animation: 'glowPulse 3s ease-in-out infinite alternate',
-                                animationDelay: '1.5s',
-                            }}
+                            width={40}
+                            height={40}
+                            className="relative z-10 object-contain shrink-0"
                         />
-                    </div>
-                    <div className="flex flex-col items-start text-left h-full">
-                        <span
-                            className="text-brand-crystal text-base font-semibold text-shadow-2xs"
-                            style={{
-                                filter: 'drop-shadow(0 2px 4px rgba(250,204,21,0.3))'
-                            }}
+                        <div className="flex flex-col items-start text-left h-full">
+                            <span
+                                className="text-brand-golden text-2xl lg:text-3xl font-bold"
+                                style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}
+                            >
+                                {brandConfig.brand.shortName.toUpperCase()}
+                            </span>
+                        </div>
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                        {/* Mobile Menu Button */}
+                        <button
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                            aria-label="Toggle mobile menu"
                         >
-                            HẢI SẢN CÔ TÔ
-                        </span>
-                        <span
-                            className="text-brand-golden animate-pulse text-2xl font-bold text-shadow-2xs m"
-                        >
-                            NGÀY MỚI
-                        </span>
+                            {isMobileMenuOpen ? (
+                                <X className="w-6 h-6 text-gray-700" />
+                            ) : (
+                                <Menu className="w-6 h-6 text-gray-700" />
+                            )}
+                        </button>
+
+                        {/* Desktop Navigation */}
+                        <div className="hidden lg:flex items-center gap-8">
+                            <Tabs value={activeTab} className="w-auto">
+                                <TabsList className="bg-transparent h-auto p-0 gap-2">
+                                    {navTabs.map((tab) => (
+                                        <TabsTrigger
+                                            key={tab.id}
+                                            value={tab.id}
+                                            className={`${tab.id === 'contact'
+                                                ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400 shadow-md hover:shadow-lg'
+                                                : 'data-[state=active]:bg-blue-100 data-[state=active]:text-blue-800 hover:bg-blue-50 text-gray-700'
+                                                } px-4 py-2 rounded-full transition-colors border-0 cursor-pointer`}
+                                            onClick={() => handleTabClick(tab.id)}
+                                        >
+                                            {tab.label}
+                                        </TabsTrigger>
+                                    ))}
+                                </TabsList>
+                            </Tabs>
+                        </div>
                     </div>
-                </button>
-                {/* <div className="hidden lg:flex items-center gap-2">
-                    <span className="px-1 py-1 text-blue-600 text-xs font-medium">#HảiSảnTươi</span>
-                    <span className="px-1 py-1 text-green-600 text-xs font-medium">#AnToàn</span>
-                    <span className="px-1 py-1 text-cyan-600 text-xs font-medium">#BềnVững</span>
-                </div> */}
-                {/* Mobile Menu Button */}
-                <button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                    aria-label="Toggle mobile menu"
-                >
-                    {isMobileMenuOpen ? (
-                        <X className="w-6 h-6 text-gray-700" />
-                    ) : (
-                        <Menu className="w-6 h-6 text-gray-700" />
-                    )}
-                </button>
-                <div className="hidden lg:flex items-center gap-8">
-                    <Tabs value={activeTab} className="w-auto">
-                        <TabsList className="bg-transparent h-auto p-0 gap-2">
-                            {navTabs.map((tab) => (
-                                <TabsTrigger
-                                    key={tab.id}
-                                    value={tab.id}
-                                    className={`${tab.id === 'contact'
-                                        ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400 shadow-md hover:shadow-lg'
-                                        : 'data-[state=active]:bg-blue-100 data-[state=active]:text-blue-800 hover:bg-blue-50 text-gray-700'
-                                        } px-4 py-2 rounded-full transition-colors border-0 cursor-pointer`}
-                                    onClick={() => handleTabClick(tab.id)}
-                                >
-                                    {tab.label}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
-                    </Tabs>
                 </div>
-            </nav>
+            </div>
 
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
@@ -175,10 +187,7 @@ export default function Header() {
                             {navTabs.map((tab) => (
                                 <button
                                     key={tab.id}
-                                    onClick={() => {
-                                        handleTabClick(tab.id);
-                                        setIsMobileMenuOpen(false); // Close menu after click
-                                    }}
+                                    onClick={() => handleTabClick(tab.id)}
                                     className={`text-left px-4 py-3 rounded-lg transition-colors ${activeTab === tab.id
                                         ? 'bg-blue-50 text-blue-800 font-medium'
                                         : 'text-gray-700 hover:bg-gray-50'

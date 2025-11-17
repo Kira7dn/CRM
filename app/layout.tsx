@@ -75,9 +75,9 @@ export const metadata: Metadata = {
     google: 'your-google-site-verification-code',
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/logo-full.svg',
+    shortcut: '/logo-full.svg',
+    apple: '/logo-full.png',
   },
   manifest: '/manifest.json',
   // themeColor moved to generateViewport

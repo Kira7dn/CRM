@@ -1,7 +1,7 @@
 {
   "brand": {
     "name": "Hải sản Ngày mới Cô Tô",
-    "shortName": "Ngày mới Cô Tô",
+    "shortName": "Ngày mới",
     "tagline": "Ngày sáng tươi mới, Cô Tô trọn vị",
     "description": "Vẹn nguyên hồn biển trong từng bữa ăn.",
     "positioning": "Hải sản tươi - tiện lợi - an toàn cho gia đình Việt",
@@ -70,6 +70,28 @@
       {
         "icon": "recycle",
         "text": "Bền vững"
+      }
+    ],
+    "carousel": [
+      {
+        "src": "/hero/environment.jpg",
+        "alt": "Cam kết bảo vệ môi trường biển",
+        "description": "Giảm thiểu tác động môi trường, khai thác bền vững, bảo vệ hệ sinh thái biển"
+      },
+      {
+        "src": "/hero/product.jpg",
+        "alt": "Sản phẩm hải sản chất lượng cao",
+        "description": "Hải sản tươi sống, chọn lọc kỹ càng, đóng gói chuyên nghiệp"
+      },
+      {
+        "src": "/hero/workshop.jpg",
+        "alt": "Xưởng chế biến hải sản đạt chuẩn",
+        "description": "Xưởng sản xuất HACCP với đội ngũ kỹ thuật giàu kinh nghiệm"
+      },
+      {
+        "src": "/hero/csr.jpg",
+        "alt": "Trách nhiệm cộng đồng và phát triển bền vững",
+        "description": "Hỗ trợ ngư dân, bảo vệ môi trường biển, phát triển cộng đồng"
       }
     ]
   },
@@ -491,9 +513,9 @@
   },
   "company": {
     "legalName": "Công ty TNHH Hải Sản Ngày Mới Cô Tô",
-    "taxCode": "0123456789",
-    "businessLicense": "Giấy CNĐKDN số 0123456789 do Sở KHĐT Quảng Ninh cấp ngày 01/01/2020",
-    "address": "Cô Tô, Vân Đồn, Quảng Ninh, Việt Nam"
+    "taxCode": "022090012360",
+    "businessLicense": "Giấy CNĐKDN số 022090012360 do UBND phường Hà Lần cấp ngày 23/07/2025",
+    "address": "Tổ 34, khu Cao Thắng 3, Phường Hà Lầm, Tỉnh Quảng Ninh, Việt Nam"
   },
   "seo": {
     "title": "Hải Sản Cao Cấp Cô Tô - Minh Bạch 100% | Ngày Mới - Cô Tô",
