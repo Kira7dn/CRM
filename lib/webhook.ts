@@ -1,54 +1,84 @@
 import type { Order } from "@/core/domain/order";
 
 export const notifyOrderWebhook = async (order: Order): Promise<void> => {
-  // Since webhook processing is now handled directly in /api/webhook,
-  // we just log successful payments for monitoring
-  console.log("[notifyOrderWebhook] Payment processed successfully", {
+  console.log("[notifyOrderWebhook] Starting webhook notification", {
     orderId: order.id,
-    paymentStatus: order.payment.status,
+    paymentStatus: order.payment?.status,
     timestamp: new Date().toISOString()
   });
 
-  // Optional: Send to external webhook URL if configured
   const externalWebhookUrl = process.env.ORDER_WEBHOOK_URL?.trim();
-  console.log("[notifyOrderWebhook] Checking webhook URL", { 
+  console.log("[notifyOrderWebhook] Webhook URL check:", { 
     hasUrl: !!externalWebhookUrl, 
-    url: externalWebhookUrl 
+    url: externalWebhookUrl ? `${externalWebhookUrl.substring(0, 30)}${externalWebhookUrl.length > 30 ? '...' : ''}` : 'undefined' 
   });
   
-  if (externalWebhookUrl) {
-    try {
-      const response = await fetch(externalWebhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "payment_success",
-          data: order,
-          timestamp: new Date().toISOString()
-        }),
-      });
+  if (!externalWebhookUrl) {
+    console.log("[notifyOrderWebhook] No webhook URL configured, skipping");
+    return;
+  }
 
-      if (!response.ok) {
-        const text = await response.text().catch(() => undefined);
-        console.error("[notifyOrderWebhook] External webhook failed", {
-          status: response.status,
-          statusText: response.statusText,
-          body: text,
-          orderId: order.id,
-        });
-        return;
-      }
+  try {
+    console.log("[notifyOrderWebhook] Sending webhook request", { 
+      orderId: order.id,
+      url: externalWebhookUrl,
+      timestamp: new Date().toISOString()
+    });
 
-      console.log("[notifyOrderWebhook] External webhook sent successfully", { orderId: order.id });
-    } catch (error) {
-      console.error("[notifyOrderWebhook] Error sending external webhook", {
-        error: error instanceof Error
-          ? { name: error.name, message: error.message, stack: error.stack }
-          : error,
+    const startTime = Date.now();
+    const response = await fetch(externalWebhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Request-ID": `webhook-${order.id}-${Date.now()}`,
+      },
+      body: JSON.stringify({
+        type: "payment_success",
+        data: order,
+        timestamp: new Date().toISOString()
+      }),
+    });
+
+    const responseTime = Date.now() - startTime;
+    const responseData = await response.text().catch(() => null);
+
+    console.log("[notifyOrderWebhook] Webhook response received", {
+      orderId: order.id,
+      status: response.status,
+      statusText: response.statusText,
+      responseTime: `${responseTime}ms`,
+      responseHeaders: Object.fromEntries(response.headers.entries()),
+      responseBody: responseData
+    });
+
+    if (!response.ok) {
+      console.error("[notifyOrderWebhook] External webhook failed", {
         orderId: order.id,
+        status: response.status,
+        statusText: response.statusText,
+        responseBody: responseData,
+        responseTime: `${responseTime}ms`
       });
+      return;
     }
+
+    console.log("[notifyOrderWebhook] External webhook sent successfully", { 
+      orderId: order.id,
+      status: response.status,
+      responseTime: `${responseTime}ms`,
+      responseData
+    });
+  } catch (error) {
+    console.error("[notifyOrderWebhook] Error sending external webhook", {
+      orderId: order.id,
+      error: error instanceof Error
+        ? { 
+            name: error.name, 
+            message: error.message, 
+            stack: error.stack?.split('\n').slice(0, 3).join('\n') + '\n...' 
+          }
+        : error,
+      timestamp: new Date().toISOString()
+    });
   }
 };

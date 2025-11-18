@@ -66,7 +66,7 @@ export class HandleVnpayIpnUseCase {
         paidAt: paymentStatus === "success" ? new Date() : undefined,
       },
       platformOrderId: params.vnp_TxnRef?.trim(),
-      platformSource: "vnpay",
+      platformSource: "zalo",
       updatedAt: new Date(),
     };
 
