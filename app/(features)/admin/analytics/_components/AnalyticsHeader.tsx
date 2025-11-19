@@ -14,7 +14,8 @@ import {
   ChevronLeft,
   Menu,
   X,
-  LogOut
+  LogOut,
+  Brain
 } from "lucide-react"
 
 interface AnalyticsHeaderProps {
@@ -50,6 +51,12 @@ export function AnalyticsHeader({ userName, userRole = 'admin' }: AnalyticsHeade
       label: "Staff Performance",
       icon: Trophy,
       roles: ["admin"]
+    },
+    {
+      href: "/admin/analytics/forecast",
+      label: "AI Forecasts",
+      icon: Brain,
+      roles: ["admin", "sale"]
     },
   ].filter(item => item.roles.includes(userRole))
 

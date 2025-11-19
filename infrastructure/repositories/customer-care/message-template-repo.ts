@@ -27,7 +27,7 @@ export class MessageTemplateRepository
   async getAll(
     options?: MessageTemplateFilterOptions
   ): Promise<MessageTemplate[]> {
-    const collection = await this.getCollection<MessageTemplateDocument>();
+    const collection = await this.getCollection();
     const filter: any = {};
 
     if (options?.category) {
@@ -50,23 +50,23 @@ export class MessageTemplateRepository
     }
 
     const docs = await collection.find(filter).sort({ updatedAt: -1 }).toArray();
-    return docs.map((doc) => this.toDomain(doc));
+    return docs.map((doc) => this.toDomain(doc as any));
   }
 
   /**
    * Get template by ID
    */
   async getById(id: string): Promise<MessageTemplate | null> {
-    const collection = await this.getCollection<MessageTemplateDocument>();
+    const collection = await this.getCollection();
     const doc = await collection.findOne({ _id: new ObjectId(id) });
-    return doc ? this.toDomain(doc) : null;
+    return doc ? (this.toDomain(doc as any) as MessageTemplate) : null;
   }
 
   /**
    * Get templates by category
    */
   async getByCategory(category: TemplateCategory): Promise<MessageTemplate[]> {
-    const collection = await this.getCollection<MessageTemplateDocument>();
+    const collection = await this.getCollection();
     const docs = await collection
       .find({ category, isActive: true })
       .sort({ usageCount: -1 })
@@ -78,7 +78,7 @@ export class MessageTemplateRepository
    * Get templates by platform
    */
   async getByPlatform(platform: TemplatePlatform): Promise<MessageTemplate[]> {
-    const collection = await this.getCollection<MessageTemplateDocument>();
+    const collection = await this.getCollection();
     const docs = await collection
       .find({
         platform: { $in: [platform, "all"] },
@@ -86,15 +86,15 @@ export class MessageTemplateRepository
       })
       .sort({ usageCount: -1 })
       .toArray();
-    return docs.map((doc) => this.toDomain(doc));
+    return docs.map((doc) => this.toDomain(doc as any));
   }
 
   /**
    * Create new template
    */
   async create(payload: MessageTemplatePayload): Promise<MessageTemplate> {
-    const collection = await this.getCollection<MessageTemplateDocument>();
-    const doc = this.toDocument(payload) as Omit<MessageTemplateDocument, "_id">;
+    const collection = await this.getCollection();
+    const doc = this.toDocument(payload as any) as Omit<MessageTemplateDocument, "_id">;
 
     const result = await collection.insertOne({
       ...doc,
@@ -105,8 +105,7 @@ export class MessageTemplateRepository
     if (!created) {
       throw new Error("Failed to create template");
     }
-
-    return this.toDomain(created);
+    return this.toDomain(created as any);
   }
 
   /**
@@ -116,25 +115,23 @@ export class MessageTemplateRepository
     if (!payload.id) {
       throw new Error("Template ID is required for update");
     }
-
-    const collection = await this.getCollection<MessageTemplateDocument>();
+    const collection = await this.getCollection();
     const { id, ...updateData } = payload;
-    const doc = this.toDocument(updateData);
+    const doc = this.toDocument(updateData as any);
 
     const result = await collection.findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: doc },
       { returnDocument: "after" }
     );
-
-    return result ? this.toDomain(result) : null;
+    return result ? (this.toDomain(result as any) as MessageTemplate) : null;
   }
 
   /**
    * Delete template
    */
   async delete(id: string): Promise<boolean> {
-    const collection = await this.getCollection<MessageTemplateDocument>();
+    const collection = await this.getCollection();
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
     return result.deletedCount === 1;
   }
@@ -143,7 +140,7 @@ export class MessageTemplateRepository
    * Increment usage count
    */
   async incrementUsage(id: string): Promise<void> {
-    const collection = await this.getCollection<MessageTemplateDocument>();
+    const collection = await this.getCollection();
     await collection.updateOne(
       { _id: new ObjectId(id) },
       {

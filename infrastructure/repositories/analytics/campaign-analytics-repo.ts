@@ -4,7 +4,7 @@
  * MongoDB implementation for campaign analytics data access.
  */
 
-import { getDb } from "@/infrastructure/db/mongo";
+import clientPromise from "@/infrastructure/db/mongo";
 import type {
   CampaignAnalytics,
   CampaignComparison,
@@ -31,8 +31,9 @@ export class CampaignAnalyticsRepository implements CampaignAnalyticsService {
    * Get analytics for a single campaign
    */
   async getCampaignAnalytics(query: CampaignAnalyticsQuery): Promise<CampaignAnalytics> {
-    const db = await getDb();
-    const campaignsCollection = db.collection("campaigns");
+    const client = await clientPromise;
+    const db = client.db(process.env.MONGODB_DB);
+    const campaignsCollection = db.collection<any>("campaigns");
     const ordersCollection = db.collection("orders");
 
     // Get campaign details
@@ -116,7 +117,7 @@ export class CampaignAnalyticsRepository implements CampaignAnalyticsService {
 
     const platformData = await ordersCollection.aggregate<any>(platformPipeline).toArray();
 
-    const platformBreakdown: PlatformBreakdown[] = platformData.map((p) => {
+    const platformBreakdown: PlatformBreakdown[] = platformData.map((p: any) => {
       const platform = (p._id || "other") as Platform;
       const clicks = p.clicks || 0;
       const impressions = p.impressions || 0;
@@ -230,7 +231,8 @@ export class CampaignAnalyticsRepository implements CampaignAnalyticsService {
    * Get platform-specific performance
    */
   async getPlatformPerformance(query: PlatformPerformanceQuery): Promise<PlatformPerformance> {
-    const db = await getDb();
+    const client = await clientPromise;
+    const db = client.db(process.env.MONGODB_DB);
     const ordersCollection = db.collection("orders");
 
     // Aggregate orders for this platform

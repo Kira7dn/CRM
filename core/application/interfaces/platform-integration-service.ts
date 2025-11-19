@@ -131,5 +131,5 @@ export interface YouTubeIntegrationService extends PlatformIntegrationService {
  * Factory for creating platform integration services
  */
 export interface PlatformIntegrationFactory {
-  create(platform: Platform): PlatformIntegrationService;
+  create(platform: Platform): Promise<PlatformIntegrationService>;
 }

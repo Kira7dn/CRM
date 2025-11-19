@@ -208,7 +208,7 @@ export function validateMessageCampaign(
     errors.push("Either template or custom content is required");
   }
 
-  if (campaign.type === "scheduled" && !campaign.scheduledAt) {
+  if (campaign.status === "scheduled" && !campaign.scheduledAt) {
     errors.push("Scheduled time is required for scheduled campaigns");
   }
 

@@ -47,10 +47,12 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
       };
     }
 
+    const finalConversationId = conversationId ?? conversation.id;
+
     // Create user message
     const userMessage: ChatMessage = {
       id: generateMessageId(),
-      conversationId,
+      conversationId: finalConversationId,
       role: "user",
       content: request.message,
       intent,
@@ -75,7 +77,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
     // Create assistant message
     const assistantMessage: ChatMessage = {
       id: generateMessageId(),
-      conversationId,
+      conversationId: finalConversationId,
       role: "assistant",
       content: responseContent,
       intent,
@@ -95,7 +97,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
       message: assistantMessage,
       intent,
       confidence,
-      conversationId,
+      conversationId: finalConversationId,
     };
   }
 
@@ -319,12 +321,12 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
    */
   async getConversation(conversationId: string): Promise<ChatConversation | null> {
     const collection = await this.getCollection();
-    const doc = await collection.findOne({ _id: conversationId });
+    const doc = await collection.findOne({ _id: new ObjectId(conversationId) });
 
     if (!doc) return null;
 
     return {
-      ...doc,
+      ...(doc as any),
       id: conversationId,
     } as ChatConversation;
   }
@@ -336,7 +338,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
     const collection = await this.getCollection();
     const docs = await collection.find({ userId }).sort({ updatedAt: -1 }).limit(50).toArray();
 
-    return docs.map((doc) => ({
+    return docs.map((doc: any) => ({
       ...doc,
       id: doc._id.toString(),
     })) as ChatConversation[];
@@ -348,7 +350,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
   async archiveConversation(conversationId: string): Promise<boolean> {
     const collection = await this.getCollection();
     const result = await collection.updateOne(
-      { _id: conversationId },
+      { _id: new ObjectId(conversationId) },
       { $set: { status: "archived", updatedAt: new Date() } }
     );
 
@@ -362,7 +364,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
     const collection = await this.getCollection();
 
     await collection.updateOne(
-      { _id: conversation.id },
+      { _id: new ObjectId(conversation.id) },
       { $set: conversation },
       { upsert: true }
     );

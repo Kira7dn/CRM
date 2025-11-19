@@ -1,0 +1,4 @@
+# Ignore test files and test folders so ESLint doesn't produce diagnostics for them
+**/__tests__/**
+**/*.test.*
+**/*.spec.*

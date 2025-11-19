@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Ticket, TicketStatus, TicketPriority } from "@/core/domain/customer-care/ticket";
+import type { Ticket as TicketModel, TicketStatus, TicketPriority } from "@/core/domain/customer-care/ticket";
 import { getTicketStatusColor, getTicketPriorityColor, isTicketOverdue } from "@/core/domain/customer-care/ticket";
 import { updateTicketStatusAction, assignTicketAction, resolveTicketAction } from "../actions";
 import { Badge } from "@/@shared/ui/badge";
@@ -14,16 +14,17 @@ import {
   AlertCircle,
   MessageSquare,
   Calendar,
-  Tag
+  Tag,
+  Ticket,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 interface TicketListProps {
-  initialTickets: Ticket[];
+  initialTickets: TicketModel[];
 }
 
 export function TicketList({ initialTickets }: TicketListProps) {
-  const [tickets, setTickets] = useState<Ticket[]>(initialTickets);
+  const [tickets, setTickets] = useState<TicketModel[]>(initialTickets);
   const [statusFilter, setStatusFilter] = useState<TicketStatus | "all">("all");
   const [priorityFilter, setPriorityFilter] = useState<TicketPriority | "all">("all");
 
@@ -91,41 +92,37 @@ export function TicketList({ initialTickets }: TicketListProps) {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setStatusFilter("all")}
-            className={`px-4 py-2 rounded-lg font-medium transition ${
-              statusFilter === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-            }`}
+            className={`px-4 py-2 rounded-lg font-medium transition ${statusFilter === "all"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+              }`}
           >
             All ({statusCounts.all})
           </button>
           <button
             onClick={() => setStatusFilter("open")}
-            className={`px-4 py-2 rounded-lg font-medium transition ${
-              statusFilter === "open"
-                ? "bg-red-600 text-white"
-                : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-            }`}
+            className={`px-4 py-2 rounded-lg font-medium transition ${statusFilter === "open"
+              ? "bg-red-600 text-white"
+              : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+              }`}
           >
             Open ({statusCounts.open})
           </button>
           <button
             onClick={() => setStatusFilter("in_progress")}
-            className={`px-4 py-2 rounded-lg font-medium transition ${
-              statusFilter === "in_progress"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-            }`}
+            className={`px-4 py-2 rounded-lg font-medium transition ${statusFilter === "in_progress"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+              }`}
           >
             In Progress ({statusCounts.in_progress})
           </button>
           <button
             onClick={() => setStatusFilter("resolved")}
-            className={`px-4 py-2 rounded-lg font-medium transition ${
-              statusFilter === "resolved"
-                ? "bg-green-600 text-white"
-                : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-            }`}
+            className={`px-4 py-2 rounded-lg font-medium transition ${statusFilter === "resolved"
+              ? "bg-green-600 text-white"
+              : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+              }`}
           >
             Resolved ({statusCounts.resolved})
           </button>
@@ -141,11 +138,10 @@ export function TicketList({ initialTickets }: TicketListProps) {
               <button
                 key={priority}
                 onClick={() => setPriorityFilter(priority as TicketPriority | "all")}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition ${
-                  priorityFilter === priority
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                }`}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition ${priorityFilter === priority
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                  }`}
               >
                 {priority.charAt(0).toUpperCase() + priority.slice(1)}
               </button>
@@ -158,7 +154,7 @@ export function TicketList({ initialTickets }: TicketListProps) {
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
         {filteredTickets.length === 0 ? (
           <div className="text-center py-16">
-            <Ticket2 className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+            <Ticket className="w-16 h-16 mx-auto text-gray-400 mb-4" />
             <p className="text-gray-500 dark:text-gray-400 text-lg">No tickets found</p>
             <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">
               Try adjusting your filters or create a new ticket
@@ -199,15 +195,14 @@ export function TicketList({ initialTickets }: TicketListProps) {
                   return (
                     <tr
                       key={ticket.id}
-                      className={`hover:bg-gray-50 dark:hover:bg-gray-750 ${
-                        overdue ? "bg-red-50 dark:bg-red-900/10" : ""
-                      }`}
+                      className={`hover:bg-gray-50 dark:hover:bg-gray-750 ${overdue ? "bg-red-50 dark:bg-red-900/10" : ""
+                        }`}
                     >
                       {/* Ticket Info */}
                       <td className="px-6 py-4">
                         <div className="flex items-start gap-3">
                           {overdue && (
-                            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                            <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                           )}
                           <div>
                             <div className="text-sm font-medium text-gray-900 dark:text-white">

@@ -10,6 +10,7 @@
  */
 
 import { BaseRepository } from "@/infrastructure/db/base-repository";
+import { ObjectId } from "mongodb";
 import {
   StaffPerformance,
   TeamPerformance,
@@ -51,7 +52,7 @@ export class StaffAnalyticsRepository
     const usersCollection = client.db(process.env.MONGODB_DB).collection("admin_users");
 
     // Get staff info
-    const staff = await usersCollection.findOne({ _id: query.staffId });
+    const staff = await usersCollection.findOne({ _id: new ObjectId(query.staffId) });
     if (!staff) {
       throw new Error(`Staff member with ID ${query.staffId} not found`);
     }
@@ -207,7 +208,8 @@ export class StaffAnalyticsRepository
     // Convert rankings to staff performance objects
     const topPerformers: StaffPerformance[] = await Promise.all(
       rankings.slice(0, topPerformersLimit).map(async (ranking, index) => {
-        const staff = await usersCollection.findOne({ _id: ranking.staffId });
+        const staff = await usersCollection.findOne({ _id: new ObjectId(ranking.staffId) });
+
         return {
           staffId: ranking.staffId,
           staffName: ranking.staffName,
@@ -248,7 +250,7 @@ export class StaffAnalyticsRepository
     const ordersCollection = client.db(process.env.MONGODB_DB).collection("orders");
     const usersCollection = client.db(process.env.MONGODB_DB).collection("admin_users");
 
-    const pipeline = [
+    const pipeline: any[] = [
       {
         $match: {
           createdAt: {
@@ -317,7 +319,7 @@ export class StaffAnalyticsRepository
     const rankings: StaffRanking[] = [];
     for (let i = 0; i < results.length; i++) {
       const doc = results[i];
-      const staff = await usersCollection.findOne({ _id: doc.staffId });
+      const staff = await usersCollection.findOne({ _id: new ObjectId(doc.staffId) });
 
       if (staff) {
         rankings.push({

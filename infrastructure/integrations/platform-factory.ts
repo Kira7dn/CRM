@@ -18,7 +18,7 @@ export class PlatformFactory implements PlatformIntegrationFactory {
   /**
    * Create or get cached platform integration service
    */
-  create(platform: Platform): PlatformIntegrationService {
+  async create(platform: Platform): Promise<PlatformIntegrationService> {
     // Return cached instance if exists
     if (this.instances.has(platform)) {
       return this.instances.get(platform)!;
@@ -38,7 +38,7 @@ export class PlatformFactory implements PlatformIntegrationFactory {
         service = createZaloIntegration();
         break;
       case "youtube":
-        service = createYouTubeIntegration();
+        service = await createYouTubeIntegration();
         break;
       default:
         throw new Error(`Unsupported platform: ${platform}`);

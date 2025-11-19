@@ -3,6 +3,8 @@
  *
  * Implements revenue analytics queries using MongoDB aggregation pipelines.
  * Analyzes order data to generate revenue insights.
+ *
+ * Sprint 7: Added Redis caching for performance optimization.
  */
 
 import { BaseRepository } from "@/infrastructure/db/base-repository";
@@ -23,6 +25,8 @@ import {
   TopItemsQuery,
   OrderStatusQuery,
 } from "@/core/application/interfaces/analytics/revenue-analytics-service";
+import { getCache } from "@/infrastructure/cache/redis-cache";
+import { RevenueCacheKeys, CacheTTL } from "@/infrastructure/cache/cache-keys";
 
 /**
  * Dummy entity for BaseRepository (analytics doesn't have a primary entity)
@@ -36,16 +40,32 @@ export class RevenueAnalyticsRepository
   implements RevenueAnalyticsService
 {
   protected collectionName = "orders";
+  private cache = getCache();
 
   /**
    * Get revenue metrics for a given period with optional comparison
+   * Cached for performance (TTL: 30 minutes)
    */
   async getRevenueMetrics(query: RevenueMetricsQuery): Promise<RevenueMetrics> {
-    const collection = await this.getCollection();
-
     // Default to last 30 days if no dates provided
     const endDate = query.endDate || new Date();
     const startDate = query.startDate || new Date(endDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+    // Build cache key
+    const cacheKey = RevenueCacheKeys.metrics(
+      startDate,
+      endDate,
+      query.comparisonStartDate
+    );
+
+    // Try to get from cache
+    const cached = await this.cache.get<RevenueMetrics>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    // If not in cache, compute metrics
+    const collection = await this.getCollection();
 
     // Build match query for current period
     const matchQuery: any = {
@@ -148,6 +168,9 @@ export class RevenueAnalyticsRepository
         aovChangePercent: calculatePercentageChange(averageOrderValue, prevAOV),
       };
     }
+
+    // Cache the result
+    await this.cache.set(cacheKey, metrics, { ttl: CacheTTL.analytics });
 
     return metrics;
   }

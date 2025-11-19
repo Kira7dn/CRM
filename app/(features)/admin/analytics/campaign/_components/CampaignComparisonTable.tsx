@@ -107,7 +107,7 @@ export function CampaignComparisonTable({ campaigns }: CampaignComparisonTablePr
                     <td className="py-3 px-4">
                       <div className="flex items-center space-x-2">
                         {isTopRevenue && (
-                          <Trophy className="w-4 h-4 text-yellow-500" title="Top Revenue" />
+                          <Trophy className="w-4 h-4 text-yellow-500" />
                         )}
                         <span className="font-medium text-gray-900">{campaign.campaignName}</span>
                       </div>
@@ -130,9 +130,8 @@ export function CampaignComparisonTable({ campaigns }: CampaignComparisonTablePr
                       <div className="flex items-center justify-end space-x-1">
                         {isTopROI && <Trophy className="w-3 h-3 text-yellow-500" />}
                         <span
-                          className={`font-semibold ${
-                            campaign.roi >= 0 ? "text-green-600" : "text-red-600"
-                          }`}
+                          className={`font-semibold ${campaign.roi >= 0 ? "text-green-600" : "text-red-600"
+                            }`}
                         >
                           {formatROI(campaign.roi)}
                         </span>

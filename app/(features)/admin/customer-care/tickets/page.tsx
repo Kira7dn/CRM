@@ -1,7 +1,7 @@
 import { TicketList } from "./_components/TicketList";
 import { CreateTicketButton } from "./_components/CreateTicketButton";
 import { getTicketsUseCase } from "@/app/api/customer-care/tickets/depends";
-import { Ticket2 } from "lucide-react";
+import { Ticket } from "lucide-react";
 
 export default async function TicketsPage() {
   // Fetch tickets from server
@@ -18,7 +18,7 @@ export default async function TicketsPage() {
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-              <Ticket2 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+              <Ticket className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">

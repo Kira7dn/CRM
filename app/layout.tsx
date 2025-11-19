@@ -85,6 +85,11 @@ export const metadata: Metadata = {
 
 export const generateViewport = () => ({
   themeColor: '#1CE7ED', // brand-crystal color
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover',
 });
 
 export default function RootLayout({

@@ -57,7 +57,7 @@ export function OrderStatusPieChart({ distribution }: OrderStatusPieChartProps) 
               cx="50%"
               cy="50%"
               labelLine={false}
-              label={({ name, percentage }) => `${name}: ${percentage.toFixed(1)}%`}
+              label={({ name, payload }) => `${name}: ${payload.percentage.toFixed(1)}%`}
               outerRadius={120}
               fill="#8884d8"
               dataKey="value"
