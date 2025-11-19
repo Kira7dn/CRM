@@ -1,5 +1,5 @@
-import { Container } from "@/app/(landing-page)/components/ui/Container";
-import { SectionHeading } from "@/app/(landing-page)/components/ui/SectionHeading";
+import { Container } from "@/app/(landing-page)/_components/Container";
+import { SectionHeading } from "@/app/(landing-page)/_components/SectionHeading";
 import Link from "next/link";
 import type { Metadata } from "next";
 

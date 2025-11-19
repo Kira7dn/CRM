@@ -1,5 +1,5 @@
-import { UserList } from "./components/UserList"
-import { CreateUserButton } from "./components/CreateUserButton"
+import { UserList } from "./_components/UserList"
+import { CreateUserButton } from "./_components/CreateUserButton"
 import { createGetAllUsersUseCase } from "@/app/api/auth/depends"
 
 export default async function UsersPage() {

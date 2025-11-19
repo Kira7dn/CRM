@@ -1,4 +1,4 @@
-import { CampaignList } from "./components/CampaignList"
+import { CampaignList } from "./_components/CampaignList"
 import { getCampaignsAction } from "./actions"
 
 export default async function CampaignsPage() {

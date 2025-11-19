@@ -1,5 +1,5 @@
 import { getOrdersUseCase } from "@/app/api/orders/depends"
-import { OrderList } from "./components/OrderList"
+import { OrderList } from "./_components/OrderList"
 
 export default async function OrdersPage() {
   // Get orders using injected use case

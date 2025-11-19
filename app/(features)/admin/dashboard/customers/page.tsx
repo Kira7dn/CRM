@@ -1,5 +1,5 @@
 import { getAllCustomersUseCase } from "@/app/api/customers/depends"
-import { CustomerList } from "./components/CustomerList"
+import { CustomerList } from "./_components/CustomerList"
 
 export default async function CustomersPage() {
   // Get customers using injected use case

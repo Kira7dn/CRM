@@ -1,6 +1,6 @@
 'use client'
 
-import { usePostStore } from '../store/usePostStore'
+import { usePostStore } from '../_store/usePostStore'
 
 export default function PostFilter() {
   const { filter, setFilter } = usePostStore()

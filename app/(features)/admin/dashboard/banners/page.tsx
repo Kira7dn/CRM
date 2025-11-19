@@ -1,5 +1,5 @@
 import { getBannersUseCase } from "@/app/api/banners/depends"
-import { BannerList } from "./components/BannerList"
+import { BannerList } from "./_components/BannerList"
 
 export default async function BannersPage() {
   // Get banners using injected use case

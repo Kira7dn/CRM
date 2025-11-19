@@ -1,9 +1,9 @@
 import Link from "next/link"
 import { getCurrentUserAction } from "../../_shared/actions/auth-actions"
 import { getDashboardStats } from "../actions"
-import { DashboardStats } from "./components/DashboardStats"
-import { OrdersChart } from "./components/OrdersChart"
-import { RecentOrders } from "./components/RecentOrders"
+import { DashboardStats } from "./_components/DashboardStats"
+import { OrdersChart } from "./_components/OrdersChart"
+import { RecentOrders } from "./_components/RecentOrders"
 
 
 export default async function DashboardPage() {
@@ -140,6 +140,27 @@ export default async function DashboardPage() {
                   <div className="bg-pink-100 dark:bg-pink-900/30 p-3 rounded-lg">
                     <svg className="w-6 h-6 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Revenue Analytics */}
+            <Link href="/admin/dashboard/analytics/revenue" className="block">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition transform hover:-translate-y-1">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Revenue Analytics
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Track revenue & metrics
+                    </p>
+                  </div>
+                  <div className="bg-emerald-100 dark:bg-emerald-900/30 p-3 rounded-lg">
+                    <svg className="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   </div>
                 </div>

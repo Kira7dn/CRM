@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from 'react'
 import type { Post, Platform } from '@/core/domain/post'
-import { usePostStore } from '../store/usePostStore'
+import { usePostStore } from '../_store/usePostStore'
 import { deletePostAction } from '../actions'
 import { Button } from '@shared/ui/button'
 import { Trash2, Edit, Eye, Clock, CheckCircle, XCircle, Calendar } from 'lucide-react'

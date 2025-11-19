@@ -394,4 +394,4 @@ All modules follow this structure:
 - **API Routes**: `app/api/[module]/route.ts` + `depends.ts`
 - **UI**: `app/(features)/admin/[module]/page.tsx` + `actions.ts` + `components/`
 
-**Important**: Payment operations are consolidated in the **orders** module (not separate)
+**Important**: always update current implementation for provided plan when implementing a new feature

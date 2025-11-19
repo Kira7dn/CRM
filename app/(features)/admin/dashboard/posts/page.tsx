@@ -1,7 +1,7 @@
 import { getPostsUseCase } from '@/app/api/posts/depends'
-import PostList from './components/PostList'
-import PostFilter from './components/PostFilter'
-import PostForm from './components/PostForm'
+import PostList from './_components/PostList'
+import PostFilter from './_components/PostFilter'
+import PostForm from './_components/PostForm'
 import { Plus } from 'lucide-react'
 import { Button } from '@shared/ui/button'
 

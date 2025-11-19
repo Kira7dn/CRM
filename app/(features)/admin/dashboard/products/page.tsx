@@ -1,6 +1,6 @@
 import { filterProductsUseCase } from "@/app/api/products/depends"
 import { getCategoriesUseCase } from "@/app/api/categories/depends"
-import { ProductList } from "./components/ProductList"
+import { ProductList } from "./_components/ProductList"
 
 export default async function ProductsPage() {
   // Get products and categories using injected use cases
