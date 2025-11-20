@@ -395,3 +395,7 @@ All modules follow this structure:
 - **UI**: `app/(features)/admin/[module]/page.tsx` + `actions.ts` + `components/`
 
 **Important**: always update current implementation for provided plan when implementing a new feature
+
+## Task Master AI Instructions
+**Import Task Master's development workflow commands and guidelines, treat as if import is in the main CLAUDE.md file.**
+@./.taskmaster/CLAUDE.md
