@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { Product, SizeOption } from "@/core/domain/product";
+import { Product, SizeOption } from "@/core/domain/managements/product";
 import type { ProductService, ProductPayload, FilterProductsParams } from "@/core/application/interfaces/product-service";
 import { getNextId } from "@/infrastructure/db/auto-increment";
 
@@ -116,6 +116,7 @@ export class ProductRepository extends BaseRepository<Product, number> implement
       productData.name,
       productData.price,
       productData.originalPrice,
+      productData.cost,
       productData.image,
       productData.detail,
       normalizeSizes(doc),

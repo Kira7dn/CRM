@@ -1,6 +1,6 @@
-import type { Campaign, CampaignStatus } from "@/core/domain/campaign"
+import type { Campaign, CampaignStatus } from "@/core/domain/managements/campaign"
 
-export interface CampaignPayload extends Partial<Campaign> {}
+export interface CampaignPayload extends Partial<Campaign> { }
 
 export interface CampaignService {
   getAll(): Promise<Campaign[]>

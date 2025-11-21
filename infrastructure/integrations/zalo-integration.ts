@@ -3,7 +3,7 @@ import type {
   PlatformPublishRequest,
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
-import type { PostMetrics, PostMedia } from "@/core/domain/post";
+import type { PostMetrics, PostMedia } from "@/core/domain/managements/post";
 
 /**
  * Zalo OA (Official Account) API Configuration
@@ -61,7 +61,7 @@ export class ZaloIntegration implements ZaloIntegrationService {
   platform = "zalo" as const;
   private baseUrl = "https://openapi.zalo.me/v2.0/oa";
 
-  constructor(private config: ZaloConfig) {}
+  constructor(private config: ZaloConfig) { }
 
   /**
    * Publish message to Zalo OA followers

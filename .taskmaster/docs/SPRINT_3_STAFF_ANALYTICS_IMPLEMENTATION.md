@@ -2,7 +2,7 @@
 
 **Status**: ✅ Complete
 **Date**: January 2025
-**Module**: `app/(features)/admin/analytics/staff`
+**Module**: `app/(features)/crm/analytics/staff`
 
 ## Overview
 
@@ -53,7 +53,7 @@ Infrastructure Layer (infrastructure/repositories/analytics/)
 API Layer (app/api/analytics/staff/)
   └── depends.ts - Dependency injection factories
 
-UI Layer (app/(features)/admin/analytics/staff/)
+UI Layer (app/(features)/crm/analytics/staff/)
   ├── page.tsx - Main page component
   ├── actions.ts - Server Actions
   └── _components/
@@ -294,7 +294,7 @@ export const createGetStaffPerformanceTrendUseCase = async () => {
 
 #### Server Actions
 
-**File**: `app/(features)/admin/analytics/staff/actions.ts`
+**File**: `app/(features)/crm/analytics/staff/actions.ts`
 
 ```typescript
 "use server";
@@ -322,7 +322,7 @@ export async function getTeamPerformance(
 
 #### Main Page Component
 
-**File**: `app/(features)/admin/analytics/staff/page.tsx`
+**File**: `app/(features)/crm/analytics/staff/page.tsx`
 
 **Features**:
 - Date range picker with 30-day default
@@ -372,7 +372,7 @@ export default function StaffAnalyticsPage() {
 
 #### Component: Team Performance Cards
 
-**File**: `app/(features)/admin/analytics/staff/_components/TeamPerformanceCards.tsx`
+**File**: `app/(features)/crm/analytics/staff/_components/TeamPerformanceCards.tsx`
 
 **4 KPI Cards**:
 1. Total Revenue (Green, DollarSign icon)
@@ -400,7 +400,7 @@ export function TeamPerformanceCards({ team }: TeamPerformanceCardsProps) {
 
 #### Component: Staff Leaderboard
 
-**File**: `app/(features)/admin/analytics/staff/_components/StaffLeaderboard.tsx`
+**File**: `app/(features)/crm/analytics/staff/_components/StaffLeaderboard.tsx`
 
 **Features**:
 - Medal icons for top 3 performers (Gold, Silver, Bronze)
@@ -445,7 +445,7 @@ export function StaffLeaderboard({ rankings }: StaffLeaderboardProps) {
 
 #### Component: Staff Activity Table
 
-**File**: `app/(features)/admin/analytics/staff/_components/StaffActivityTable.tsx`
+**File**: `app/(features)/crm/analytics/staff/_components/StaffActivityTable.tsx`
 
 **Displays**:
 - Date of activity
@@ -478,13 +478,13 @@ export function StaffActivityTable({ activities }: StaffActivityTableProps) {
 
 ### 6. Navigation Integration
 
-**File**: `app/(features)/admin/dashboard/page.tsx`
+**File**: `app/(features)/crm/dashboard/page.tsx`
 
 Added admin-only navigation card:
 
 ```typescript
 {user?.role === "admin" && (
-  <Link href="/admin/analytics/staff" className="block">
+  <Link href="/crm/analytics/staff" className="block">
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition transform hover:-translate-y-1">
       <div className="flex items-center justify-between">
         <div>
@@ -511,7 +511,7 @@ Added admin-only navigation card:
 ### Example: Loading Staff Leaderboard
 
 ```
-User visits /admin/analytics/staff
+User visits /crm/analytics/staff
   ↓
 page.tsx (Server Component)
   ↓
@@ -669,14 +669,14 @@ migrateAssignedTo().catch(console.error);
 - `app/api/analytics/staff/depends.ts`
 
 ### UI Layer (5 files)
-- `app/(features)/admin/analytics/staff/page.tsx`
-- `app/(features)/admin/analytics/staff/actions.ts`
-- `app/(features)/admin/analytics/staff/_components/TeamPerformanceCards.tsx`
-- `app/(features)/admin/analytics/staff/_components/StaffLeaderboard.tsx`
-- `app/(features)/admin/analytics/staff/_components/StaffActivityTable.tsx`
+- `app/(features)/crm/analytics/staff/page.tsx`
+- `app/(features)/crm/analytics/staff/actions.ts`
+- `app/(features)/crm/analytics/staff/_components/TeamPerformanceCards.tsx`
+- `app/(features)/crm/analytics/staff/_components/StaffLeaderboard.tsx`
+- `app/(features)/crm/analytics/staff/_components/StaffActivityTable.tsx`
 
 ### Navigation (1 file modified)
-- `app/(features)/admin/dashboard/page.tsx`
+- `app/(features)/crm/dashboard/page.tsx`
 
 **Total: 15 files**
 

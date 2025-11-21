@@ -141,7 +141,7 @@ export function SustainabilitySection() {
         {/* Data Transparency (Optional) */}
         {/* <div className="mt-16 bg-brand-crystal/10 rounded-xl p-8 md:p-12 border-2 border-brand-crystal/20">
           <div className="flex items-start gap-6">
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <div className="w-16 h-16 bg-brand-crystal rounded-full flex items-center justify-center">
                 <BarChart3 className="w-8 h-8 text-white" />
               </div>

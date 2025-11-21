@@ -1,4 +1,4 @@
-import type { AdminUser } from "@/core/domain/admin-user"
+import type { AdminUser } from "@/core/domain/managements/admin-user"
 import type {
   AdminUserService,
   AdminUserPayload,
@@ -10,14 +10,13 @@ import { BaseRepository } from "../db/base-repository"
 
 export class AdminUserRepository
   extends BaseRepository<AdminUser, ObjectId>
-  implements AdminUserService
-{
+  implements AdminUserService {
   protected collectionName = "admin_users"
 
   // Get all users
   async getAll(): Promise<AdminUser[]> {
     const collection = await this.getCollection()
-    
+
     const docs = await collection.find({}).sort({ createdAt: -1 }).toArray()
     return docs.map((doc) => this.toDomain(doc))
   }
@@ -41,7 +40,7 @@ export class AdminUserRepository
   // Create new admin user
   async create(payload: AdminUserPayload): Promise<AdminUser> {
     if (!payload.password || !payload.email) throw new Error("Password and email are required for admin user creation");
-    
+
     const collection = await this.getCollection()
     // Hash password
     const password = await bcrypt.hash(payload.password, 10)
@@ -56,7 +55,7 @@ export class AdminUserRepository
   // Update user
   async update(payload: AdminUserPayload & { id: ObjectId }): Promise<AdminUser | null> {
     if (!payload.id) throw new Error("Admin user ID is required for update");
-    
+
     const collection = await this.getCollection()
     const now = new Date();
     const { id, ...updateFields } = payload;

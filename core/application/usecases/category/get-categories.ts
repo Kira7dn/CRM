@@ -1,4 +1,4 @@
-import type { Category } from "@/core/domain/category"
+import type { Category } from "@/core/domain/managements/category"
 import type { CategoryService } from "@/core/application/interfaces/category-service"
 
 export interface GetCategoriesResponse {
@@ -6,7 +6,7 @@ export interface GetCategoriesResponse {
 }
 
 export class GetCategoriesUseCase {
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService) { }
 
   async execute(): Promise<GetCategoriesResponse> {
     const categories = await this.categoryService.getAll()

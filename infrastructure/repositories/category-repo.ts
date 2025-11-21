@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { Category } from "@/core/domain/category";
+import { Category } from "@/core/domain/managements/category";
 import type { CategoryService, CategoryPayload } from "@/core/application/interfaces/category-service";
 import { getNextId } from "@/infrastructure/db/auto-increment";
 

@@ -138,4 +138,4 @@ This means:
 ## Related Files
 
 - `app/(features)/layout.tsx` - Main features layout using shared components
-- `app/(features)/admin/page.tsx` - Example page using shared actions
+- `app/(features)/crm/page.tsx` - Example page using shared actions

@@ -1,4 +1,4 @@
-import type { Platform } from "@/core/domain/post";
+import type { Platform } from "@/core/domain/managements/post";
 import type {
   PlatformIntegrationService,
   PlatformIntegrationFactory,

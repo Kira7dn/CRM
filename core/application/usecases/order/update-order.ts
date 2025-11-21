@@ -1,5 +1,5 @@
 import type { OrderService, OrderPayload } from "@/core/application/interfaces/order-service";
-import type { Order } from "@/core/domain/order";
+import type { Order } from "@/core/domain/managements/order";
 
 export interface UpdateOrderRequest {
   id: number;
@@ -11,7 +11,7 @@ export interface UpdateOrderResponse {
 }
 
 export class UpdateOrderUseCase {
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService) { }
 
   async execute(request: UpdateOrderRequest): Promise<UpdateOrderResponse> {
     const order = await this.orderService.update({ id: request.id, ...request.payload });

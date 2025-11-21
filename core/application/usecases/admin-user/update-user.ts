@@ -1,5 +1,5 @@
-import type { AdminUser } from "@/core/domain/admin-user"
-import { validateAdminUser } from "@/core/domain/admin-user"
+import type { AdminUser } from "@/core/domain/managements/admin-user"
+import { validateAdminUser } from "@/core/domain/managements/admin-user"
 import type { AdminUserService, AdminUserPayload } from "@/core/application/interfaces/admin-user-service"
 import { ObjectId } from "mongodb"
 
@@ -8,7 +8,7 @@ export interface UpdateAdminUserResponse {
 }
 
 export class UpdateAdminUserUseCase {
-  constructor(private adminUserService: AdminUserService) {}
+  constructor(private adminUserService: AdminUserService) { }
 
   async execute(request: AdminUserPayload & { id: ObjectId }): Promise<UpdateAdminUserResponse> {
     // Validate update data

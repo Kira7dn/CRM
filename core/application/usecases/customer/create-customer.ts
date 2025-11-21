@@ -1,15 +1,15 @@
-import type { Customer } from "@/core/domain/customer"
+import type { Customer } from "@/core/domain/managements/customer"
 import type { CustomerService, CustomerPayload } from "@/core/application/interfaces/customer-service"
-import { validateCustomer } from "@/core/domain/customer"
+import { validateCustomer } from "@/core/domain/managements/customer"
 
-export interface CreateCustomerRequest extends CustomerPayload {}
+export interface CreateCustomerRequest extends CustomerPayload { }
 
 export interface CreateCustomerResponse {
   customer: Customer
 }
 
 export class CreateCustomerUseCase {
-  constructor(private customerService: CustomerService) {}
+  constructor(private customerService: CustomerService) { }
 
   async execute(request: CreateCustomerRequest): Promise<CreateCustomerResponse> {
     // Validate customer data

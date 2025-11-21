@@ -5,7 +5,7 @@
  * This is a pure domain layer with no external dependencies.
  */
 
-import { CustomerTier } from "../customer";
+import { CustomerTier } from "../managements/customer";
 
 /**
  * Date range for filtering analytics data

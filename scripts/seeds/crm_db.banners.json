@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "68fccc9b177425e356230302"
+  },
+  "url": "https://zalo-miniapp.github.io/zaui-market/dummy/banner/ads.jpg",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fccc9b177425e356230306"
+  },
+  "url": "https://zalo-miniapp.github.io/zaui-market/dummy/banner/ads.jpg",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fccc9b177425e356230304"
+  },
+  "url": "https://zalo-miniapp.github.io/zaui-market/dummy/banner/ads.jpg",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fccc9b177425e356230303"
+  },
+  "url": "https://zalo-miniapp.github.io/zaui-market/dummy/banner/ads.jpg",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fccc9b177425e356230305"
+  },
+  "url": "https://zalo-miniapp.github.io/zaui-market/dummy/banner/ads.jpg",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.496Z"
+  }
+}]

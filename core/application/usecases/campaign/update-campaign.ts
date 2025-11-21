@@ -1,6 +1,6 @@
 import type { CampaignService, CampaignPayload } from "@/core/application/interfaces/campaign-service"
-import type { Campaign } from "@/core/domain/campaign"
-import { validateCampaign } from "@/core/domain/campaign"
+import type { Campaign } from "@/core/domain/managements/campaign"
+import { validateCampaign } from "@/core/domain/managements/campaign"
 
 export interface UpdateCampaignRequest {
   id: number
@@ -12,7 +12,7 @@ export interface UpdateCampaignResponse {
 }
 
 export class UpdateCampaignUseCase {
-  constructor(private campaignService: CampaignService) {}
+  constructor(private campaignService: CampaignService) { }
 
   async execute(request: UpdateCampaignRequest): Promise<UpdateCampaignResponse> {
     // Validate campaign data

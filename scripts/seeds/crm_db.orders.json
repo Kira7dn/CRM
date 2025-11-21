@@ -1,0 +1,380 @@
+[{
+  "_id": 1001,
+  "customerId": "6763a1b2c4e5f8a9b0c1d2e3",
+  "status": "completed",
+  "items": [
+    {
+      "productId": "1",
+      "productName": "Mực lá size lớn",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/m%E1%BB%B1c/muc-la.png",
+      "productSku": "MUC-LA-001",
+      "quantity": 2,
+      "unitPrice": 69900,
+      "totalPrice": 139800
+    },
+    {
+      "productId": "6",
+      "productName": "Tôm sú-1kg",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/t%C3%B4m/tom-su.png",
+      "quantity": 1,
+      "unitPrice": 300000,
+      "totalPrice": 300000
+    }
+  ],
+  "delivery": {
+    "name": "Nguyễn Văn An",
+    "phone": "0901234567",
+    "address": "123 Đường Lê Lợi, Phường Bến Nghé, Quận 1, TP.HCM",
+    "location": {
+      "lat": 10.7769,
+      "lon": 106.7009
+    },
+    "shippingProvider": "ghn",
+    "trackingNumber": "GHN123456789",
+    "estimatedDelivery": {
+      "$date": "2025-11-16T17:00:00.000Z"
+    },
+    "actualDelivery": {
+      "$date": "2025-11-16T15:30:00.000Z"
+    }
+  },
+  "subtotal": 439800,
+  "shippingFee": 30000,
+  "discount": 0,
+  "total": 469800,
+  "payment": {
+    "method": "vnpay",
+    "status": "success",
+    "transactionId": "VNPAY20251115001",
+    "paidAt": {
+      "$date": "2025-11-15T08:30:00.000Z"
+    },
+    "amount": 469800
+  },
+  "tags": ["weekend-order"],
+  "platformOrderId": "zalo_order_001",
+  "platformSource": "zalo",
+  "note": "Giao hàng trước 6 giờ chiều",
+  "confirmedAt": {
+    "$date": "2025-11-15T09:00:00.000Z"
+  },
+  "completedAt": {
+    "$date": "2025-11-16T15:30:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-15T08:30:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-16T15:30:00.000Z"
+  }
+},
+{
+  "_id": 1002,
+  "customerId": "6763a1b2c4e5f8a9b0c1d2e5",
+  "status": "shipping",
+  "items": [
+    {
+      "productId": "7",
+      "productName": "Combo Hải sâm",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/h%E1%BA%A3i+s%C3%A2m/combo-haisam.png",
+      "quantity": 3,
+      "unitPrice": 300000,
+      "totalPrice": 900000
+    },
+    {
+      "productId": "3",
+      "productName": "Bề bề size lớn - 1kg",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/b%E1%BB%81+b%E1%BB%81/bebe.png",
+      "quantity": 2,
+      "unitPrice": 500000,
+      "totalPrice": 1000000
+    }
+  ],
+  "delivery": {
+    "name": "Lê Minh Cường",
+    "phone": "0923456789",
+    "address": "789 Võ Văn Tần, Quận 3, TP.HCM",
+    "shippingProvider": "ghtk",
+    "trackingNumber": "GHTK987654321",
+    "estimatedDelivery": {
+      "$date": "2025-11-20T18:00:00.000Z"
+    }
+  },
+  "subtotal": 1900000,
+  "shippingFee": 50000,
+  "discount": 100000,
+  "total": 1850000,
+  "payment": {
+    "method": "bank_transfer",
+    "status": "success",
+    "transactionId": "BANK20251118001",
+    "paidAt": {
+      "$date": "2025-11-18T16:45:00.000Z"
+    },
+    "amount": 1850000
+  },
+  "tags": ["bulk-order", "restaurant"],
+  "platformSource": "tiktok",
+  "note": "Hàng cho nhà hàng, cần giao đúng giờ",
+  "internalNotes": "Khách VIP - ưu tiên xử lý",
+  "confirmedAt": {
+    "$date": "2025-11-18T17:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-18T16:45:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T10:00:00.000Z"
+  }
+},
+{
+  "_id": 1003,
+  "customerId": "6763a1b2c4e5f8a9b0c1d2e4",
+  "status": "processing",
+  "items": [
+    {
+      "productId": "4",
+      "productName": "Chả mực - 1kg",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/ch%E1%BA%A3+m%E1%BB%B1c/chamuc2.png",
+      "quantity": 2,
+      "unitPrice": 300000,
+      "totalPrice": 600000
+    }
+  ],
+  "delivery": {
+    "name": "Trần Thị Bình",
+    "phone": "0912345678",
+    "address": "456 Nguyễn Huệ, Quận 1, TP.HCM",
+    "shippingProvider": "ghn",
+    "estimatedDelivery": {
+      "$date": "2025-11-21T16:00:00.000Z"
+    }
+  },
+  "subtotal": 600000,
+  "shippingFee": 25000,
+  "discount": 50000,
+  "total": 575000,
+  "payment": {
+    "method": "zalopay",
+    "status": "success",
+    "transactionId": "ZALO20251119001",
+    "paidAt": {
+      "$date": "2025-11-19T14:20:00.000Z"
+    },
+    "amount": 575000
+  },
+  "tags": [],
+  "platformSource": "website",
+  "confirmedAt": {
+    "$date": "2025-11-19T14:30:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-19T14:20:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T15:00:00.000Z"
+  }
+},
+{
+  "_id": 1004,
+  "customerId": "6763a1b2c4e5f8a9b0c1d2e6",
+  "status": "pending",
+  "items": [
+    {
+      "productId": "2",
+      "productName": "Mực ống size lớn - 1kg",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/1763429979971-z7220538233120_1ed2f3189d23deeba96305c30a31d17c.jpg",
+      "quantity": 1,
+      "unitPrice": 30000,
+      "totalPrice": 30000
+    },
+    {
+      "productId": "5",
+      "productName": "Nộm sứa -300g",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/s%E1%BB%A9a/sua-nom.png",
+      "quantity": 1,
+      "unitPrice": 300000,
+      "totalPrice": 300000
+    }
+  ],
+  "delivery": {
+    "name": "Phạm Thị Dung",
+    "phone": "0934567890",
+    "address": "321 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM"
+  },
+  "subtotal": 330000,
+  "shippingFee": 30000,
+  "discount": 0,
+  "total": 360000,
+  "payment": {
+    "method": "cod",
+    "status": "pending",
+    "amount": 360000
+  },
+  "tags": ["new-customer"],
+  "platformSource": "facebook",
+  "note": "Gọi trước khi giao hàng",
+  "createdAt": {
+    "$date": "2025-11-19T16:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T16:00:00.000Z"
+  }
+},
+{
+  "_id": 1005,
+  "customerId": "6763a1b2c4e5f8a9b0c1d2e8",
+  "status": "confirmed",
+  "items": [
+    {
+      "productId": "1",
+      "productName": "Mực lá size lớn",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/m%E1%BB%B1c/muc-la.png",
+      "quantity": 3,
+      "unitPrice": 69900,
+      "totalPrice": 209700
+    },
+    {
+      "productId": "6",
+      "productName": "Tôm sú-1kg",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/t%C3%B4m/tom-su.png",
+      "quantity": 2,
+      "unitPrice": 300000,
+      "totalPrice": 600000
+    }
+  ],
+  "delivery": {
+    "name": "Đỗ Thị Phương",
+    "phone": "0956789012",
+    "address": "987 Lý Thường Kiệt, Quận 11, TP.HCM",
+    "shippingProvider": "ghn"
+  },
+  "subtotal": 809700,
+  "shippingFee": 35000,
+  "discount": 80000,
+  "total": 764700,
+  "payment": {
+    "method": "vnpay",
+    "status": "success",
+    "transactionId": "VNPAY20251119002",
+    "paidAt": {
+      "$date": "2025-11-19T09:30:00.000Z"
+    },
+    "amount": 764700
+  },
+  "tags": ["gift"],
+  "platformSource": "zalo",
+  "note": "Đóng gói làm quà",
+  "confirmedAt": {
+    "$date": "2025-11-19T10:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-19T09:30:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T10:00:00.000Z"
+  }
+},
+{
+  "_id": 1006,
+  "customerId": "6763a1b2c4e5f8a9b0c1d2e7",
+  "status": "cancelled",
+  "items": [
+    {
+      "productId": "4",
+      "productName": "Chả mực - 1kg",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/ch%E1%BA%A3+m%E1%BB%B1c/chamuc2.png",
+      "quantity": 1,
+      "unitPrice": 300000,
+      "totalPrice": 300000
+    }
+  ],
+  "delivery": {
+    "name": "Hoàng Văn Em",
+    "phone": "0945678901",
+    "address": "654 Cách Mạng Tháng 8, Quận 10, TP.HCM"
+  },
+  "subtotal": 300000,
+  "shippingFee": 25000,
+  "discount": 0,
+  "total": 325000,
+  "payment": {
+    "method": "cod",
+    "status": "failed",
+    "amount": 325000
+  },
+  "tags": [],
+  "platformSource": "telegram",
+  "note": "Khách hủy đơn",
+  "internalNotes": "Khách không nghe máy khi giao hàng",
+  "cancelledAt": {
+    "$date": "2025-11-17T14:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-17T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T14:00:00.000Z"
+  }
+},
+{
+  "_id": 1007,
+  "customerId": "6763a1b2c4e5f8a9b0c1d2f0",
+  "status": "delivered",
+  "items": [
+    {
+      "productId": "7",
+      "productName": "Combo Hải sâm",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/h%E1%BA%A3i+s%C3%A2m/combo-haisam.png",
+      "quantity": 2,
+      "unitPrice": 300000,
+      "totalPrice": 600000
+    },
+    {
+      "productId": "3",
+      "productName": "Bề bề size lớn - 1kg",
+      "productImage": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/b%E1%BB%81+b%E1%BB%81/bebe.png",
+      "quantity": 1,
+      "unitPrice": 500000,
+      "totalPrice": 500000
+    }
+  ],
+  "delivery": {
+    "name": "Mai Thị Hoa",
+    "phone": "0978901234",
+    "address": "135 Hai Bà Trưng, Quận 1, TP.HCM",
+    "shippingProvider": "ghtk",
+    "trackingNumber": "GHTK555666777",
+    "estimatedDelivery": {
+      "$date": "2025-11-09T18:00:00.000Z"
+    },
+    "actualDelivery": {
+      "$date": "2025-11-09T17:30:00.000Z"
+    }
+  },
+  "subtotal": 1100000,
+  "shippingFee": 40000,
+  "discount": 110000,
+  "total": 1030000,
+  "payment": {
+    "method": "bank_transfer",
+    "status": "success",
+    "transactionId": "BANK20251108001",
+    "paidAt": {
+      "$date": "2025-11-08T18:00:00.000Z"
+    },
+    "amount": 1030000
+  },
+  "tags": ["party-order"],
+  "platformSource": "facebook",
+  "note": "Đơn hàng cho tiệc",
+  "confirmedAt": {
+    "$date": "2025-11-08T18:30:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-08T18:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T17:30:00.000Z"
+  }
+}]

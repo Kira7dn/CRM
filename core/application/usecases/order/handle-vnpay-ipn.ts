@@ -1,7 +1,7 @@
 import type { VnpayIpnRequest, VnpayIpnParams, VnpayIpnResult } from "@/infrastructure/gateways/vnpay-gateway";
 import type { VnpayGateway } from "@/core/application/interfaces/vnpay-gateway";
 import type { OrderService } from "@/core/application/interfaces/order-service";
-import type { PaymentStatus } from "@/core/domain/order";
+import type { PaymentStatus } from "@/core/domain/managements/order";
 
 export interface HandleVnpayIpnRequest {
   body: VnpayIpnRequest;
@@ -16,7 +16,7 @@ export class HandleVnpayIpnUseCase {
   constructor(
     private readonly vnpayGateway: VnpayGateway,
     private readonly orderService: OrderService
-  ) {}
+  ) { }
 
   async execute(request: HandleVnpayIpnRequest): Promise<HandleVnpayIpnResponse> {
     console.log('[HandleVnpayIpnUseCase] Processing VNPay IPN:', request);

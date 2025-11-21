@@ -1,6 +1,6 @@
-import type { Product } from "@/core/domain/product";
+import type { Product } from "@/core/domain/managements/product";
 
-export interface ProductPayload extends Partial<Product> {}
+export interface ProductPayload extends Partial<Product> { }
 
 export interface FilterProductsParams {
   categoryId?: number | string;

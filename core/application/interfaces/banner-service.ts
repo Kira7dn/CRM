@@ -1,6 +1,6 @@
-import type { Banner } from "@/core/domain/banner";
+import type { Banner } from "@/core/domain/managements/banner";
 
-export interface BannerPayload extends Partial<Banner> {}
+export interface BannerPayload extends Partial<Banner> { }
 
 export interface BannerService {
   getAll(): Promise<Banner[]>;

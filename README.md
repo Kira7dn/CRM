@@ -183,7 +183,7 @@ npm run seed-admin
 npm run dev
 ```
 
-Visit `http://localhost:3000/admin/login` to access the admin panel.
+Visit `http://localhost:3000/crm/login` to access the admin panel.
 
 ### Environment Variables
 
@@ -694,23 +694,23 @@ npm run lint               # Run ESLint
 
 ## 📊 Admin Panel Overview
 
-After logging in at `/admin/login`, you'll have access to:
+After logging in at `/crm/login`, you'll have access to:
 
-### Dashboard (`/admin/dashboard`)
+### Dashboard (`/crm/dashboard`)
 - **KPI Cards**: Total revenue, orders, customers, products
 - **Charts**: Order status breakdown, payment analytics
 - **Recent Activity**: Last 5 orders with details
 - **Quick Actions**: Navigate to all modules
 
 ### Module Pages
-- **Products** (`/admin/products`): Product catalog with variants and images
-- **Orders** (`/admin/orders`): Order management with status tracking
-- **Customers** (`/admin/customers`): Customer database with platform tracking
-- **Categories** (`/admin/categories`): Product category management
-- **Banners** (`/admin/banners`): Promotional banner system
-- **Posts** (`/admin/posts`): Social media content management
-- **Campaigns** (`/admin/campaigns`): Marketing campaign tracking
-- **Users** (`/admin/users`): Admin user management (Admin only)
+- **Products** (`/crm/products`): Product catalog with variants and images
+- **Orders** (`/crm/orders`): Order management with status tracking
+- **Customers** (`/crm/customers`): Customer database with platform tracking
+- **Categories** (`/crm/categories`): Product category management
+- **Banners** (`/crm/banners`): Promotional banner system
+- **Posts** (`/crm/posts`): Social media content management
+- **Campaigns** (`/crm/campaigns`): Marketing campaign tracking
+- **Users** (`/crm/users`): Admin user management (Admin only)
 
 ### Role-Based Access
 - **Admin**: Full access to all features

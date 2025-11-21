@@ -108,7 +108,7 @@ Dependency injection factory providing use case instances:
 ### 5. UI Layer
 
 #### Server Actions
-**File:** `app/(features)/admin/dashboard/analytics/customer/actions.ts`
+**File:** `app/(features)/crm/dashboard/analytics/customer/actions.ts`
 
 Server Actions for client components (6 total):
 1. `getCustomerMetrics()` - Fetch customer KPIs
@@ -119,7 +119,7 @@ Server Actions for client components (6 total):
 6. `getRFMSegmentation()` - Fetch RFM segments
 
 #### Components (4 total)
-**Directory:** `app/(features)/admin/dashboard/analytics/customer/_components/`
+**Directory:** `app/(features)/crm/dashboard/analytics/customer/_components/`
 
 1. **CustomerMetricsCards.tsx**
    - Displays 4 KPI cards:
@@ -150,7 +150,7 @@ Server Actions for client components (6 total):
    - Sorted by segment size
 
 #### Main Page
-**File:** `app/(features)/admin/dashboard/analytics/customer/page.tsx`
+**File:** `app/(features)/crm/dashboard/analytics/customer/page.tsx`
 
 Main customer analytics dashboard:
 - Client-side data fetching with loading states
@@ -166,9 +166,9 @@ Main customer analytics dashboard:
 
 ### 6. Navigation Integration
 
-**Modified:** `app/(features)/admin/dashboard/page.tsx`
+**Modified:** `app/(features)/crm/dashboard/page.tsx`
 - Added "Customer Analytics" card to Quick Actions
-- Links to: `/admin/dashboard/analytics/customer`
+- Links to: `/crm/dashboard/analytics/customer`
 - Cyan-themed card with users icon
 
 ---
@@ -355,9 +355,9 @@ Can be adjusted per business needs via `ChurnRiskThresholds` parameter in querie
    ```
 
 2. **Navigate to:**
-   - Dashboard: `http://localhost:3000/admin/dashboard`
+   - Dashboard: `http://localhost:3000/crm/dashboard`
    - Click "Customer Analytics" card
-   - Or direct URL: `http://localhost:3000/admin/dashboard/analytics/customer`
+   - Or direct URL: `http://localhost:3000/crm/dashboard/analytics/customer`
 
 3. **Default View:**
    - Date Range: Last 30 days

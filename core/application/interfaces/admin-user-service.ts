@@ -1,8 +1,8 @@
-import type { AdminUser } from "@/core/domain/admin-user"
+import type { AdminUser } from "@/core/domain/managements/admin-user"
 import { ObjectId } from "mongodb"
 
 // Payload interfaces extending from domain
-export interface AdminUserPayload extends Partial<AdminUser> {}
+export interface AdminUserPayload extends Partial<AdminUser> { }
 
 export interface ChangePasswordPayload {
   userId: ObjectId

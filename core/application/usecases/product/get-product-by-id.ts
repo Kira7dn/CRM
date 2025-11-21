@@ -1,5 +1,5 @@
 import type { ProductService } from "@/core/application/interfaces/product-service";
-import type { Product } from "@/core/domain/product";
+import type { Product } from "@/core/domain/managements/product";
 
 export interface GetProductByIdRequest {
   id: number;
@@ -10,7 +10,7 @@ export interface GetProductByIdResponse {
 }
 
 export class GetProductByIdUseCase {
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   async execute(request: GetProductByIdRequest): Promise<GetProductByIdResponse> {
     const product = await this.productService.getById(request.id);

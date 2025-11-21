@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository"
-import type { Customer } from "@/core/domain/customer"
+import type { Customer } from "@/core/domain/managements/customer"
 import type {
   CustomerService,
   CustomerPayload
@@ -37,7 +37,7 @@ export class CustomerRepository extends BaseRepository<Customer, string> impleme
     })
     const collection = await this.getCollection()
     await collection.insertOne(doc)
-    return this.toDomain(doc) 
+    return this.toDomain(doc)
   }
 
   async update(payload: CustomerPayload): Promise<Customer | null> {
@@ -78,9 +78,9 @@ export class CustomerRepository extends BaseRepository<Customer, string> impleme
         { phone: { $regex: name, $options: 'i' } }
       ]
     })
-    .sort({ createdAt: -1 })
-    .toArray()
-      
+      .sort({ createdAt: -1 })
+      .toArray()
+
     return docs.map(doc => this.toDomain(doc))
   }
 

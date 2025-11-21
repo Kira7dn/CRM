@@ -3,7 +3,7 @@ import type {
   PlatformPublishRequest,
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
-import type { PostMetrics, PostMedia } from "@/core/domain/post";
+import type { PostMetrics, PostMedia } from "@/core/domain/managements/post";
 
 /**
  * Facebook Graph API Configuration
@@ -51,7 +51,7 @@ export class FacebookIntegration implements FacebookIntegrationService {
   platform = "facebook" as const;
   private baseUrl = "https://graph.facebook.com/v19.0";
 
-  constructor(private config: FacebookConfig) {}
+  constructor(private config: FacebookConfig) { }
 
   /**
    * Publish content to Facebook Page

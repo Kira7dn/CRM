@@ -1,6 +1,6 @@
-import type { Category } from "@/core/domain/category";
+import type { Category } from "@/core/domain/managements/category";
 
-export interface CategoryPayload extends Partial<Category> {}
+export interface CategoryPayload extends Partial<Category> { }
 
 export interface CategoryService {
   getAll(): Promise<Category[]>;

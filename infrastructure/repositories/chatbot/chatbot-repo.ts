@@ -133,7 +133,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
             "   - 'Doanh thu hôm nay'\n" +
             "   - 'Doanh thu tuần này'\n" +
             "   - 'So sánh doanh thu tháng này với tháng trước'",
-          metadata: { suggestedRoute: "/admin/analytics/revenue" },
+          metadata: { suggestedRoute: "/crm/analytics/revenue" },
         };
 
       case "customer_query":
@@ -145,10 +145,10 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
             "   - Nhận diện khách hàng có nguy cơ rời bỏ\n" +
             "   - Phân tích cohort retention\n\n" +
             "👥 **Quản lý khách hàng:**\n" +
-            "   - Xem danh sách khách hàng: /admin/customers\n" +
-            "   - Phân tích hành vi: /admin/analytics/customer\n\n" +
+            "   - Xem danh sách khách hàng: /crm/customers\n" +
+            "   - Phân tích hành vi: /crm/analytics/customer\n\n" +
             "Bạn muốn xem thông tin gì cụ thể?",
-          metadata: { suggestedRoute: "/admin/analytics/customer" },
+          metadata: { suggestedRoute: "/crm/analytics/customer" },
         };
 
       case "order_query":
@@ -156,7 +156,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
           content:
             "Về đơn hàng, tôi có thể hỗ trợ:\n\n" +
             "📦 **Quản lý đơn hàng:**\n" +
-            "   - Xem danh sách đơn hàng: /admin/orders\n" +
+            "   - Xem danh sách đơn hàng: /crm/orders\n" +
             "   - Lọc theo trạng thái (pending, confirmed, shipping, etc.)\n" +
             "   - Tra cứu đơn hàng theo mã\n\n" +
             "📊 **Thống kê đơn hàng:**\n" +
@@ -164,7 +164,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
             "   - Tỷ lệ hủy đơn\n" +
             "   - Thời gian xử lý trung bình\n\n" +
             "Bạn cần xem thông tin gì?",
-          metadata: { suggestedRoute: "/admin/managements/orders" },
+          metadata: { suggestedRoute: "/crm/managements/orders" },
         };
 
       case "product_query":
@@ -172,7 +172,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
           content:
             "Về sản phẩm, tôi có thể giúp:\n\n" +
             "📦 **Quản lý sản phẩm:**\n" +
-            "   - Danh sách sản phẩm: /admin/products\n" +
+            "   - Danh sách sản phẩm: /crm/products\n" +
             "   - Quản lý kho hàng\n" +
             "   - Cập nhật giá và thông tin\n\n" +
             "📊 **Phân tích sản phẩm:**\n" +
@@ -180,7 +180,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
             "   - Sản phẩm sắp hết hàng\n" +
             "   - Doanh thu theo danh mục\n\n" +
             "Bạn muốn xem gì?",
-          metadata: { suggestedRoute: "/admin/managements/products" },
+          metadata: { suggestedRoute: "/crm/managements/products" },
         };
 
       case "staff_performance":
@@ -195,8 +195,8 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
             "   - Xu hướng hiệu suất theo thời gian\n" +
             "   - So sánh giữa các thành viên\n" +
             "   - Hoạt động gần đây\n\n" +
-            "Xem chi tiết tại: /admin/analytics/staff",
-          metadata: { suggestedRoute: "/admin/analytics/staff" },
+            "Xem chi tiết tại: /crm/analytics/staff",
+          metadata: { suggestedRoute: "/crm/analytics/staff" },
         };
 
       case "campaign_analytics":
@@ -211,8 +211,8 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
             "   - Facebook, TikTok, Zalo\n" +
             "   - Doanh thu và chi phí\n" +
             "   - Engagement metrics\n\n" +
-            "Xem chi tiết tại: /admin/analytics/campaign",
-          metadata: { suggestedRoute: "/admin/analytics/campaign" },
+            "Xem chi tiết tại: /crm/analytics/campaign",
+          metadata: { suggestedRoute: "/crm/analytics/campaign" },
         };
 
       case "ticket_query":
@@ -220,7 +220,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
           content:
             "Về hệ thống support tickets:\n\n" +
             "🎫 **Quản lý tickets:**\n" +
-            "   - Danh sách tickets: /admin/customer-care/tickets\n" +
+            "   - Danh sách tickets: /crm/customer-care/tickets\n" +
             "   - Lọc theo trạng thái (open, in_progress, resolved)\n" +
             "   - Phân bổ cho nhân viên\n\n" +
             "📊 **Thống kê:**\n" +
@@ -228,7 +228,7 @@ export class ChatbotRepository extends BaseRepository<ChatConversation, string> 
             "   - Thời gian xử lý trung bình\n" +
             "   - Tickets quá hạn SLA\n\n" +
             "Bạn muốn xem gì?",
-          metadata: { suggestedRoute: "/admin/customer-care/tickets" },
+          metadata: { suggestedRoute: "/crm/customer-care/tickets" },
         };
 
       case "general_help":

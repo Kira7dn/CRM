@@ -1,5 +1,5 @@
 import { createHmac } from "crypto";
-import type { Order, PaymentMethod } from "@/core/domain/order";
+import type { Order, PaymentMethod } from "@/core/domain/managements/order";
 import type { OrderService } from "@/core/application/interfaces/order-service";
 import { notifyOrderWebhook } from "@/lib/webhook";
 
@@ -15,7 +15,7 @@ export interface PaymentCallbackResponse {
 }
 
 export class PaymentCallbackUseCase {
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService) { }
 
   async execute(request: PaymentCallbackRequest): Promise<PaymentCallbackResponse> {
     try {
@@ -62,20 +62,20 @@ export class PaymentCallbackUseCase {
 
       // Update payment status
       const paymentStatus = resultCode === 1 ? "success" : "failed";
-      
+
       // Get payment method from data or use a default value
-      const paymentMethod = (typeof data['method'] === 'string' 
-        ? data['method'] 
+      const paymentMethod = (typeof data['method'] === 'string'
+        ? data['method']
         : 'bank_transfer') as PaymentMethod;
-      
+
       // Get amount from data or use 0 as fallback
-      const amount = typeof data['amount'] === 'number' 
-        ? data['amount'] 
-        : typeof data['amount'] === 'string' 
-          ? parseFloat(data['amount']) || 0 
+      const amount = typeof data['amount'] === 'number'
+        ? data['amount']
+        : typeof data['amount'] === 'string'
+          ? parseFloat(data['amount']) || 0
           : 0;
       console.log("[paymentCallback] Updated order", { orderId, paymentStatus, paymentMethod, amount });
-        
+
       const updatedOrder = await this.orderService.update({
         id: orderId,
         payment: {

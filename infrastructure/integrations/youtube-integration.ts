@@ -3,7 +3,7 @@ import type {
   PlatformPublishRequest,
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
-import type { PostMetrics, PostMedia } from "@/core/domain/post";
+import type { PostMetrics, PostMedia } from "@/core/domain/managements/post";
 
 /**
  * YouTube Data API Configuration
@@ -85,19 +85,19 @@ export class YouTubeIntegration implements YouTubeIntegrationService {
   private uploadUrl = "https://www.googleapis.com/upload/youtube/v3";
 
   private _accessToken: string = ""; // Lưu trữ accessToken hiện tại
-  constructor(private config: YouTubeConfig) {}
+  constructor(private config: YouTubeConfig) { }
 
   // Phương thức để lấy accessToken hiện tại, đảm bảo nó đã được làm mới
   private async getValidAccessToken(): Promise<string> {
-  // Nếu chưa có accessToken hoặc nó có vẻ đã hết hạn (chúng ta không có expire_in chính xác ở đây,
-  // nhưng một ứng dụng thực tế sẽ lưu trữ nó)
-  // Để đơn giản, chúng ta sẽ làm mới mỗi lần nếu _accessToken rỗng, hoặc dựa vào lỗi API.
+    // Nếu chưa có accessToken hoặc nó có vẻ đã hết hạn (chúng ta không có expire_in chính xác ở đây,
+    // nhưng một ứng dụng thực tế sẽ lưu trữ nó)
+    // Để đơn giản, chúng ta sẽ làm mới mỗi lần nếu _accessToken rỗng, hoặc dựa vào lỗi API.
     if (!this._accessToken) {
       this._accessToken = await this.refreshAccessToken();
     }
     return this._accessToken;
   }
-  
+
   /**
    * Publish video to YouTube
    */

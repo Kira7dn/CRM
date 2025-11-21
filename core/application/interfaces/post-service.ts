@@ -1,6 +1,6 @@
-import type { Post } from "@/core/domain/post"
+import type { Post } from "@/core/domain/managements/post"
 
-export interface PostPayload extends Partial<Post> {}
+export interface PostPayload extends Partial<Post> { }
 
 export interface PostService {
   getAll(): Promise<Post[]>

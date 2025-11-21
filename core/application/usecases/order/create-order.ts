@@ -1,6 +1,6 @@
 import type { OrderService, OrderPayload } from "@/core/application/interfaces/order-service";
-import type { Order, OrderItem, Delivery, PaymentMethod } from "@/core/domain/order";
-import { validateOrder, calculateOrderTotal } from "@/core/domain/order";
+import type { Order, OrderItem, Delivery, PaymentMethod } from "@/core/domain/managements/order";
+import { validateOrder, calculateOrderTotal } from "@/core/domain/managements/order";
 
 // export interface CreateOrderRequest {
 //   customerId: string;
@@ -18,14 +18,14 @@ import { validateOrder, calculateOrderTotal } from "@/core/domain/order";
 //   tags?: string[];
 // }
 
-export interface CreateOrderRequest extends OrderPayload {}
+export interface CreateOrderRequest extends OrderPayload { }
 
 export interface CreateOrderResponse {
   order: Order;
 }
 
 export class CreateOrderUseCase {
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService) { }
 
   async execute(request: CreateOrderRequest): Promise<CreateOrderResponse> {
     console.log('[CreateOrderUseCase] Starting order creation with data:', request);

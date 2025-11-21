@@ -68,11 +68,11 @@ interface AdminUser {
 - ✅ `PATCH /api/auth/users/[id]` - Update user (admin only)
 - ✅ `DELETE /api/auth/users/[id]` - Delete user (admin only)
 
-**UI Pages:** [app/(features)/admin/](app/(features)/admin/)
-- ✅ `/admin/login` - Beautiful login page với error handling
-- ✅ `/admin/managements` - managements với role-based visibility
-- ✅ `/admin/analytics` - analytics với role-based visibility
-- ✅ `/admin/users` - User management (admin only)
+**UI Pages:** [app/(features)/crm/](app/(features)/crm/)
+- ✅ `/crm/login` - Beautiful login page với error handling
+- ✅ `/crm/managements` - managements với role-based visibility
+- ✅ `/crm/analytics` - analytics với role-based visibility
+- ✅ `/crm/users` - User management (admin only)
 
 
 ## Domain: [core/domain/category.ts](core/domain/category.ts)
@@ -104,7 +104,7 @@ interface Category {
 - `PATCH /api/categories/[id]` - Update
 - `DELETE /api/categories/[id]` - Delete
 
-**UI Page:** [app/(features)/admin/managements/categories/page.tsx](app/(features)/admin/managements/categories/page.tsx)
+**UI Page:** [app/(features)/crm/managements/categories/page.tsx](app/(features)/crm/managements/categories/page.tsx)
 - ✅ List view with inline editing
 - ✅ Create form
 - ✅ Update form
@@ -153,7 +153,7 @@ interface SizeOption {
 - `PATCH /api/products/[id]` - Update
 - `DELETE /api/products/[id]` - Delete
 
-**UI Pages:** [app/(features)/admin/managements/products/](app/(features)/admin/managements/products/)
+**UI Pages:** [app/(features)/crm/managements/products/](app/(features)/crm/managements/products/)
 - ✅ `page.tsx` - Main products page with grid layout
 - ✅ `actions.ts` - Server Actions for CRUD operations
 - ✅ `components/ProductList.tsx` - Product grid with filtering
@@ -224,7 +224,7 @@ interface DeliveryInfo {
 
 **UI Implementation:** ✅ **COMPLETE**
 
-**Server Actions:** [app/(features)/admin/managements/orders/actions.ts](app/(features)/admin/managements/orders/actions.ts)
+**Server Actions:** [app/(features)/crm/managements/orders/actions.ts](app/(features)/crm/managements/orders/actions.ts)
 - ✅ `getOrdersAction()` - Get orders with filters
 - ✅ `createOrderAction()` - Create new order
 - ✅ `updateOrderAction()` - Update order status/payment
@@ -232,13 +232,13 @@ interface DeliveryInfo {
 - ✅ Uses injected use cases from `depends.ts`
 - ✅ Proper `revalidatePath()` after mutations
 
-**Main Page:** [app/(features)/admin/managements/orders/page.tsx](app/(features)/admin/managements/orders/page.tsx)
+**Main Page:** [app/(features)/crm/managements/orders/page.tsx](app/(features)/crm/managements/orders/page.tsx)
 - ✅ Server Component with data fetching
 - ✅ Uses `getOrdersUseCase()` for initial data
 - ✅ JSON serialization for Date objects
 - ✅ Passes data to OrderList component
 
-**Components:** [app/(features)/admin/managements/orders/components/](app/(features)/admin/managements/orders/components/)
+**Components:** [app/(features)/crm/managements/orders/components/](app/(features)/crm/managements/orders/components/)
 
 1. **OrderList.tsx** - Main table component with:
    - ✅ Status filter (All, Pending, Shipping, Completed) with counts
@@ -293,7 +293,7 @@ interface Customer {
 - `DELETE /api/customers/[id]` - Delete
 - `GET /api/customers/search?name=...` - Search by name
 
-**UI Pages:** [app/(features)/admin/managements/customers/](app/(features)/admin/managements/customers/)
+**UI Pages:** [app/(features)/crm/managements/customers/](app/(features)/crm/managements/customers/)
 - ✅ `page.tsx` - Main customers page with table layout
 - ✅ `actions.ts` - Server Actions for CRUD operations
 - ✅ `components/CustomerList.tsx` - Customer table with filtering
@@ -323,7 +323,7 @@ interface Banner {
 - `PATCH /api/banners/[id]` - Update
 - `DELETE /api/banners/[id]` - Delete
 
-**UI Pages:** [app/(features)/admin/managements/banners/](app/(features)/admin/managements/banners/)
+**UI Pages:** [app/(features)/crm/managements/banners/](app/(features)/crm/managements/banners/)
 - ✅ `page.tsx` - Main banners page with grid layout
 - ✅ `actions.ts` - Server Actions for CRUD operations
 - ✅ `components/BannerList.tsx` - Banner grid with previews
@@ -342,7 +342,7 @@ interface Post {
 
 **Use Cases:** ✅ 4 use cases (Create, Get, Update, Delete)
 
-**UI Page:** [app/(features)/admin/managements/posts/page.tsx](app/(features)/admin/managements/posts/page.tsx)
+**UI Page:** [app/(features)/crm/managements/posts/page.tsx](app/(features)/crm/managements/posts/page.tsx)
 - ✅ PostForm component
 - ✅ PostList component
 - ✅ PostFilter component
@@ -403,14 +403,14 @@ interface CampaignPlatform {
 - `PATCH /api/campaigns/[id]` - Update
 - `DELETE /api/campaigns/[id]` - Delete
 
-**UI Pages:** [app/(features)/admin/managements/campaigns/](app/(features)/admin/managements/campaigns/)
+**UI Pages:** [app/(features)/crm/managements/campaigns/](app/(features)/crm/managements/campaigns/)
 - ✅ `page.tsx` - Main campaigns page
 - ✅ `actions.ts` - Server Actions for CRUD
 - ✅ `components/CampaignList.tsx` - Campaign listing
 - ✅ `components/CampaignForm.tsx` - Create/Edit form
 
 
-## Components [app/(features)/admin/managements/components/](app/(features)/admin/managements/components/)
+## Components [app/(features)/crm/managements/components/](app/(features)/crm/managements/components/)
 
 1. **managementsStats.tsx** - KPI Cards:
    - ✅ Total Revenue (with currency formatting)
@@ -573,7 +573,7 @@ type TimeGranularity = "day" | "week" | "month" | "quarter" | "year"
 - `GET /api/analytics/revenue/top-customers?startDate=...&endDate=...&limit=10`
 - `GET /api/analytics/revenue/order-status?startDate=...&endDate=...`
 
-#### **UI Implementation:** `app/(features)/admin/analytics/revenue/`
+#### **UI Implementation:** `app/(features)/crm/analytics/revenue/`
 
 **Components:**
 1. **page.tsx** - Server Component
@@ -706,7 +706,7 @@ interface CustomerRetention {
 - `GET /api/analytics/customer/churn-risk?level=high&limit=50`
 - `GET /api/analytics/customer/retention?cohortStart=...&periods=12`
 
-#### **UI Implementation:** `app/(features)/admin/analytics/customer/`
+#### **UI Implementation:** `app/(features)/crm/analytics/customer/`
 
 **Components:**
 1. **CustomerMetricsCards.tsx** - KPI overview
@@ -775,7 +775,7 @@ interface TeamPerformance {
 - Add `assignedTo: string` (staff ID) to Order entity
 - Add `handledBy: string` to CustomerCareTicket entity (Module 3.1)
 
-#### **UI Implementation:** `app/(features)/admin/analytics/staff/`
+#### **UI Implementation:** `app/(features)/crm/analytics/staff/`
 - Staff performance managements (admin-only)
 - Leaderboard with rankings
 - Individual staff detail view
@@ -842,7 +842,7 @@ interface Order {
 }
 ```
 
-#### **UI Implementation:** `app/(features)/admin/analytics/campaigns/`
+#### **UI Implementation:** `app/(features)/crm/analytics/campaigns/`
 - Campaign performance comparison table
 - ROI calculator
 - Platform performance breakdown charts
@@ -932,7 +932,7 @@ interface ChurnPrediction {
 - If using ML: OpenAI/Anthropic API client
 - Fallback to statistical methods if API fails
 
-#### **UI Implementation:** `app/(features)/admin/analytics/forecast/`
+#### **UI Implementation:** `app/(features)/crm/analytics/forecast/`
 
 **Components:**
 1. **RevenueForecastChart.tsx** - Line chart with predicted vs actual
@@ -1053,7 +1053,7 @@ class AnthropicLLMService implements LLMService {
 - `GET /api/ai/chatbot/sessions` - Get chat history
 - `POST /api/ai/chatbot/generate-report` - Generate PDF/Excel from query
 
-#### **UI Implementation:** `app/(features)/admin/managements/ai-assistant/`
+#### **UI Implementation:** `app/(features)/crm/managements/ai-assistant/`
 
 **Components:**
 1. **page.tsx** - Chat interface
@@ -1197,7 +1197,7 @@ interface TicketComment {
 - `POST /api/customer-care/tickets/[id]/close` - Close ticket
 - `POST /api/customer-care/tickets/[id]/rate` - Customer rating
 
-#### **UI Implementation:** `app/(features)/admin/managements/customer-care/tickets/`
+#### **UI Implementation:** `app/(features)/crm/managements/customer-care/tickets/`
 
 **Components:**
 1. **page.tsx** - Ticket list view
@@ -1384,7 +1384,7 @@ interface SentMessage {
 - `GET /api/customer-care/messages/sent?customerId=...&campaignId=...`
 - `POST /api/customer-care/messages/webhook` - Delivery status updates
 
-#### **UI Implementation:** `app/(features)/admin/managements/customer-care/messages/`
+#### **UI Implementation:** `app/(features)/crm/managements/customer-care/messages/`
 
 **Pages:**
 1. **campaigns/page.tsx** - Campaign list
@@ -1509,7 +1509,7 @@ interface InteractionSummary {
 - `GET /api/customer-care/interactions/follow-ups?staffId=...&overdue=true`
 - `PATCH /api/customer-care/interactions/[id]` - Update
 
-#### **UI Implementation:** `app/(features)/admin/managements/customer-care/interactions/`
+#### **UI Implementation:** `app/(features)/crm/managements/customer-care/interactions/`
 
 **Integration Points:**
 - Add "Interaction History" tab to customer detail page
@@ -1654,7 +1654,7 @@ interface SurveyAnalytics {
 - Render questions dynamically
 - Thank you page after submission
 
-#### **UI Implementation:** `app/(features)/admin/managements/customer-care/surveys/`
+#### **UI Implementation:** `app/(features)/crm/managements/customer-care/surveys/`
 
 **Components:**
 1. **SurveyList.tsx** - List of surveys
@@ -1975,7 +1975,7 @@ db.survey_responses.createIndex({ customerId: 1 })
   - ✅ Campaign types: one-time, recurring, triggered
   - ✅ Recipient filtering and statistics tracking
   - ✅ Campaign scheduling and automation logic
-  - ✅ Campaign UI components (`app/(features)/admin/customer-care/campaigns/`)
+  - ✅ Campaign UI components (`app/(features)/crm/customer-care/campaigns/`)
 - [x] Module 3.4: Interaction History ✅ **COMPLETED**
   - ✅ Interaction history domain (`core/domain/customer-care/interaction-history.ts`)
   - ✅ Multi-channel tracking (Zalo, Facebook, email, phone, etc.)
@@ -2101,8 +2101,8 @@ db.survey_responses.createIndex({ customerId: 1 })
 - **Use Cases:** 4 use cases in `core/application/usecases/analytics/forecast/`
 - **Repository:** `infrastructure/repositories/analytics/forecast-repo.ts` with statistical models
 - **API Routes:** 4 endpoints (`/revenue`, `/inventory`, `/churn`, `/trends`)
-- **UI Components:** 4 components in `app/(features)/admin/analytics/forecast/_components/`
-- **Page:** Full forecast dashboard in `app/(features)/admin/analytics/forecast/page.tsx`
+- **UI Components:** 4 components in `app/(features)/crm/analytics/forecast/_components/`
+- **Page:** Full forecast dashboard in `app/(features)/crm/analytics/forecast/page.tsx`
 - **Server Actions:** 4 actions in `actions.ts` for data fetching
 
 **Dependencies Used:**
@@ -2457,9 +2457,9 @@ Follow these steps to deploy to production:
 
 ### **Example 1: Revenue Analytics Actions**
 
-Following the existing pattern in `app/(features)/admin/actions.ts`, here's how to implement analytics actions:
+Following the existing pattern in `app/(features)/crm/actions.ts`, here's how to implement analytics actions:
 
-**File:** `app/(features)/admin/analytics/revenue/actions.ts`
+**File:** `app/(features)/crm/analytics/revenue/actions.ts`
 
 ```typescript
 "use server"
@@ -2559,9 +2559,9 @@ export async function getTopCustomersAction(
 
 ### **Example 2: Support Ticket Actions**
 
-Following the pattern in `app/(features)/admin/managements/orders/actions.ts`:
+Following the pattern in `app/(features)/crm/managements/orders/actions.ts`:
 
-**File:** `app/(features)/admin/managements/customer-care/tickets/actions.ts`
+**File:** `app/(features)/crm/managements/customer-care/tickets/actions.ts`
 
 ```typescript
 "use server"
@@ -2750,9 +2750,9 @@ export const addTicketCommentUseCase = async () => {
 
 ### **Example 4: managements Page Integration**
 
-Based on `app/(features)/admin/managements/page.tsx`, here's how to integrate analytics:
+Based on `app/(features)/crm/managements/page.tsx`, here's how to integrate analytics:
 
-**File:** `app/(features)/admin/analytics/revenue/page.tsx`
+**File:** `app/(features)/crm/analytics/revenue/page.tsx`
 
 ```typescript
 import { getRevenueMetricsAction, getRevenueTimeSeriesAction, getTopProductsAction } from "./actions"
@@ -2810,7 +2810,7 @@ export default async function RevenueAnalyticsPage({
 
 ### **Example 5: Client Component with Shadcn UI**
 
-**File:** `app/(features)/admin/analytics/revenue/components/RevenueMetricsCards.tsx`
+**File:** `app/(features)/crm/analytics/revenue/components/RevenueMetricsCards.tsx`
 
 ```typescript
 "use client"
@@ -3189,9 +3189,9 @@ infrastructure/
 ### **Files Created (13 new files):**
 
 #### **Chatbot UI Integration (2 files)**
-1. `app/(features)/admin/chatbot/actions.ts` - Server actions for chat
-2. `app/(features)/admin/chatbot/_components/ChatbotWidget.tsx` - Full-featured chat UI
-3. `app/(features)/admin/managements/_components/DashboardWithChatbot.tsx` - Wrapper component
+1. `app/(features)/crm/chatbot/actions.ts` - Server actions for chat
+2. `app/(features)/crm/chatbot/_components/ChatbotWidget.tsx` - Full-featured chat UI
+3. `app/(features)/crm/managements/_components/DashboardWithChatbot.tsx` - Wrapper component
 
 #### **Message Templates (6 files)**
 4. `core/domain/customer-care/message-template.ts` - Domain entities
@@ -3219,7 +3219,7 @@ infrastructure/
     - Follow-up tracking system
 
 ### **Files Modified:**
-1. `app/(features)/admin/managements/page.tsx` - Integrated chatbot widget
+1. `app/(features)/crm/managements/page.tsx` - Integrated chatbot widget
 2. `docs/PRD/Analystics & CustomerCare.md` - Updated progress and status
 
 ### **Key Features Implemented:**
@@ -3338,7 +3338,7 @@ This session focused on implementing Module 1.5 (AI-Powered Forecasting), comple
 **Dependency Injection:**
 - `depends.ts` with factory functions for all use cases
 
-#### **5. UI Layer** (`app/(features)/admin/analytics/forecast/`)
+#### **5. UI Layer** (`app/(features)/crm/analytics/forecast/`)
 **Components:** (4 total)
 - `RevenueForecastChart.tsx` - Line chart with confidence intervals (Recharts)
 - `InventoryAlerts.tsx` - Product demand list with restock recommendations

@@ -14,9 +14,9 @@ const badgeVariants = cva(
         warning: "bg-yellow-100 text-yellow-800",
         danger: "bg-red-100 text-red-800",
         outline: "border-2 border-gray-300 text-gray-700 bg-transparent",
-        new: "bg-gradient-to-r from-brand-crystal to-blue-500 text-white",
-        premium: "bg-gradient-to-r from-brand-golden to-yellow-500 text-brand-charcoal",
-        bestseller: "bg-gradient-to-r from-orange-500 to-red-500 text-white",
+        new: "bg-linear-to-r from-brand-crystal to-blue-500 text-white",
+        premium: "bg-linear-to-r from-brand-golden to-yellow-500 text-brand-charcoal",
+        bestseller: "bg-linear-to-r from-orange-500 to-red-500 text-white",
       },
       size: {
         sm: "text-xs px-2 py-0.5",
@@ -33,7 +33,7 @@ const badgeVariants = cva(
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
+  VariantProps<typeof badgeVariants> { }
 
 export function Badge({
   className,

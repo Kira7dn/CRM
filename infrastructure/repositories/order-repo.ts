@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { Order } from "@/core/domain/order";
+import { Order } from "@/core/domain/managements/order";
 import type { OrderService, GetOrdersParams, OrderPayload } from "@/core/application/interfaces/order-service";
 import { getNextId } from "@/infrastructure/db/auto-increment";
 
@@ -56,12 +56,12 @@ export class OrderRepository extends BaseRepository<Order, number> implements Or
       const result = await collection.findOneAndUpdate(
         { _id: id } as any,
         { $set: updateObj },
-        { 
+        {
           returnDocument: 'after',
           includeResultMetadata: true
         }
       );
-      
+
       console.log('[OrderRepository] Update result:', {
         ok: result.ok,
         lastErrorObject: result.lastErrorObject,

@@ -1,4 +1,4 @@
-import type { Customer } from "@/core/domain/customer"
+import type { Customer } from "@/core/domain/managements/customer"
 import type { CustomerService } from "@/core/application/interfaces/customer-service"
 
 export interface GetCustomerByIdRequest {
@@ -10,7 +10,7 @@ export interface GetCustomerByIdResponse {
 }
 
 export class GetCustomerByIdUseCase {
-  constructor(private customerService: CustomerService) {}
+  constructor(private customerService: CustomerService) { }
 
   async execute(request: GetCustomerByIdRequest): Promise<GetCustomerByIdResponse> {
     const customer = await this.customerService.getById(request.id)

@@ -39,7 +39,7 @@ async function seedAdmin() {
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
   console.log("")
   console.log("⚠️  IMPORTANT: Please change the password after first login!")
-  console.log("Login at: http://localhost:3000/admin/login")
+  console.log("Login at: http://localhost:3000/crm/login")
 }
 
 seedAdmin()

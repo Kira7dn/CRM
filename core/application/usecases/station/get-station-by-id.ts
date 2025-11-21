@@ -1,5 +1,5 @@
 import type { StationService } from "@/core/application/interfaces/station-service";
-import type { Station } from "@/core/domain/station";
+import type { Station } from "@/core/domain/managements/station";
 
 export interface GetStationByIdRequest {
   id: number;
@@ -10,7 +10,7 @@ export interface GetStationByIdResponse {
 }
 
 export class GetStationByIdUseCase {
-  constructor(private stationService: StationService) {}
+  constructor(private stationService: StationService) { }
 
   async execute(request: GetStationByIdRequest): Promise<GetStationByIdResponse> {
     const station = await this.stationService.getById(request.id);

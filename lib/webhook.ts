@@ -1,4 +1,4 @@
-import type { Order } from "@/core/domain/order";
+import type { Order } from "@/core/domain/managements/order";
 
 export const notifyOrderWebhook = async (order: Order): Promise<void> => {
   console.log("[notifyOrderWebhook] Starting webhook notification", {
@@ -8,18 +8,18 @@ export const notifyOrderWebhook = async (order: Order): Promise<void> => {
   });
 
   const externalWebhookUrl = process.env.ORDER_WEBHOOK_URL?.trim();
-  console.log("[notifyOrderWebhook] Webhook URL check:", { 
-    hasUrl: !!externalWebhookUrl, 
-    url: externalWebhookUrl ? `${externalWebhookUrl.substring(0, 30)}${externalWebhookUrl.length > 30 ? '...' : ''}` : 'undefined' 
+  console.log("[notifyOrderWebhook] Webhook URL check:", {
+    hasUrl: !!externalWebhookUrl,
+    url: externalWebhookUrl ? `${externalWebhookUrl.substring(0, 30)}${externalWebhookUrl.length > 30 ? '...' : ''}` : 'undefined'
   });
-  
+
   if (!externalWebhookUrl) {
     console.log("[notifyOrderWebhook] No webhook URL configured, skipping");
     return;
   }
 
   try {
-    console.log("[notifyOrderWebhook] Sending webhook request", { 
+    console.log("[notifyOrderWebhook] Sending webhook request", {
       orderId: order.id,
       url: externalWebhookUrl,
       timestamp: new Date().toISOString()
@@ -62,7 +62,7 @@ export const notifyOrderWebhook = async (order: Order): Promise<void> => {
       return;
     }
 
-    console.log("[notifyOrderWebhook] External webhook sent successfully", { 
+    console.log("[notifyOrderWebhook] External webhook sent successfully", {
       orderId: order.id,
       status: response.status,
       responseTime: `${responseTime}ms`,
@@ -72,11 +72,11 @@ export const notifyOrderWebhook = async (order: Order): Promise<void> => {
     console.error("[notifyOrderWebhook] Error sending external webhook", {
       orderId: order.id,
       error: error instanceof Error
-        ? { 
-            name: error.name, 
-            message: error.message, 
-            stack: error.stack?.split('\n').slice(0, 3).join('\n') + '\n...' 
-          }
+        ? {
+          name: error.name,
+          message: error.message,
+          stack: error.stack?.split('\n').slice(0, 3).join('\n') + '\n...'
+        }
         : error,
       timestamp: new Date().toISOString()
     });

@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { User } from "@/core/domain/user";
+import { User } from "@/core/domain/managements/user";
 import type { UserService, UpsertUserPayload } from "@/core/application/interfaces/user-service";
 
 export class UserRepository extends BaseRepository<User, string> implements UserService {

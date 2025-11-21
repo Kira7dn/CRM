@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getOrdersUseCase, createOrderUseCase } from "./depends";
-import type { OrderStatus } from "@/core/domain/order";
+import type { OrderStatus } from "@/core/domain/managements/order";
 
 export async function GET(request: NextRequest) {
   try {

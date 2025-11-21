@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { Station, Location } from "@/core/domain/station";
+import { Station, Location } from "@/core/domain/managements/station";
 import type { StationService, StationPayload } from "@/core/application/interfaces/station-service";
 import { getNextId } from "@/infrastructure/db/auto-increment";
 

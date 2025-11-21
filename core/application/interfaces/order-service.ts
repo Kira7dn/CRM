@@ -1,4 +1,4 @@
-import type { Order, OrderItem, Delivery, OrderStatus, PaymentStatus, PaymentInfo } from "@/core/domain/order";
+import type { Order, OrderItem, Delivery, OrderStatus, PaymentStatus, PaymentInfo } from "@/core/domain/managements/order";
 
 export interface GetOrdersParams {
   status?: OrderStatus;
@@ -6,7 +6,7 @@ export interface GetOrdersParams {
   platformSource?: string;
 }
 
-export interface OrderPayload extends Partial<Order> {}
+export interface OrderPayload extends Partial<Order> { }
 
 export interface OrderService {
   getAll(params?: GetOrdersParams): Promise<Order[]>;

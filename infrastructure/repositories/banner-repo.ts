@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { Banner } from "@/core/domain/banner";
+import { Banner } from "@/core/domain/managements/banner";
 import type { BannerService, BannerPayload } from "@/core/application/interfaces/banner-service";
 import { getNextId } from "@/infrastructure/db/auto-increment";
 

@@ -1,0 +1,130 @@
+[{
+  "_id": 7,
+  "categoryId": 5,
+  "name": "Combo Hải sâm",
+  "price": 1000,
+  "originalPrice": 300000,
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/h%E1%BA%A3i+s%C3%A2m/combo-haisam.png",
+  "detail": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "sizes": [],
+  "colors": [],
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  }
+},
+{
+  "_id": 3,
+  "categoryId": 3,
+  "name": "Bề bề size lớn - 1kg",
+  "price": 1000,
+  "originalPrice": 500000,
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/b%E1%BB%81+b%E1%BB%81/bebe.png",
+  "detail": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "sizes": [],
+  "colors": [],
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  }
+},
+{
+  "_id": 2,
+  "categoryId": 1,
+  "name": "Mực ống size lớn - 1kg",
+  "price": 1000,
+  "originalPrice": 30000,
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/1763429979971-z7220538233120_1ed2f3189d23deeba96305c30a31d17c.jpg",
+  "detail": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "sizes": [],
+  "colors": [],
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-18T01:39:50.028Z"
+  }
+},
+{
+  "_id": 4,
+  "categoryId": 4,
+  "name": "Chả mực - 1kg",
+  "price": 1000,
+  "originalPrice": 300000,
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/ch%E1%BA%A3+m%E1%BB%B1c/chamuc2.png",
+  "detail": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n",
+  "sizes": [],
+  "colors": [],
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  }
+},
+{
+  "_id": 1,
+  "categoryId": 1,
+  "name": "Mực lá size lớn",
+  "price": 1000,
+  "originalPrice": 69900,
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/m%E1%BB%B1c/muc-la.png",
+  "detail": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "sizes": [
+    {
+      "label": "500g",
+      "price": 1000,
+      "originalPrice": 50000
+    },
+    {
+      "label": "1000g",
+      "price": 2000,
+      "originalPrice": 100000
+    }
+  ],
+  "colors": [],
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.427Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.427Z"
+  }
+},
+{
+  "_id": 5,
+  "categoryId": 6,
+  "name": "Nộm sứa -300g",
+  "price": 1000,
+  "originalPrice": 300000,
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/s%E1%BB%A9a/sua-nom.png",
+  "detail": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n",
+  "sizes": [],
+  "colors": [],
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  }
+},
+{
+  "_id": 6,
+  "categoryId": 2,
+  "name": "Tôm sú-1kg",
+  "price": 1000,
+  "originalPrice": 300000,
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/t%C3%B4m/tom-su.png",
+  "detail": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "sizes": [],
+  "colors": [],
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.428Z"
+  }
+}]

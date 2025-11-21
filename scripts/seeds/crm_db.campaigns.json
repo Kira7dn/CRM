@@ -1,0 +1,296 @@
+[{
+  "_id": 1,
+  "name": "Flash Sale Cuối Tuần - Tháng 11",
+  "description": "Chương trình Flash Sale hải sản tươi sống diễn ra vào các cuối tuần trong tháng 11. Giảm giá 20-30% cho tất cả sản phẩm. Mục tiêu tăng doanh số và thu hút khách hàng mới qua các kênh social media.",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/campaigns/flash-sale-nov.jpg",
+  "startDate": {
+    "$date": "2025-11-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-11-30T23:59:59.000Z"
+  },
+  "status": "active",
+  "type": "discount",
+  "products": [1, 2, 3, 4, 5, 6, 7],
+  "platforms": [
+    {
+      "platform": "facebook",
+      "campaignId": "fb_campaign_001",
+      "utmParams": {
+        "source": "facebook",
+        "medium": "social",
+        "campaign": "flash_sale_nov_2025"
+      },
+      "metrics": {
+        "impressions": 45000,
+        "clicks": 2250,
+        "ctr": 5.0
+      }
+    },
+    {
+      "platform": "tiktok",
+      "campaignId": "tiktok_campaign_001",
+      "utmParams": {
+        "source": "tiktok",
+        "medium": "social",
+        "campaign": "flash_sale_nov_2025"
+      },
+      "metrics": {
+        "impressions": 78000,
+        "clicks": 3900,
+        "ctr": 5.0
+      }
+    },
+    {
+      "platform": "zalo",
+      "campaignId": "zalo_campaign_001",
+      "utmParams": {
+        "source": "zalo",
+        "medium": "social",
+        "campaign": "flash_sale_nov_2025"
+      },
+      "metrics": {
+        "impressions": 32000,
+        "clicks": 1920,
+        "ctr": 6.0
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-10-25T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T12:00:00.000Z"
+  }
+},
+{
+  "_id": 2,
+  "name": "Giới Thiệu Hải Sản Cô Tô - Branding Q4",
+  "description": "Chiến dịch branding nhằm nâng cao nhận diện thương hiệu Hải Sản Ngày Mới và quảng bá đặc sản Cô Tô. Tập trung vào nội dung giáo dục và storytelling về nguồn gốc hải sản.",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/campaigns/branding-q4.jpg",
+  "startDate": {
+    "$date": "2025-10-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-12-31T23:59:59.000Z"
+  },
+  "status": "active",
+  "type": "branding",
+  "products": [1, 2, 3, 5, 7],
+  "platforms": [
+    {
+      "platform": "facebook",
+      "campaignId": "fb_campaign_002",
+      "utmParams": {
+        "source": "facebook",
+        "medium": "social",
+        "campaign": "branding_q4_2025"
+      },
+      "metrics": {
+        "impressions": 120000,
+        "clicks": 4800,
+        "ctr": 4.0
+      }
+    },
+    {
+      "platform": "youtube",
+      "campaignId": "yt_campaign_001",
+      "utmParams": {
+        "source": "youtube",
+        "medium": "video",
+        "campaign": "branding_q4_2025"
+      },
+      "metrics": {
+        "impressions": 95000,
+        "clicks": 2850,
+        "ctr": 3.0
+      }
+    },
+    {
+      "platform": "zalo",
+      "campaignId": "zalo_campaign_002",
+      "utmParams": {
+        "source": "zalo",
+        "medium": "social",
+        "campaign": "branding_q4_2025"
+      },
+      "metrics": {
+        "impressions": 58000,
+        "clicks": 2320,
+        "ctr": 4.0
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-09-20T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T12:00:00.000Z"
+  }
+},
+{
+  "_id": 3,
+  "name": "Hợp Tác KOL - Food Bloggers",
+  "description": "Chiến dịch hợp tác với các KOL/Food Blogger để review và giới thiệu sản phẩm hải sản. Mục tiêu tăng độ tin cậy và tiếp cận tệp khách hàng mới thông qua influencer marketing.",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/campaigns/kol-campaign.jpg",
+  "startDate": {
+    "$date": "2025-11-15T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-12-15T23:59:59.000Z"
+  },
+  "status": "active",
+  "type": "kol",
+  "products": [1, 3, 4, 6, 7],
+  "platforms": [
+    {
+      "platform": "tiktok",
+      "campaignId": "tiktok_campaign_002",
+      "utmParams": {
+        "source": "tiktok",
+        "medium": "influencer",
+        "campaign": "kol_food_bloggers"
+      },
+      "metrics": {
+        "impressions": 250000,
+        "clicks": 12500,
+        "ctr": 5.0
+      }
+    },
+    {
+      "platform": "facebook",
+      "campaignId": "fb_campaign_003",
+      "utmParams": {
+        "source": "facebook",
+        "medium": "influencer",
+        "campaign": "kol_food_bloggers"
+      },
+      "metrics": {
+        "impressions": 180000,
+        "clicks": 7200,
+        "ctr": 4.0
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-11-10T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T12:00:00.000Z"
+  }
+},
+{
+  "_id": 4,
+  "name": "Tết Nguyên Đán 2026 - Pre-order",
+  "description": "Chiến dịch pre-order hải sản cho mùa Tết Nguyên Đán 2026. Ưu đãi đặc biệt cho khách hàng đặt trước, combo quà tặng cao cấp. Tập trung vào segment khách hàng VIP và Premium.",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/campaigns/tet-2026.jpg",
+  "startDate": {
+    "$date": "2025-12-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2026-01-25T23:59:59.000Z"
+  },
+  "status": "upcoming",
+  "type": "discount",
+  "products": [1, 2, 3, 4, 5, 6, 7],
+  "platforms": [
+    {
+      "platform": "zalo",
+      "campaignId": "zalo_campaign_003",
+      "utmParams": {
+        "source": "zalo",
+        "medium": "social",
+        "campaign": "tet_2026_preorder"
+      }
+    },
+    {
+      "platform": "facebook",
+      "campaignId": "fb_campaign_004",
+      "utmParams": {
+        "source": "facebook",
+        "medium": "social",
+        "campaign": "tet_2026_preorder"
+      }
+    },
+    {
+      "platform": "shopee",
+      "campaignId": "shopee_campaign_001",
+      "utmParams": {
+        "source": "shopee",
+        "medium": "marketplace",
+        "campaign": "tet_2026_preorder"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-11-18T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-18T10:00:00.000Z"
+  }
+},
+{
+  "_id": 5,
+  "name": "Mùa Hè Sôi Động - Summer Seafood 2025",
+  "description": "Chiến dịch marketing mùa hè với các món hải sản phù hợp cho BBQ và tiệc nướng. Đã kết thúc với kết quả rất tích cực, tăng 45% doanh số so với cùng kỳ năm trước.",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/campaigns/summer-2025.jpg",
+  "startDate": {
+    "$date": "2025-06-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-08-31T23:59:59.000Z"
+  },
+  "status": "ended",
+  "type": "discount",
+  "products": [1, 2, 3, 4, 6],
+  "platforms": [
+    {
+      "platform": "facebook",
+      "campaignId": "fb_campaign_005",
+      "utmParams": {
+        "source": "facebook",
+        "medium": "social",
+        "campaign": "summer_seafood_2025"
+      },
+      "metrics": {
+        "impressions": 320000,
+        "clicks": 19200,
+        "ctr": 6.0
+      }
+    },
+    {
+      "platform": "tiktok",
+      "campaignId": "tiktok_campaign_003",
+      "utmParams": {
+        "source": "tiktok",
+        "medium": "social",
+        "campaign": "summer_seafood_2025"
+      },
+      "metrics": {
+        "impressions": 450000,
+        "clicks": 22500,
+        "ctr": 5.0
+      }
+    },
+    {
+      "platform": "zalo",
+      "campaignId": "zalo_campaign_004",
+      "utmParams": {
+        "source": "zalo",
+        "medium": "social",
+        "campaign": "summer_seafood_2025"
+      },
+      "metrics": {
+        "impressions": 185000,
+        "clicks": 11100,
+        "ctr": 6.0
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-05-15T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-05T15:00:00.000Z"
+  }
+}]

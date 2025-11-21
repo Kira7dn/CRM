@@ -1,5 +1,5 @@
 import type { OrderService } from "@/core/application/interfaces/order-service";
-import type { Order, OrderStatus } from "@/core/domain/order";
+import type { Order, OrderStatus } from "@/core/domain/managements/order";
 
 export interface GetOrdersRequest {
   status?: OrderStatus;
@@ -12,7 +12,7 @@ export interface GetOrdersResponse {
 }
 
 export class GetOrdersUseCase {
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService) { }
 
   async execute(request: GetOrdersRequest = {}): Promise<GetOrdersResponse> {
     const orders = await this.orderService.getAll({

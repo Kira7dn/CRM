@@ -14,7 +14,7 @@ export async function getCurrentUserAction() {
   try {
     const useCase = await createGetCurrentUserUseCase()
     const result = await useCase.execute({ userId })
-    
+
     return result.user
   } catch (error) {
     return null
@@ -27,5 +27,5 @@ export async function logoutAction() {
   cookieStore.delete("admin_user_id")
   cookieStore.delete("admin_user_role")
 
-  redirect("/admin/login")
+  redirect("/crm/login")
 }

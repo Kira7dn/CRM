@@ -1,4 +1,4 @@
-import type { AdminUser } from "@/core/domain/admin-user"
+import type { AdminUser } from "@/core/domain/managements/admin-user"
 import type { AdminUserService } from "@/core/application/interfaces/admin-user-service"
 
 export interface GetAllUsersRequest {
@@ -11,7 +11,7 @@ export interface GetAllUsersResponse {
 }
 
 export class GetAllUsersUseCase {
-  constructor(private adminUserService: AdminUserService) {}
+  constructor(private adminUserService: AdminUserService) { }
 
   async execute(request: GetAllUsersRequest): Promise<GetAllUsersResponse> {
     let users: AdminUser[]

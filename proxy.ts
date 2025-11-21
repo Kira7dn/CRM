@@ -14,16 +14,16 @@ interface AuthRule {
 
 // ===== Authorization Matrix =====
 const AUTH_RULES: AuthRule[] = [
-  { path: "/admin/managements", admin: "full", sale: "read", warehouse: "read" },
-  { path: "/admin/managements/products", admin: "full", sale: "read", warehouse: "stock" },
-  { path: "/admin/managements/categories", admin: "full", sale: "read", warehouse: "none" },
-  { path: "/admin/managements/orders", admin: "full", sale: "write", warehouse: "status" },
-  { path: "/admin/managements/customers", admin: "full", sale: "read", warehouse: "none" },
-  { path: "/admin/managements/banners", admin: "full", sale: "read", warehouse: "none" },
-  { path: "/admin/managements/posts", admin: "full", sale: "read", warehouse: "none" },
-  { path: "/admin/managements/campaigns", admin: "full", sale: "read", warehouse: "none" },
-  { path: "/admin/users", admin: "full", sale: "none", warehouse: "none" },
-  { path: "/admin/analytics", admin: "full", sale: "none", warehouse: "none" }
+  { path: "/crm/managements", admin: "full", sale: "read", warehouse: "read" },
+  { path: "/crm/managements/products", admin: "full", sale: "read", warehouse: "stock" },
+  { path: "/crm/managements/categories", admin: "full", sale: "read", warehouse: "none" },
+  { path: "/crm/managements/orders", admin: "full", sale: "write", warehouse: "status" },
+  { path: "/crm/managements/customers", admin: "full", sale: "read", warehouse: "none" },
+  { path: "/crm/managements/banners", admin: "full", sale: "read", warehouse: "none" },
+  { path: "/crm/managements/posts", admin: "full", sale: "read", warehouse: "none" },
+  { path: "/crm/managements/campaigns", admin: "full", sale: "read", warehouse: "none" },
+  { path: "/crm/users", admin: "full", sale: "none", warehouse: "none" },
+  { path: "/crm/analytics", admin: "full", sale: "none", warehouse: "none" }
 ];
 
 // ===== CORS Configuration =====
@@ -74,13 +74,13 @@ export function proxy(request: NextRequest) {
   const corsRes = handleCors(request);
   if (request.method === 'OPTIONS') return corsRes;
 
-  // Only protect /admin routes
-  if (!pathname.startsWith("/admin")) {
+  // Only protect /crm routes
+  if (!pathname.startsWith("/crm")) {
     return corsRes;
   }
 
   // Allow login page
-  if (pathname.startsWith("/admin/login")) {
+  if (pathname.startsWith("/crm/login")) {
     return corsRes;
   }
 
@@ -90,7 +90,7 @@ export function proxy(request: NextRequest) {
 
   // Not logged in → redirect
   if (!userId) {
-    const loginUrl = new URL("/admin/login", request.url);
+    const loginUrl = new URL("/crm/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
@@ -108,7 +108,7 @@ export function proxy(request: NextRequest) {
 
   // No access → redirect to dashboard
   if (permission === "none") {
-    return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    return NextResponse.redirect(new URL("/crm/dashboard", request.url));
   }
 
   // Read-only restriction

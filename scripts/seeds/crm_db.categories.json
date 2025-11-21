@@ -1,0 +1,66 @@
+[{
+  "_id": 1,
+  "name": "Mực",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/m%E1%BB%B1c/squid.png",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  }
+},
+{
+  "_id": 6,
+  "name": "Sứa",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/s%E1%BB%A9a/jellyfish.png",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.359Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.359Z"
+  }
+},
+{
+  "_id": 2,
+  "name": "Tôm",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/t%C3%B4m/shrim.png",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  }
+},
+{
+  "_id": 5,
+  "name": "Hải Sâm",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/h%E1%BA%A3i+s%C3%A2m/cucumber.png",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  }
+},
+{
+  "_id": 3,
+  "name": "Bề Bề",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/b%E1%BB%81+b%E1%BB%81/mantis.png",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  }
+},
+{
+  "_id": 4,
+  "name": "Chả mực/cá",
+  "image": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/ch%E1%BA%A3+m%E1%BB%B1c/cake.png",
+  "createdAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-25T13:11:55.358Z"
+  }
+}]

@@ -1,5 +1,5 @@
 import type { CampaignService } from "@/core/application/interfaces/campaign-service"
-import type { Campaign } from "@/core/domain/campaign"
+import type { Campaign } from "@/core/domain/managements/campaign"
 
 export interface GetCampaignByIdRequest {
   id: number
@@ -10,7 +10,7 @@ export interface GetCampaignByIdResponse {
 }
 
 export class GetCampaignByIdUseCase {
-  constructor(private campaignService: CampaignService) {}
+  constructor(private campaignService: CampaignService) { }
 
   async execute(request: GetCampaignByIdRequest): Promise<GetCampaignByIdResponse> {
     const campaign = await this.campaignService.getById(request.id)

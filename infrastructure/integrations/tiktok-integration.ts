@@ -3,7 +3,7 @@ import type {
   PlatformPublishRequest,
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
-import type { PostMetrics, PostMedia } from "@/core/domain/post";
+import type { PostMetrics, PostMedia } from "@/core/domain/managements/post";
 
 /**
  * TikTok API Configuration
@@ -73,7 +73,7 @@ export class TikTokIntegration implements TikTokIntegrationService {
   platform = "tiktok" as const;
   private baseUrl = "https://open.tiktokapis.com/v2";
 
-  constructor(private config: TikTokConfig) {}
+  constructor(private config: TikTokConfig) { }
 
   /**
    * Publish video to TikTok

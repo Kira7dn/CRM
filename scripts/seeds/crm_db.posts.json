@@ -1,0 +1,336 @@
+[{
+  "_id": {
+    "$oid": "6763b1c2d4e5f8a9b0c1d2e1"
+  },
+  "title": "🦑 Mực tươi Cô Tô - Đặc sản biển đảo chất lượng cao!",
+  "body": "Mực tươi Cô Tô vừa về kho! 🌊\n\n✨ Tươi ngon từ biển đảo\n🎯 Giá ưu đãi chỉ 69.900đ/kg\n🚚 Giao hàng tận nơi trong ngày\n\n#MucCoto #HaiSanTuoi #HaiSanNgayMoi",
+  "contentType": "post",
+  "platforms": [
+    {
+      "platform": "facebook",
+      "postId": "fb_post_12345",
+      "permalink": "https://facebook.com/haisanngaymoi/posts/12345",
+      "publishedAt": {
+        "$date": "2025-11-15T10:00:00.000Z"
+      },
+      "status": "published"
+    },
+    {
+      "platform": "zalo",
+      "postId": "zalo_post_12345",
+      "publishedAt": {
+        "$date": "2025-11-15T10:05:00.000Z"
+      },
+      "status": "published"
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/m%E1%BB%B1c/muc-la.png",
+      "order": 1
+    }
+  ],
+  "scheduledAt": {
+    "$date": "2025-11-15T10:00:00.000Z"
+  },
+  "hashtags": ["MucCoto", "HaiSanTuoi", "HaiSanNgayMoi", "DacSanCoto"],
+  "mentions": [],
+  "campaignId": "1",
+  "metrics": {
+    "views": 2500,
+    "likes": 145,
+    "comments": 23,
+    "shares": 18,
+    "reach": 3200,
+    "engagement": 186,
+    "lastSyncedAt": {
+      "$date": "2025-11-19T12:00:00.000Z"
+    }
+  },
+  "createdAt": {
+    "$date": "2025-11-14T15:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T12:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6763b1c2d4e5f8a9b0c1d2e2"
+  },
+  "title": "🦐 Flash Sale Tôm Sú - Giảm giá 30% hôm nay!",
+  "body": "⚡ FLASH SALE - CHỈ HÔM NAY ⚡\n\nTôm sú tươi Cô Tô\n💰 Giá gốc: 300.000đ/kg\n🔥 Giá sale: 210.000đ/kg\n⏰ Chỉ còn 50 suất!\n\nĐặt hàng ngay: 0901234567\n\n#FlashSale #TomSu #HaiSanNgayMoi #GiamGia",
+  "contentType": "feed",
+  "platforms": [
+    {
+      "platform": "facebook",
+      "postId": "fb_feed_67890",
+      "permalink": "https://facebook.com/haisanngaymoi/posts/67890",
+      "publishedAt": {
+        "$date": "2025-11-18T08:00:00.000Z"
+      },
+      "status": "published"
+    },
+    {
+      "platform": "tiktok",
+      "postId": "tiktok_video_11111",
+      "permalink": "https://tiktok.com/@haisanngaymoi/video/11111",
+      "publishedAt": {
+        "$date": "2025-11-18T08:10:00.000Z"
+      },
+      "status": "published"
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/t%C3%B4m/tom-su.png",
+      "order": 1
+    }
+  ],
+  "scheduledAt": {
+    "$date": "2025-11-18T08:00:00.000Z"
+  },
+  "hashtags": ["FlashSale", "TomSu", "HaiSanNgayMoi", "GiamGia", "DealHot"],
+  "mentions": [],
+  "campaignId": "1",
+  "metrics": {
+    "views": 5800,
+    "likes": 320,
+    "comments": 67,
+    "shares": 45,
+    "reach": 7500,
+    "engagement": 432,
+    "lastSyncedAt": {
+      "$date": "2025-11-19T12:00:00.000Z"
+    }
+  },
+  "createdAt": {
+    "$date": "2025-11-17T16:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T12:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6763b1c2d4e5f8a9b0c1d2e3"
+  },
+  "title": "Cách chế biến Bề Bề ngon như nhà hàng 🍴",
+  "body": "Bạn đã biết cách chế biến Bề Bề ngon như nhà hàng chưa? 👨‍🍳\n\nXem video để học ngay công thức đặc biệt từ đầu bếp!\n\n📌 Bề Bề tươi Cô Tô\n📌 Gia vị đặc biệt\n📌 Cách làm chi tiết\n\n#CachLamBeBe #MonNgon #HaiSanNgayMoi",
+  "contentType": "reel",
+  "platforms": [
+    {
+      "platform": "facebook",
+      "postId": "fb_reel_99999",
+      "permalink": "https://facebook.com/haisanngaymoi/reels/99999",
+      "publishedAt": {
+        "$date": "2025-11-16T12:00:00.000Z"
+      },
+      "status": "published"
+    },
+    {
+      "platform": "tiktok",
+      "postId": "tiktok_video_22222",
+      "permalink": "https://tiktok.com/@haisanngaymoi/video/22222",
+      "publishedAt": {
+        "$date": "2025-11-16T12:05:00.000Z"
+      },
+      "status": "published"
+    },
+    {
+      "platform": "youtube",
+      "postId": "yt_short_33333",
+      "permalink": "https://youtube.com/shorts/33333",
+      "publishedAt": {
+        "$date": "2025-11-16T12:10:00.000Z"
+      },
+      "status": "published"
+    }
+  ],
+  "media": [
+    {
+      "type": "video",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/videos/cach-lam-bebe.mp4",
+      "thumbnailUrl": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/b%E1%BB%81+b%E1%BB%81/bebe.png",
+      "duration": 45,
+      "order": 1
+    }
+  ],
+  "hashtags": ["CachLamBeBe", "MonNgon", "HaiSanNgayMoi", "CongThucNauAn", "BeBe"],
+  "mentions": ["@ChefNguyen"],
+  "metrics": {
+    "views": 12000,
+    "likes": 580,
+    "comments": 134,
+    "shares": 89,
+    "reach": 15000,
+    "engagement": 803,
+    "lastSyncedAt": {
+      "$date": "2025-11-19T12:00:00.000Z"
+    }
+  },
+  "createdAt": {
+    "$date": "2025-11-15T18:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T12:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6763b1c2d4e5f8a9b0c1d2e4"
+  },
+  "title": "Combo Hải Sản Ngày Mới - Ưu đãi 20% cuối tuần!",
+  "body": "🎁 COMBO TUẦN MỚI - SIÊU ƯU ĐÃI\n\n✅ Mực tươi 500g\n✅ Tôm sú 500g\n✅ Bề bề 300g\n\n💰 Giá gốc: 550.000đ\n🔥 Giá combo: 440.000đ (Tiết kiệm 110.000đ!)\n\n📞 Hotline: 0901234567\n🌐 Website: haisanngaymoi.vn\n\n#ComboHaiSan #UuDaiCuoiTuan #HaiSanNgayMoi",
+  "contentType": "post",
+  "platforms": [
+    {
+      "platform": "facebook",
+      "status": "draft"
+    },
+    {
+      "platform": "zalo",
+      "status": "draft"
+    }
+  ],
+  "media": [
+    {
+      "type": "carousel",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/m%E1%BB%B1c/muc-la.png",
+      "order": 1
+    },
+    {
+      "type": "carousel",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/t%C3%B4m/tom-su.png",
+      "order": 2
+    },
+    {
+      "type": "carousel",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/products/b%E1%BB%81+b%E1%BB%81/bebe.png",
+      "order": 3
+    }
+  ],
+  "scheduledAt": {
+    "$date": "2025-11-22T09:00:00.000Z"
+  },
+  "hashtags": ["ComboHaiSan", "UuDaiCuoiTuan", "HaiSanNgayMoi", "DealHot"],
+  "mentions": [],
+  "campaignId": "1",
+  "metrics": {},
+  "createdAt": {
+    "$date": "2025-11-19T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T10:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6763b1c2d4e5f8a9b0c1d2e5"
+  },
+  "title": "Hải sản tươi sống từ Cô Tô - Mỗi ngày đều mới! 🌊",
+  "body": "🎣 HẢI SẢN NGÀY MỚI VỀ KHO!\n\nCam kết:\n✨ 100% tươi sống từ Cô Tô\n🚢 Vận chuyển nhanh chóng\n❄️ Bảo quản lạnh đúng chuẩn\n🎯 Giá tốt nhất thị trường\n\nGiao hàng toàn TP.HCM trong ngày!\n\n#HaiSanCoto #HaiSanTuoi #HaiSanNgayMoi #CotoIsland",
+  "contentType": "video",
+  "platforms": [
+    {
+      "platform": "youtube",
+      "postId": "yt_video_44444",
+      "permalink": "https://youtube.com/watch?v=44444",
+      "publishedAt": {
+        "$date": "2025-11-17T14:00:00.000Z"
+      },
+      "status": "published"
+    },
+    {
+      "platform": "facebook",
+      "postId": "fb_video_55555",
+      "permalink": "https://facebook.com/haisanngaymoi/videos/55555",
+      "publishedAt": {
+        "$date": "2025-11-17T14:05:00.000Z"
+      },
+      "status": "published"
+    }
+  ],
+  "media": [
+    {
+      "type": "video",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/videos/haisan-tuoi.mp4",
+      "thumbnailUrl": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/thumbnails/haisan-thumbnail.jpg",
+      "duration": 120,
+      "order": 1
+    }
+  ],
+  "hashtags": ["HaiSanCoto", "HaiSanTuoi", "HaiSanNgayMoi", "CotoIsland", "SeafoodFresh"],
+  "mentions": [],
+  "metrics": {
+    "views": 8500,
+    "likes": 410,
+    "comments": 92,
+    "shares": 56,
+    "reach": 10200,
+    "engagement": 558,
+    "lastSyncedAt": {
+      "$date": "2025-11-19T12:00:00.000Z"
+    }
+  },
+  "createdAt": {
+    "$date": "2025-11-16T20:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T12:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6763b1c2d4e5f8a9b0c1d2e6"
+  },
+  "title": "⚡ Story: Đơn hàng hôm nay - Cảm ơn khách hàng!",
+  "body": "Cảm ơn quý khách đã tin tưởng Hải Sản Ngày Mới! 🙏\n\nHôm nay chúng tôi đã giao 50+ đơn hàng thành công!\n\n#ThankYou #HaiSanNgayMoi #TinTuong",
+  "contentType": "story",
+  "platforms": [
+    {
+      "platform": "facebook",
+      "postId": "fb_story_66666",
+      "publishedAt": {
+        "$date": "2025-11-19T16:00:00.000Z"
+      },
+      "status": "published"
+    },
+    {
+      "platform": "zalo",
+      "postId": "zalo_story_77777",
+      "publishedAt": {
+        "$date": "2025-11-19T16:02:00.000Z"
+      },
+      "status": "published"
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "url": "https://haisanngaymoi.s3.ap-southeast-1.amazonaws.com/stories/thank-you.jpg",
+      "order": 1
+    }
+  ],
+  "hashtags": ["ThankYou", "HaiSanNgayMoi", "TinTuong"],
+  "mentions": [],
+  "metrics": {
+    "views": 1200,
+    "likes": 85,
+    "comments": 12,
+    "shares": 3,
+    "reach": 1500,
+    "engagement": 100,
+    "lastSyncedAt": {
+      "$date": "2025-11-19T18:00:00.000Z"
+    }
+  },
+  "createdAt": {
+    "$date": "2025-11-19T15:30:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-19T18:00:00.000Z"
+  }
+}]

@@ -1,4 +1,4 @@
-import type { Order } from "@/core/domain/order";
+import type { Order } from "@/core/domain/managements/order";
 import type { OrderService } from "@/core/application/interfaces/order-service";
 import type { QueueService } from "@/core/application/interfaces/queue-service";
 
@@ -19,7 +19,7 @@ export class LinkOrderUseCase {
   constructor(
     private orderService: OrderService,
     private queueService: QueueService
-  ) {}
+  ) { }
 
   async execute(request: LinkOrderRequest): Promise<LinkOrderResponse> {
     const { orderId, platformOrderId, platformSource, miniAppId } = request;

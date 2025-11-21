@@ -101,7 +101,7 @@ Dependency injection factory providing use case instances:
 ### 5. UI Layer
 
 #### Server Actions
-**File:** `app/(features)/admin/dashboard/analytics/revenue/actions.ts`
+**File:** `app/(features)/crm/dashboard/analytics/revenue/actions.ts`
 
 Server Actions for client components (5 total):
 1. `getRevenueMetrics()` - Fetch KPIs with comparison
@@ -113,7 +113,7 @@ Server Actions for client components (5 total):
 All actions return `{ success: boolean, data?: T, error?: string }`
 
 #### Components (6 total)
-**Directory:** `app/(features)/admin/dashboard/analytics/revenue/_components/`
+**Directory:** `app/(features)/crm/dashboard/analytics/revenue/_components/`
 
 1. **RevenueMetricsCards.tsx**
    - Displays 4 KPI cards:
@@ -160,7 +160,7 @@ All actions return `{ success: boolean, data?: T, error?: string }`
    - Uses `date-fns` for date manipulation
 
 #### Main Page
-**File:** `app/(features)/admin/dashboard/analytics/revenue/page.tsx`
+**File:** `app/(features)/crm/dashboard/analytics/revenue/page.tsx`
 
 Main analytics dashboard page:
 - Client-side data fetching with loading states
@@ -173,9 +173,9 @@ Main analytics dashboard page:
 
 ### 6. Navigation Integration
 
-**Modified:** `app/(features)/admin/dashboard/page.tsx`
+**Modified:** `app/(features)/crm/dashboard/page.tsx`
 - Added "Revenue Analytics" card to Quick Actions
-- Links to: `/admin/dashboard/analytics/revenue`
+- Links to: `/crm/dashboard/analytics/revenue`
 - Emerald-themed card with bar chart icon
 
 ---
@@ -333,9 +333,9 @@ npm install recharts date-fns
    ```
 
 2. **Navigate to:**
-   - Dashboard: `http://localhost:3000/admin/dashboard`
+   - Dashboard: `http://localhost:3000/crm/dashboard`
    - Click "Revenue Analytics" card in Quick Actions
-   - Or direct URL: `http://localhost:3000/admin/dashboard/analytics/revenue`
+   - Or direct URL: `http://localhost:3000/crm/dashboard/analytics/revenue`
 
 3. **Default View:**
    - Date Range: Last 30 days
@@ -476,8 +476,8 @@ All checklist items from the PRD completed:
 - ✅ Create use cases in `core/application/usecases/analytics/revenue/`
 - ✅ Create repository in `infrastructure/repositories/analytics/`
 - ✅ Create `depends.ts` in `app/api/analytics/revenue/`
-- ✅ Create server actions in `app/(features)/admin/dashboard/analytics/revenue/actions.ts`
-- ✅ Create page component in `app/(features)/admin/dashboard/analytics/revenue/page.tsx`
+- ✅ Create server actions in `app/(features)/crm/dashboard/analytics/revenue/actions.ts`
+- ✅ Create page component in `app/(features)/crm/dashboard/analytics/revenue/page.tsx`
 - ✅ Create client components using Shadcn UI
 - ✅ Add navigation link to dashboard
 - ✅ Test and validate

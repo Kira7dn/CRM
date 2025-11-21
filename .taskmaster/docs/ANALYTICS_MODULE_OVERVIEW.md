@@ -19,7 +19,7 @@ The Analytics Module is a comprehensive business intelligence system for the H�
 
 ## Module Descriptions
 
-### 1. Revenue Analytics (`/admin/analytics/revenue`)
+### 1. Revenue Analytics (`/crm/analytics/revenue`)
 
 **Purpose**: Track financial performance, order trends, and revenue metrics across customizable time periods.
 
@@ -62,7 +62,7 @@ The Analytics Module is a comprehensive business intelligence system for the H�
 
 ---
 
-### 2. Customer Behavior Analytics (`/admin/analytics/customer`)
+### 2. Customer Behavior Analytics (`/crm/analytics/customer`)
 
 **Purpose**: Understand customer lifecycle, segment customers by value, detect churn risks, and analyze retention patterns.
 
@@ -123,7 +123,7 @@ Lost (111, 112, 121, 131,141,151): Lowest scores across all dimensions
 
 ---
 
-### 3. Staff Performance Analytics (`/admin/analytics/staff`)
+### 3. Staff Performance Analytics (`/crm/analytics/staff`)
 
 **Purpose**: Track team performance, rank staff members, and monitor individual activity for sales optimization.
 
@@ -187,7 +187,7 @@ All three analytics modules follow the same **Clean Architecture** pattern:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      UI Layer (Next.js)                      │
-│  app/(features)/admin/analytics/{module}/                   │
+│  app/(features)/crm/analytics/{module}/                   │
 │    ├── page.tsx (Server Component)                          │
 │    ├── actions.ts (Server Actions)                          │
 │    └── _components/ (React Components)                      │
@@ -346,7 +346,7 @@ app/api/analytics/
 └── staff/depends.ts
 
 # UI Layer
-app/(features)/admin/analytics/
+app/(features)/crm/analytics/
 ├── revenue/
 │   ├── page.tsx
 │   ├── actions.ts
@@ -383,22 +383,22 @@ docs/
 
 ## Navigation
 
-All analytics modules are accessible from the main dashboard at `/admin/dashboard`:
+All analytics modules are accessible from the main dashboard at `/crm/dashboard`:
 
 ```typescript
 // Dashboard Quick Actions
 ┌─────────────────────────────────────────────────────┐
 │  📊 Revenue Analytics                                │
 │  Track revenue & metrics                            │
-│  → /admin/analytics/revenue                         │
+│  → /crm/analytics/revenue                         │
 ├─────────────────────────────────────────────────────┤
 │  👥 Customer Analytics                               │
 │  Behavior & retention                               │
-│  → /admin/analytics/customer                        │
+│  → /crm/analytics/customer                        │
 ├─────────────────────────────────────────────────────┤
 │  🏆 Staff Performance (Admin Only)                   │
 │  Team leaderboard                                   │
-│  → /admin/analytics/staff                           │
+│  → /crm/analytics/staff                           │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -608,7 +608,7 @@ describe("RevenueAnalyticsRepository", () => {
 ### Component Tests (UI Layer)
 
 ```typescript
-// app/(features)/admin/analytics/revenue/_components/__tests__/RevenueMetricsCards.spec.tsx
+// app/(features)/crm/analytics/revenue/_components/__tests__/RevenueMetricsCards.spec.tsx
 import { render, screen } from "@testing-library/react";
 import { RevenueMetricsCards } from "../RevenueMetricsCards";
 
@@ -723,7 +723,7 @@ npm install recharts date-fns
 
 ### Accessing Analytics
 
-1. **Admin Dashboard**: Navigate to `/admin/dashboard`
+1. **Admin Dashboard**: Navigate to `/crm/dashboard`
 2. **Quick Actions**: Click on any analytics card:
    - Revenue Analytics
    - Customer Analytics
@@ -829,6 +829,6 @@ The Analytics Module is a comprehensive, production-ready business intelligence 
 - `docs/SPRINT_3_STAFF_ANALYTICS_IMPLEMENTATION.md`
 
 **Module Routes**:
-- Revenue: `/admin/analytics/revenue`
-- Customer: `/admin/analytics/customer`
-- Staff: `/admin/analytics/staff` (admin only)
+- Revenue: `/crm/analytics/revenue`
+- Customer: `/crm/analytics/customer`
+- Staff: `/crm/analytics/staff` (admin only)

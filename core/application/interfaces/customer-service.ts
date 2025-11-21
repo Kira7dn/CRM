@@ -1,6 +1,6 @@
-import type { Customer } from "@/core/domain/customer"
+import type { Customer } from "@/core/domain/managements/customer"
 
-export interface CustomerPayload extends Partial<Customer> {}
+export interface CustomerPayload extends Partial<Customer> { }
 
 
 export interface CustomerService {

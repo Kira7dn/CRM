@@ -333,42 +333,42 @@ All modules below are **fully implemented** with domain entities, use cases, rep
    - User management UI (admin only)
    - 7 use cases: Login, Register, GetCurrentUser, ChangePassword, GetAllUsers, UpdateUser, DeleteUser
 
-2. **Products** (`app/(features)/admin/products/`, `core/application/usecases/product/`)
+2. **Products** (`app/(features)/crm/products/`, `core/application/usecases/product/`)
    - Product catalog with categories
    - Size and color variants
    - AWS S3 image uploads
    - 5 use cases: Filter, GetById, Create, Update, Delete
 
-3. **Orders** (`app/(features)/admin/orders/`, `core/application/usecases/order/`)
+3. **Orders** (`app/(features)/crm/orders/`, `core/application/usecases/order/`)
    - Full order lifecycle management
    - Payment gateway integration (VNPay, ZaloPay)
    - Status tracking (pending → confirmed → processing → shipping → delivered → completed)
    - 11 use cases: CRUD + Link, PaymentCallback, CheckPaymentStatus, CheckOrderStatus, MacRequest, HandleVNPayIPN
 
-4. **Customers** (`app/(features)/admin/customers/`, `core/application/usecases/customer/`)
+4. **Customers** (`app/(features)/crm/customers/`, `core/application/usecases/customer/`)
    - Multi-platform customer tracking (Zalo, Facebook, TikTok, Telegram, Website)
    - Customer tier system (new, regular, vip, premium)
    - Customer statistics and search
    - 6 use cases: GetAll, GetById, SearchByName, Create, Update, Delete
 
-5. **Categories** (`app/(features)/admin/categories/`, `core/application/usecases/category/`)
+5. **Categories** (`app/(features)/crm/categories/`, `core/application/usecases/category/`)
    - Product category management
    - Image support
    - 5 use cases: Get, GetById, Create, Update, Delete
 
-6. **Banners** (`app/(features)/admin/banners/`, `core/application/usecases/banner/`)
+6. **Banners** (`app/(features)/crm/banners/`, `core/application/usecases/banner/`)
    - Promotional banner system
    - Image URL management
    - 5 use cases: Get, GetById, Create, Update, Delete
 
-7. **Posts** (`app/(features)/admin/posts/`, `core/application/usecases/post/`)
+7. **Posts** (`app/(features)/crm/posts/`, `core/application/usecases/post/`)
    - Multi-platform social media content management
    - Content types: post, feed, reel, short, video, story
    - Platform integrations: Facebook, TikTok, Zalo, YouTube
    - Media attachments and engagement metrics
    - 4 use cases: Get, Create, Update, Delete
 
-8. **Campaigns** (`app/(features)/admin/campaigns/`, `core/application/usecases/campaign/`)
+8. **Campaigns** (`app/(features)/crm/campaigns/`, `core/application/usecases/campaign/`)
    - Marketing campaign management
    - Multi-platform tracking (Facebook, TikTok, Zalo, Shopee)
    - UTM parameters and metrics
@@ -379,7 +379,7 @@ All modules below are **fully implemented** with domain entities, use cases, rep
    - GPS coordinates and addresses
    - 5 use cases: Get, GetById, Create, Update, Delete
 
-10. **Dashboard** (`app/(features)/admin/dashboard/`)
+10. **Dashboard** (`app/(features)/crm/dashboard/`)
     - Real-time analytics and KPIs
     - Order status breakdown
     - Revenue tracking
@@ -392,7 +392,7 @@ All modules follow this structure:
 - **Use Cases**: `core/application/usecases/[module]/`
 - **Repository**: `infrastructure/repositories/[module]-repo.ts`
 - **API Routes**: `app/api/[module]/route.ts` + `depends.ts`
-- **UI**: `app/(features)/admin/[module]/page.tsx` + `actions.ts` + `components/`
+- **UI**: `app/(features)/crm/[module]/page.tsx` + `actions.ts` + `components/`
 
 **Important**: always update current implementation for provided plan when implementing a new feature
 

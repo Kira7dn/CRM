@@ -1,5 +1,5 @@
 import type { ProductService } from "@/core/application/interfaces/product-service";
-import type { Product } from "@/core/domain/product";
+import type { Product } from "@/core/domain/managements/product";
 
 export interface FilterProductsRequest {
   categoryId?: number | string;
@@ -11,7 +11,7 @@ export interface FilterProductsResponse {
 }
 
 export class FilterProductsUseCase {
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   async execute(request: FilterProductsRequest): Promise<FilterProductsResponse> {
     const products = await this.productService.filter(request);

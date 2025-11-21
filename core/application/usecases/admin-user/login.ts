@@ -1,4 +1,4 @@
-import type { AdminUser } from "@/core/domain/admin-user"
+import type { AdminUser } from "@/core/domain/managements/admin-user"
 import type { AdminUserService } from "@/core/application/interfaces/admin-user-service"
 
 export interface LoginRequest {
@@ -13,7 +13,7 @@ export interface LoginResponse {
 }
 
 export class LoginUseCase {
-  constructor(private adminUserService: AdminUserService) {}
+  constructor(private adminUserService: AdminUserService) { }
 
   async execute(request: LoginRequest): Promise<LoginResponse> {
     // Validate input

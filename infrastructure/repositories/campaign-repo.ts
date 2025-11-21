@@ -1,6 +1,6 @@
 import { BaseRepository } from "../db/base-repository"
 import type { CampaignService, CampaignPayload } from "@/core/application/interfaces/campaign-service"
-import type { Campaign, CampaignStatus } from "@/core/domain/campaign"
+import type { Campaign, CampaignStatus } from "@/core/domain/managements/campaign"
 import { getNextId } from "@/infrastructure/db/auto-increment"
 
 export class CampaignRepository extends BaseRepository<Campaign, number> implements CampaignService {
