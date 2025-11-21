@@ -1,0 +1,355 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Thiết lập môi trường phát triển",
+        "description": "Cài đặt và cấu hình môi trường phát triển cho Chat Box AI Agent.",
+        "details": "Cài đặt Node.js, MongoDB, và các công cụ cần thiết. Thiết lập cấu trúc thư mục dự án theo kiến trúc đề xuất.",
+        "testStrategy": "Kiểm tra môi trường bằng cách chạy thử một ứng dụng mẫu.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Tái sử dụng component ChatbotWidget app/(features)/_shared/_components/chatbot/_components/ChatbotWidget.tsx",
+        "description": "Phát triển component ChatbotWidget trong React.",
+        "details": "Tái sử dụng file ChatbotWidget.tsx và xây dựng giao diện cơ bản cho chat box.",
+        "testStrategy": "Kiểm tra giao diện bằng cách render component trong ứng dụng React.",
+        "priority": "medium",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Tích hợp lưu trữ lịch sử chat",
+        "description": "Chức năng lưu trữ lịch sử chat đã được triển khai với các thành phần: Domain Layer, Repository Layer, Use Cases, và API Layer. Hệ thống cho phép lưu trữ và truy xuất lịch sử chat theo user trong MongoDB.",
+        "status": "done",
+        "dependencies": [
+          "2"
+        ],
+        "priority": "medium",
+        "details": "Sử dụng Mongoose để định nghĩa schema và lưu trữ dữ liệu chat. Đã triển khai các lớp Domain, Repository và Use Cases. Tích hợp với API và client-side thông qua hook useConversationHistory, tự động lưu mỗi 30 giây trong CRMCopilot.",
+        "testStrategy": "Kiểm tra bằng cách sử dụng các API đã triển khai: GET /api/copilot-conversations để truy xuất lịch sử chat, POST /api/copilot-conversations để lưu trữ cuộc trò chuyện. Đảm bảo tích hợp UI cho lịch sử chat hoạt động đúng.",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T04:07:33.339Z"
+      },
+      {
+        "id": 4,
+        "title": "Phát triển AI Intent Parser",
+        "description": "Tích hợp CopilotKit để xử lý intent từ tin nhắn người dùng, tận dụng GPT-4o để phân tích và định tuyến hành động.",
+        "status": "done",
+        "dependencies": [
+          "3"
+        ],
+        "priority": "medium",
+        "details": "Sử dụng GPT-4o của CopilotKit để tự động hiểu và xử lý intent từ ngôn ngữ tự nhiên. Hệ thống sẽ định tuyến yêu cầu đến các useCopilotAction handlers phù hợp và tự động trích xuất tham số từ cuộc hội thoại.",
+        "testStrategy": "Kiểm tra khả năng định tuyến và trích xuất tham số của GPT-4o bằng cách gửi các tin nhắn thử nghiệm và xác nhận hành động được gọi đúng.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Xóa bỏ parser cũ",
+            "description": "Loại bỏ parser dựa trên quy tắc cũ trong core/domain/chatbot/chat-message.ts.",
+            "dependencies": [],
+            "details": "Đảm bảo rằng parser cũ không còn được sử dụng trong hệ thống mới.",
+            "status": "pending",
+            "testStrategy": "Kiểm tra lại hệ thống để đảm bảo không có lỗi phát sinh sau khi loại bỏ parser cũ.",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-11-21T04:13:12.341Z"
+      },
+      {
+        "id": 5,
+        "title": "Tạo API endpoint cho AI Agent",
+        "description": "Endpoint cho AI Agent đã được triển khai qua CopilotKit runtime tại /api/copilotkit. Không cần tạo endpoint mới.",
+        "status": "done",
+        "dependencies": [
+          "4"
+        ],
+        "priority": "medium",
+        "details": "Sử dụng CopilotKit runtime với Next.js App Router để xử lý yêu cầu POST từ client. Xử lý thông qua OpenAI GPT-4o và trả về phản hồi streaming.",
+        "testStrategy": "Gửi yêu cầu POST tới /api/copilotkit với payload mẫu và kiểm tra phản hồi streaming từ server.",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T04:14:32.786Z"
+      },
+      {
+        "id": 6,
+        "title": "Phát triển hệ thống Quick Actions",
+        "description": "Tạo hệ thống gợi ý hành động nhanh dựa trên ngữ cảnh.",
+        "details": "Xây dựng logic để AI gợi ý các hành động tiếp theo và hiển thị nút bấm tương ứng.",
+        "testStrategy": "Kiểm tra bằng cách gửi các tin nhắn mẫu và xác nhận các nút bấm được hiển thị đúng.",
+        "priority": "medium",
+        "dependencies": [
+          "5"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T04:14:38.235Z"
+      },
+      {
+        "id": 7,
+        "title": "Tích hợp Usecase Factories",
+        "description": "Kết nối AI Orchestrator với Usecase Factories để thực thi các hành động.",
+        "details": "Sử dụng pattern Factory để gọi các usecase từ depends.ts dựa trên intent đã phân tích.",
+        "testStrategy": "Kiểm tra bằng cách thực hiện các usecase mẫu và xác nhận kết quả.",
+        "priority": "medium",
+        "dependencies": [
+          "6"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T04:14:43.548Z"
+      },
+      {
+        "id": 8,
+        "title": "Phát triển chức năng Resume Session",
+        "description": "Chức năng resume session đã được triển khai thành công. Cho phép hệ thống tự động resume session khi user quay lại.",
+        "status": "done",
+        "dependencies": [
+          "7"
+        ],
+        "priority": "medium",
+        "details": "Chức năng tự động resume session đã được thực hiện. Hệ thống tự động tải và resume cuộc trò chuyện cuối cùng khi component được mount. Sử dụng localStorage để duy trì session qua các lần refresh trang. ID cuộc trò chuyện được lưu dưới dạng 'copilot_conversation_{userId}'.",
+        "testStrategy": "Kiểm tra bằng cách đóng và mở lại chat, xác nhận rằng cuộc trò chuyện được tải lại đúng và tiếp tục từ vị trí cuối cùng. Đảm bảo rằng session tồn tại qua các lần refresh trang, khởi động lại trình duyệt và đóng/mở lại tab.",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T04:17:11.774Z"
+      },
+      {
+        "id": 9,
+        "title": "Tích hợp phân quyền theo role",
+        "description": "Phân quyền chức năng chat theo vai trò người dùng (admin/sale/warehouse) đã được triển khai đầy đủ trong các hành động của CopilotKit. Không cần tích hợp thêm.",
+        "status": "done",
+        "dependencies": [
+          "8"
+        ],
+        "priority": "medium",
+        "details": "Hệ thống phân quyền đã được thực hiện hoàn chỉnh trong các hành động của CopilotKit. Các kiểm tra quyền được thực hiện trong các handler của hành động trước khi thực thi.",
+        "testStrategy": "Đã kiểm tra với các vai trò người dùng khác nhau để đảm bảo quyền truy cập được thực thi chính xác. Không cần kiểm tra thêm.",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T04:18:35.787Z"
+      },
+      {
+        "id": "10",
+        "title": "Tích hợp AI Data Analytics",
+        "description": "Phát triển chức năng phân tích dữ liệu và báo cáo cho giai đoạn sau.",
+        "status": "deferred",
+        "dependencies": [
+          9
+        ],
+        "priority": "medium",
+        "details": "Tính năng sẽ bao gồm phân tích doanh thu qua truy vấn ngôn ngữ tự nhiên GPT-4o, phân tích sản phẩm bán chạy, thông tin hành vi khách hàng, xu hướng bán hàng và dự báo, cùng với các chỉ số hiệu suất chiến dịch. Hạ tầng đã sẵn sàng với CopilotKit và GPT-4o, các trường hợp sử dụng phân tích đã tồn tại trong mã nguồn và có thể được thêm vào như các hook useCopilotAction mới. Cần kết nối với các kho lưu trữ phân tích.",
+        "testStrategy": "Sẽ kiểm tra trong giai đoạn 4 bằng cách chạy các báo cáo mẫu và xác nhận dữ liệu chính xác sau khi kết nối với kho lưu trữ phân tích.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Tạo các hành động phân tích",
+            "description": "Tạo các hành động phân tích như getRevenueStats, getTopProducts, v.v.",
+            "dependencies": [],
+            "details": "Sử dụng các hook useCopilotAction để tạo các hành động phân tích mới.",
+            "status": "pending",
+            "testStrategy": null
+          },
+          {
+            "id": 2,
+            "title": "Kết nối với các trường hợp sử dụng phân tích hiện có",
+            "description": "Kết nối các hành động phân tích với các trường hợp sử dụng đã tồn tại trong mã nguồn.",
+            "dependencies": [
+              1
+            ],
+            "details": "Đảm bảo các hành động phân tích mới được tích hợp vào các trường hợp sử dụng hiện có.",
+            "status": "pending",
+            "testStrategy": null
+          },
+          {
+            "id": 3,
+            "title": "Thêm gợi ý trực quan hóa dữ liệu",
+            "description": "Tích hợp các gợi ý trực quan hóa dữ liệu vào hệ thống.",
+            "dependencies": [
+              2
+            ],
+            "details": "Sử dụng thư viện trực quan hóa để hiển thị dữ liệu một cách hiệu quả.",
+            "status": "pending",
+            "testStrategy": null
+          },
+          {
+            "id": 4,
+            "title": "Triển khai các thông tin chi tiết dựa trên AI",
+            "description": "Sử dụng AI để cung cấp các thông tin chi tiết từ dữ liệu phân tích.",
+            "dependencies": [
+              3
+            ],
+            "details": "Tích hợp AI để tự động phân tích và cung cấp thông tin chi tiết.",
+            "status": "pending",
+            "testStrategy": null
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Install CopilotKit Packages",
+        "description": "Install necessary CopilotKit packages for the project.",
+        "details": "Run `npm install @copilotkit/react-core @copilotkit/react-ui @copilotkit/runtime` to install the required packages.",
+        "testStrategy": "Verify that the packages are correctly installed by checking the node_modules directory.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:09:43.096Z"
+      },
+      {
+        "id": 12,
+        "title": "Set Up CopilotKit Provider in Layout",
+        "description": "Integrate CopilotKit provider into the root layout of the application.",
+        "details": "Update `app/layout.tsx` to include the CopilotKit provider as shown in the PRD.",
+        "testStrategy": "Ensure the application renders without errors and the provider is correctly set up by checking the console for any warnings.",
+        "priority": "medium",
+        "dependencies": [
+          "11"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:18:18.494Z"
+      },
+      {
+        "id": 13,
+        "title": "Create CopilotKit API Route with OpenAIAdapter",
+        "description": "Set up the API route for CopilotKit using OpenAIAdapter.",
+        "details": "Create `app/api/copilotkit/route.ts` and implement the API route using the provided code snippet.",
+        "testStrategy": "Test the API route by sending a POST request and verifying the response.",
+        "priority": "medium",
+        "dependencies": [
+          "11"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:18:23.576Z"
+      },
+      {
+        "id": 14,
+        "title": "Develop Basic CRMCopilot Component",
+        "description": "Create the initial CRMCopilot component with CopilotSidebar.",
+        "details": "Implement the CRMCopilot component in `app/(features)/_shared/_components/chatbot/CRMCopilot.tsx` using the provided code.",
+        "testStrategy": "Render the component in a test page and verify that it displays correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "12",
+          "13"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:21:51.518Z"
+      },
+      {
+        "id": 15,
+        "title": "Implement Basic Actions (getOrder, searchCustomers)",
+        "description": "Develop basic actions for retrieving orders and searching customers.",
+        "details": "Use `useCopilotAction` to implement `getOrder` and `searchCustomers` actions in the CRMCopilot component.",
+        "testStrategy": "Test the actions by simulating user input and verifying the correct data is retrieved.",
+        "priority": "medium",
+        "dependencies": [
+          "14"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:25:19.110Z"
+      },
+      {
+        "id": 16,
+        "title": "Create Server Actions File (crm-actions.ts)",
+        "description": "Set up server actions for CRM operations.",
+        "details": "Create `app/(features)/_shared/_components/chatbot/actions/crm-actions.ts` and implement server actions as described in the PRD.",
+        "testStrategy": "Invoke each server action and verify it interacts correctly with the use cases.",
+        "priority": "medium",
+        "dependencies": [
+          "15"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:31:12.013Z"
+      },
+      {
+        "id": 17,
+        "title": "Connect Actions to Existing Use Cases",
+        "description": "Successfully connected all CopilotKit actions to existing use cases via depends.ts. Implemented order actions (getOrder, createOrder, updateOrderStatus), customer actions (searchCustomers, getCustomer), and navigation actions.",
+        "status": "done",
+        "dependencies": [
+          "16"
+        ],
+        "priority": "medium",
+        "details": "All actions include proper permission checks, null handling, and TypeScript type safety. Payment link generation is not yet implemented.",
+        "testStrategy": "Test each action to ensure it executes the correct use case and returns expected results. Verify permission checks and null handling are correctly implemented.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Payment Link Generation",
+            "description": "Develop the payment link generation feature for CopilotKit actions.",
+            "dependencies": [],
+            "details": "Ensure the payment link generation is integrated with existing use cases and follows the same standards for permission checks and type safety.",
+            "status": "pending",
+            "testStrategy": "Test the payment link generation by simulating user requests and verifying the correct link is generated.",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-11-21T03:43:54.957Z"
+      },
+      {
+        "id": 18,
+        "title": "Add Role-Based Permission Checks",
+        "description": "Role-based permission checks have been implemented in task 17. All CopilotKit actions now include comprehensive permission validation.",
+        "status": "done",
+        "dependencies": [
+          "17"
+        ],
+        "priority": "medium",
+        "details": "No additional modifications are needed as permissions are fully implemented and tested in task 17.",
+        "testStrategy": "Permissions have been tested with different user roles to ensure correct enforcement. No further testing required.",
+        "subtasks": []
+      },
+      {
+        "id": 19,
+        "title": "Implement Navigation Actions",
+        "description": "Navigation actions have been implemented in task 17. The actions `navigateToOrder` and `navigateToCustomer` are fully functional.",
+        "status": "done",
+        "dependencies": [
+          "18"
+        ],
+        "priority": "medium",
+        "details": "The actions use Next.js `router.push()` for navigation, update `currentContext` state with the target ID and module, and return success messages in Vietnamese. They are accessible to all user roles.",
+        "testStrategy": "No additional testing needed as navigation actions are fully implemented and verified in task 17.",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:46:50.138Z"
+      },
+      {
+        "id": 20,
+        "title": "Integrate CRMCopilot in CRM Layout",
+        "description": "CRMCopilot component has been successfully integrated into the CRM layout for user interaction.",
+        "status": "done",
+        "dependencies": [
+          "19"
+        ],
+        "priority": "medium",
+        "details": "The CRMCopilot component is imported from _shared/_components/chatbot/CRMCopilot and placed in app/(features)/crm/layout.tsx. It is positioned at the end of the layout, appearing as a sidebar across all CRM pages. It is only rendered for authenticated users using getCurrentUserAction() to fetch the current user. Props such as userId and userRole are passed correctly, ensuring proper functionality.",
+        "testStrategy": "Ensure the CRMCopilot component is visible and functional within the CRM layout for logged-in users. Verify that it persists across navigation within the CRM section and is accessible via the sidebar toggle.",
+        "subtasks": [],
+        "updatedAt": "2025-11-21T03:48:03.973Z"
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2025-11-21T04:18:40.563Z",
+      "taskCount": 20,
+      "completedCount": 19,
+      "tags": [
+        "master"
+      ],
+      "created": "2025-11-21T04:18:47.123Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

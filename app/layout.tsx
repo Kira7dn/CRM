@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { CopilotKit } from "@copilotkit/react-core";
+import "@copilotkit/react-ui/styles.css";
 import "./globals.css";
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -102,7 +104,9 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} antialiased font-sans`}
       >
-        {children}
+        <CopilotKit runtimeUrl="/api/copilotkit" publicLicenseKey="ck_pub_9f183f4c59f3d2b59e41ff75d5aace3e">
+          {children}
+        </CopilotKit>
       </body>
     </html>
   );

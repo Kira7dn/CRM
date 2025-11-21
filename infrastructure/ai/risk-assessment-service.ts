@@ -20,7 +20,7 @@ const RiskAssessmentSchema = z.object({
   })).describe("Identified business risks"),
 
   opportunities: z.array(z.object({
-    category: z.string(),
+    category: z.enum(["revenue", "operations", "customer", "inventory", "financial"]).optional().default("revenue"),
     title: z.string(),
     description: z.string(),
     potentialImpact: z.string(),
@@ -115,7 +115,36 @@ Tập trung vào:
 - Tỷ lệ lỗi/hủy đơn cao
 - Vấn đề giữ chân khách hàng
 - Tắc nghẽn vận hành
-- Cơ hội tăng trưởng`
+- Cơ hội tăng trưởng
+
+Bạn PHẢI trả về DUY NHẤT một JSON đúng chính xác schema sau (không giải thích thêm, không trả markdown, không thêm text ngoài JSON):
+
+{
+  "overallRiskLevel": "low | medium | high | critical",
+  "riskScore": number (0-100),
+  "risks": [
+    {
+      "category": "revenue | operations | customer | inventory | financial",
+      "severity": "low | medium | high | critical",
+      "title": string,
+      "description": string,
+      "impact": string,
+      "likelihood": "low | medium | high",
+      "recommendations": string[]
+    }
+  ],
+  "opportunities": [
+    {
+      "category": "revenue | operations | customer | inventory | financial",
+      "title": string,
+      "description": string,
+      "potentialImpact": string
+    }
+  ],
+  "summary": string
+}
+
+Đảm bảo mỗi phần tử trong mảng opportunities luôn có trường category với một trong các giá trị trên.`
 
       const result = await generateObject({
         model: aiConfig.model,
