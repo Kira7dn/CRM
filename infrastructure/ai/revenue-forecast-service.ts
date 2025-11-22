@@ -1,6 +1,7 @@
 import { generateObject } from "ai"
 import { z } from "zod"
 import { aiConfig, isAIEnabled } from "./ai-config"
+import { CacheFactory, generateCacheKey } from "@/infrastructure/cache"
 
 /**
  * Revenue forecast result schema
@@ -50,6 +51,21 @@ export class RevenueForecastService {
       return null
     }
 
+    // Check cache first
+    const cacheKey = generateCacheKey("revenue-forecast", historicalData)
+    const cache = await CacheFactory.getInstance({
+      defaultTTL: 1800, // 30 minutes default
+      enableLogging: process.env.NODE_ENV === "development",
+    })
+
+    const cached = await cache.get<RevenueForecast>(cacheKey)
+    if (cached) {
+      console.log("[RevenueForecast] Cache hit for revenue forecast")
+      return cached
+    }
+
+    console.log("[RevenueForecast] Cache miss, generating new forecast")
+
     try {
       // Calculate summary statistics
       const totalRevenue = historicalData.reduce((sum, d) => sum + d.revenue, 0)
@@ -88,6 +104,10 @@ Cung cấp dự đoán thực tế với mức độ tin cậy và khuyến ngh�
         prompt,
         temperature: aiConfig.temperature,
       })
+
+      // Cache the result with 30 minutes TTL (historical data changes slowly)
+      await cache.set(cacheKey, result.object, 1800)
+      console.log("[RevenueForecast] Cached new forecast for 30 minutes")
 
       return result.object
     } catch (error) {

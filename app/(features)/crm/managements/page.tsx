@@ -29,6 +29,12 @@ import { DecliningProductsWidget } from "./_components/widgets/DecliningProducts
 import { TopStaffWidget } from "./_components/widgets/TopStaffWidget"
 import { MonthProfitWidget } from "./_components/widgets/MonthProfitWidget"
 import { TodayProfitWidget } from "./_components/widgets/TodayProfitWidget"
+import { AIRiskOverallWidgetClient } from "./_components/widgets/AIRiskOverallWidgetClient"
+import { AIRiskIdentifiedWidgetClient } from "./_components/widgets/AIRiskIdentifiedWidgetClient"
+import { AIRiskOpportunitiesWidgetClient } from "./_components/widgets/AIRiskOpportunitiesWidgetClient"
+import { OrderStatusWidget } from "./_components/widgets/OrderStatusWidget"
+import { PaymentStatusWidget } from "./_components/widgets/PaymentStatusWidget"
+import { useCopilotReadable } from "@copilotkit/react-core"
 
 // Enable ISR with 5 minute revalidation
 export const revalidate = 300
@@ -246,19 +252,47 @@ export default async function DashboardPage() {
       w: 2,
       h: 3,
     },
+    // {
+    //   id: "orders-chart",
+    //   title: "Biểu đồ đơn hàng",
+    //   component: (
+    //     <OrdersChart
+    //       key="orders-chart-widget"
+    //       ordersByStatus={stats.ordersByStatus}
+    //       ordersByPayment={stats.ordersByPayment}
+    //     />
+    //   ),
+    //   visible: true,
+    //   module: "order",
+    //   w: 12,
+    //   h: 3,
+    // },
     {
-      id: "orders-chart",
-      title: "Biểu đồ đơn hàng",
+      id: "order-status-widget",
+      title: "Trạng thái đơn hàng",
       component: (
-        <OrdersChart
-          key="orders-chart-widget"
+        <OrderStatusWidget
+          key="order-status-widget"
           ordersByStatus={stats.ordersByStatus}
+        />
+      ),
+      visible: true,
+      module: "order",
+      w: 6,
+      h: 5,
+    },
+    {
+      id: "payment-status-widget",
+      title: "Trạng thái thanh toán",
+      component: (
+        <PaymentStatusWidget
+          key="payment-status-widget"
           ordersByPayment={stats.ordersByPayment}
         />
       ),
       visible: true,
       module: "order",
-      w: 12,
+      w: 6,
       h: 3,
     },
     {
@@ -268,7 +302,7 @@ export default async function DashboardPage() {
       visible: true,
       module: "order",
       w: 6,
-      h: 5,
+      h: 3,
     },
     {
       id: "top-staff",
@@ -314,15 +348,15 @@ export default async function DashboardPage() {
       w: 2,
       h: 3,
     },
-    // {
-    //   id: "inventory-alerts",
-    //   title: "Cảnh báo tồn kho",
-    //   component: <InventoryAlertsClient />,
-    //   visible: true,
-    //   module: "inventory",
-    //   colSpan: 2,
-    //   rowSpan: 1,
-    // },
+    {
+      id: "inventory-alerts",
+      title: "Cảnh báo tồn kho",
+      component: <InventoryAlertsClient />,
+      visible: true,
+      module: "inventory",
+      w: 2,
+      h: 1,
+    },
 
     // Risk module
     {
@@ -337,23 +371,50 @@ export default async function DashboardPage() {
     // {
     //   id: "ai-risk-assessment",
     //   title: "Đánh giá rủi ro AI",
-    //   component: <AIRiskAssessmentClient />,
+    //   component: <AIRiskAssessmentClient key="ai-risk-assessment-widget" />,
     //   visible: true,
     //   module: "risk",
-    //   colSpan: 6,
-    //   rowSpan: 2,
+    //   w: 6,
+    //   h: 2,
     // },
+    {
+      id: "ai-risk-overall",
+      title: "Đánh giá rủi ro AI",
+      component: <AIRiskOverallWidgetClient key="ai-risk-overall-widget" />,
+      visible: true,
+      module: "risk",
+      w: 6,
+      h: 2,
+    },
+    {
+      id: "ai-risk-details",
+      title: "Chi tiết đánh giá rủi ro AI",
+      component: <AIRiskIdentifiedWidgetClient key="ai-risk-identified-widget" />,
+      visible: true,
+      module: "risk",
+      w: 6,
+      h: 2,
+    },
+    {
+      id: "ai-risk-recommendations",
+      title: "Gợi ý khắc phục",
+      component: <AIRiskOpportunitiesWidgetClient key="ai-risk-opportunities-widget" />,
+      visible: true,
+      module: "risk",
+      w: 6,
+      h: 2,
+    },
 
     // Forecast module
-    // {
-    //   id: "revenue-forecast",
-    //   title: "Dự báo doanh thu",
-    //   component: <RevenueForecastClient />,
-    //   visible: true,
-    //   module: "forecast",
-    //   colSpan: 12,
-    //   rowSpan: 2,
-    // },
+    {
+      id: "revenue-forecast",
+      title: "Dự báo doanh thu",
+      component: <RevenueForecastClient key="revenue-forecast-widget" />,
+      visible: true,
+      module: "forecast",
+      w: 12,
+      h: 5,
+    },
   ]
 
 

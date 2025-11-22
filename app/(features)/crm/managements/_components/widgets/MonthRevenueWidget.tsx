@@ -3,6 +3,7 @@
 import { formatCurrency } from "@/lib/utils"
 import Link from "next/link"
 import { TrendingUp, TrendingDown } from "lucide-react"
+import { useCopilotReadable } from "@copilotkit/react-core"
 
 interface MonthRevenueWidgetProps {
   thisMonthRevenue: number
@@ -25,7 +26,15 @@ export function MonthRevenueWidget({
     if (value >= 0) return "text-green-600 dark:text-green-400"
     return "text-red-600 dark:text-red-400"
   }
-
+  // Make data available to the CopilotKit
+  useCopilotReadable({
+    description: "Dashboard data including this thisMonthRevenue,lastMonthRevenue,revenueChangeVsLastMonth",
+    value: {
+      thisMonthRevenue,
+      lastMonthRevenue,
+      revenueChangeVsLastMonth
+    }
+  })
   return (
     <Link href="/crm/analytics/revenue" className="block group">
       <div className="flex items-center justify-between mb-2">

@@ -4,6 +4,7 @@ import { useState, ReactNode, useEffect, useRef } from "react"
 import { GridStack } from "gridstack"
 import { ChevronUp, ChevronDown, Eye, EyeOff } from "lucide-react"
 import { Button } from "@shared/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/@shared/ui/card"
 
 export type WidgetModule = "finance" | "customer" | "order" | "product" | "risk" | "forecast" | "inventory"
 
@@ -118,7 +119,7 @@ export function GridStackDashboard({
 
           // Listen to change events
           grid.on('change', () => {
-            const updatedWidgets = grid.save(false) as Array<{id?: string, x?: number, y?: number, w?: number, h?: number}>
+            const updatedWidgets = grid.save(false) as Array<{ id?: string, x?: number, y?: number, w?: number, h?: number }>
 
             // Update widget positions
             setWidgets((prev) => {
@@ -318,12 +319,12 @@ export function GridStackDashboard({
 
                 {/* GridStack Container */}
                 <div
-                  className={`grid-stack grid-stack-${module} p-4 bg-gray-50 dark:bg-gray-900/30 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700`}
+                  className={`grid-stack grid-stack-${module}`}
                 >
                   {moduleWidgets.map((widget) => (
                     <div
                       key={widget.id}
-                      className="grid-stack-item bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+                      className="grid-stack-item"
                       data-widget-id={widget.id}
                       gs-id={widget.id}
                       gs-x={widget.x ?? 0}
@@ -332,13 +333,25 @@ export function GridStackDashboard({
                       gs-h={widget.h ?? 3}
                       gs-min-w={widget.minW ?? 2}
                       gs-min-h={widget.minH ?? 2}
+                      style={{
+                        // @ts-ignore
+                        "--gs-item-margin-top": "4px",
+                        "--gs-item-margin-bottom": "4px",
+                        "--gs-item-margin-left": "4px",
+                        "--gs-item-margin-right": "4px",
+                      }}
                     >
-                      <div className="grid-stack-item-content p-4 overflow-auto">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                          {widget.title}
-                        </h4>
-                        {widget.component}
-                      </div>
+                      <Card className="grid-stack-item-content p-2 py-4 gap-2 hover:shadow-lg 
+                      transition-all hover:-translate-y-0.5">
+                        <CardHeader>
+                          <CardTitle className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                            {widget.title}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3 overflow-y-scroll scrollbar-hidden">
+                          {widget.component}
+                        </CardContent>
+                      </Card>
                     </div>
                   ))}
                 </div>

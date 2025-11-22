@@ -42,22 +42,29 @@ export function CRMCopilot({ userId, userRole, children }: CRMCopilotProps) {
   } = useConversationHistory(userId);
   function createInstruction({ userRole }: { userRole: 'admin' | 'sales' | 'warehouse' }): string {
 
-    return `You are an intelligent CRM assistant for Hải Sản Ngày Mới (Fresh Seafood from Cô Tô Island). 
+    return `You are an intelligent CRM assistant for Hải Sản Ngày Mới (Fresh Seafood from Cô Tô Island).
     Current user role: ${userRole}
-    
+
     You help users:
     - Manage orders (get details, create, update status, generate payment links)
     - Search and manage customers
     - View analytics and reports (revenue, top products, customer metrics)
+    - Customize dashboard (add/remove widgets, list available widgets by module)
     - Navigate the CRM system
+
+    Dashboard widget management:
+    - Users can ask you to show/hide specific widgets (e.g., "hiện widget doanh thu hôm nay", "ẩn biểu đồ đơn hàng")
+    - List all available widgets or filter by module (finance, customer, order, product, risk, forecast)
+    - Provide widget IDs when users want to know what widgets are available
+    - Automatically refresh the dashboard when widgets are shown/hidden
 
     Always be helpful, concise, and action-oriented. After completing an action, suggest relevant next steps.
     Respond in Vietnamese when appropriate.
 
     Role permissions:
-    - Admin: Full access to all features
-    - Sales: Can manage orders, customers, products, and posts
-    - Warehouse: Can view orders and update order status to processing/shipping
+    - Admin: Full access to all features including dashboard customization
+    - Sales: Can manage orders, customers, products, posts, and customize their dashboard
+    - Warehouse: Can view orders, update order status, and customize their dashboard
 
     When suggesting actions, respect the user's role permissions.`
   }
@@ -423,6 +430,228 @@ export function CRMCopilot({ userId, userRole, children }: CRMCopilotProps) {
         return {
           success: false,
           message: `Không tìm thấy khách hàng #${customerId}`,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        };
+      }
+    }
+  });
+
+  // ===== DASHBOARD WIDGET ACTIONS =====
+
+  useCopilotAction({
+    name: 'getDashboardWidgets',
+    description: 'Get list of available dashboard widgets and their current visibility status. Use this when the user asks about dashboard widgets.',
+    parameters: [],
+    handler: async () => {
+      try {
+        // Get widgets from localStorage
+        const savedWidgets = localStorage.getItem('dashboard-layout');
+        if (!savedWidgets) {
+          return {
+            success: false,
+            message: 'Chưa có cấu hình dashboard. Vui lòng tải lại trang dashboard.'
+          };
+        }
+
+        const widgets = JSON.parse(savedWidgets);
+        const widgetList = widgets.map((w: {id: string, title: string, visible: boolean, module: string}) => ({
+          id: w.id,
+          title: typeof w.title === 'string' ? w.title : 'Widget',
+          visible: w.visible,
+          module: w.module
+        }));
+
+        return {
+          success: true,
+          widgets: widgetList,
+          count: widgetList.length,
+          visibleCount: widgetList.filter((w: {visible: boolean}) => w.visible).length,
+          message: `Dashboard có ${widgetList.length} widgets (${widgetList.filter((w: {visible: boolean}) => w.visible).length} đang hiển thị)`
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Không thể lấy danh sách widgets',
+          error: error instanceof Error ? error.message : 'Unknown error'
+        };
+      }
+    }
+  });
+
+  useCopilotAction({
+    name: 'showWidget',
+    description: 'Show a hidden dashboard widget. Use this when the user wants to add or show a widget on their dashboard.',
+    parameters: [
+      {
+        name: 'widgetId',
+        type: 'string',
+        description: 'Widget ID to show (e.g., "today-revenue", "order-status-widget", "ai-risk-overall")',
+        required: true
+      }
+    ],
+    handler: async ({ widgetId }) => {
+      try {
+        const savedWidgets = localStorage.getItem('dashboard-layout');
+        if (!savedWidgets) {
+          return {
+            success: false,
+            message: 'Chưa có cấu hình dashboard. Vui lòng tải lại trang dashboard.'
+          };
+        }
+
+        const widgets = JSON.parse(savedWidgets);
+        const widgetIndex = widgets.findIndex((w: {id: string}) => w.id === widgetId);
+
+        if (widgetIndex === -1) {
+          return {
+            success: false,
+            message: `Không tìm thấy widget "${widgetId}". Vui lòng kiểm tra lại ID.`
+          };
+        }
+
+        if (widgets[widgetIndex].visible) {
+          return {
+            success: true,
+            message: `Widget "${widgets[widgetIndex].title || widgetId}" đã được hiển thị rồi.`
+          };
+        }
+
+        widgets[widgetIndex].visible = true;
+        localStorage.setItem('dashboard-layout', JSON.stringify(widgets));
+
+        // Trigger dashboard refresh
+        window.dispatchEvent(new Event('storage'));
+
+        return {
+          success: true,
+          message: `Đã hiển thị widget "${widgets[widgetIndex].title || widgetId}". Dashboard sẽ cập nhật ngay.`,
+          widget: {
+            id: widgets[widgetIndex].id,
+            title: widgets[widgetIndex].title
+          }
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Không thể hiển thị widget',
+          error: error instanceof Error ? error.message : 'Unknown error'
+        };
+      }
+    }
+  });
+
+  useCopilotAction({
+    name: 'hideWidget',
+    description: 'Hide a visible dashboard widget. Use this when the user wants to remove or hide a widget from their dashboard.',
+    parameters: [
+      {
+        name: 'widgetId',
+        type: 'string',
+        description: 'Widget ID to hide (e.g., "today-revenue", "order-status-widget", "ai-risk-overall")',
+        required: true
+      }
+    ],
+    handler: async ({ widgetId }) => {
+      try {
+        const savedWidgets = localStorage.getItem('dashboard-layout');
+        if (!savedWidgets) {
+          return {
+            success: false,
+            message: 'Chưa có cấu hình dashboard. Vui lòng tải lại trang dashboard.'
+          };
+        }
+
+        const widgets = JSON.parse(savedWidgets);
+        const widgetIndex = widgets.findIndex((w: {id: string}) => w.id === widgetId);
+
+        if (widgetIndex === -1) {
+          return {
+            success: false,
+            message: `Không tìm thấy widget "${widgetId}". Vui lòng kiểm tra lại ID.`
+          };
+        }
+
+        if (!widgets[widgetIndex].visible) {
+          return {
+            success: true,
+            message: `Widget "${widgets[widgetIndex].title || widgetId}" đã bị ẩn rồi.`
+          };
+        }
+
+        widgets[widgetIndex].visible = false;
+        localStorage.setItem('dashboard-layout', JSON.stringify(widgets));
+
+        // Trigger dashboard refresh
+        window.dispatchEvent(new Event('storage'));
+
+        return {
+          success: true,
+          message: `Đã ẩn widget "${widgets[widgetIndex].title || widgetId}". Dashboard sẽ cập nhật ngay.`,
+          widget: {
+            id: widgets[widgetIndex].id,
+            title: widgets[widgetIndex].title
+          }
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Không thể ẩn widget',
+          error: error instanceof Error ? error.message : 'Unknown error'
+        };
+      }
+    }
+  });
+
+  useCopilotAction({
+    name: 'listWidgetsByModule',
+    description: 'List all dashboard widgets grouped by module (finance, customer, order, product, risk, forecast). Use this when user asks about widgets in a specific category.',
+    parameters: [
+      {
+        name: 'module',
+        type: 'string',
+        description: 'Module name: finance, customer, order, product, risk, or forecast. Leave empty for all modules.',
+        required: false
+      }
+    ],
+    handler: async ({ module }) => {
+      try {
+        const savedWidgets = localStorage.getItem('dashboard-layout');
+        if (!savedWidgets) {
+          return {
+            success: false,
+            message: 'Chưa có cấu hình dashboard.'
+          };
+        }
+
+        const widgets = JSON.parse(savedWidgets);
+        let filteredWidgets = widgets;
+
+        if (module) {
+          filteredWidgets = widgets.filter((w: {module: string}) => w.module === module);
+        }
+
+        const groupedByModule = filteredWidgets.reduce((acc: Record<string, unknown[]>, w: {module: string, id: string, title: string, visible: boolean}) => {
+          if (!acc[w.module]) acc[w.module] = [];
+          acc[w.module].push({
+            id: w.id,
+            title: typeof w.title === 'string' ? w.title : 'Widget',
+            visible: w.visible
+          });
+          return acc;
+        }, {} as Record<string, unknown[]>);
+
+        return {
+          success: true,
+          modules: groupedByModule,
+          count: filteredWidgets.length,
+          message: module
+            ? `Tìm thấy ${filteredWidgets.length} widgets trong module "${module}"`
+            : `Tìm thấy ${filteredWidgets.length} widgets trong ${Object.keys(groupedByModule).length} modules`
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Không thể lấy danh sách widgets',
           error: error instanceof Error ? error.message : 'Unknown error'
         };
       }

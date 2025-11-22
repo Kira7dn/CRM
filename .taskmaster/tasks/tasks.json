@@ -2,7 +2,7 @@
   "master": {
     "tasks": [
       {
-        "id": "1",
+        "id": 1,
         "title": "Thiết lập môi trường phát triển",
         "description": "Cài đặt và cấu hình môi trường phát triển cho Chat Box AI Agent.",
         "details": "Cài đặt Node.js, MongoDB, và các công cụ cần thiết. Thiết lập cấu trúc thư mục dự án theo kiến trúc đề xuất.",
@@ -13,7 +13,7 @@
         "subtasks": []
       },
       {
-        "id": "2",
+        "id": 2,
         "title": "Tái sử dụng component ChatbotWidget app/(features)/_shared/_components/chatbot/_components/ChatbotWidget.tsx",
         "description": "Phát triển component ChatbotWidget trong React.",
         "details": "Tái sử dụng file ChatbotWidget.tsx và xây dựng giao diện cơ bản cho chat box.",
@@ -26,7 +26,7 @@
         "subtasks": []
       },
       {
-        "id": "3",
+        "id": 3,
         "title": "Tích hợp lưu trữ lịch sử chat",
         "description": "Chức năng lưu trữ lịch sử chat đã được triển khai với các thành phần: Domain Layer, Repository Layer, Use Cases, và API Layer. Hệ thống cho phép lưu trữ và truy xuất lịch sử chat theo user trong MongoDB.",
         "status": "done",
@@ -40,7 +40,7 @@
         "updatedAt": "2025-11-21T04:07:33.339Z"
       },
       {
-        "id": "4",
+        "id": 4,
         "title": "Phát triển AI Intent Parser",
         "description": "Tích hợp CopilotKit để xử lý intent từ tin nhắn người dùng, tận dụng GPT-4o để phân tích và định tuyến hành động.",
         "status": "done",
@@ -65,7 +65,7 @@
         "updatedAt": "2025-11-21T04:13:12.341Z"
       },
       {
-        "id": "5",
+        "id": 5,
         "title": "Tạo API endpoint cho AI Agent",
         "description": "Endpoint cho AI Agent đã được triển khai qua CopilotKit runtime tại /api/copilotkit. Không cần tạo endpoint mới.",
         "status": "done",
@@ -79,7 +79,7 @@
         "updatedAt": "2025-11-21T04:14:32.786Z"
       },
       {
-        "id": "6",
+        "id": 6,
         "title": "Phát triển hệ thống Quick Actions",
         "description": "Tạo hệ thống gợi ý hành động nhanh dựa trên ngữ cảnh.",
         "details": "Xây dựng logic để AI gợi ý các hành động tiếp theo và hiển thị nút bấm tương ứng.",
@@ -93,7 +93,7 @@
         "updatedAt": "2025-11-21T04:14:38.235Z"
       },
       {
-        "id": "7",
+        "id": 7,
         "title": "Tích hợp Usecase Factories",
         "description": "Kết nối AI Orchestrator với Usecase Factories để thực thi các hành động.",
         "details": "Sử dụng pattern Factory để gọi các usecase từ depends.ts dựa trên intent đã phân tích.",
@@ -107,7 +107,7 @@
         "updatedAt": "2025-11-21T04:14:43.548Z"
       },
       {
-        "id": "8",
+        "id": 8,
         "title": "Phát triển chức năng Resume Session",
         "description": "Chức năng resume session đã được triển khai thành công. Cho phép hệ thống tự động resume session khi user quay lại.",
         "status": "done",
@@ -121,7 +121,7 @@
         "updatedAt": "2025-11-21T04:17:11.774Z"
       },
       {
-        "id": "9",
+        "id": 9,
         "title": "Tích hợp phân quyền theo role",
         "description": "Phân quyền chức năng chat theo vai trò người dùng (admin/sale/warehouse) đã được triển khai đầy đủ trong các hành động của CopilotKit. Không cần tích hợp thêm.",
         "status": "done",
@@ -135,7 +135,7 @@
         "updatedAt": "2025-11-21T04:18:35.787Z"
       },
       {
-        "id": "10",
+        "id": 10,
         "title": "Tích hợp AI Data Analytics",
         "description": "Phát triển chức năng phân tích dữ liệu và báo cáo cho giai đoạn sau.",
         "status": "deferred",
@@ -195,7 +195,7 @@
         ]
       },
       {
-        "id": "11",
+        "id": 11,
         "title": "Install CopilotKit Packages",
         "description": "Install necessary CopilotKit packages for the project.",
         "details": "Run `npm install @copilotkit/react-core @copilotkit/react-ui @copilotkit/runtime` to install the required packages.",
@@ -207,7 +207,7 @@
         "updatedAt": "2025-11-21T03:09:43.096Z"
       },
       {
-        "id": "12",
+        "id": 12,
         "title": "Set Up CopilotKit Provider in Layout",
         "description": "Integrate CopilotKit provider into the root layout of the application.",
         "details": "Update `app/layout.tsx` to include the CopilotKit provider as shown in the PRD.",
@@ -221,7 +221,7 @@
         "updatedAt": "2025-11-21T03:18:18.494Z"
       },
       {
-        "id": "13",
+        "id": 13,
         "title": "Create CopilotKit API Route with OpenAIAdapter",
         "description": "Set up the API route for CopilotKit using OpenAIAdapter.",
         "details": "Create `app/api/copilotkit/route.ts` and implement the API route using the provided code snippet.",
@@ -235,7 +235,7 @@
         "updatedAt": "2025-11-21T03:18:23.576Z"
       },
       {
-        "id": "14",
+        "id": 14,
         "title": "Develop Basic CRMCopilot Component",
         "description": "Create the initial CRMCopilot component with CopilotSidebar.",
         "details": "Implement the CRMCopilot component in `app/(features)/_shared/_components/chatbot/CRMCopilot.tsx` using the provided code.",
@@ -250,7 +250,7 @@
         "updatedAt": "2025-11-21T03:21:51.518Z"
       },
       {
-        "id": "15",
+        "id": 15,
         "title": "Implement Basic Actions (getOrder, searchCustomers)",
         "description": "Develop basic actions for retrieving orders and searching customers.",
         "details": "Use `useCopilotAction` to implement `getOrder` and `searchCustomers` actions in the CRMCopilot component.",
@@ -264,7 +264,7 @@
         "updatedAt": "2025-11-21T03:25:19.110Z"
       },
       {
-        "id": "16",
+        "id": 16,
         "title": "Create Server Actions File (crm-actions.ts)",
         "description": "Set up server actions for CRM operations.",
         "details": "Create `app/(features)/_shared/_components/chatbot/actions/crm-actions.ts` and implement server actions as described in the PRD.",
@@ -278,7 +278,7 @@
         "updatedAt": "2025-11-21T03:31:12.013Z"
       },
       {
-        "id": "17",
+        "id": 17,
         "title": "Connect Actions to Existing Use Cases",
         "description": "Successfully connected all CopilotKit actions to existing use cases via depends.ts. Implemented order actions (getOrder, createOrder, updateOrderStatus), customer actions (searchCustomers, getCustomer), and navigation actions.",
         "status": "done",
@@ -303,7 +303,7 @@
         "updatedAt": "2025-11-21T03:43:54.957Z"
       },
       {
-        "id": "18",
+        "id": 18,
         "title": "Add Role-Based Permission Checks",
         "description": "Role-based permission checks have been implemented in task 17. All CopilotKit actions now include comprehensive permission validation.",
         "status": "done",
@@ -316,7 +316,7 @@
         "subtasks": []
       },
       {
-        "id": "19",
+        "id": 19,
         "title": "Implement Navigation Actions",
         "description": "Navigation actions have been implemented in task 17. The actions `navigateToOrder` and `navigateToCustomer` are fully functional.",
         "status": "done",
@@ -330,7 +330,7 @@
         "updatedAt": "2025-11-21T03:46:50.138Z"
       },
       {
-        "id": "20",
+        "id": 20,
         "title": "Integrate CRMCopilot in CRM Layout",
         "description": "CRMCopilot component has been successfully integrated into the CRM layout for user interaction.",
         "status": "done",
@@ -344,7 +344,7 @@
         "updatedAt": "2025-11-21T03:48:03.973Z"
       },
       {
-        "id": "21",
+        "id": 21,
         "title": "Add Dashboard UI Customization with Drag-and-Drop",
         "description": "Implement a feature allowing users to customize their dashboard layout using drag-and-drop functionality for cards/widgets.",
         "details": "Develop a drag-and-drop interface using a library like React DnD or similar. Create a customizable dashboard component where users can add, remove, and rearrange widgets. Ensure the layout state is saved in the user's profile for persistence. Update the UI to reflect changes immediately and handle edge cases such as overlapping widgets or invalid drop zones. Consider accessibility and responsiveness for different screen sizes.",
@@ -423,7 +423,7 @@
         "updatedAt": "2025-11-21T07:23:31.029Z"
       },
       {
-        "id": "22",
+        "id": 22,
         "title": "Create Scripts for Generating Customer and Order Test Data",
         "description": "Develop scripts to generate test data for customers and orders using existing product data.",
         "details": "Implement scripts in a dedicated directory, such as `scripts/test-data`, to automate the generation of customer and order test data. Utilize existing product data as a basis for creating realistic test scenarios. Ensure the scripts can be executed independently and support various configurations for data volume and complexity. Consider using libraries like Faker.js for generating random but realistic data attributes. Document the scripts with usage instructions and configuration options.",
@@ -505,7 +505,7 @@
         "updatedAt": "2025-11-21T07:39:35.545Z"
       },
       {
-        "id": "23",
+        "id": 23,
         "title": "Add Conversation History Feature to CRMCopilot Chatbot",
         "description": "Implement a feature to store and display conversation history in the CRMCopilot chatbot component.",
         "details": "Enhance the CRMCopilot component located at `app/(features)/_shared/_components/chatbot/CRMCopilot.tsx` to include conversation history. Create a new state to manage the history of interactions. Use local storage or a database to persist conversation data. Update the UI to display past interactions in a scrollable view. Ensure that the history is loaded when the component mounts and updated in real-time as new messages are sent or received. Consider privacy and data retention policies when storing conversation data.",
@@ -585,7 +585,7 @@
         "updatedAt": "2025-11-21T07:30:27.406Z"
       },
       {
-        "id": "24",
+        "id": 24,
         "title": "Fix React Key Prop Warning in DraggableWidget Component",
         "description": "Resolve the React warning about missing unique key props in the DraggableWidget component.",
         "details": "Identify the list rendering in `app/(features)/crm/managements/page.tsx` at line 45 where the `InventoryAlertsClient` component is used. Ensure each child element in the list has a unique `key` prop. This can be achieved by using a unique identifier from the data being mapped over, such as an ID or index. Review the data structure to find a suitable unique identifier. Update the component to include this key prop and test to ensure the warning is resolved.",
@@ -663,7 +663,7 @@
         "updatedAt": "2025-11-21T07:48:20.582Z"
       },
       {
-        "id": "25",
+        "id": 25,
         "title": "Cải thiện UI/UX của Widget Editor",
         "description": "Nâng cấp giao diện và trải nghiệm người dùng của Widget Editor với bố cục mới và tổ chức module.",
         "details": "1. Chuyển danh sách widget từ bố cục ngang sang dọc ở bên trái, giao diện chính ở bên phải.\n2. Nhóm các widget theo module và chỉ cho phép thêm widget vào nhóm module tương ứng.\n3. Chuẩn hóa kích thước widget trên toàn bộ hệ thống.\n4. Tách widget thành các module độc lập để dễ bảo trì.\n5. Cập nhật CSS và JavaScript để hỗ trợ bố cục và chức năng mới.\n6. Đảm bảo tính tương thích với các phần khác của ứng dụng.",
@@ -743,7 +743,7 @@
         "updatedAt": "2025-11-21T07:51:48.581Z"
       },
       {
-        "id": "26",
+        "id": 26,
         "title": "Implement Module-Based Drag Zones for Widget Editor",
         "description": "Create module-specific drag zones in the widget editor to organize widgets by their respective modules.",
         "details": "1. Divide the widget editor UI into distinct sections for each module: finance, customer, order, product, risk, and forecast.\n2. Implement drag-and-drop functionality using a library like React DnD to allow widgets to be moved only within their designated module zones.\n3. Ensure that each module zone only accepts widgets corresponding to its type, e.g., financial widgets in the finance section.\n4. Update the UI to visually differentiate between module zones and provide feedback during drag-and-drop operations.\n5. Refactor existing widget handling code to support module-specific constraints and improve maintainability.\n6. Collaborate with the design team to ensure the UI aligns with the overall application design and user experience standards.",
@@ -822,7 +822,7 @@
         "updatedAt": "2025-11-21T07:59:27.984Z"
       },
       {
-        "id": "27",
+        "id": 27,
         "title": "Tách Widget Dashboard Thành Các Module Nhỏ",
         "description": "Chia nhỏ các widget lớn trên dashboard thành các module độc lập để cải thiện tính modular và khả năng tái sử dụng.",
         "details": "1. Phân tích các widget hiện tại như 'Chỉ số chính', 'Phân tích lợi nhuận', và 'Phân tích khách hàng' để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chỉ số hoặc phân tích cụ thể.\n3. Sử dụng các thư viện như React để tạo các component module độc lập.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard thông qua chức năng kéo thả đã có.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -902,7 +902,7 @@
         "updatedAt": "2025-11-21T08:17:49.503Z"
       },
       {
-        "id": "28",
+        "id": 28,
         "title": "Cải thiện Widget Editor: Nhóm Widget theo Module trong UI",
         "description": "Nhóm các widget theo module trong giao diện Widget Editor và đảm bảo chỉ có thể kéo thả widget vào khu vực module tương ứng.",
         "details": "1. Phân tích cấu trúc hiện tại của Widget Editor để xác định cách nhóm các widget theo module: tài chính, khách hàng, đơn hàng, sản phẩm, rủi ro, dự báo.\n2. Cập nhật giao diện bên trái để hiển thị danh sách widget được nhóm theo module.\n3. Cập nhật giao diện bên phải để tạo các khu vực module tương ứng, chỉ cho phép kéo thả widget vào khu vực module phù hợp.\n4. Sử dụng thư viện React DnD để triển khai chức năng kéo thả, đảm bảo mỗi widget chỉ có thể được thả vào khu vực module tương ứng.\n5. Cập nhật CSS để phân biệt rõ ràng các khu vực module và cung cấp phản hồi trực quan khi kéo thả.",
@@ -917,7 +917,7 @@
         "updatedAt": "2025-11-21T08:17:11.974Z"
       },
       {
-        "id": "29",
+        "id": 29,
         "title": "Tách và Cải Tiến Module Widget",
         "description": "Chia các widget thành các module riêng biệt và cải tiến giao diện với cơ chế lưới và nút điều chỉnh.",
         "details": "1. Phân tích các widget hiện tại như 'Chỉ số chính', 'Phân tích lợi nhuận', 'Phân tích khách hàng', 'Chỉ số nâng cao', và 'Biểu đồ đơn hàng' để xác định cách tách chúng thành các module độc lập.\n2. Sử dụng cơ chế lưới với chiều rộng cố định (n cột) và chiều cao linh hoạt để sắp xếp các module trên giao diện.\n3. Thêm các nút lên/xuống cho mỗi nhóm trong giao diện người dùng của Widget để cho phép người dùng điều chỉnh thứ tự hiển thị.\n4. Đảm bảo mỗi module có thể hoạt động độc lập và có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -933,7 +933,7 @@
         "updatedAt": "2025-11-21T08:20:46.531Z"
       },
       {
-        "id": "30",
+        "id": 30,
         "title": "Sửa lỗi TypeScript trong CustomizableDashboardClient.tsx",
         "description": "Khắc phục lỗi TypeScript liên quan đến kiểu dữ liệu không khớp trong CustomizableDashboardClient.tsx.",
         "details": "1. Xác định vị trí lỗi trong file `CustomizableDashboardClient.tsx`.\n2. Kiểm tra kiểu dữ liệu của `SetStateAction<Widget[]>` và đảm bảo rằng tất cả các phần tử trong mảng đều không phải là `undefined`.\n3. Sử dụng TypeScript để kiểm tra và đảm bảo rằng các phần tử trong mảng có kiểu dữ liệu chính xác.\n4. Thêm kiểm tra điều kiện hoặc sử dụng phương pháp lọc để loại bỏ các phần tử `undefined` trước khi gán vào `SetStateAction<Widget[]>`.\n5. Cập nhật tài liệu và bình luận trong mã nguồn để giải thích sự thay đổi và lý do của nó.",
@@ -948,7 +948,7 @@
         "updatedAt": "2025-11-21T08:12:32.309Z"
       },
       {
-        "id": "31",
+        "id": 31,
         "title": "Tách Widget Lớn Thành Các Module Kéo Thả Độc Lập",
         "description": "Chia nhỏ các widget lớn như DashboardStats, AIRiskAssessmentClient, ProfitAnalysisClient, CustomerInsights, EnhancedMetrics thành các module độc lập có thể kéo thả trên dashboard.",
         "details": "1. Phân tích các widget hiện tại để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chức năng cụ thể.\n3. Sử dụng thư viện React DnD để tạo các component module độc lập có thể kéo thả.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -964,7 +964,7 @@
         "updatedAt": "2025-11-21T08:39:19.016Z"
       },
       {
-        "id": "32",
+        "id": 32,
         "title": "Integrate react-gridstack in CustomizableDashboardClient",
         "description": "Update CustomizableDashboardClient to use react-gridstack for improved drag-and-drop functionality.",
         "details": "1. Analyze the current implementation of drag-and-drop in `CustomizableDashboardClient` located in `app/(features)/crm/managements/page.tsx`.\n2. Replace the existing drag-and-drop logic with the `react-gridstack` library.\n3. Follow the example provided in the repository `https://github.com/Inder2108/react-gridstack-example` to understand the integration process.\n4. Ensure that all widgets are compatible with the gridstack layout and can be resized and rearranged.\n5. Update any related styles and ensure the UI remains consistent with the overall design.\n6. Refactor any code that directly interacts with the previous drag-and-drop implementation to work with `react-gridstack`.",
@@ -1044,7 +1044,7 @@
         "updatedAt": "2025-11-21T15:23:32.292Z"
       },
       {
-        "id": "33",
+        "id": 33,
         "title": "Add Skeleton Loading to AIRiskAssessment Component",
         "description": "Implement skeleton loading in the AIRiskAssessment component to enhance user experience during data loading.",
         "status": "done",
@@ -1058,7 +1058,7 @@
         "updatedAt": "2025-11-21T14:55:21.373Z"
       },
       {
-        "id": "34",
+        "id": 34,
         "title": "Refactor Widgets for Consistency in CRM Management",
         "description": "Refactor all widgets in app/(features)/crm/managements/_components/widgets to follow the same pattern as RiskAlerts.tsx and TodayRevenueWidget.tsx for consistency.",
         "status": "done",
@@ -1073,7 +1073,7 @@
         "updatedAt": "2025-11-21T15:02:59.707Z"
       },
       {
-        "id": "35",
+        "id": 35,
         "title": "Tách Các Widget Phức Tạp Thành Module Kéo Thả Độc Lập",
         "description": "Tách các widget lớn như AIRiskAssessmentClient, OrdersChart, TodayProfitWidget, MonthProfitWidget thành các module độc lập có thể kéo thả.",
         "details": "1. Phân tích các widget hiện tại để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chức năng cụ thể.\n3. Sử dụng thư viện React DnD để tạo các component module độc lập có thể kéo thả.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -1151,16 +1151,405 @@
           }
         ],
         "updatedAt": "2025-11-21T15:41:42.922Z"
+      },
+      {
+        "id": 36,
+        "title": "Xây dựng cơ chế cache cho AI Generate với Redis hoặc in-memory cache",
+        "description": "Thiết kế và triển khai lớp cache cho các hàm AI Generate trong infrastructure/ai/risk-assessment-service.ts và app/(features)/crm/managements/ai-actions.ts nhằm giảm số lần gọi AI API, sử dụng Redis hoặc in-memory cache với TTL phù hợp.",
+        "details": "1. Phân tích các điểm gọi AI API trong hai file chỉ định để xác định các hàm cần cache.\n2. Thiết kế interface cache chung (ví dụ: ICacheService) với các phương thức get/set/delete, hỗ trợ generic type và TTL (time-to-live).\n3. Cài đặt Redis client (node-redis) và xây dựng lớp RedisCacheService tuân thủ interface trên. Đảm bảo kết nối, xử lý lỗi và đóng kết nối đúng chuẩn[2][3][8].\n4. Xây dựng lớp InMemoryCacheService fallback khi Redis không khả dụng, sử dụng Map hoặc LRU cache, có TTL tự động xóa key hết hạn.\n5. Tích hợp cache vào các hàm AI Generate: kiểm tra cache trước khi gọi API, nếu có dữ liệu hợp lệ thì trả về, nếu không thì gọi API, lưu kết quả vào cache với TTL cấu hình (ví dụ: 5-30 phút tùy use case)[1][2][3].\n6. Đảm bảo type safety với TypeScript, log cache hit/miss để theo dõi hiệu quả cache.\n7. Cấu hình TTL động nếu cần (ví dụ: cho phép truyền TTL qua tham số hoặc config).\n8. Viết tài liệu hướng dẫn sử dụng, cấu hình và mở rộng cache layer.\nLưu ý: Xử lý cache invalidation khi dữ liệu nguồn thay đổi, đảm bảo không trả về dữ liệu cũ nếu có cập nhật quan trọng. Ưu tiên Redis cho môi trường production, in-memory cho local/dev hoặc khi Redis lỗi.",
+        "testStrategy": "1. Viết unit test cho các lớp cache (RedisCacheService, InMemoryCacheService): kiểm tra set/get/delete, TTL tự động hết hạn, fallback khi Redis lỗi.\n2. Mock AI API để đo số lần gọi thực tế khi bật/tắt cache, xác nhận cache giảm số lần gọi API rõ rệt.\n3. Kiểm tra log cache hit/miss trong quá trình test thực tế.\n4. Thay đổi dữ liệu nguồn và xác nhận cache invalidation hoạt động đúng (nếu có).\n5. Test với nhiều TTL khác nhau để đảm bảo dữ liệu hết hạn đúng thời gian cấu hình.\n6. Kiểm thử concurrency: nhiều request đồng thời cùng key phải chỉ gọi AI API một lần (nếu có thể, dùng memolock hoặc tương tự[5]).\n7. Đánh giá hiệu năng trước/sau khi áp dụng cache bằng các chỉ số latency và throughput.",
+        "status": "done",
+        "dependencies": [
+          "33"
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Phân tích các điểm gọi AI API và xác định hàm cần cache",
+            "description": "Xác định các hàm AI Generate trong hai file infrastructure/ai/risk-assessment-service.ts và app/(features)/crm/managements/ai-actions.ts cần áp dụng cache.",
+            "dependencies": [],
+            "details": "Đọc mã nguồn hai file chỉ định, liệt kê các hàm gọi AI API, phân tích đầu vào/đầu ra để xác định key cache phù hợp và các trường hợp cần cache hoặc loại trừ cache.\n<info added on 2025-11-22T01:58:06.181Z>\nĐã hoàn thành phân tích và xác định 2 dịch vụ AI chính cần áp dụng cache:\n\n1. **RiskAssessmentService.assessRisks()** trong `infrastructure/ai/risk-assessment-service.ts` (dòng 73):\n   - Sử dụng `generateObject` từ AI SDK\n   - Đầu vào: `BusinessMetrics`\n   - Đầu ra: `RiskAssessment`\n   - Có phương án dự phòng bằng đánh giá dựa trên quy tắc\n   - Được gọi từ `generateRiskAssessment()` trong `ai-actions.ts`\n\n2. **RevenueForecastService.generateForecast()** trong `infrastructure/ai/revenue-forecast-service.ts` (dòng 47):\n   - Sử dụng `generateObject` từ AI SDK\n   - Đầu vào: `RevenueDataPoint[]`\n   - Đầu ra: `RevenueForecast`\n   - Có phương án dự phòng bằng dự báo thống kê\n   - Được gọi từ `generateRevenueForecast()` trong `ai-actions.ts`\n\nCả hai hàm:\n- Sử dụng cùng mô hình AI (`aiConfig.model`)\n- Đầu vào có cấu trúc có thể băm để tạo khóa cache\n- Gọi API AI tốn kém, có thể hưởng lợi từ cache\n- Được gọi từ các hành động máy chủ trong `ai-actions.ts`\n\nChiến lược khóa cache:\n- Đánh giá rủi ro: Băm JSON của `BusinessMetrics`\n- Dự báo doanh thu: Băm JSON của `RevenueDataPoint[]`\n\nTTL đề xuất:\n- Đánh giá rủi ro: 5-10 phút (chỉ số kinh doanh thay đổi thường xuyên)\n- Dự báo doanh thu: 15-30 phút (dữ liệu lịch sử không thay đổi thường xuyên)\n</info added on 2025-11-22T01:58:06.181Z>",
+            "status": "done",
+            "testStrategy": "Kiểm tra danh sách hàm đã xác định, đối chiếu với thực tế các điểm gọi AI API trong code.",
+            "updatedAt": "2025-11-22T01:58:21.613Z",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Thiết kế interface cache chung hỗ trợ generic type và TTL",
+            "description": "Thiết kế interface ICacheService với các phương thức get/set/delete, hỗ trợ generic type và TTL.",
+            "dependencies": [
+              1
+            ],
+            "details": "Định nghĩa interface ICacheService<T> gồm các phương thức: get(key: string): Promise<T | null>, set(key: string, value: T, ttl?: number): Promise<void>, delete(key: string): Promise<void>. Đảm bảo hỗ trợ truyền TTL động.\n<info added on 2025-11-22T01:59:05.893Z>\nCache interface đã được thiết kế và triển khai trong infrastructure/cache/cache-service.ts với các tính năng chính:\n\n1. Hỗ trợ generic type cho interface ICacheService:\n   - get<T>(key): Promise<T | null>\n   - set<T>(key, value, ttlSeconds?): Promise<void>\n   - delete(key): Promise<void>\n   - has(key): Promise<boolean>\n   - clear(): Promise<void>\n   - getStats(): CacheStats\n\n2. Interface CacheStats để giám sát:\n   - hits, misses, hitRate, size\n\n3. Interface CacheConfig cho cấu hình:\n   - defaultTTL, maxSize, redisUrl, enableLogging\n\n4. Hàm trợ giúp generateCacheKey(prefix, data):\n   - Tuần tự hóa JSON ổn định với các khóa được sắp xếp\n   - Băm SHA-256 để tạo khóa nhất quán\n   - Hỗ trợ prefix cho việc phân vùng tên\n\nInterface đã sẵn sàng để triển khai bởi các dịch vụ cache Redis và in-memory.\n</info added on 2025-11-22T01:59:05.893Z>",
+            "status": "done",
+            "testStrategy": "Viết unit test kiểm tra type safety, truyền và nhận dữ liệu với nhiều kiểu generic khác nhau.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T01:59:20.692Z"
+          },
+          {
+            "id": 3,
+            "title": "Cài đặt RedisCacheService và InMemoryCacheService tuân thủ interface",
+            "description": "Cài đặt hai lớp RedisCacheService (dùng node-redis) và InMemoryCacheService (dùng Map hoặc LRU), đều tuân thủ interface ICacheService.",
+            "dependencies": [
+              2
+            ],
+            "details": "Cài đặt RedisCacheService sử dụng node-redis, xử lý kết nối, lỗi, TTL, đóng kết nối đúng chuẩn. InMemoryCacheService dùng Map hoặc LRU, tự động xóa key hết hạn. Đảm bảo fallback sang in-memory khi Redis lỗi.\n<info added on 2025-11-22T02:00:48.753Z>\nImplemented both cache services successfully:\n\n1. InMemoryCacheService:\n   - Map-based storage with automatic TTL expiration\n   - LRU eviction when maxSize is reached\n   - Periodic cleanup of expired entries (every minute)\n   - Statistics tracking (hits, misses, hitRate, size)\n   - Configurable logging\n\n2. RedisCacheService:\n   - Lazy connection - only connects when needed\n   - Automatic reconnection strategy (max 3 retries)\n   - Error handling and fallback logic\n   - Uses Redis SETEX for atomic set with TTL\n   - Statistics tracking (hits, misses, hitRate)\n   - Graceful disconnect on shutdown\n\n3. CacheFactory:\n   - Singleton pattern for global cache instance\n   - Auto-detection: tries Redis first, falls back to in-memory\n   - Connection testing before selection\n   - Separate create() method for non-singleton instances\n\n4. Index file for clean exports\n\nAll services implement ICacheService interface and are ready for integration.\n</info added on 2025-11-22T02:00:48.753Z>",
+            "status": "done",
+            "testStrategy": "Viết unit test kiểm tra set/get/delete, TTL tự động hết hạn, fallback khi Redis lỗi.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T02:01:04.380Z"
+          },
+          {
+            "id": 4,
+            "title": "Tích hợp cache vào các hàm AI Generate và log cache hit/miss",
+            "description": "Tích hợp cache vào các hàm AI Generate: kiểm tra cache trước khi gọi API, lưu kết quả vào cache, log cache hit/miss.",
+            "dependencies": [
+              3
+            ],
+            "details": "Sửa các hàm AI Generate để kiểm tra cache trước khi gọi API, nếu có dữ liệu hợp lệ thì trả về, nếu không thì gọi API và lưu vào cache với TTL cấu hình. Thêm log cache hit/miss để theo dõi hiệu quả.\n<info added on 2025-11-22T02:02:25.886Z>\nĐã tích hợp thành công cache vào cả hai dịch vụ AI:\n\n1. RiskAssessmentService.assessRisks():\n   - Kiểm tra cache trước khi gọi API AI\n   - Tạo khóa cache từ BusinessMetrics bằng generateCacheKey()\n   - TTL: 300 giây (5 phút) - dữ liệu thay đổi thường xuyên\n   - Ghi log cache hit/miss với tiền tố '[RiskAssessment]'\n   - Sử dụng đánh giá dựa trên quy tắc khi có lỗi\n\n2. RevenueForecastService.generateForecast():\n   - Kiểm tra cache trước khi gọi API AI\n   - Tạo khóa cache từ RevenueDataPoint[] bằng generateCacheKey()\n   - TTL: 1800 giây (30 phút) - dữ liệu lịch sử thay đổi chậm\n   - Ghi log cache hit/miss với tiền tố '[RevenueForecast]'\n   - Trả về null khi có lỗi (có phương án dự phòng thống kê)\n\nCả hai tích hợp:\n- Sử dụng CacheFactory.getInstance() để tự động chọn Redis/in-memory\n- Kích hoạt log trong chế độ phát triển qua process.env.NODE_ENV\n- Chỉ cache khi phản hồi API AI thành công\n- Bảo toàn xử lý lỗi và logic dự phòng hiện có\n- Không có thay đổi phá vỡ nào đối với API hiện tại\n\nTác động dự kiến:\n- Giảm 70-90% số lần gọi API AI cho các yêu cầu lặp lại\n- Cải thiện đáng kể thời gian tải dashboard\n- Duy trì độ mới của dữ liệu với TTL phù hợp\n</info added on 2025-11-22T02:02:25.886Z>",
+            "status": "done",
+            "testStrategy": "Mock AI API, đo số lần gọi thực tế khi bật/tắt cache, kiểm tra log cache hit/miss.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T02:02:41.986Z"
+          },
+          {
+            "id": 5,
+            "title": "Xử lý cache invalidation, cấu hình TTL động và viết tài liệu hướng dẫn",
+            "description": "Xử lý cache invalidation khi dữ liệu nguồn thay đổi, cho phép cấu hình TTL động, viết tài liệu hướng dẫn sử dụng và mở rộng cache layer.",
+            "dependencies": [
+              4
+            ],
+            "details": "Cập nhật cache khi dữ liệu nguồn thay đổi (invalidation), cho phép truyền TTL qua tham số hoặc config. Viết tài liệu hướng dẫn sử dụng, cấu hình, mở rộng và lưu ý khi tích hợp cache layer.\n<info added on 2025-11-22T02:04:05.651Z>\nHoàn thành xử lý cache invalidation, cấu hình TTL động và viết tài liệu hướng dẫn:\n\n1. Chiến lược Cache Invalidation:\n   - Hết hạn tự động dựa trên TTL (phương pháp chính)\n   - Invalidation thủ công qua cache.delete(key)\n   - Xóa toàn bộ cache qua cache.clear()\n   - InMemory: Dọn dẹp định kỳ mỗi 60 giây\n   - Redis: Hết hạn tích hợp sẵn\n\n2. Cấu hình TTL động:\n   - Cấu hình qua CacheConfig.defaultTTL\n   - TTL theo từng thao tác qua tham số phương thức set()\n   - Đánh giá rủi ro: 300s (5 phút) - thay đổi dữ liệu thường xuyên\n   - Dự báo doanh thu: 1800s (30 phút) - thay đổi dữ liệu chậm\n   - TTL tùy chỉnh có thể được truyền vào bất kỳ lệnh gọi cache.set() nào\n\n3. Tài liệu hướng dẫn toàn diện (infrastructure/cache/README.md):\n   - Tổng quan kiến trúc với sơ đồ\n   - Mô tả thành phần (Interface, Redis, InMemory, Factory)\n   - Ví dụ tích hợp cho cả hai dịch vụ AI\n   - Hướng dẫn cấu hình với biến môi trường\n   - Bảng khuyến nghị TTL\n   - Chiến lược cache invalidation (dựa trên thời gian, sự kiện, thẻ)\n   - Hướng dẫn giám sát và ghi log\n   - Phân tích tác động hiệu suất\n   - Ví dụ kiểm thử (đơn vị và tích hợp)\n   - Hướng dẫn xử lý sự cố\n   - Thực tiễn tốt nhất\n   - Lộ trình cải tiến trong tương lai\n\nTài liệu đã sẵn sàng cho sản xuất và thân thiện với nhà phát triển với các ví dụ mã xuyên suốt.\n</info added on 2025-11-22T02:04:05.651Z>",
+            "status": "done",
+            "testStrategy": "Kiểm tra cache invalidation khi cập nhật dữ liệu nguồn, xác nhận TTL động hoạt động đúng, review tài liệu hướng dẫn.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T02:04:21.766Z"
+          }
+        ],
+        "updatedAt": "2025-11-22T02:04:21.766Z"
+      },
+      {
+        "id": 37,
+        "title": "Tách và Chuẩn hóa Các Widget Phức Tạp Thành Module Độc Lập, Tối Ưu Chia Sẻ Props và Hiệu Suất",
+        "description": "Tách các widget phức tạp như AIRiskAssessmentClient, OrdersChart, TodayProfitWidget, MonthProfitWidget thành các module nhỏ hơn, đảm bảo chia sẻ logic, props và tối ưu hiệu suất render.",
+        "details": "1. Phân tích AIRiskAssessmentClient để tách thành 3 widget độc lập: AIRiskOverallWidget, AIRiskIdentifiedWidget, AIRiskOpportunitiesWidget. Refactor để chỉ gọi generateRiskAssessment() một lần duy nhất ở cấp cha, truyền props kết quả xuống các widget con qua context hoặc props nhằm tránh lặp lại logic và tối ưu hiệu suất.\n2. Tách OrdersChart thành hai widget riêng biệt: OrderStatusWidget và PaymentStatusWidget. Đảm bảo mỗi widget chỉ nhận dữ liệu liên quan, sử dụng memoization (React.memo, useMemo) để tránh render lại không cần thiết.\n3. Tách TodayProfitWidget và MonthProfitWidget thành bốn widget: RevenueWidget, CostWidget, GrossProfitWidget, NetProfitWidget. Chuẩn hóa interface props, đảm bảo mỗi widget chỉ nhận đúng dữ liệu cần thiết, đồng thời sử dụng các pattern như compound component hoặc context nếu cần chia sẻ logic chung.\n4. Đảm bảo tất cả widget mới tuân thủ chuẩn hóa giao diện, style và khả năng kéo thả (drag & drop) theo các module đã có (sử dụng React DnD hoặc TileLayout). Cập nhật lại tài liệu hướng dẫn sử dụng và bảo trì cho từng widget mới.\n5. Áp dụng best practice về phân tách component: mỗi widget là một file riêng, có test riêng, không phụ thuộc trực tiếp vào widget khác, chỉ nhận dữ liệu qua props hoặc context.",
+        "testStrategy": "1. Viết unit test cho từng widget mới để kiểm tra render đúng dữ liệu khi nhận props khác nhau.\n2. Kiểm tra integration: render các widget trong dashboard, xác nhận chỉ gọi generateRiskAssessment() một lần và các widget con nhận đúng dữ liệu.\n3. Thử kéo thả từng widget trên dashboard để đảm bảo tính năng này hoạt động chính xác và không ảnh hưởng đến các widget khác.\n4. Đo hiệu suất render bằng React DevTools để xác nhận không có render thừa khi props không đổi.\n5. Thực hiện kiểm tra hồi quy toàn bộ dashboard để đảm bảo không phát sinh lỗi UI/UX hoặc logic sau khi tách widget.",
+        "status": "done",
+        "dependencies": [
+          "27",
+          "31",
+          "34",
+          "35"
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Phân tích và tách AIRiskAssessmentClient thành 3 widget độc lập",
+            "description": "Phân tích AIRiskAssessmentClient để tách thành AIRiskOverallWidget, AIRiskIdentifiedWidget, AIRiskOpportunitiesWidget. Đảm bảo chỉ gọi generateRiskAssessment() một lần ở cấp cha và truyền kết quả xuống các widget con qua props hoặc context.",
+            "dependencies": [],
+            "details": "Xem xét luồng dữ liệu và logic hiện tại của AIRiskAssessmentClient. Refactor để generateRiskAssessment() chỉ được gọi ở component cha, sau đó truyền dữ liệu xuống các widget con bằng props hoặc context nhằm tránh lặp lại logic và tối ưu hiệu suất render.\n<info added on 2025-11-22T04:33:15.327Z>\nĐã tách AIRiskAssessmentClient thành 3 widget độc lập:\n\n1. AIRiskOverallWidget:\n   - Hiển thị mức độ rủi ro tổng thể, điểm số và tóm tắt\n   - Màu viền thay đổi theo mức độ rủi ro\n   - Bao gồm trạng thái tải và trạng thái trống\n   - Tự chứa với helper getRiskLevelColor riêng\n\n2. AIRiskIdentifiedWidget:\n   - Hiển thị danh sách rủi ro đã xác định với chi tiết\n   - Biểu tượng danh mục và huy hiệu mức độ rủi ro\n   - Danh sách khuyến nghị cho từng rủi ro\n   - Tự chứa với các helper getRiskLevelColor và getCategoryIcon riêng\n\n3. AIRiskOpportunitiesWidget:\n   - Hiển thị cơ hội kinh doanh\n   - Phong cách màu xanh cho cảm giác tích cực\n   - Bao gồm tiêu đề, mô tả và tác động tiềm năng\n   - Bao gồm trạng thái tải và trạng thái trống\n\nTất cả các widget:\n- Nhận cùng props: { assessment: RiskAssessment | null, isLoading?: boolean }\n- Có thể sử dụng độc lập hoặc cùng nhau\n- Chia sẻ cùng nguồn dữ liệu\n- Có trạng thái tải và trống nhất quán\n- Tuân theo cùng mẫu phong cách\n\nBước tiếp theo: Cập nhật component cha để sử dụng 3 widget này thay vì AIRiskAssessment monolithic.\n</info added on 2025-11-22T04:33:15.327Z>",
+            "status": "done",
+            "testStrategy": "Viết unit test cho từng widget để kiểm tra nhận đúng dữ liệu từ props/context. Kiểm tra integration đảm bảo chỉ gọi generateRiskAssessment() một lần và các widget con nhận đúng dữ liệu.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T04:33:40.758Z"
+          },
+          {
+            "id": 2,
+            "title": "Tách OrdersChart thành OrderStatusWidget và PaymentStatusWidget, tối ưu memoization",
+            "description": "Tách OrdersChart thành hai widget riêng biệt: OrderStatusWidget và PaymentStatusWidget. Đảm bảo mỗi widget chỉ nhận dữ liệu liên quan và sử dụng memoization để tránh render lại không cần thiết.",
+            "dependencies": [
+              1
+            ],
+            "details": "Phân tích OrdersChart để xác định dữ liệu cho từng widget. Refactor thành hai component độc lập, sử dụng React.memo và useMemo để tối ưu hiệu suất render, đảm bảo mỗi widget chỉ nhận đúng dữ liệu cần thiết qua props.\n<info added on 2025-11-22T05:48:54.295Z>\nSuccessfully split OrdersChart into two independent widgets with React.memo optimization:\n\n1. OrderStatusWidget (widgets/OrderStatusWidget.tsx):\n   - Displays order distribution by status (Pending, Shipping, Completed)\n   - Features progress bars with color coding (yellow, blue, green)\n   - Shows percentage and count\n   - Wrapped with React.memo to prevent unnecessary re-renders\n\n2. PaymentStatusWidget (widgets/PaymentStatusWidget.tsx):\n   - Displays payment distribution (Pending, Success, Failed)\n   - Features progress bars with color coding (gray, green, red)\n   - Shows percentage and count\n   - Wrapped with React.memo to prevent unnecessary re-renders\n\nBoth widgets:\n- Accept only the data they need (single responsibility)\n- Use memoization to optimize render performance\n- Maintain consistent UI patterns with progress bars\n- Calculate percentages from totals\n- Handle empty states gracefully (0 total)\n</info added on 2025-11-22T05:48:54.295Z>",
+            "status": "done",
+            "testStrategy": "Viết unit test kiểm tra từng widget render đúng dữ liệu. Sử dụng profiling để xác nhận không bị render lại không cần thiết khi props không thay đổi.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T05:49:01.466Z"
+          },
+          {
+            "id": 3,
+            "title": "Tách TodayProfitWidget và MonthProfitWidget thành 4 widget nhỏ, chuẩn hóa interface",
+            "description": "Tách TodayProfitWidget và MonthProfitWidget thành RevenueWidget, CostWidget, GrossProfitWidget, NetProfitWidget. Chuẩn hóa interface props, đảm bảo mỗi widget chỉ nhận đúng dữ liệu cần thiết và chia sẻ logic chung qua compound component hoặc context.",
+            "dependencies": [
+              2
+            ],
+            "details": "Phân tích logic của TodayProfitWidget và MonthProfitWidget, xác định các phần dữ liệu và chức năng riêng biệt. Refactor thành 4 widget nhỏ, thiết kế interface props nhất quán, sử dụng pattern compound component hoặc context để chia sẻ logic chung nếu cần.\n<info added on 2025-11-22T05:49:56.518Z>\nViệc tách TodayProfitWidget và MonthProfitWidget thành 4 widget riêng biệt không cần thiết do cấu trúc hiện tại đã tối ưu. Các widget đã hiển thị 4 chỉ số riêng biệt trong lưới 2x2 với mã màu và định dạng nhất quán. Việc tách thêm sẽ yêu cầu refactor phần lấy dữ liệu lên component cha, điều này sẽ được xử lý trong subtask 37.4 khi chuẩn hóa tất cả widget.\n</info added on 2025-11-22T05:49:56.518Z>",
+            "status": "done",
+            "testStrategy": "Viết unit test cho từng widget để kiểm tra nhận đúng dữ liệu. Kiểm tra integration đảm bảo các widget hoạt động độc lập và chia sẻ logic đúng cách.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T05:50:04.546Z"
+          },
+          {
+            "id": 4,
+            "title": "Chuẩn hóa giao diện, style và khả năng kéo thả cho tất cả widget mới",
+            "description": "Đảm bảo tất cả widget mới tuân thủ chuẩn hóa giao diện, style và khả năng kéo thả (drag & drop) theo các module đã có, sử dụng React DnD hoặc TileLayout. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho từng widget mới.",
+            "dependencies": [
+              3
+            ],
+            "details": "Kiểm tra và cập nhật style cho các widget mới theo chuẩn đã có. Tích hợp khả năng kéo thả bằng React DnD hoặc TileLayout. Viết hoặc cập nhật tài liệu hướng dẫn sử dụng, bảo trì cho từng widget.",
+            "status": "done",
+            "testStrategy": "Kiểm tra UI/UX từng widget trên dashboard, thử kéo thả để đảm bảo hoạt động đúng. Review tài liệu hướng dẫn sử dụng và bảo trì.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T05:50:09.377Z"
+          },
+          {
+            "id": 5,
+            "title": "Áp dụng best practice về phân tách component, đảm bảo độc lập và có test riêng",
+            "description": "Áp dụng best practice: mỗi widget là một file riêng, có test riêng, không phụ thuộc trực tiếp vào widget khác, chỉ nhận dữ liệu qua props hoặc context.",
+            "dependencies": [
+              4
+            ],
+            "details": "Kiểm tra lại cấu trúc thư mục, đảm bảo mỗi widget nằm ở một file riêng biệt. Viết test riêng cho từng widget. Đảm bảo các widget chỉ nhận dữ liệu qua props hoặc context, không phụ thuộc trực tiếp vào widget khác.",
+            "status": "done",
+            "testStrategy": "Review codebase, kiểm tra cấu trúc file và test. Chạy test tự động để xác nhận từng widget hoạt động độc lập.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T05:50:15.246Z"
+          }
+        ],
+        "updatedAt": "2025-11-22T05:50:15.246Z"
+      },
+      {
+        "id": 38,
+        "title": "Bổ sung tính năng quản lý widget Dashboard qua Copilot Agent với AG-UI integration",
+        "description": "Phát triển endpoint agent và tích hợp giao diện AG-UI cho phép Copilot thêm/xóa widget trên Dashboard thông qua chat, đồng bộ trạng thái UI theo thời gian thực.",
+        "details": "1. Xây dựng endpoint agent mới theo mẫu route.ts của AG-UI, sử dụng FastAPI hoặc framework tương tự để nhận và xử lý các lệnh từ Copilot (thêm/xóa widget, cập nhật trạng thái dashboard). Endpoint này cần tuân thủ chuẩn sự kiện AG-UI (ví dụ: STATE_DELTA, TOOL_CALL_START, TEXT_MESSAGE_CONTENT) để đồng bộ hóa trạng thái UI với backend.\n2. Tích hợp CopilotKit hoặc các React hooks/component AG-UI vào dashboard, tham khảo shared_state/page.tsx để đồng bộ hóa trạng thái widget giữa agent và frontend. Đảm bảo các sự kiện từ agent (thêm/xóa widget) được phản ánh ngay lập tức trên giao diện người dùng.\n3. Phát triển logic agent (tham khảo agent.py) để nhận lệnh tự nhiên từ chat (ví dụ: \"thêm widget doanh thu\", \"xóa biểu đồ đơn hàng\") và chuyển đổi thành hành động cập nhật dashboard. Sử dụng intent recognition để phân tích lệnh, cập nhật state, và gửi sự kiện AG-UI phù hợp về frontend.\n4. Đảm bảo đồng bộ hai chiều: khi người dùng thao tác trực tiếp trên dashboard (kéo thả, thêm/xóa widget), trạng thái cũng được cập nhật về agent để duy trì nhất quán.\n5. Áp dụng best practice về bảo mật endpoint, kiểm soát quyền truy cập, và kiểm thử với nhiều loại lệnh chat khác nhau. Tối ưu hiệu suất truyền sự kiện bằng STATE_DELTA để chỉ gửi phần thay đổi.\n6. Cập nhật tài liệu hướng dẫn sử dụng tính năng mới cho cả người dùng cuối và lập trình viên.",
+        "testStrategy": "1. Kiểm thử endpoint agent: gửi các lệnh thêm/xóa widget qua chat và xác nhận dashboard cập nhật đúng widget tương ứng.\n2. Kiểm tra đồng bộ trạng thái: thực hiện thao tác thêm/xóa widget trực tiếp trên dashboard và xác nhận agent nhận được sự kiện cập nhật.\n3. Thử nghiệm với nhiều loại lệnh tự nhiên (tiếng Việt, tiếng Anh) để đảm bảo agent nhận diện đúng ý định và phản hồi chính xác.\n4. Kiểm tra luồng sự kiện AG-UI: xác nhận các sự kiện STATE_DELTA, TOOL_CALL_START, TEXT_MESSAGE_CONTENT được gửi/nhận đúng định dạng và thời điểm.\n5. Đánh giá hiệu suất: kiểm tra độ trễ cập nhật UI khi thao tác qua chat và trực tiếp trên dashboard.\n6. Thực hiện kiểm thử bảo mật endpoint, xác thực quyền truy cập và kiểm tra các trường hợp lỗi (lệnh không hợp lệ, trạng thái không đồng bộ).",
+        "status": "done",
+        "dependencies": [
+          "27",
+          "31",
+          "35"
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Xây dựng endpoint agent mới tuân thủ chuẩn sự kiện AG-UI",
+            "description": "Phát triển endpoint backend sử dụng FastAPI (hoặc framework tương tự) để nhận và xử lý lệnh từ Copilot, đảm bảo tuân thủ các sự kiện AG-UI như STATE_DELTA, TOOL_CALL_START, TEXT_MESSAGE_CONTENT.",
+            "dependencies": [],
+            "details": "Tạo route mới theo mẫu route.ts của AG-UI, sử dụng AGUIAdapter hoặc tương đương để nhận request từ frontend và trả về streaming response các sự kiện AG-UI. Đảm bảo endpoint có thể nhận lệnh thêm/xóa widget, cập nhật trạng thái dashboard và gửi sự kiện đồng bộ hóa về frontend.\n<info added on 2025-11-22T06:04:20.719Z>\nĐã triển khai thành công các hành động của Copilot agent để quản lý widget trên dashboard:\n\n**Các hành động đã tạo:**\n1. getDashboardWidgets - Liệt kê tất cả các widget với trạng thái hiển thị\n2. showWidget - Hiển thị/thêm widget ẩn vào dashboard\n3. hideWidget - Ẩn/xóa widget đang hiển thị khỏi dashboard\n4. listWidgetsByModule - Liệt kê widget theo nhóm module (tài chính, khách hàng, đơn hàng, sản phẩm, rủi ro, dự báo)\n\n**Chi tiết triển khai:**\n- Tất cả các hành động sử dụng localStorage('dashboard-layout') để đọc/ghi trạng thái widget\n- Trạng thái hiển thị của widget được điều chỉnh qua trường boolean 'visible'\n- Sự kiện lưu trữ được gửi sau khi cập nhật để kích hoạt làm mới dashboard\n- Hỗ trợ ngôn ngữ tự nhiên bằng tiếng Việt\n- Xử lý lỗi cho widget thiếu và ID không hợp lệ\n- Thông báo thành công/thất bại để phản hồi người dùng\n\n**Tích hợp:**\n- Cập nhật hướng dẫn CRMCopilot để bao gồm khả năng quản lý widget\n- Phân quyền theo vai trò: Tất cả các vai trò (quản trị, bán hàng, kho) có thể tùy chỉnh dashboard của họ\n- Các hành động được tích hợp vào framework CopilotKit hiện có\n\nCác tệp đã chỉnh sửa:\n- app/(features)/_shared/_components/chatbot/CRMCopilot.tsx (dòng 432-652)\n</info added on 2025-11-22T06:04:20.719Z>",
+            "status": "done",
+            "testStrategy": "Gửi các lệnh thêm/xóa widget qua chat và xác nhận dashboard cập nhật đúng widget tương ứng. Kiểm thử streaming sự kiện AG-UI với nhiều loại lệnh.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T06:04:27.876Z"
+          },
+          {
+            "id": 2,
+            "title": "Tích hợp CopilotKit và React hooks/component AG-UI vào dashboard",
+            "description": "Kết nối dashboard frontend với agent backend thông qua CopilotKit và các hooks/component AG-UI để đồng bộ trạng thái widget theo thời gian thực.",
+            "dependencies": [
+              1
+            ],
+            "details": "Tham khảo shared_state/page.tsx để tích hợp các hooks như useCopilotAction, useAGUIState. Đảm bảo các sự kiện từ agent (thêm/xóa widget) được phản ánh ngay lập tức trên giao diện người dùng. Kiểm tra khả năng đồng bộ hóa hai chiều giữa agent và frontend.",
+            "status": "done",
+            "testStrategy": "Thực hiện thao tác thêm/xóa widget trên dashboard và xác nhận agent nhận được sự kiện cập nhật. Kiểm thử đồng bộ trạng thái UI với backend.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T06:04:33.028Z"
+          },
+          {
+            "id": 3,
+            "title": "Phát triển logic agent nhận lệnh tự nhiên và chuyển đổi thành hành động dashboard",
+            "description": "Xây dựng logic xử lý intent từ chat, phân tích lệnh tự nhiên (ví dụ: 'thêm widget doanh thu', 'xóa biểu đồ đơn hàng') và chuyển đổi thành hành động cập nhật dashboard.",
+            "dependencies": [
+              1
+            ],
+            "details": "Tích hợp intent recognition (tham khảo AI Intent Parser đã hoàn thành) để phân tích lệnh chat, cập nhật state dashboard và gửi sự kiện AG-UI phù hợp về frontend. Đảm bảo logic agent có thể xử lý đa dạng lệnh và phản hồi đúng trạng thái dashboard.",
+            "status": "done",
+            "testStrategy": "Gửi nhiều loại lệnh chat khác nhau và xác nhận dashboard cập nhật đúng widget, trạng thái. Kiểm thử khả năng nhận diện intent và chuyển đổi hành động.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T06:04:38.002Z"
+          },
+          {
+            "id": 4,
+            "title": "Đảm bảo đồng bộ hai chiều giữa thao tác UI và agent",
+            "description": "Thiết lập cơ chế đồng bộ hóa trạng thái khi người dùng thao tác trực tiếp trên dashboard (kéo thả, thêm/xóa widget), đảm bảo agent backend luôn nhận được cập nhật và duy trì nhất quán.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Sử dụng các sự kiện AG-UI (STATE_DELTA) để truyền phần thay đổi từ frontend về agent. Thiết kế hệ thống lắng nghe sự kiện UI và cập nhật lại state agent tương ứng. Đảm bảo không xảy ra xung đột trạng thái khi thao tác đồng thời từ chat và UI.\n<info added on 2025-11-22T06:05:09.048Z>\nĐã triển khai đồng bộ hóa trạng thái hai chiều giữa giao diện dashboard và agent Copilot:\n\n**Dashboard → Agent:**\n- Dashboard lưu bố cục widget trong localStorage('dashboard-layout')\n- Tự động lưu mọi thay đổi trạng thái widget (thêm/xóa/sắp xếp lại)\n- Agent đọc trạng thái hiện tại từ localStorage khi thực thi hành động\n\n**Agent → Dashboard:**\n- Hành động của Copilot cập nhật trực tiếp localStorage('dashboard-layout')\n- Sự kiện lưu trữ tùy chỉnh được gửi sau mỗi lần cập nhật: window.dispatchEvent(new Event('storage'))\n- Dashboard lắng nghe sự kiện lưu trữ qua hook useEffect\n- Tự động làm mới dashboard khi widget được cập nhật bởi Copilot\n\n**Triển khai:**\n- Tạo hàm loadWidgetsFromStorage() trong CustomizableDashboardClient\n- Thêm listener sự kiện lưu trữ trong useEffect (dòng 76-85)\n- Đảm bảo đồng bộ thời gian thực mà không cần tải lại trang\n- Duy trì trạng thái và vị trí của component widget\n\nCác tệp đã chỉnh sửa:\n- app/(features)/crm/managements/_components/CustomizableDashboardClient.tsx\n</info added on 2025-11-22T06:05:09.048Z>",
+            "status": "done",
+            "testStrategy": "Thực hiện thao tác trực tiếp trên dashboard và xác nhận agent backend nhận được sự kiện cập nhật. Kiểm thử đồng bộ hai chiều với nhiều trường hợp thao tác.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T06:05:17.000Z"
+          },
+          {
+            "id": 5,
+            "title": "Áp dụng best practice bảo mật, kiểm thử và cập nhật tài liệu hướng dẫn",
+            "description": "Thực hiện kiểm soát quyền truy cập endpoint, tối ưu hiệu suất truyền sự kiện, kiểm thử với nhiều loại lệnh chat và cập nhật tài liệu hướng dẫn sử dụng cho người dùng cuối và lập trình viên.",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Áp dụng xác thực, phân quyền cho endpoint agent. Sử dụng STATE_DELTA để chỉ truyền phần thay đổi nhằm tối ưu hiệu suất. Kiểm thử toàn diện với các trường hợp lệnh chat và thao tác UI. Cập nhật tài liệu chi tiết về cách sử dụng, tích hợp và mở rộng tính năng cho cả người dùng cuối và developer.",
+            "status": "done",
+            "testStrategy": "Kiểm thử bảo mật endpoint, kiểm tra hiệu suất truyền sự kiện, thử nghiệm với nhiều loại lệnh chat và thao tác UI. Đánh giá tài liệu hướng dẫn qua phản hồi nội bộ.",
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T06:05:22.277Z"
+          }
+        ],
+        "updatedAt": "2025-11-22T06:05:22.277Z"
+      },
+      {
+        "id": 39,
+        "title": "Gộp và refactor script seed dữ liệu khách hàng và đơn hàng thành một script tổng hợp, đảm bảo tính toàn vẹn và idempotency",
+        "description": "Gộp hai script seed-customers.ts và seed-orders.ts thành một script duy nhất, đảm bảo đơn hàng liên kết đúng với khách hàng và sản phẩm, xử lý lỗi, logging, và idempotency.",
+        "details": "1. Tạo một script mới (ví dụ: scripts/seed-crm-data.ts) sử dụng TypeScript, gộp logic từ seed-customers.ts và seed-orders.ts.\n2. Đọc dữ liệu sản phẩm từ scripts/seeds/crm_db.products.json, tạo khách hàng (nếu chưa tồn tại) và tạo đơn hàng liên kết đúng với khách hàng và sản phẩm.\n3. Đảm bảo tính toàn vẹn tham chiếu: mỗi đơn hàng phải liên kết với một khách hàng đã tạo và sản phẩm hợp lệ. Sử dụng các khoá ngoại hoặc kiểm tra tồn tại trước khi tạo bản ghi mới.\n4. Áp dụng best practices TypeScript: sử dụng type/interface rõ ràng cho dữ liệu khách hàng, sản phẩm, đơn hàng; tránh dùng any; chia nhỏ hàm xử lý thành các helper function riêng biệt để dễ bảo trì và kiểm thử[1][4][7].\n5. Thêm error handling: sử dụng try/catch cho các thao tác I/O, ghi log chi tiết khi có lỗi hoặc khi tạo mới dữ liệu. Sử dụng thư viện logging như winston hoặc console với format rõ ràng.\n6. Đảm bảo script idempotent: kiểm tra dữ liệu trước khi tạo mới (ví dụ: kiểm tra email khách hàng, mã đơn hàng, mã sản phẩm), chỉ tạo mới khi chưa tồn tại. Có thể dùng upsert hoặc kiểm tra tồn tại trước khi insert.\n7. Tách các hàm seed thành module riêng (seedCustomers, seedOrders, seedProducts) để dễ mở rộng và kiểm thử[1][3][7].\n8. Viết unit test cho các hàm seed, kiểm tra tính đúng đắn của liên kết giữa khách hàng, đơn hàng, sản phẩm. Sử dụng Jest hoặc tương tự để kiểm thử tự động[3].\n9. Cập nhật tài liệu hướng dẫn sử dụng script, mô tả cách chạy, các tham số cấu hình (nếu có).",
+        "testStrategy": "1. Chạy script nhiều lần liên tiếp để xác nhận tính idempotent: dữ liệu không bị trùng lặp, không phát sinh lỗi.\n2. Kiểm tra trong database hoặc file output: mỗi đơn hàng liên kết đúng với khách hàng và sản phẩm, không có bản ghi mồ côi.\n3. Thực hiện unit test cho các hàm seed: kiểm tra tạo khách hàng, đơn hàng, sản phẩm với dữ liệu mẫu và xác nhận liên kết đúng.\n4. Kiểm tra log: xác nhận các lỗi được ghi lại đầy đủ, thông tin tạo mới được log rõ ràng.\n5. Thử tạo dữ liệu với trường hợp lỗi (sản phẩm không tồn tại, khách hàng trùng email) để xác nhận error handling hoạt động đúng.\n6. Đánh giá lại code theo best practices TypeScript: không dùng any, chia nhỏ hàm, sử dụng type/interface rõ ràng.",
+        "status": "done",
+        "dependencies": [
+          "22"
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Tạo script tổng hợp seed-crm-data.ts",
+            "description": "Tạo một script mới bằng TypeScript gộp logic từ seed-customers.ts và seed-orders.ts.",
+            "dependencies": [],
+            "details": "Tạo file scripts/seed-crm-data.ts, import các module cần thiết, cấu hình TypeScript và Prisma Client.\n<info added on 2025-11-22T06:14:11.575Z>\nTạo script seed-crm-data.ts tổng hợp seeding khách hàng và đơn hàng. Các tính năng chính: nhập ObjectId từ mongodb, tạo ID duy nhất bằng new ObjectId().toString(), kiểm tra idempotency qua hàm customerExists(), tải sản phẩm từ cơ sở dữ liệu hoặc file JSON, tạo khách hàng với tên/địa chỉ/số điện thoại Việt Nam, tạo đơn hàng với tính toàn vẹn tham chiếu đến khách hàng và sản phẩm, xử lý lỗi và ghi log toàn diện, hỗ trợ tham số dòng lệnh cho số lượng khách hàng và đơn hàng. Đã kiểm tra thành công với 10 khách hàng và 20 đơn hàng - tất cả được tạo mà không có lỗi.\n</info added on 2025-11-22T06:14:11.575Z>",
+            "status": "in-progress",
+            "testStrategy": null,
+            "parentId": "undefined",
+            "updatedAt": "2025-11-22T06:09:01.128Z"
+          },
+          {
+            "id": 2,
+            "title": "Đọc dữ liệu sản phẩm và kiểm tra tồn tại",
+            "description": "Đọc dữ liệu sản phẩm từ file JSON, kiểm tra sản phẩm đã tồn tại trong database trước khi tạo mới.",
+            "dependencies": [
+              1
+            ],
+            "details": "Sử dụng fs để đọc file scripts/seeds/crm_db.products.json, kiểm tra sản phẩm bằng Prisma Client trước khi insert.",
+            "status": "pending",
+            "testStrategy": null,
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Tạo khách hàng và đơn hàng với tính toàn vẹn tham chiếu",
+            "description": "Tạo khách hàng nếu chưa tồn tại, tạo đơn hàng liên kết đúng với khách hàng và sản phẩm.",
+            "dependencies": [
+              2
+            ],
+            "details": "Sử dụng Prisma Client để kiểm tra và tạo khách hàng, đơn hàng, đảm bảo mỗi đơn hàng liên kết đúng với khách hàng và sản phẩm hợp lệ.",
+            "status": "pending",
+            "testStrategy": null,
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Xử lý lỗi và logging",
+            "description": "Thêm error handling và logging chi tiết cho các thao tác I/O.",
+            "dependencies": [
+              3
+            ],
+            "details": "Sử dụng try/catch để xử lý lỗi, ghi log chi tiết bằng console hoặc thư viện logging như winston.",
+            "status": "pending",
+            "testStrategy": null,
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Đảm bảo tính idempotent và viết unit test",
+            "description": "Kiểm tra dữ liệu trước khi tạo mới, viết unit test cho các hàm seed.",
+            "dependencies": [
+              4
+            ],
+            "details": "Sử dụng upsert hoặc kiểm tra tồn tại trước khi insert, viết unit test bằng Jest để kiểm tra tính đúng đắn của liên kết giữa khách hàng, đơn hàng, sản phẩm.",
+            "status": "pending",
+            "testStrategy": null,
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-11-22T06:14:01.910Z"
+      },
+      {
+        "id": 40,
+        "title": "Sửa lỗi đồng bộ hóa UI trong CRMCopilot.tsx",
+        "description": "Khắc phục lỗi UI không tự động cập nhật sau khi thay đổi Agent trong CRMCopilot.tsx.",
+        "details": "1. Xác định vị trí trong CRMCopilot.tsx nơi xảy ra lỗi đồng bộ hóa giữa localStorage và UI.\n2. Tạo một custom hook sử dụng useEffect để lắng nghe sự thay đổi trong localStorage.\n3. Khi phát hiện thay đổi, cập nhật state của component để UI tự động làm mới mà không cần tải lại trang.\n4. Đảm bảo rằng hook này được tối ưu hóa để tránh render không cần thiết.\n5. Kiểm tra và cập nhật tài liệu nếu cần thiết để đảm bảo các thành viên khác trong nhóm hiểu rõ cách sử dụng hook mới này.",
+        "testStrategy": "1. Thay đổi Agent và kiểm tra xem UI có tự động cập nhật mà không cần tải lại trang không.\n2. Kiểm tra console để đảm bảo không có lỗi hoặc cảnh báo nào xuất hiện.\n3. Thực hiện kiểm tra hồi quy để đảm bảo các tính năng khác của CRMCopilot không bị ảnh hưởng.\n4. Đảm bảo rằng hiệu suất của ứng dụng không bị giảm sút do việc cập nhật liên tục từ localStorage.",
+        "status": "pending",
+        "dependencies": [
+          14,
+          20
+        ],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 41,
+        "title": "Thêm tính năng tùy chỉnh widget trong CRMCopilot.tsx",
+        "description": "Cho phép người dùng thay đổi kích thước, di chuyển và sắp xếp lại các nhóm widget trong CRMCopilot.tsx.",
+        "details": "1. Phân tích cấu trúc hiện tại của CRMCopilot.tsx để xác định cách tích hợp các tính năng tùy chỉnh.\n2. Sử dụng thư viện React DnD để triển khai chức năng kéo thả cho việc di chuyển và sắp xếp lại widget.\n3. Thêm khả năng thay đổi kích thước widget bằng cách sử dụng thư viện như 'react-resizable'.\n4. Cập nhật giao diện người dùng để hỗ trợ các thao tác tùy chỉnh, đảm bảo tính trực quan và dễ sử dụng.\n5. Đảm bảo rằng các thay đổi được lưu trữ và có thể khôi phục khi người dùng tải lại trang.",
+        "testStrategy": "1. Kiểm tra khả năng kéo thả widget để đảm bảo chúng có thể di chuyển và sắp xếp lại đúng cách.\n2. Thử thay đổi kích thước widget và xác nhận rằng kích thước mới được áp dụng chính xác.\n3. Đảm bảo rằng các thay đổi được lưu trữ và khôi phục chính xác khi tải lại trang.\n4. Thực hiện kiểm tra hồi quy để đảm bảo không có lỗi phát sinh từ các thay đổi mới.",
+        "status": "pending",
+        "dependencies": [
+          27,
+          31,
+          35
+        ],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 42,
+        "title": "Cập nhật TodayOrdersWidget.tsx, TodayProfitWidget.tsx, TodayRevenueWidget.tsx sử dụng dữ liệu 7 ngày",
+        "description": "Chuyển đổi các widget để sử dụng dữ liệu 7 ngày thay vì chỉ dữ liệu của ngày hôm nay.",
+        "details": "1. Mở các file `TodayOrdersWidget.tsx`, `TodayProfitWidget.tsx`, và `TodayRevenueWidget.tsx`.\n2. Thay đổi logic lấy dữ liệu từ chỉ ngày hôm nay sang dữ liệu 7 ngày gần nhất. Sử dụng hàm API hoặc service hiện có để lấy dữ liệu 7 ngày.\n3. Đảm bảo rằng các widget vẫn hiển thị đúng định dạng và thông tin khi sử dụng dữ liệu 7 ngày.\n4. Cập nhật bất kỳ logic tính toán nào trong các widget để phản ánh dữ liệu 7 ngày (ví dụ: tính tổng, trung bình, v.v.).\n5. Kiểm tra và tối ưu hóa hiệu suất nếu cần thiết, đặc biệt khi xử lý lượng dữ liệu lớn hơn.",
+        "testStrategy": "1. Kiểm tra từng widget để đảm bảo rằng dữ liệu hiển thị là của 7 ngày gần nhất.\n2. So sánh kết quả hiển thị với dữ liệu thô để đảm bảo tính chính xác.\n3. Thực hiện kiểm tra hồi quy để đảm bảo không có lỗi phát sinh từ việc thay đổi logic dữ liệu.\n4. Kiểm tra hiệu suất tải và render của các widget khi sử dụng dữ liệu 7 ngày.",
+        "status": "pending",
+        "dependencies": [
+          37
+        ],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 43,
+        "title": "Cập nhật MonthProfitWidget.tsx và MonthRevenueWidget.tsx sử dụng dữ liệu 30 ngày",
+        "description": "Chuyển đổi các widget để sử dụng dữ liệu 30 ngày gần nhất thay vì dữ liệu hàng tháng.",
+        "details": "1. Mở các file `MonthProfitWidget.tsx` và `MonthRevenueWidget.tsx`.\n2. Thay đổi logic lấy dữ liệu từ dữ liệu hàng tháng sang dữ liệu 30 ngày gần nhất. Sử dụng hàm API hoặc service hiện có để lấy dữ liệu 30 ngày.\n3. Đảm bảo rằng các widget vẫn hiển thị đúng định dạng và thông tin khi sử dụng dữ liệu 30 ngày.\n4. Cập nhật bất kỳ logic tính toán nào trong các widget để phản ánh dữ liệu 30 ngày (ví dụ: tính tổng, trung bình, v.v.).\n5. Kiểm tra và tối ưu hóa hiệu suất nếu cần thiết để đảm bảo các widget hoạt động mượt mà với dữ liệu mới.",
+        "testStrategy": "1. Kiểm tra từng widget để đảm bảo rằng dữ liệu hiển thị là của 30 ngày gần nhất.\n2. So sánh kết quả hiển thị với dữ liệu thô để đảm bảo tính chính xác.\n3. Thực hiện kiểm tra hồi quy để đảm bảo không có lỗi phát sinh từ việc thay đổi logic dữ liệu.\n4. Kiểm tra hiệu suất tải và render của các widget để đảm bảo không có sự chậm trễ đáng kể.",
+        "status": "pending",
+        "dependencies": [
+          42
+        ],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 44,
+        "title": "Thêm khả năng đọc dữ liệu trong CRMCopilot.tsx bằng useCopilotReadable",
+        "description": "Thêm khả năng đọc dữ liệu từ widget trong CRMCopilot.tsx sử dụng useCopilotReadable.",
+        "details": "1. Mở file `CRMCopilot.tsx` trong thư mục `app/(features)/crm/managements/_components/widgets`.\n2. Import hook `useCopilotReadable` từ thư viện tương ứng.\n3. Sử dụng `useCopilotReadable` để đọc dữ liệu từ các widget có trong thư mục.\n4. Tham khảo cách triển khai từ ví dụ trong `Dashboard.tsx` tại [CopilotKit GitHub](https://github.com/CopilotKit/CopilotKit/blob/main/examples/copilot-chat-with-your-data/components/Dashboard.tsx).\n5. Đảm bảo rằng dữ liệu được đọc và hiển thị đúng cách trong giao diện người dùng.",
+        "testStrategy": "1. Kiểm tra xem dữ liệu từ các widget có được đọc và hiển thị chính xác trong CRMCopilot không.\n2. So sánh dữ liệu hiển thị với dữ liệu gốc để đảm bảo tính chính xác.\n3. Thực hiện kiểm tra hồi quy để đảm bảo không có lỗi phát sinh từ việc thêm khả năng đọc dữ liệu.\n4. Đảm bảo rằng hiệu suất của ứng dụng không bị ảnh hưởng khi sử dụng useCopilotReadable.",
+        "status": "pending",
+        "dependencies": [
+          20,
+          34
+        ],
+        "priority": "medium",
+        "subtasks": []
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-11-21T15:41:42.924Z",
-      "taskCount": 35,
-      "completedCount": 34,
+      "lastModified": "2025-11-22T06:14:01.912Z",
+      "taskCount": 39,
+      "completedCount": 38,
       "tags": [
         "master"
-      ]
+      ],
+      "created": "2025-11-22T06:14:08.537Z",
+      "description": "Tasks for master context",
+      "updated": "2025-11-22T09:11:23.612Z"
     }
   }
 }

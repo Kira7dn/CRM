@@ -14,14 +14,13 @@ export function CustomizableDashboardClient({ widgets: initialWidgets }: Customi
   const [widgets, setWidgets] = useState<Widget[]>([])
   const [mounted, setMounted] = useState(false)
 
-  // Load widgets from localStorage on mount (client-only)
-  useEffect(() => {
+  // Load widgets from localStorage
+  const loadWidgetsFromStorage = useCallback(() => {
     try {
       const savedLayout = localStorage.getItem("dashboard-layout")
 
       if (!savedLayout) {
         setWidgets(initialWidgets)
-        setMounted(true)
         return
       }
 
@@ -31,7 +30,6 @@ export function CustomizableDashboardClient({ widgets: initialWidgets }: Customi
       if (!Array.isArray(parsed)) {
         console.warn("Invalid dashboard layout format, using default")
         setWidgets(initialWidgets)
-        setMounted(true)
         return
       }
 
@@ -63,13 +61,28 @@ export function CustomizableDashboardClient({ widgets: initialWidgets }: Customi
       )
 
       setWidgets([...orderedWidgets, ...newWidgets])
-      setMounted(true)
     } catch (error) {
       console.error("Failed to load dashboard layout:", error)
       setWidgets(initialWidgets)
-      setMounted(true)
     }
   }, [initialWidgets])
+
+  // Load widgets from localStorage on mount (client-only)
+  useEffect(() => {
+    loadWidgetsFromStorage()
+    setMounted(true)
+  }, [loadWidgetsFromStorage])
+
+  // Listen for storage events (from Copilot widget management)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      console.log('[Dashboard] Widgets updated by Copilot, reloading...')
+      loadWidgetsFromStorage()
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [loadWidgetsFromStorage])
 
   const handleLayoutChange = useCallback((newWidgets: Widget[]) => {
     setWidgets(prevWidgets => {

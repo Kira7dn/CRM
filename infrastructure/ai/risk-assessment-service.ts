@@ -1,6 +1,7 @@
 import { generateObject } from "ai"
 import { z } from "zod"
 import { aiConfig, isAIEnabled } from "./ai-config"
+import { CacheFactory, generateCacheKey } from "@/infrastructure/cache"
 
 /**
  * Risk assessment schema
@@ -75,6 +76,21 @@ export class RiskAssessmentService {
       console.warn("AI features are disabled. Using rule-based risk assessment.")
       return this.generateRuleBasedAssessment(metrics)
     }
+
+    // Check cache first
+    const cacheKey = generateCacheKey("risk-assessment", metrics)
+    const cache = await CacheFactory.getInstance({
+      defaultTTL: 300, // 5 minutes default
+      enableLogging: process.env.NODE_ENV === "development",
+    })
+
+    const cached = await cache.get<RiskAssessment>(cacheKey)
+    if (cached) {
+      console.log("[RiskAssessment] Cache hit for risk assessment")
+      return cached
+    }
+
+    console.log("[RiskAssessment] Cache miss, generating new assessment")
 
     try {
       const prompt = `Bạn là chuyên gia phân tích rủi ro kinh doanh. Phân tích các chỉ số kinh doanh sau và cung cấp đánh giá rủi ro toàn diện.
@@ -152,6 +168,10 @@ Bạn PHẢI trả về DUY NHẤT một JSON đúng chính xác schema sau (kh�
         prompt,
         temperature: aiConfig.temperature,
       })
+
+      // Cache the result with 5 minutes TTL
+      await cache.set(cacheKey, result.object, 300)
+      console.log("[RiskAssessment] Cached new assessment for 5 minutes")
 
       return result.object
     } catch (error) {
