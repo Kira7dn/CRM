@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
-import { getProfitAnalysis } from "../../../inventory-actions"
+import { getProfitAnalysis } from "../../../_actions/inventory-actions"
 
 interface ProfitProduct {
   productId: number

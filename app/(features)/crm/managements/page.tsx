@@ -1,11 +1,11 @@
 import { getCurrentUserAction } from "../../_shared/actions/auth-actions"
 import { getDashboardStats } from "../actions"
-import { RiskAlerts } from "./_components/widgets/Alerts/RiskAlerts"
-import { TopProducts } from "./_components/widgets/order/TopProducts"
 import { CustomizableDashboardClient } from "./_components/CustomizableDashboardClient"
 import { Widget } from "./_components/GridStackDashboard"
 
 // Individual modular widgets
+import { RiskAlerts } from "./_components/widgets/Alerts/RiskAlerts"
+import { TopProducts } from "./_components/widgets/order/TopProducts"
 import { RevenueForecast } from "./_components/widgets/forecast/RevenueForecast"
 import { RecentOrders } from "./_components/widgets/order/RecentOrders"
 import { InventoryAlertsWidget } from "./_components/widgets/Alerts/InventoryAlertsWidget"
@@ -32,8 +32,6 @@ import { AIRiskOpportunitiesWidgetClient } from "./_components/widgets/risk/AIRi
 import { OrderStatusWidget } from "./_components/widgets/order/OrderStatusWidget"
 import { PaymentStatusWidget } from "./_components/widgets/order/PaymentStatusWidget"
 
-// Enable ISR with 5 minute revalidation
-export const revalidate = 300
 
 export default async function DashboardPage() {
   const user = await getCurrentUserAction()

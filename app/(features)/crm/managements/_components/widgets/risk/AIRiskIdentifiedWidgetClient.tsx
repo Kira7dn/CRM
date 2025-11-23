@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { AIRiskIdentifiedWidget } from "./AIRiskIdentifiedWidget"
-import { generateRiskAssessment } from "../../../ai-actions"
+import { generateRiskAssessment } from "../../../_actions/ai-actions"
 import type { RiskAssessment } from "@/infrastructure/ai/risk-assessment-service"
 
 export function AIRiskIdentifiedWidgetClient() {

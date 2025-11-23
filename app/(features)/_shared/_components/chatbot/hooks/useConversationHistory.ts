@@ -8,7 +8,7 @@ import {
   saveConversationAction,
   getUserConversationsAction,
   getConversationAction,
-} from '../actions/conversation-actions';
+} from '../../../../crm/managements/_actions/conversation-actions';
 
 export function useConversationHistory(userId: string) {
   const context = useCopilotContext();

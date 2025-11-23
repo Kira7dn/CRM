@@ -6,7 +6,7 @@ import { formatCurrency } from "@/lib/utils"
 import type { RevenueForecast as ForecastType } from "@/infrastructure/ai/revenue-forecast-service"
 import { useEffect, useState, useMemo, useCallback } from "react"
 import { Badge } from "@/@shared/ui/badge"
-import { generateRevenueForecast } from "../../../ai-actions"
+import { generateRevenueForecast } from "../../../_actions/ai-actions"
 
 const CONFIDENCE_STYLES = {
   low: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",

@@ -4,23 +4,16 @@ import { CopilotSidebar } from '@copilotkit/react-ui';
 import { useCopilotAction, useCopilotReadable } from '@copilotkit/react-core';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import {
-  getOrderByIdAction,
-  createOrderAction,
-  updateOrderStatusAction,
-  generatePaymentLinkAction,
-  searchCustomersAction,
-  getCustomerByIdAction,
-} from './actions/crm-actions';
-import { useDashboardStore } from '@/app/(features)/crm/managements/_components/hooks/useDashboardWidgets';
 
-interface CRMCopilotProps {
+import { useDashboardStore } from '@/app/(features)/crm/managements/_components/hooks/useDashboardStore';
+
+interface CopilotAgentProps {
   userId: string;
   userRole: 'admin' | 'sales' | 'warehouse'
   children: React.ReactNode
 }
 
-export function CRMCopilot({ userId, userRole, children }: CRMCopilotProps) {
+export function CopilotAgent({ userId, userRole, children }: CopilotAgentProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [themeColor, setThemeColor] = useState("#6366f1");
@@ -81,343 +74,331 @@ export function CRMCopilot({ userId, userRole, children }: CRMCopilotProps) {
     }
   });
 
-  useCopilotAction({
-    name: "setThemeColor",
-    parameters: [{
-      name: "themeColor",
-      description: "The theme color to set. Make sure to pick nice colors.",
-      required: true,
-    }],
-    handler({ themeColor }) {
-      setThemeColor(themeColor);
-    },
-  });
-
   // ===== ORDER ACTIONS =====
 
-  useCopilotAction({
-    name: 'getOrder',
-    description: 'Get order details by order ID. Use this when the user asks about a specific order number.',
-    parameters: [
-      {
-        name: 'orderId',
-        type: 'number',
-        description: 'The order ID to retrieve',
-        required: true
-      }
-    ],
-    handler: async ({ orderId }) => {
-      try {
-        const order = await getOrderByIdAction(orderId);
-        if (!order) {
-          return {
-            success: false,
-            message: `Không tìm thấy đơn hàng #${orderId}`
-          };
-        }
+  // useCopilotAction({
+  //   name: 'getOrder',
+  //   description: 'Get order details by order ID. Use this when the user asks about a specific order number.',
+  //   parameters: [
+  //     {
+  //       name: 'orderId',
+  //       type: 'number',
+  //       description: 'The order ID to retrieve',
+  //       required: true
+  //     }
+  //   ],
+  //   handler: async ({ orderId }) => {
+  //     try {
+  //       const order = await getOrderByIdAction(orderId);
+  //       if (!order) {
+  //         return {
+  //           success: false,
+  //           message: `Không tìm thấy đơn hàng #${orderId}`
+  //         };
+  //       }
 
-        setCurrentContext({ ...currentContext, orderId });
+  //       setCurrentContext({ ...currentContext, orderId });
 
-        return {
-          success: true,
-          order,
-          message: `Đã tìm thấy đơn hàng #${orderId}`,
-          summary: {
-            orderId: order.id,
-            customerId: order.customerId,
-            status: order.status,
-            total: order.total,
-            paymentStatus: order.payment.status,
-            items: order.items?.length || 0
-          }
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: `Không tìm thấy đơn hàng #${orderId}`,
-          error: error instanceof Error ? error.message : 'Unknown error'
-        };
-      }
-    }
-  });
+  //       return {
+  //         success: true,
+  //         order,
+  //         message: `Đã tìm thấy đơn hàng #${orderId}`,
+  //         summary: {
+  //           orderId: order.id,
+  //           customerId: order.customerId,
+  //           status: order.status,
+  //           total: order.total,
+  //           paymentStatus: order.payment.status,
+  //           items: order.items?.length || 0
+  //         }
+  //       };
+  //     } catch (error) {
+  //       return {
+  //         success: false,
+  //         message: `Không tìm thấy đơn hàng #${orderId}`,
+  //         error: error instanceof Error ? error.message : 'Unknown error'
+  //       };
+  //     }
+  //   }
+  // });
 
-  useCopilotAction({
-    name: 'createOrder',
-    description: 'Create a new order. Requires customer ID, items, delivery info, and payment method. Only for admin and sales roles.',
-    parameters: [
-      {
-        name: 'customerId',
-        type: 'string',
-        description: 'Customer ID who is placing the order',
-        required: true
-      },
-      {
-        name: 'items',
-        type: 'object[]',
-        description: 'Array of order items with productId, productName, quantity, unitPrice, totalPrice',
-        required: true
-      },
-      {
-        name: 'delivery',
-        type: 'object',
-        description: 'Delivery information with name, phone, address',
-        required: true
-      },
-      {
-        name: 'paymentMethod',
-        type: 'string',
-        description: 'Payment method: cod, bank_transfer, vnpay, or zalopay',
-        required: true
-      },
-      {
-        name: 'note',
-        type: 'string',
-        description: 'Optional order note',
-        required: false
-      }
-    ],
-    handler: async ({ customerId, items, delivery, paymentMethod, note }) => {
-      // Check permissions
-      if (!['admin', 'sales'].includes(userRole)) {
-        return {
-          success: false,
-          message: 'Bạn không có quyền tạo đơn hàng. Chỉ admin và sales mới có quyền này.'
-        };
-      }
+  // useCopilotAction({
+  //   name: 'createOrder',
+  //   description: 'Create a new order. Requires customer ID, items, delivery info, and payment method. Only for admin and sales roles.',
+  //   parameters: [
+  //     {
+  //       name: 'customerId',
+  //       type: 'string',
+  //       description: 'Customer ID who is placing the order',
+  //       required: true
+  //     },
+  //     {
+  //       name: 'items',
+  //       type: 'object[]',
+  //       description: 'Array of order items with productId, productName, quantity, unitPrice, totalPrice',
+  //       required: true
+  //     },
+  //     {
+  //       name: 'delivery',
+  //       type: 'object',
+  //       description: 'Delivery information with name, phone, address',
+  //       required: true
+  //     },
+  //     {
+  //       name: 'paymentMethod',
+  //       type: 'string',
+  //       description: 'Payment method: cod, bank_transfer, vnpay, or zalopay',
+  //       required: true
+  //     },
+  //     {
+  //       name: 'note',
+  //       type: 'string',
+  //       description: 'Optional order note',
+  //       required: false
+  //     }
+  //   ],
+  //   handler: async ({ customerId, items, delivery, paymentMethod, note }) => {
+  //     // Check permissions
+  //     if (!['admin', 'sales'].includes(userRole)) {
+  //       return {
+  //         success: false,
+  //         message: 'Bạn không có quyền tạo đơn hàng. Chỉ admin và sales mới có quyền này.'
+  //       };
+  //     }
 
-      try {
-        const deliveryData = delivery as { name?: string; phone?: string; address?: string } | undefined;
-        const deliveryInfo: { name: string; phone: string; address: string } = {
-          name: deliveryData?.name || '',
-          phone: deliveryData?.phone || '',
-          address: deliveryData?.address || ''
-        };
+  //     try {
+  //       const deliveryData = delivery as { name?: string; phone?: string; address?: string } | undefined;
+  //       const deliveryInfo: { name: string; phone: string; address: string } = {
+  //         name: deliveryData?.name || '',
+  //         phone: deliveryData?.phone || '',
+  //         address: deliveryData?.address || ''
+  //       };
 
-        const order = await createOrderAction({
-          customerId,
-          items,
-          delivery: deliveryInfo,
-          paymentMethod,
-          createdBy: userId,
-          note
-        });
+  //       const order = await createOrderAction({
+  //         customerId,
+  //         items,
+  //         delivery: deliveryInfo,
+  //         paymentMethod,
+  //         createdBy: userId,
+  //         note
+  //       });
 
-        setCurrentContext({ ...currentContext, orderId: order.id, module: 'orders' });
+  //       setCurrentContext({ ...currentContext, orderId: order.id, module: 'orders' });
 
-        return {
-          success: true,
-          order,
-          message: `Đã tạo đơn hàng #${order.id} thành công`,
-          summary: {
-            orderId: order.id,
-            total: order.total,
-            status: order.status,
-            itemCount: items.length
-          }
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: 'Không thể tạo đơn hàng',
-          error: error instanceof Error ? error.message : 'Unknown error'
-        };
-      }
-    }
-  });
+  //       return {
+  //         success: true,
+  //         order,
+  //         message: `Đã tạo đơn hàng #${order.id} thành công`,
+  //         summary: {
+  //           orderId: order.id,
+  //           total: order.total,
+  //           status: order.status,
+  //           itemCount: items.length
+  //         }
+  //       };
+  //     } catch (error) {
+  //       return {
+  //         success: false,
+  //         message: 'Không thể tạo đơn hàng',
+  //         error: error instanceof Error ? error.message : 'Unknown error'
+  //       };
+  //     }
+  //   }
+  // });
 
-  useCopilotAction({
-    name: 'updateOrderStatus',
-    description: 'Update the status of an order. Use this when the user wants to change an order status. All roles can update status within their permissions.',
-    parameters: [
-      {
-        name: 'orderId',
-        type: 'number',
-        description: 'Order ID to update',
-        required: true
-      },
-      {
-        name: 'status',
-        type: 'string',
-        description: 'New status: pending, confirmed, processing, shipping, delivered, completed, cancelled',
-        required: true
-      }
-    ],
-    handler: async ({ orderId, status }) => {
-      // Check permissions based on role
-      const allowedStatuses: Record<string, string[]> = {
-        admin: ['pending', 'confirmed', 'processing', 'shipping', 'delivered', 'completed', 'cancelled'],
-        sales: ['pending', 'confirmed', 'cancelled'],
-        warehouse: ['processing', 'shipping', 'delivered']
-      };
+  // useCopilotAction({
+  //   name: 'updateOrderStatus',
+  //   description: 'Update the status of an order. Use this when the user wants to change an order status. All roles can update status within their permissions.',
+  //   parameters: [
+  //     {
+  //       name: 'orderId',
+  //       type: 'number',
+  //       description: 'Order ID to update',
+  //       required: true
+  //     },
+  //     {
+  //       name: 'status',
+  //       type: 'string',
+  //       description: 'New status: pending, confirmed, processing, shipping, delivered, completed, cancelled',
+  //       required: true
+  //     }
+  //   ],
+  //   handler: async ({ orderId, status }) => {
+  //     // Check permissions based on role
+  //     const allowedStatuses: Record<string, string[]> = {
+  //       admin: ['pending', 'confirmed', 'processing', 'shipping', 'delivered', 'completed', 'cancelled'],
+  //       sales: ['pending', 'confirmed', 'cancelled'],
+  //       warehouse: ['processing', 'shipping', 'delivered']
+  //     };
 
-      const userAllowedStatuses = allowedStatuses[userRole] || [];
-      if (!userAllowedStatuses.includes(status)) {
-        return {
-          success: false,
-          message: `Bạn không có quyền cập nhật trạng thái thành "${status}". Các trạng thái được phép: ${userAllowedStatuses.join(', ')}`
-        };
-      }
+  //     const userAllowedStatuses = allowedStatuses[userRole] || [];
+  //     if (!userAllowedStatuses.includes(status)) {
+  //       return {
+  //         success: false,
+  //         message: `Bạn không có quyền cập nhật trạng thái thành "${status}". Các trạng thái được phép: ${userAllowedStatuses.join(', ')}`
+  //       };
+  //     }
 
-      try {
-        const order = await updateOrderStatusAction(orderId, status);
-        if (!order) {
-          return {
-            success: false,
-            message: `Không tìm thấy đơn hàng #${orderId}`
-          };
-        }
+  //     try {
+  //       const order = await updateOrderStatusAction(orderId, status);
+  //       if (!order) {
+  //         return {
+  //           success: false,
+  //           message: `Không tìm thấy đơn hàng #${orderId}`
+  //         };
+  //       }
 
-        setCurrentContext({ ...currentContext, orderId, module: 'orders' });
+  //       setCurrentContext({ ...currentContext, orderId, module: 'orders' });
 
-        return {
-          success: true,
-          order,
-          message: `Đã cập nhật đơn hàng #${orderId} sang trạng thái "${status}"`,
-          summary: {
-            orderId: order.id,
-            newStatus: status,
-            customerId: order.customerId
-          }
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: `Không thể cập nhật đơn hàng #${orderId}`,
-          error: error instanceof Error ? error.message : 'Unknown error'
-        };
-      }
-    }
-  });
+  //       return {
+  //         success: true,
+  //         order,
+  //         message: `Đã cập nhật đơn hàng #${orderId} sang trạng thái "${status}"`,
+  //         summary: {
+  //           orderId: order.id,
+  //           newStatus: status,
+  //           customerId: order.customerId
+  //         }
+  //       };
+  //     } catch (error) {
+  //       return {
+  //         success: false,
+  //         message: `Không thể cập nhật đơn hàng #${orderId}`,
+  //         error: error instanceof Error ? error.message : 'Unknown error'
+  //       };
+  //     }
+  //   }
+  // });
 
-  useCopilotAction({
-    name: 'generatePaymentLink',
-    description: 'Generate a payment link for an order using VNPay or ZaloPay. Use this when the user wants to create a payment link.',
-    parameters: [
-      {
-        name: 'orderId',
-        type: 'number',
-        description: 'Order ID to generate payment link for',
-        required: true
-      },
-      {
-        name: 'gateway',
-        type: 'string',
-        description: 'Payment gateway: vnpay or zalopay (default: vnpay)',
-        required: false
-      }
-    ],
-    handler: async ({ orderId, gateway = 'vnpay' }) => {
-      // Check permissions
-      if (!['admin', 'sales'].includes(userRole)) {
-        return {
-          success: false,
-          message: 'Bạn không có quyền tạo link thanh toán. Chỉ admin và sales mới có quyền này.'
-        };
-      }
+  // useCopilotAction({
+  //   name: 'generatePaymentLink',
+  //   description: 'Generate a payment link for an order using VNPay or ZaloPay. Use this when the user wants to create a payment link.',
+  //   parameters: [
+  //     {
+  //       name: 'orderId',
+  //       type: 'number',
+  //       description: 'Order ID to generate payment link for',
+  //       required: true
+  //     },
+  //     {
+  //       name: 'gateway',
+  //       type: 'string',
+  //       description: 'Payment gateway: vnpay or zalopay (default: vnpay)',
+  //       required: false
+  //     }
+  //   ],
+  //   handler: async ({ orderId, gateway = 'vnpay' }) => {
+  //     // Check permissions
+  //     if (!['admin', 'sales'].includes(userRole)) {
+  //       return {
+  //         success: false,
+  //         message: 'Bạn không có quyền tạo link thanh toán. Chỉ admin và sales mới có quyền này.'
+  //       };
+  //     }
 
-      try {
-        await generatePaymentLinkAction(orderId, gateway as 'vnpay' | 'zalopay');
-        // This is not yet implemented
-        return {
-          success: false,
-          message: 'Chức năng tạo link thanh toán chưa được triển khai. Vui lòng sử dụng trang quản lý đơn hàng.',
-          error: 'Not implemented'
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: error instanceof Error ? error.message : 'Không thể tạo link thanh toán',
-          error: error instanceof Error ? error.message : 'Unknown error'
-        };
-      }
-    }
-  });
+  //     try {
+  //       await generatePaymentLinkAction(orderId, gateway as 'vnpay' | 'zalopay');
+  //       // This is not yet implemented
+  //       return {
+  //         success: false,
+  //         message: 'Chức năng tạo link thanh toán chưa được triển khai. Vui lòng sử dụng trang quản lý đơn hàng.',
+  //         error: 'Not implemented'
+  //       };
+  //     } catch (error) {
+  //       return {
+  //         success: false,
+  //         message: error instanceof Error ? error.message : 'Không thể tạo link thanh toán',
+  //         error: error instanceof Error ? error.message : 'Unknown error'
+  //       };
+  //     }
+  //   }
+  // });
 
   // ===== CUSTOMER ACTIONS =====
 
-  useCopilotAction({
-    name: 'searchCustomers',
-    description: 'Search for customers by name, phone, or email. Use this when the user wants to find a customer.',
-    parameters: [
-      {
-        name: 'query',
-        type: 'string',
-        description: 'Search query (name, phone, or email)',
-        required: true
-      }
-    ],
-    handler: async ({ query }) => {
-      try {
-        const customers = await searchCustomersAction(query);
+  // useCopilotAction({
+  //   name: 'searchCustomers',
+  //   description: 'Search for customers by name, phone, or email. Use this when the user wants to find a customer.',
+  //   parameters: [
+  //     {
+  //       name: 'query',
+  //       type: 'string',
+  //       description: 'Search query (name, phone, or email)',
+  //       required: true
+  //     }
+  //   ],
+  //   handler: async ({ query }) => {
+  //     try {
+  //       const customers = await searchCustomersAction(query);
 
-        return {
-          success: true,
-          customers,
-          count: customers.length,
-          message: `Tìm thấy ${customers.length} khách hàng`,
-          summary: customers.slice(0, 5).map(c => ({
-            id: c.id,
-            name: c.name,
-            phone: c.phone,
-            email: c.email,
-            tier: c.tier
-          }))
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: 'Không tìm thấy khách hàng',
-          error: error instanceof Error ? error.message : 'Unknown error'
-        };
-      }
-    }
-  });
+  //       return {
+  //         success: true,
+  //         customers,
+  //         count: customers.length,
+  //         message: `Tìm thấy ${customers.length} khách hàng`,
+  //         summary: customers.slice(0, 5).map(c => ({
+  //           id: c.id,
+  //           name: c.name,
+  //           phone: c.phone,
+  //           email: c.email,
+  //           tier: c.tier
+  //         }))
+  //       };
+  //     } catch (error) {
+  //       return {
+  //         success: false,
+  //         message: 'Không tìm thấy khách hàng',
+  //         error: error instanceof Error ? error.message : 'Unknown error'
+  //       };
+  //     }
+  //   }
+  // });
 
-  useCopilotAction({
-    name: 'getCustomer',
-    description: 'Get detailed information about a specific customer by ID. Use this when the user asks about a customer.',
-    parameters: [
-      {
-        name: 'customerId',
-        type: 'string',
-        description: 'Customer ID to retrieve',
-        required: true
-      }
-    ],
-    handler: async ({ customerId }) => {
-      try {
-        const customer = await getCustomerByIdAction(customerId);
-        if (!customer) {
-          return {
-            success: false,
-            message: `Không tìm thấy khách hàng #${customerId}`
-          };
-        }
+  // useCopilotAction({
+  //   name: 'getCustomer',
+  //   description: 'Get detailed information about a specific customer by ID. Use this when the user asks about a customer.',
+  //   parameters: [
+  //     {
+  //       name: 'customerId',
+  //       type: 'string',
+  //       description: 'Customer ID to retrieve',
+  //       required: true
+  //     }
+  //   ],
+  //   handler: async ({ customerId }) => {
+  //     try {
+  //       const customer = await getCustomerByIdAction(customerId);
+  //       if (!customer) {
+  //         return {
+  //           success: false,
+  //           message: `Không tìm thấy khách hàng #${customerId}`
+  //         };
+  //       }
 
-        setCurrentContext({ ...currentContext, customerId, module: 'customers' });
+  //       setCurrentContext({ ...currentContext, customerId, module: 'customers' });
 
-        return {
-          success: true,
-          customer,
-          message: `Đã tìm thấy khách hàng #${customerId}`,
-          summary: {
-            id: customer.id,
-            name: customer.name,
-            phone: customer.phone,
-            email: customer.email,
-            tier: customer.tier,
-            primarySource: customer.primarySource,
-          }
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: `Không tìm thấy khách hàng #${customerId}`,
-          error: error instanceof Error ? error.message : 'Unknown error'
-        };
-      }
-    }
-  });
+  //       return {
+  //         success: true,
+  //         customer,
+  //         message: `Đã tìm thấy khách hàng #${customerId}`,
+  //         summary: {
+  //           id: customer.id,
+  //           name: customer.name,
+  //           phone: customer.phone,
+  //           email: customer.email,
+  //           tier: customer.tier,
+  //           primarySource: customer.primarySource,
+  //         }
+  //       };
+  //     } catch (error) {
+  //       return {
+  //         success: false,
+  //         message: `Không tìm thấy khách hàng #${customerId}`,
+  //         error: error instanceof Error ? error.message : 'Unknown error'
+  //       };
+  //     }
+  //   }
+  // });
 
   // ===== DASHBOARD WIDGET ACTIONS =====
 

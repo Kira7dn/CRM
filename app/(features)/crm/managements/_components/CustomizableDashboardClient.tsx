@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { Button } from "@shared/ui/button"
 import { Settings, Save, X } from "lucide-react"
 import { GridStackDashboard, Widget } from "./GridStackDashboard"
-import { useDashboardWidgets } from "./hooks/useDashboardWidgets"
+import { useDashboardStore } from "./hooks/useDashboardStore"
 
 interface CustomizableDashboardClientProps {
   widgets: Widget[]
@@ -12,28 +12,37 @@ interface CustomizableDashboardClientProps {
 
 export function CustomizableDashboardClient({ widgets: initialWidgets }: CustomizableDashboardClientProps) {
   const [editMode, setEditMode] = useState(false)
-  const { widgets, saveWidgets, resetWidgets } = useDashboardWidgets(initialWidgets)
   const [mounted, setMounted] = useState(false)
 
+  // Truy cập Zustand store thông qua selector
+  const widgets = useDashboardStore((s) => s.widgets)
+  const saveWidgets = useDashboardStore((s) => s.saveWidgets)
+  const resetWidgets = useDashboardStore((s) => s.resetWidgets)
+  const setDefaultWidgets = useDashboardStore((s) => s.setDefaultWidgets)
+
+  // Set defaultWidgets sau khi mount để tránh SSR mismatch
   useEffect(() => {
     setMounted(true)
-  }, [])
+    setDefaultWidgets(initialWidgets)
+  }, [initialWidgets, setDefaultWidgets])
 
-  // Khi kéo/thay đổi layout → chỉ cập nhật state hook, nhưng chưa gọi save
-  const handleLayoutChange = useCallback((newWidgets: Widget[]) => {
-    if (editMode) {
-      // Chỉ cập nhật state hook tạm
-      saveWidgets(newWidgets) // Lưu trực tiếp vào hook state nhưng chưa ghi localStorage
-    }
-  }, [editMode, saveWidgets])
+  // **Chỉ cập nhật state tạm**, không lưu vào localStorage
+  const handleLayoutChange = useCallback(
+    (newWidgets: Widget[]) => {
+      if (editMode) {
+        saveWidgets(newWidgets)
+      }
+    },
+    [editMode, saveWidgets]
+  )
 
-  // Khi nhấn Save → lưu thật sự
+  // **Lưu thật sự vào persist storage**
   const handleSaveLayout = () => {
-    saveWidgets(widgets) // ghi vào localStorage
+    saveWidgets(widgets)
     setEditMode(false)
   }
 
-  // Khi nhấn Cancel → khôi phục layout đã lưu trước đó
+  // **Khôi phục layout từ storage (persist)**
   const handleCancelEdit = () => {
     resetWidgets()
     setEditMode(false)
@@ -64,7 +73,6 @@ export function CustomizableDashboardClient({ widgets: initialWidgets }: Customi
           </p>
         </div>
 
-        {/* Controls */}
         <div className="flex gap-2">
           {editMode ? (
             <>
