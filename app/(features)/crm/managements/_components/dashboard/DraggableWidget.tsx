@@ -5,8 +5,8 @@ import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { GripVertical } from "lucide-react"
 
-import { WidgetModule } from "./DraggableDashboard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/@shared/ui/card"
+import { WidgetModule } from "./CustomizableDashboard"
 
 interface DraggableWidgetProps {
   id: string

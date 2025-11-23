@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { generateRiskAssessment } from "../../../_actions/ai-actions"
+import { generateRiskAssessment } from "../../../../_actions/ai-actions"
 import type { RiskAssessment } from "@/infrastructure/ai/risk-assessment-service"
 
 /**

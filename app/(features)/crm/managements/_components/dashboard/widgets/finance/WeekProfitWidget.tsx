@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
-import { getProfitAnalysis } from "../../../_actions/inventory-actions"
+import { getProfitAnalysis } from "../../../../_actions/inventory-actions"
 import { useCopilotReadable } from "@copilotkit/react-core"
 
 interface ProfitMetrics {
@@ -16,13 +16,13 @@ interface ProfitMetrics {
   netMargin: number
 }
 
-export function MonthProfitWidget() {
+export function WeekProfitWidget() {
   const [data, setData] = useState<ProfitMetrics | null>(null)
   const [loading, setLoading] = useState(true)
 
   // Make data available to CopilotKit (must be before early returns)
   useCopilotReadable({
-    description: "30-day trailing profit metrics including revenue, COGS, gross profit, gross margin, operational costs, net profit, and net margin",
+    description: "7-day trailing profit metrics including revenue, COGS, gross profit, gross margin, operational costs, net profit, and net margin",
     value: data || {
       revenue: 0,
       cogs: 0,
@@ -41,7 +41,7 @@ export function MonthProfitWidget() {
       try {
         const result = await getProfitAnalysis()
         if (mounted && result) {
-          setData((result as { last30Days?: ProfitMetrics }).last30Days || null)
+          setData((result as { last7Days?: ProfitMetrics }).last7Days || null)
         }
       } catch (error) {
         console.error("Failed to load profit analysis:", error)
@@ -98,12 +98,12 @@ export function MonthProfitWidget() {
           {data.grossMargin.toFixed(1)}%
         </div>
       </div>
-      <div className="p-2 rounded-lg bg-purple-50 dark:bg-purple-950/20">
+      <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
         <div className="text-xs text-gray-600 dark:text-gray-400">LN ròng</div>
-        <div className={`text-sm font-bold ${data.netProfit >= 0 ? 'text-purple-600 dark:text-purple-400' : 'text-red-600 dark:text-red-400'}`}>
+        <div className={`text-sm font-bold ${data.netProfit >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
           {formatCurrency(data.netProfit)}
         </div>
-        <div className="text-xs text-purple-700 dark:text-purple-300">
+        <div className="text-xs text-blue-700 dark:text-blue-300">
           {data.netMargin.toFixed(1)}%
         </div>
       </div>

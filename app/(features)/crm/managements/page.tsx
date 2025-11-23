@@ -1,37 +1,39 @@
 import { getCurrentUserAction } from "../../_shared/actions/auth-actions"
 import { getDashboardStats } from "../actions"
-import { CustomizableDashboardClient } from "./_components/CustomizableDashboardClient"
-import { Widget } from "./_components/GridStackDashboard"
+import { RiskAlerts } from "./_components/dashboard/widgets/Alerts/RiskAlerts"
+import { TopProducts } from "./_components/dashboard/widgets/order/TopProducts"
+import { CustomizableDashboard } from "./_components/dashboard/CustomizableDashboard"
+import { Widget } from "./_components/dashboard/ModuleGrid"
 
 // Individual modular widgets
-import { RiskAlerts } from "./_components/widgets/Alerts/RiskAlerts"
-import { TopProducts } from "./_components/widgets/order/TopProducts"
-import { RevenueForecast } from "./_components/widgets/forecast/RevenueForecast"
-import { RecentOrders } from "./_components/widgets/order/RecentOrders"
-import { InventoryAlertsWidget } from "./_components/widgets/Alerts/InventoryAlertsWidget"
-import { WeekRevenueWidget } from "./_components/widgets/finance/WeekRevenueWidget"
-import { MonthRevenueWidget } from "./_components/widgets/finance/MonthRevenueWidget"
-import { NewCustomersWidget } from "./_components/widgets/customer/NewCustomersWidget"
-import { WeekOrdersWidget } from "./_components/widgets/finance/WeekOrdersWidget"
-import { AverageOrderValueWidget } from "./_components/widgets/order/AverageOrderValueWidget"
-import { ChurnRiskWidget } from "./_components/widgets/customer/ChurnRiskWidget"
-import { ErrorRateWidget } from "./_components/widgets/order/ErrorRateWidget"
-import { TotalProductsWidget } from "./_components/widgets/product/TotalProductsWidget"
-import { ReturningCustomersWidget } from "./_components/widgets/customer/ReturningCustomersWidget"
-import { CustomerLTVWidget } from "./_components/widgets/customer/CustomerLTVWidget"
-import { LateOrdersWidget } from "./_components/widgets/order/LateOrdersWidget"
-import { ProcessingTimeWidget } from "./_components/widgets/order/ProcessingTimeWidget"
-import { TopProfitProductsWidget } from "./_components/widgets/product/TopProfitProductsWidget"
-import { DecliningProductsWidget } from "./_components/widgets/product/DecliningProductsWidget"
-import { TopStaffWidget } from "./_components/widgets/order/TopStaffWidget"
-import { MonthProfitWidget } from "./_components/widgets/finance/MonthProfitWidget"
-import { WeekProfitWidget } from "./_components/widgets/finance/WeekProfitWidget"
-import { AIRiskOverallWidgetClient } from "./_components/widgets/risk/AIRiskOverallWidgetClient"
-import { AIRiskIdentifiedWidgetClient } from "./_components/widgets/risk/AIRiskIdentifiedWidgetClient"
-import { AIRiskOpportunitiesWidgetClient } from "./_components/widgets/risk/AIRiskOpportunitiesWidgetClient"
-import { OrderStatusWidget } from "./_components/widgets/order/OrderStatusWidget"
-import { PaymentStatusWidget } from "./_components/widgets/order/PaymentStatusWidget"
+import { RevenueForecast } from "./_components/dashboard/widgets/forecast/RevenueForecast"
+import { RecentOrders } from "./_components/dashboard/widgets/order/RecentOrders"
+import { InventoryAlertsWidget } from "./_components/dashboard/widgets/Alerts/InventoryAlertsWidget"
+import { WeekRevenueWidget } from "./_components/dashboard/widgets/finance/WeekRevenueWidget"
+import { MonthRevenueWidget } from "./_components/dashboard/widgets/finance/MonthRevenueWidget"
+import { NewCustomersWidget } from "./_components/dashboard/widgets/customer/NewCustomersWidget"
+import { WeekOrdersWidget } from "./_components/dashboard/widgets/finance/WeekOrdersWidget"
+import { AverageOrderValueWidget } from "./_components/dashboard/widgets/order/AverageOrderValueWidget"
+import { ChurnRiskWidget } from "./_components/dashboard/widgets/customer/ChurnRiskWidget"
+import { ErrorRateWidget } from "./_components/dashboard/widgets/order/ErrorRateWidget"
+import { TotalProductsWidget } from "./_components/dashboard/widgets/product/TotalProductsWidget"
+import { ReturningCustomersWidget } from "./_components/dashboard/widgets/customer/ReturningCustomersWidget"
+import { CustomerLTVWidget } from "./_components/dashboard/widgets/customer/CustomerLTVWidget"
+import { LateOrdersWidget } from "./_components/dashboard/widgets/order/LateOrdersWidget"
+import { ProcessingTimeWidget } from "./_components/dashboard/widgets/order/ProcessingTimeWidget"
+import { TopProfitProductsWidget } from "./_components/dashboard/widgets/product/TopProfitProductsWidget"
+import { DecliningProductsWidget } from "./_components/dashboard/widgets/product/DecliningProductsWidget"
+import { TopStaffWidget } from "./_components/dashboard/widgets/order/TopStaffWidget"
+import { MonthProfitWidget } from "./_components/dashboard/widgets/finance/MonthProfitWidget"
+import { WeekProfitWidget } from "./_components/dashboard/widgets/finance/WeekProfitWidget"
+import { AIRiskOverallWidgetClient } from "./_components/dashboard/widgets/risk/AIRiskOverallWidgetClient"
+import { AIRiskIdentifiedWidgetClient } from "./_components/dashboard/widgets/risk/AIRiskIdentifiedWidgetClient"
+import { AIRiskOpportunitiesWidgetClient } from "./_components/dashboard/widgets/risk/AIRiskOpportunitiesWidgetClient"
+import { OrderStatusWidget } from "./_components/dashboard/widgets/order/OrderStatusWidget"
+import { PaymentStatusWidget } from "./_components/dashboard/widgets/order/PaymentStatusWidget"
 
+// Enable ISR with 5 minute revalidation
+export const revalidate = 300
 
 export default async function DashboardPage() {
   const user = await getCurrentUserAction()
@@ -63,6 +65,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "finance",
+      x: 0,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -79,6 +83,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "finance",
+      x: 2,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -94,6 +100,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "finance",
+      x: 4,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -103,6 +111,8 @@ export default async function DashboardPage() {
       component: <WeekProfitWidget key="loi-nhuan-7-ngay" />,
       visible: true,
       module: "finance",
+      x: 6,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -114,6 +124,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "finance",
+      x: 8,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -123,6 +135,8 @@ export default async function DashboardPage() {
       component: <TopProfitProductsWidget key="san-pham-co-loi-nhuan-cao" />,
       visible: true,
       module: "finance",
+      x: 0,
+      y: 3,
       w: 6,
       h: 5,
     },
@@ -141,6 +155,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "customer",
+      x: 0,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -156,6 +172,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "customer",
+      x: 2,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -171,6 +189,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "customer",
+      x: 4,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -180,6 +200,8 @@ export default async function DashboardPage() {
       component: <CustomerLTVWidget key="gia-tri-tron-doi-khach-hang" avgLTV={stats.avgLTV} />,
       visible: true,
       module: "customer",
+      x: 6,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -199,6 +221,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "order",
+      x: 0,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -214,6 +238,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "order",
+      x: 2,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -223,6 +249,8 @@ export default async function DashboardPage() {
       component: <LateOrdersWidget key="don-tre-han" lateOrders={stats.lateOrders} />,
       visible: true,
       module: "order",
+      x: 4,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -237,6 +265,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "order",
+      x: 6,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -251,6 +281,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "order",
+      x: 0,
+      y: 3,
       w: 6,
       h: 5,
     },
@@ -265,6 +297,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "order",
+      x: 6,
+      y: 3,
       w: 6,
       h: 3,
     },
@@ -274,6 +308,8 @@ export default async function DashboardPage() {
       component: <RecentOrders key="don-hang-gan-day" orders={stats.recentOrders} />,
       visible: true,
       module: "order",
+      x: 6,
+      y: 6,
       w: 6,
       h: 3,
     },
@@ -283,6 +319,8 @@ export default async function DashboardPage() {
       component: <TopStaffWidget key="nhan-vien-xuat-sac" topPerformingStaff={stats.topPerformingStaff} />,
       visible: true,
       module: "order",
+      x: 0,
+      y: 8,
       w: 6,
       h: 5,
     },
@@ -300,6 +338,8 @@ export default async function DashboardPage() {
       ),
       visible: true,
       module: "product",
+      x: 0,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -309,6 +349,8 @@ export default async function DashboardPage() {
       component: <TopProducts key="san-pham-ban-chay" products={stats.topSellingProducts} />,
       visible: true,
       module: "product",
+      x: 2,
+      y: 0,
       w: 6,
       h: 5,
     },
@@ -318,6 +360,8 @@ export default async function DashboardPage() {
       component: <DecliningProductsWidget key="san-pham-sut-giam" decliningProducts={stats.decliningProducts} />,
       visible: true,
       module: "product",
+      x: 8,
+      y: 0,
       w: 2,
       h: 3,
     },
@@ -327,6 +371,8 @@ export default async function DashboardPage() {
       component: <InventoryAlertsWidget />,
       visible: true,
       module: "inventory",
+      x: 0,
+      y: 0,
       w: 2,
       h: 1,
     },
@@ -338,6 +384,8 @@ export default async function DashboardPage() {
       component: <RiskAlerts key="canh-bao-rui-ro" stats={stats} />,
       visible: true,
       module: "risk",
+      x: 0,
+      y: 0,
       w: 6,
       h: 3,
     },
@@ -347,6 +395,8 @@ export default async function DashboardPage() {
       component: <AIRiskOverallWidgetClient key="danh-gia-rui-ro-ai" />,
       visible: true,
       module: "risk",
+      x: 6,
+      y: 0,
       w: 6,
       h: 2,
     },
@@ -356,6 +406,8 @@ export default async function DashboardPage() {
       component: <AIRiskIdentifiedWidgetClient key="chi-tiet-danh-gia-rui-ro" />,
       visible: true,
       module: "risk",
+      x: 0,
+      y: 3,
       w: 6,
       h: 2,
     },
@@ -365,6 +417,8 @@ export default async function DashboardPage() {
       component: <AIRiskOpportunitiesWidgetClient key="goi-y-khac-phuc" />,
       visible: true,
       module: "risk",
+      x: 6,
+      y: 2,
       w: 6,
       h: 2,
     },
@@ -376,6 +430,8 @@ export default async function DashboardPage() {
       component: <RevenueForecast key="du-bao-doanh-thu" />,
       visible: true,
       module: "forecast",
+      x: 0,
+      y: 0,
       w: 12,
       h: 5,
     },
@@ -394,9 +450,7 @@ export default async function DashboardPage() {
             Role: <span className="font-semibold capitalize">{user?.role}</span>
           </p>
         </div>
-
-        {/* Customizable Dashboard */}
-        <CustomizableDashboardClient widgets={widgets} />
+        <CustomizableDashboard widgets={widgets} />
       </div>
     </div>
   )

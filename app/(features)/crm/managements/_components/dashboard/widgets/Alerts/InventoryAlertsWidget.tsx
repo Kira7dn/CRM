@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card"
 import { PackageX, PackageOpen, Loader2, AlertTriangle } from "lucide-react"
-import { getInventoryAlerts } from "../../../_actions/inventory-actions"
+import { getInventoryAlerts } from "../../../../_actions/inventory-actions"
 
 interface InventoryAlert {
   lowStock: Array<{

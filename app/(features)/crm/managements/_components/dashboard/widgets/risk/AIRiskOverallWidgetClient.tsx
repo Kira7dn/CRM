@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { AIRiskOpportunitiesWidget } from "./AIRiskOpportunitiesWidget"
-import { generateRiskAssessment } from "../../../_actions/ai-actions"
+import { AIRiskOverallWidget } from "./AIRiskOverallWidget"
+import { generateRiskAssessment } from "../../../../_actions/ai-actions"
 import type { RiskAssessment } from "@/infrastructure/ai/risk-assessment-service"
 
-export function AIRiskOpportunitiesWidgetClient() {
+export function AIRiskOverallWidgetClient() {
   const [assessment, setAssessment] = useState<RiskAssessment | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -36,5 +36,5 @@ export function AIRiskOpportunitiesWidgetClient() {
     }
   }, [])
 
-  return <AIRiskOpportunitiesWidget assessment={assessment} isLoading={loading} />
+  return <AIRiskOverallWidget assessment={assessment} isLoading={loading} />
 }
