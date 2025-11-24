@@ -1,55 +1,21 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository"
-import { Inventory, StockMovement, addStockMovement, reserveStock, releaseReservedStock, validateInventory } from "@/core/domain/managements/inventory"
-import type { InventoryService, InventoryPayload } from "@/core/application/interfaces/inventory-service"
+import {
+  StockMovement,
+  InventorySummary,
+  InventoryConfig,
+  MovementType,
+  calculateInventorySummary,
+  validateStockMovement
+} from "@/core/domain/managements/inventory"
+import type { StockMovementService, StockMovementPayload } from "@/core/application/interfaces/inventory-service"
 import { getNextId } from "@/infrastructure/db/auto-increment"
+import { InventoryConfigRepository } from "./inventory-config-repo"
 
-export class InventoryRepository extends BaseRepository<Inventory, number> implements InventoryService {
-  protected collectionName = "inventory"
+export class InventoryRepository extends BaseRepository<StockMovement, number> implements StockMovementService {
+  protected collectionName = "stock_movements"
 
-  async getAll(): Promise<Inventory[]> {
-    const collection = await this.getCollection()
-    const docs = await collection.find({}).sort({ _id: 1 }).toArray()
-    return docs.map(doc => this.toDomain(doc))
-  }
-
-  async getById(id: number): Promise<Inventory | null> {
-    const collection = await this.getCollection()
-    const doc = await collection.findOne({ _id: id } as any)
-    return doc ? this.toDomain(doc) : null
-  }
-
-  async getByProductId(productId: number): Promise<Inventory | null> {
-    const collection = await this.getCollection()
-    const doc = await collection.findOne({ productId })
-    return doc ? this.toDomain(doc) : null
-  }
-
-  async getLowStockItems(): Promise<Inventory[]> {
-    const collection = await this.getCollection()
-    const docs = await collection
-      .find({
-        status: "low_stock",
-        $expr: { $lte: ["$availableStock", "$reorderPoint"] },
-      })
-      .toArray()
-    return docs.map(doc => this.toDomain(doc))
-  }
-
-  async getOutOfStockItems(): Promise<Inventory[]> {
-    const collection = await this.getCollection()
-    const docs = await collection
-      .find({
-        $or: [
-          { status: "out_of_stock" },
-          { availableStock: { $lte: 0 } },
-        ],
-      })
-      .toArray()
-    return docs.map(doc => this.toDomain(doc))
-  }
-
-  async create(payload: InventoryPayload): Promise<Inventory> {
-    const errors = validateInventory(payload)
+  async create(payload: StockMovementPayload): Promise<StockMovement> {
+    const errors = validateStockMovement(payload)
     if (errors.length > 0) {
       throw new Error(`Validation failed: ${errors.join(", ")}`)
     }
@@ -57,52 +23,59 @@ export class InventoryRepository extends BaseRepository<Inventory, number> imple
     const client = await this.getClient()
     const id = await getNextId(client, this.collectionName)
     const collection = await this.getCollection()
-    const now = new Date()
-    const inventory = new Inventory(
+
+    const movement = new StockMovement(
       id,
       payload.productId!,
-      payload.currentStock || 0,
-      payload.reservedStock || 0,
-      (payload.currentStock || 0) - (payload.reservedStock || 0),
-      payload.reorderPoint || 10,
-      payload.reorderQuantity || 50,
-      payload.status || "in_stock",
-      payload.movements || [],
-      payload.lastRestockedAt,
-      now,
-      now
+      payload.type!,
+      payload.quantity!,
+      payload.unitCost!,
+      payload.referenceOrderId,
+      payload.reason,
+      payload.performedBy,
+      payload.notes,
+      new Date()
     )
 
-    const doc = this.toDocument(inventory)
+    const doc = this.toDocument(movement)
     await collection.insertOne(doc as any)
 
-    return inventory
+    return movement
   }
 
-  async update(payload: InventoryPayload): Promise<Inventory | null> {
-    if (!payload.id) {
-      throw new Error("ID is required for update")
-    }
-
-    const errors = validateInventory(payload)
-    if (errors.length > 0) {
-      throw new Error(`Validation failed: ${errors.join(", ")}`)
-    }
-
+  async getAll(): Promise<StockMovement[]> {
     const collection = await this.getCollection()
-    const existing = await this.getById(payload.id)
-    if (!existing) return null
+    const docs = await collection.find({}).sort({ createdAt: -1 }).toArray()
+    return docs.map(doc => this.toDomain(doc))
+  }
 
-    const updated = {
-      ...existing,
-      ...payload,
-      updatedAt: new Date(),
-    }
+  async getByProductId(productId: number): Promise<StockMovement[]> {
+    const collection = await this.getCollection()
+    const docs = await collection.find({ productId }).sort({ createdAt: -1 }).toArray()
+    return docs.map(doc => this.toDomain(doc))
+  }
 
-    const doc = this.toDocument(updated as Inventory)
-    await collection.updateOne({ _id: payload.id } as any, { $set: doc })
+  async getByDateRange(startDate: Date, endDate: Date): Promise<StockMovement[]> {
+    const collection = await this.getCollection()
+    const docs = await collection.find({
+      createdAt: {
+        $gte: startDate,
+        $lte: endDate
+      }
+    }).sort({ createdAt: -1 }).toArray()
+    return docs.map(doc => this.toDomain(doc))
+  }
 
-    return this.toDomain(doc)
+  async getByType(type: MovementType): Promise<StockMovement[]> {
+    const collection = await this.getCollection()
+    const docs = await collection.find({ type }).sort({ createdAt: -1 }).toArray()
+    return docs.map(doc => this.toDomain(doc))
+  }
+
+  async getById(id: number): Promise<StockMovement | null> {
+    const collection = await this.getCollection()
+    const doc = await collection.findOne({ _id: id } as any)
+    return doc ? this.toDomain(doc) : null
   }
 
   async delete(id: number): Promise<boolean> {
@@ -111,80 +84,85 @@ export class InventoryRepository extends BaseRepository<Inventory, number> imple
     return result.deletedCount === 1
   }
 
-  async addStockMovement(
-    inventoryId: number,
-    movement: Omit<StockMovement, "timestamp">
-  ): Promise<Inventory | null> {
-    const inventory = await this.getById(inventoryId)
-    if (!inventory) return null
+  async getInventorySummary(productId: number): Promise<InventorySummary | null> {
+    const movements = await this.getByProductId(productId)
+    if (movements.length === 0) return null
 
-    const updated = addStockMovement(inventory, movement)
-    const doc = this.toDocument(updated)
+    const configRepo = new InventoryConfigRepository()
+    const config = await configRepo.getByProductId(productId)
 
-    const collection = await this.getCollection()
-    await collection.updateOne({ _id: inventoryId } as any, { $set: doc })
-
-    return updated
+    return calculateInventorySummary(movements, config || undefined)
   }
 
-  async reserveStock(inventoryId: number, quantity: number): Promise<boolean> {
-    const inventory = await this.getById(inventoryId)
-    if (!inventory) return false
-
-    const success = reserveStock(inventory, quantity)
-    if (!success) return false
-
-    const doc = this.toDocument(inventory)
+  async getAllInventorySummaries(): Promise<InventorySummary[]> {
     const collection = await this.getCollection()
-    await collection.updateOne({ _id: inventoryId } as any, { $set: doc })
 
-    return true
+    // Get all unique product IDs
+    const productIds = await collection.distinct("productId")
+
+    const summaries: InventorySummary[] = []
+    const configRepo = new InventoryConfigRepository()
+    const configs = await configRepo.getAll()
+    const configMap = new Map(configs.map(c => [c.productId, c]))
+
+    for (const productId of productIds) {
+      const movements = await this.getByProductId(productId)
+      if (movements.length > 0) {
+        const config = configMap.get(productId)
+        summaries.push(calculateInventorySummary(movements, config))
+      }
+    }
+
+    return summaries
   }
 
-  async releaseStock(inventoryId: number, quantity: number): Promise<boolean> {
-    const inventory = await this.getById(inventoryId)
-    if (!inventory) return false
-
-    releaseReservedStock(inventory, quantity)
-
-    const doc = this.toDocument(inventory)
-    const collection = await this.getCollection()
-    await collection.updateOne({ _id: inventoryId } as any, { $set: doc })
-
-    return true
-  }
-
-  protected toDomain(doc: any): Inventory {
-    return new Inventory(
+  protected toDomain(doc: any): StockMovement {
+    return new StockMovement(
       this.convertId(doc._id),
       doc.productId,
-      doc.currentStock,
-      doc.reservedStock,
-      doc.availableStock,
-      doc.reorderPoint,
-      doc.reorderQuantity,
-      doc.status,
-      doc.movements || [],
-      doc.lastRestockedAt ? new Date(doc.lastRestockedAt) : undefined,
-      new Date(doc.createdAt),
-      new Date(doc.updatedAt)
+      doc.type,
+      doc.quantity,
+      doc.unitCost,
+      doc.referenceOrderId,
+      doc.reason,
+      doc.performedBy,
+      doc.notes,
+      new Date(doc.createdAt)
     )
   }
 
-  protected toDocument(domain: Inventory): Record<string, unknown> {
+  /**
+   * Get all inventory items that are below their reorder point
+   */
+  async getLowStockItems(): Promise<InventorySummary[]> {
+    const summaries = await this.getAllInventorySummaries()
+    return summaries.filter(summary =>
+      summary.currentStock > 0 && // Not out of stock
+      summary.currentStock <= summary.reorderPoint && // Below or at reorder point
+      summary.reorderPoint > 0 // Has a reorder point set
+    )
+  }
+
+  /**
+   * Get all inventory items that are out of stock
+   */
+  async getOutOfStockItems(): Promise<InventorySummary[]> {
+    const summaries = await this.getAllInventorySummaries()
+    return summaries.filter(summary => summary.currentStock <= 0)
+  }
+
+  protected toDocument(domain: StockMovement): Record<string, unknown> {
     return {
       _id: domain.id,
       productId: domain.productId,
-      currentStock: domain.currentStock,
-      reservedStock: domain.reservedStock,
-      availableStock: domain.availableStock,
-      reorderPoint: domain.reorderPoint,
-      reorderQuantity: domain.reorderQuantity,
-      status: domain.status,
-      movements: domain.movements,
-      lastRestockedAt: domain.lastRestockedAt,
+      type: domain.type,
+      quantity: domain.quantity,
+      unitCost: domain.unitCost,
+      referenceOrderId: domain.referenceOrderId,
+      reason: domain.reason,
+      performedBy: domain.performedBy,
+      notes: domain.notes,
       createdAt: domain.createdAt,
-      updatedAt: domain.updatedAt,
     }
   }
 }

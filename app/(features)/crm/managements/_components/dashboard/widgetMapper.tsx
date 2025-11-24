@@ -7,7 +7,7 @@ import { InventoryAlertsWidget } from "./widgets/Alerts/InventoryAlertsWidget"
 import { WeekRevenueWidget } from "./widgets/finance/WeekRevenueWidget"
 import { MonthRevenueWidget } from "./widgets/finance/MonthRevenueWidget"
 import { NewCustomersWidget } from "./widgets/customer/NewCustomersWidget"
-import { WeekOrdersWidget } from "./widgets/finance/WeekOrdersWidget"
+import { WeekOrdersWidget } from "./widgets/order/WeekOrdersWidget"
 import { AverageOrderValueWidget } from "./widgets/order/AverageOrderValueWidget"
 import { ChurnRiskWidget } from "./widgets/customer/ChurnRiskWidget"
 import { ErrorRateWidget } from "./widgets/order/ErrorRateWidget"
@@ -16,7 +16,7 @@ import { ReturningCustomersWidget } from "./widgets/customer/ReturningCustomersW
 import { CustomerLTVWidget } from "./widgets/customer/CustomerLTVWidget"
 import { LateOrdersWidget } from "./widgets/order/LateOrdersWidget"
 import { ProcessingTimeWidget } from "./widgets/order/ProcessingTimeWidget"
-import { TopProfitProductsWidget } from "./widgets/product/TopProfitProductsWidget"
+import { TopProfitProductsWidget } from "./widgets/finance/TopProfitProductsWidget"
 import { DecliningProductsWidget } from "./widgets/product/DecliningProductsWidget"
 import { TopStaffWidget } from "./widgets/order/TopStaffWidget"
 import { MonthProfitWidget } from "./widgets/finance/MonthProfitWidget"
@@ -53,7 +53,7 @@ const WIDGET_TITLES: Record<string, string> = {
   "gia-tri-don-trung-binh": "Giá trị đơn TB",
   "loi-nhuan-7-ngay": "Lợi nhuận 7 ngày",
   "loi-nhuan-30-ngay": "Lợi nhuận 30 ngày",
-  "top-san-pham-loi-nhuan": "Top SP lợi nhuận",
+  "top-san-pham-loi-nhuan": "Top sản phẩm lợi nhuận 30 ngày",
   "khach-hang-moi": "Khách hàng mới",
   "khach-hang-quay-lai": "Khách hàng quay lại",
   "nguy-co-roi-bo": "Nguy cơ rời bỏ",
@@ -108,24 +108,24 @@ export function createWidgetComponent(widgetId: string, stats: DashboardStats) {
     "loi-nhuan-7-ngay": (
       <WeekProfitWidget
         key={widgetId}
-        revenue={stats.last7DaysRevenue}
-        cogs={stats.last7DaysRevenue}
-        grossProfit={stats.last7DaysRevenue}
-        grossMargin={stats.last7DaysRevenue}
-        operationalCosts={stats.last7DaysRevenue}
-        netProfit={stats.last7DaysRevenue}
-        netMargin={stats.last7DaysRevenue}
+        revenue={stats.profitMetrics?.last7Days.revenue || 0}
+        cogs={stats.profitMetrics?.last7Days.cogs || 0}
+        grossProfit={stats.profitMetrics?.last7Days.grossProfit || 0}
+        grossMargin={stats.profitMetrics?.last7Days.grossMargin || 0}
+        operationalCosts={stats.profitMetrics?.last7Days.operationalCosts || 0}
+        netProfit={stats.profitMetrics?.last7Days.netProfit || 0}
+        netMargin={stats.profitMetrics?.last7Days.netMargin || 0}
       />),
     "loi-nhuan-30-ngay": (
       <MonthProfitWidget
         key={widgetId}
-        revenue={stats.last30DaysRevenue}
-        cogs={stats.last30DaysRevenue}
-        grossProfit={stats.last30DaysRevenue}
-        grossMargin={stats.last30DaysRevenue}
-        operationalCosts={stats.last30DaysRevenue}
-        netProfit={stats.last30DaysRevenue}
-        netMargin={stats.last30DaysRevenue}
+        revenue={stats.profitMetrics?.last30Days.revenue || 0}
+        cogs={stats.profitMetrics?.last30Days.cogs || 0}
+        grossProfit={stats.profitMetrics?.last30Days.grossProfit || 0}
+        grossMargin={stats.profitMetrics?.last30Days.grossMargin || 0}
+        operationalCosts={stats.profitMetrics?.last30Days.operationalCosts || 0}
+        netProfit={stats.profitMetrics?.last30Days.netProfit || 0}
+        netMargin={stats.profitMetrics?.last30Days.netMargin || 0}
       />),
     "top-san-pham-loi-nhuan": (
       <TopProfitProductsWidget

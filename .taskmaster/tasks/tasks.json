@@ -2,7 +2,7 @@
   "master": {
     "tasks": [
       {
-        "id": 1,
+        "id": "1",
         "title": "Thiết lập môi trường phát triển",
         "description": "Cài đặt và cấu hình môi trường phát triển cho Chat Box AI Agent.",
         "details": "Cài đặt Node.js, MongoDB, và các công cụ cần thiết. Thiết lập cấu trúc thư mục dự án theo kiến trúc đề xuất.",
@@ -13,7 +13,7 @@
         "subtasks": []
       },
       {
-        "id": 2,
+        "id": "2",
         "title": "Tái sử dụng component ChatbotWidget app/(features)/_shared/_components/chatbot/_components/ChatbotWidget.tsx",
         "description": "Phát triển component ChatbotWidget trong React.",
         "details": "Tái sử dụng file ChatbotWidget.tsx và xây dựng giao diện cơ bản cho chat box.",
@@ -26,7 +26,7 @@
         "subtasks": []
       },
       {
-        "id": 3,
+        "id": "3",
         "title": "Tích hợp lưu trữ lịch sử chat",
         "description": "Chức năng lưu trữ lịch sử chat đã được triển khai với các thành phần: Domain Layer, Repository Layer, Use Cases, và API Layer. Hệ thống cho phép lưu trữ và truy xuất lịch sử chat theo user trong MongoDB.",
         "status": "done",
@@ -40,7 +40,7 @@
         "updatedAt": "2025-11-21T04:07:33.339Z"
       },
       {
-        "id": 4,
+        "id": "4",
         "title": "Phát triển AI Intent Parser",
         "description": "Tích hợp CopilotKit để xử lý intent từ tin nhắn người dùng, tận dụng GPT-4o để phân tích và định tuyến hành động.",
         "status": "done",
@@ -65,7 +65,7 @@
         "updatedAt": "2025-11-21T04:13:12.341Z"
       },
       {
-        "id": 5,
+        "id": "5",
         "title": "Tạo API endpoint cho AI Agent",
         "description": "Endpoint cho AI Agent đã được triển khai qua CopilotKit runtime tại /api/copilotkit. Không cần tạo endpoint mới.",
         "status": "done",
@@ -79,7 +79,7 @@
         "updatedAt": "2025-11-21T04:14:32.786Z"
       },
       {
-        "id": 6,
+        "id": "6",
         "title": "Phát triển hệ thống Quick Actions",
         "description": "Tạo hệ thống gợi ý hành động nhanh dựa trên ngữ cảnh.",
         "details": "Xây dựng logic để AI gợi ý các hành động tiếp theo và hiển thị nút bấm tương ứng.",
@@ -93,7 +93,7 @@
         "updatedAt": "2025-11-21T04:14:38.235Z"
       },
       {
-        "id": 7,
+        "id": "7",
         "title": "Tích hợp Usecase Factories",
         "description": "Kết nối AI Orchestrator với Usecase Factories để thực thi các hành động.",
         "details": "Sử dụng pattern Factory để gọi các usecase từ depends.ts dựa trên intent đã phân tích.",
@@ -107,7 +107,7 @@
         "updatedAt": "2025-11-21T04:14:43.548Z"
       },
       {
-        "id": 8,
+        "id": "8",
         "title": "Phát triển chức năng Resume Session",
         "description": "Chức năng resume session đã được triển khai thành công. Cho phép hệ thống tự động resume session khi user quay lại.",
         "status": "done",
@@ -121,7 +121,7 @@
         "updatedAt": "2025-11-21T04:17:11.774Z"
       },
       {
-        "id": 9,
+        "id": "9",
         "title": "Tích hợp phân quyền theo role",
         "description": "Phân quyền chức năng chat theo vai trò người dùng (admin/sale/warehouse) đã được triển khai đầy đủ trong các hành động của CopilotKit. Không cần tích hợp thêm.",
         "status": "done",
@@ -135,7 +135,7 @@
         "updatedAt": "2025-11-21T04:18:35.787Z"
       },
       {
-        "id": 10,
+        "id": "10",
         "title": "Tích hợp AI Data Analytics",
         "description": "Phát triển chức năng phân tích dữ liệu và báo cáo cho giai đoạn sau.",
         "status": "deferred",
@@ -195,7 +195,7 @@
         ]
       },
       {
-        "id": 11,
+        "id": "11",
         "title": "Install CopilotKit Packages",
         "description": "Install necessary CopilotKit packages for the project.",
         "details": "Run `npm install @copilotkit/react-core @copilotkit/react-ui @copilotkit/runtime` to install the required packages.",
@@ -207,7 +207,7 @@
         "updatedAt": "2025-11-21T03:09:43.096Z"
       },
       {
-        "id": 12,
+        "id": "12",
         "title": "Set Up CopilotKit Provider in Layout",
         "description": "Integrate CopilotKit provider into the root layout of the application.",
         "details": "Update `app/layout.tsx` to include the CopilotKit provider as shown in the PRD.",
@@ -221,7 +221,7 @@
         "updatedAt": "2025-11-21T03:18:18.494Z"
       },
       {
-        "id": 13,
+        "id": "13",
         "title": "Create CopilotKit API Route with OpenAIAdapter",
         "description": "Set up the API route for CopilotKit using OpenAIAdapter.",
         "details": "Create `app/api/copilotkit/route.ts` and implement the API route using the provided code snippet.",
@@ -235,7 +235,7 @@
         "updatedAt": "2025-11-21T03:18:23.576Z"
       },
       {
-        "id": 14,
+        "id": "14",
         "title": "Develop Basic CRMCopilot Component",
         "description": "Create the initial CRMCopilot component with CopilotSidebar.",
         "details": "Implement the CRMCopilot component in `app/(features)/_shared/_components/chatbot/CRMCopilot.tsx` using the provided code.",
@@ -250,7 +250,7 @@
         "updatedAt": "2025-11-21T03:21:51.518Z"
       },
       {
-        "id": 15,
+        "id": "15",
         "title": "Implement Basic Actions (getOrder, searchCustomers)",
         "description": "Develop basic actions for retrieving orders and searching customers.",
         "details": "Use `useCopilotAction` to implement `getOrder` and `searchCustomers` actions in the CRMCopilot component.",
@@ -264,7 +264,7 @@
         "updatedAt": "2025-11-21T03:25:19.110Z"
       },
       {
-        "id": 16,
+        "id": "16",
         "title": "Create Server Actions File (crm-actions.ts)",
         "description": "Set up server actions for CRM operations.",
         "details": "Create `app/(features)/_shared/_components/chatbot/actions/crm-actions.ts` and implement server actions as described in the PRD.",
@@ -278,7 +278,7 @@
         "updatedAt": "2025-11-21T03:31:12.013Z"
       },
       {
-        "id": 17,
+        "id": "17",
         "title": "Connect Actions to Existing Use Cases",
         "description": "Successfully connected all CopilotKit actions to existing use cases via depends.ts. Implemented order actions (getOrder, createOrder, updateOrderStatus), customer actions (searchCustomers, getCustomer), and navigation actions.",
         "status": "done",
@@ -303,7 +303,7 @@
         "updatedAt": "2025-11-21T03:43:54.957Z"
       },
       {
-        "id": 18,
+        "id": "18",
         "title": "Add Role-Based Permission Checks",
         "description": "Role-based permission checks have been implemented in task 17. All CopilotKit actions now include comprehensive permission validation.",
         "status": "done",
@@ -316,7 +316,7 @@
         "subtasks": []
       },
       {
-        "id": 19,
+        "id": "19",
         "title": "Implement Navigation Actions",
         "description": "Navigation actions have been implemented in task 17. The actions `navigateToOrder` and `navigateToCustomer` are fully functional.",
         "status": "done",
@@ -330,7 +330,7 @@
         "updatedAt": "2025-11-21T03:46:50.138Z"
       },
       {
-        "id": 20,
+        "id": "20",
         "title": "Integrate CRMCopilot in CRM Layout",
         "description": "CRMCopilot component has been successfully integrated into the CRM layout for user interaction.",
         "status": "done",
@@ -344,7 +344,7 @@
         "updatedAt": "2025-11-21T03:48:03.973Z"
       },
       {
-        "id": 21,
+        "id": "21",
         "title": "Add Dashboard UI Customization with Drag-and-Drop",
         "description": "Implement a feature allowing users to customize their dashboard layout using drag-and-drop functionality for cards/widgets.",
         "details": "Develop a drag-and-drop interface using a library like React DnD or similar. Create a customizable dashboard component where users can add, remove, and rearrange widgets. Ensure the layout state is saved in the user's profile for persistence. Update the UI to reflect changes immediately and handle edge cases such as overlapping widgets or invalid drop zones. Consider accessibility and responsiveness for different screen sizes.",
@@ -423,7 +423,7 @@
         "updatedAt": "2025-11-21T07:23:31.029Z"
       },
       {
-        "id": 22,
+        "id": "22",
         "title": "Create Scripts for Generating Customer and Order Test Data",
         "description": "Develop scripts to generate test data for customers and orders using existing product data.",
         "details": "Implement scripts in a dedicated directory, such as `scripts/test-data`, to automate the generation of customer and order test data. Utilize existing product data as a basis for creating realistic test scenarios. Ensure the scripts can be executed independently and support various configurations for data volume and complexity. Consider using libraries like Faker.js for generating random but realistic data attributes. Document the scripts with usage instructions and configuration options.",
@@ -505,7 +505,7 @@
         "updatedAt": "2025-11-21T07:39:35.545Z"
       },
       {
-        "id": 23,
+        "id": "23",
         "title": "Add Conversation History Feature to CRMCopilot Chatbot",
         "description": "Implement a feature to store and display conversation history in the CRMCopilot chatbot component.",
         "details": "Enhance the CRMCopilot component located at `app/(features)/_shared/_components/chatbot/CRMCopilot.tsx` to include conversation history. Create a new state to manage the history of interactions. Use local storage or a database to persist conversation data. Update the UI to display past interactions in a scrollable view. Ensure that the history is loaded when the component mounts and updated in real-time as new messages are sent or received. Consider privacy and data retention policies when storing conversation data.",
@@ -585,7 +585,7 @@
         "updatedAt": "2025-11-21T07:30:27.406Z"
       },
       {
-        "id": 24,
+        "id": "24",
         "title": "Fix React Key Prop Warning in DraggableWidget Component",
         "description": "Resolve the React warning about missing unique key props in the DraggableWidget component.",
         "details": "Identify the list rendering in `app/(features)/crm/managements/page.tsx` at line 45 where the `InventoryAlertsClient` component is used. Ensure each child element in the list has a unique `key` prop. This can be achieved by using a unique identifier from the data being mapped over, such as an ID or index. Review the data structure to find a suitable unique identifier. Update the component to include this key prop and test to ensure the warning is resolved.",
@@ -663,7 +663,7 @@
         "updatedAt": "2025-11-21T07:48:20.582Z"
       },
       {
-        "id": 25,
+        "id": "25",
         "title": "Cải thiện UI/UX của Widget Editor",
         "description": "Nâng cấp giao diện và trải nghiệm người dùng của Widget Editor với bố cục mới và tổ chức module.",
         "details": "1. Chuyển danh sách widget từ bố cục ngang sang dọc ở bên trái, giao diện chính ở bên phải.\n2. Nhóm các widget theo module và chỉ cho phép thêm widget vào nhóm module tương ứng.\n3. Chuẩn hóa kích thước widget trên toàn bộ hệ thống.\n4. Tách widget thành các module độc lập để dễ bảo trì.\n5. Cập nhật CSS và JavaScript để hỗ trợ bố cục và chức năng mới.\n6. Đảm bảo tính tương thích với các phần khác của ứng dụng.",
@@ -743,7 +743,7 @@
         "updatedAt": "2025-11-21T07:51:48.581Z"
       },
       {
-        "id": 26,
+        "id": "26",
         "title": "Implement Module-Based Drag Zones for Widget Editor",
         "description": "Create module-specific drag zones in the widget editor to organize widgets by their respective modules.",
         "details": "1. Divide the widget editor UI into distinct sections for each module: finance, customer, order, product, risk, and forecast.\n2. Implement drag-and-drop functionality using a library like React DnD to allow widgets to be moved only within their designated module zones.\n3. Ensure that each module zone only accepts widgets corresponding to its type, e.g., financial widgets in the finance section.\n4. Update the UI to visually differentiate between module zones and provide feedback during drag-and-drop operations.\n5. Refactor existing widget handling code to support module-specific constraints and improve maintainability.\n6. Collaborate with the design team to ensure the UI aligns with the overall application design and user experience standards.",
@@ -822,7 +822,7 @@
         "updatedAt": "2025-11-21T07:59:27.984Z"
       },
       {
-        "id": 27,
+        "id": "27",
         "title": "Tách Widget Dashboard Thành Các Module Nhỏ",
         "description": "Chia nhỏ các widget lớn trên dashboard thành các module độc lập để cải thiện tính modular và khả năng tái sử dụng.",
         "details": "1. Phân tích các widget hiện tại như 'Chỉ số chính', 'Phân tích lợi nhuận', và 'Phân tích khách hàng' để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chỉ số hoặc phân tích cụ thể.\n3. Sử dụng các thư viện như React để tạo các component module độc lập.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard thông qua chức năng kéo thả đã có.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -902,7 +902,7 @@
         "updatedAt": "2025-11-21T08:17:49.503Z"
       },
       {
-        "id": 28,
+        "id": "28",
         "title": "Cải thiện Widget Editor: Nhóm Widget theo Module trong UI",
         "description": "Nhóm các widget theo module trong giao diện Widget Editor và đảm bảo chỉ có thể kéo thả widget vào khu vực module tương ứng.",
         "details": "1. Phân tích cấu trúc hiện tại của Widget Editor để xác định cách nhóm các widget theo module: tài chính, khách hàng, đơn hàng, sản phẩm, rủi ro, dự báo.\n2. Cập nhật giao diện bên trái để hiển thị danh sách widget được nhóm theo module.\n3. Cập nhật giao diện bên phải để tạo các khu vực module tương ứng, chỉ cho phép kéo thả widget vào khu vực module phù hợp.\n4. Sử dụng thư viện React DnD để triển khai chức năng kéo thả, đảm bảo mỗi widget chỉ có thể được thả vào khu vực module tương ứng.\n5. Cập nhật CSS để phân biệt rõ ràng các khu vực module và cung cấp phản hồi trực quan khi kéo thả.",
@@ -917,7 +917,7 @@
         "updatedAt": "2025-11-21T08:17:11.974Z"
       },
       {
-        "id": 29,
+        "id": "29",
         "title": "Tách và Cải Tiến Module Widget",
         "description": "Chia các widget thành các module riêng biệt và cải tiến giao diện với cơ chế lưới và nút điều chỉnh.",
         "details": "1. Phân tích các widget hiện tại như 'Chỉ số chính', 'Phân tích lợi nhuận', 'Phân tích khách hàng', 'Chỉ số nâng cao', và 'Biểu đồ đơn hàng' để xác định cách tách chúng thành các module độc lập.\n2. Sử dụng cơ chế lưới với chiều rộng cố định (n cột) và chiều cao linh hoạt để sắp xếp các module trên giao diện.\n3. Thêm các nút lên/xuống cho mỗi nhóm trong giao diện người dùng của Widget để cho phép người dùng điều chỉnh thứ tự hiển thị.\n4. Đảm bảo mỗi module có thể hoạt động độc lập và có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -933,7 +933,7 @@
         "updatedAt": "2025-11-21T08:20:46.531Z"
       },
       {
-        "id": 30,
+        "id": "30",
         "title": "Sửa lỗi TypeScript trong CustomizableDashboardClient.tsx",
         "description": "Khắc phục lỗi TypeScript liên quan đến kiểu dữ liệu không khớp trong CustomizableDashboardClient.tsx.",
         "details": "1. Xác định vị trí lỗi trong file `CustomizableDashboardClient.tsx`.\n2. Kiểm tra kiểu dữ liệu của `SetStateAction<Widget[]>` và đảm bảo rằng tất cả các phần tử trong mảng đều không phải là `undefined`.\n3. Sử dụng TypeScript để kiểm tra và đảm bảo rằng các phần tử trong mảng có kiểu dữ liệu chính xác.\n4. Thêm kiểm tra điều kiện hoặc sử dụng phương pháp lọc để loại bỏ các phần tử `undefined` trước khi gán vào `SetStateAction<Widget[]>`.\n5. Cập nhật tài liệu và bình luận trong mã nguồn để giải thích sự thay đổi và lý do của nó.",
@@ -948,7 +948,7 @@
         "updatedAt": "2025-11-21T08:12:32.309Z"
       },
       {
-        "id": 31,
+        "id": "31",
         "title": "Tách Widget Lớn Thành Các Module Kéo Thả Độc Lập",
         "description": "Chia nhỏ các widget lớn như DashboardStats, AIRiskAssessmentClient, ProfitAnalysisClient, CustomerInsights, EnhancedMetrics thành các module độc lập có thể kéo thả trên dashboard.",
         "details": "1. Phân tích các widget hiện tại để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chức năng cụ thể.\n3. Sử dụng thư viện React DnD để tạo các component module độc lập có thể kéo thả.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -964,7 +964,7 @@
         "updatedAt": "2025-11-21T08:39:19.016Z"
       },
       {
-        "id": 32,
+        "id": "32",
         "title": "Integrate react-gridstack in CustomizableDashboardClient",
         "description": "Update CustomizableDashboardClient to use react-gridstack for improved drag-and-drop functionality.",
         "details": "1. Analyze the current implementation of drag-and-drop in `CustomizableDashboardClient` located in `app/(features)/crm/managements/page.tsx`.\n2. Replace the existing drag-and-drop logic with the `react-gridstack` library.\n3. Follow the example provided in the repository `https://github.com/Inder2108/react-gridstack-example` to understand the integration process.\n4. Ensure that all widgets are compatible with the gridstack layout and can be resized and rearranged.\n5. Update any related styles and ensure the UI remains consistent with the overall design.\n6. Refactor any code that directly interacts with the previous drag-and-drop implementation to work with `react-gridstack`.",
@@ -1044,7 +1044,7 @@
         "updatedAt": "2025-11-21T15:23:32.292Z"
       },
       {
-        "id": 33,
+        "id": "33",
         "title": "Add Skeleton Loading to AIRiskAssessment Component",
         "description": "Implement skeleton loading in the AIRiskAssessment component to enhance user experience during data loading.",
         "status": "done",
@@ -1058,7 +1058,7 @@
         "updatedAt": "2025-11-21T14:55:21.373Z"
       },
       {
-        "id": 34,
+        "id": "34",
         "title": "Refactor Widgets for Consistency in CRM Management",
         "description": "Refactor all widgets in app/(features)/crm/managements/_components/widgets to follow the same pattern as RiskAlerts.tsx and TodayRevenueWidget.tsx for consistency.",
         "status": "done",
@@ -1073,7 +1073,7 @@
         "updatedAt": "2025-11-21T15:02:59.707Z"
       },
       {
-        "id": 35,
+        "id": "35",
         "title": "Tách Các Widget Phức Tạp Thành Module Kéo Thả Độc Lập",
         "description": "Tách các widget lớn như AIRiskAssessmentClient, OrdersChart, TodayProfitWidget, MonthProfitWidget thành các module độc lập có thể kéo thả.",
         "details": "1. Phân tích các widget hiện tại để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chức năng cụ thể.\n3. Sử dụng thư viện React DnD để tạo các component module độc lập có thể kéo thả.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -1153,7 +1153,7 @@
         "updatedAt": "2025-11-21T15:41:42.922Z"
       },
       {
-        "id": 36,
+        "id": "36",
         "title": "Xây dựng cơ chế cache cho AI Generate với Redis hoặc in-memory cache",
         "description": "Thiết kế và triển khai lớp cache cho các hàm AI Generate trong infrastructure/ai/risk-assessment-service.ts và app/(features)/crm/managements/ai-actions.ts nhằm giảm số lần gọi AI API, sử dụng Redis hoặc in-memory cache với TTL phù hợp.",
         "details": "1. Phân tích các điểm gọi AI API trong hai file chỉ định để xác định các hàm cần cache.\n2. Thiết kế interface cache chung (ví dụ: ICacheService) với các phương thức get/set/delete, hỗ trợ generic type và TTL (time-to-live).\n3. Cài đặt Redis client (node-redis) và xây dựng lớp RedisCacheService tuân thủ interface trên. Đảm bảo kết nối, xử lý lỗi và đóng kết nối đúng chuẩn[2][3][8].\n4. Xây dựng lớp InMemoryCacheService fallback khi Redis không khả dụng, sử dụng Map hoặc LRU cache, có TTL tự động xóa key hết hạn.\n5. Tích hợp cache vào các hàm AI Generate: kiểm tra cache trước khi gọi API, nếu có dữ liệu hợp lệ thì trả về, nếu không thì gọi API, lưu kết quả vào cache với TTL cấu hình (ví dụ: 5-30 phút tùy use case)[1][2][3].\n6. Đảm bảo type safety với TypeScript, log cache hit/miss để theo dõi hiệu quả cache.\n7. Cấu hình TTL động nếu cần (ví dụ: cho phép truyền TTL qua tham số hoặc config).\n8. Viết tài liệu hướng dẫn sử dụng, cấu hình và mở rộng cache layer.\nLưu ý: Xử lý cache invalidation khi dữ liệu nguồn thay đổi, đảm bảo không trả về dữ liệu cũ nếu có cập nhật quan trọng. Ưu tiên Redis cho môi trường production, in-memory cho local/dev hoặc khi Redis lỗi.",
@@ -1231,7 +1231,7 @@
         "updatedAt": "2025-11-22T02:04:21.766Z"
       },
       {
-        "id": 37,
+        "id": "37",
         "title": "Tách và Chuẩn hóa Các Widget Phức Tạp Thành Module Độc Lập, Tối Ưu Chia Sẻ Props và Hiệu Suất",
         "description": "Tách các widget phức tạp như AIRiskAssessmentClient, OrdersChart, TodayProfitWidget, MonthProfitWidget thành các module nhỏ hơn, đảm bảo chia sẻ logic, props và tối ưu hiệu suất render.",
         "details": "1. Phân tích AIRiskAssessmentClient để tách thành 3 widget độc lập: AIRiskOverallWidget, AIRiskIdentifiedWidget, AIRiskOpportunitiesWidget. Refactor để chỉ gọi generateRiskAssessment() một lần duy nhất ở cấp cha, truyền props kết quả xuống các widget con qua context hoặc props nhằm tránh lặp lại logic và tối ưu hiệu suất.\n2. Tách OrdersChart thành hai widget riêng biệt: OrderStatusWidget và PaymentStatusWidget. Đảm bảo mỗi widget chỉ nhận dữ liệu liên quan, sử dụng memoization (React.memo, useMemo) để tránh render lại không cần thiết.\n3. Tách TodayProfitWidget và MonthProfitWidget thành bốn widget: RevenueWidget, CostWidget, GrossProfitWidget, NetProfitWidget. Chuẩn hóa interface props, đảm bảo mỗi widget chỉ nhận đúng dữ liệu cần thiết, đồng thời sử dụng các pattern như compound component hoặc context nếu cần chia sẻ logic chung.\n4. Đảm bảo tất cả widget mới tuân thủ chuẩn hóa giao diện, style và khả năng kéo thả (drag & drop) theo các module đã có (sử dụng React DnD hoặc TileLayout). Cập nhật lại tài liệu hướng dẫn sử dụng và bảo trì cho từng widget mới.\n5. Áp dụng best practice về phân tách component: mỗi widget là một file riêng, có test riêng, không phụ thuộc trực tiếp vào widget khác, chỉ nhận dữ liệu qua props hoặc context.",
@@ -1312,7 +1312,7 @@
         "updatedAt": "2025-11-22T05:50:15.246Z"
       },
       {
-        "id": 38,
+        "id": "38",
         "title": "Bổ sung tính năng quản lý widget Dashboard qua Copilot Agent với AG-UI integration",
         "description": "Phát triển endpoint agent và tích hợp giao diện AG-UI cho phép Copilot thêm/xóa widget trên Dashboard thông qua chat, đồng bộ trạng thái UI theo thời gian thực.",
         "details": "1. Xây dựng endpoint agent mới theo mẫu route.ts của AG-UI, sử dụng FastAPI hoặc framework tương tự để nhận và xử lý các lệnh từ Copilot (thêm/xóa widget, cập nhật trạng thái dashboard). Endpoint này cần tuân thủ chuẩn sự kiện AG-UI (ví dụ: STATE_DELTA, TOOL_CALL_START, TEXT_MESSAGE_CONTENT) để đồng bộ hóa trạng thái UI với backend.\n2. Tích hợp CopilotKit hoặc các React hooks/component AG-UI vào dashboard, tham khảo shared_state/page.tsx để đồng bộ hóa trạng thái widget giữa agent và frontend. Đảm bảo các sự kiện từ agent (thêm/xóa widget) được phản ánh ngay lập tức trên giao diện người dùng.\n3. Phát triển logic agent (tham khảo agent.py) để nhận lệnh tự nhiên từ chat (ví dụ: \"thêm widget doanh thu\", \"xóa biểu đồ đơn hàng\") và chuyển đổi thành hành động cập nhật dashboard. Sử dụng intent recognition để phân tích lệnh, cập nhật state, và gửi sự kiện AG-UI phù hợp về frontend.\n4. Đảm bảo đồng bộ hai chiều: khi người dùng thao tác trực tiếp trên dashboard (kéo thả, thêm/xóa widget), trạng thái cũng được cập nhật về agent để duy trì nhất quán.\n5. Áp dụng best practice về bảo mật endpoint, kiểm soát quyền truy cập, và kiểm thử với nhiều loại lệnh chat khác nhau. Tối ưu hiệu suất truyền sự kiện bằng STATE_DELTA để chỉ gửi phần thay đổi.\n6. Cập nhật tài liệu hướng dẫn sử dụng tính năng mới cho cả người dùng cuối và lập trình viên.",
@@ -1396,7 +1396,7 @@
         "updatedAt": "2025-11-22T06:05:22.277Z"
       },
       {
-        "id": 39,
+        "id": "39",
         "title": "Gộp và refactor script seed dữ liệu khách hàng và đơn hàng thành một script tổng hợp, đảm bảo tính toàn vẹn và idempotency",
         "description": "Gộp hai script seed-customers.ts và seed-orders.ts thành một script duy nhất, đảm bảo đơn hàng liên kết đúng với khách hàng và sản phẩm, xử lý lỗi, logging, và idempotency.",
         "details": "1. Tạo một script mới (ví dụ: scripts/seed-crm-data.ts) sử dụng TypeScript, gộp logic từ seed-customers.ts và seed-orders.ts.\n2. Đọc dữ liệu sản phẩm từ scripts/seeds/crm_db.products.json, tạo khách hàng (nếu chưa tồn tại) và tạo đơn hàng liên kết đúng với khách hàng và sản phẩm.\n3. Đảm bảo tính toàn vẹn tham chiếu: mỗi đơn hàng phải liên kết với một khách hàng đã tạo và sản phẩm hợp lệ. Sử dụng các khoá ngoại hoặc kiểm tra tồn tại trước khi tạo bản ghi mới.\n4. Áp dụng best practices TypeScript: sử dụng type/interface rõ ràng cho dữ liệu khách hàng, sản phẩm, đơn hàng; tránh dùng any; chia nhỏ hàm xử lý thành các helper function riêng biệt để dễ bảo trì và kiểm thử[1][4][7].\n5. Thêm error handling: sử dụng try/catch cho các thao tác I/O, ghi log chi tiết khi có lỗi hoặc khi tạo mới dữ liệu. Sử dụng thư viện logging như winston hoặc console với format rõ ràng.\n6. Đảm bảo script idempotent: kiểm tra dữ liệu trước khi tạo mới (ví dụ: kiểm tra email khách hàng, mã đơn hàng, mã sản phẩm), chỉ tạo mới khi chưa tồn tại. Có thể dùng upsert hoặc kiểm tra tồn tại trước khi insert.\n7. Tách các hàm seed thành module riêng (seedCustomers, seedOrders, seedProducts) để dễ mở rộng và kiểm thử[1][3][7].\n8. Viết unit test cho các hàm seed, kiểm tra tính đúng đắn của liên kết giữa khách hàng, đơn hàng, sản phẩm. Sử dụng Jest hoặc tương tự để kiểm thử tự động[3].\n9. Cập nhật tài liệu hướng dẫn sử dụng script, mô tả cách chạy, các tham số cấu hình (nếu có).",
@@ -1470,7 +1470,7 @@
         "updatedAt": "2025-11-22T06:14:01.910Z"
       },
       {
-        "id": 40,
+        "id": "40",
         "title": "Sửa lỗi đồng bộ hóa UI trong CRMCopilot.tsx",
         "description": "Khắc phục lỗi UI không tự động cập nhật sau khi thay đổi Agent trong CRMCopilot.tsx.",
         "details": "1. Xác định vị trí trong CRMCopilot.tsx nơi xảy ra lỗi đồng bộ hóa giữa localStorage và UI.\n2. Tạo một custom hook sử dụng useEffect để lắng nghe sự thay đổi trong localStorage.\n3. Khi phát hiện thay đổi, cập nhật state của component để UI tự động làm mới mà không cần tải lại trang.\n4. Đảm bảo rằng hook này được tối ưu hóa để tránh render không cần thiết.\n5. Kiểm tra và cập nhật tài liệu nếu cần thiết để đảm bảo các thành viên khác trong nhóm hiểu rõ cách sử dụng hook mới này.",
@@ -1485,7 +1485,7 @@
         "updatedAt": "2025-11-22T09:25:24.237Z"
       },
       {
-        "id": 41,
+        "id": "41",
         "title": "Thêm tính năng tùy chỉnh widget trong CRMCopilot.tsx",
         "description": "Cho phép người dùng thay đổi kích thước, di chuyển và sắp xếp lại các nhóm widget trong CRMCopilot.tsx.",
         "details": "1. Phân tích cấu trúc hiện tại của CRMCopilot.tsx để xác định cách tích hợp các tính năng tùy chỉnh.\n2. Sử dụng thư viện React DnD để triển khai chức năng kéo thả cho việc di chuyển và sắp xếp lại widget.\n3. Thêm khả năng thay đổi kích thước widget bằng cách sử dụng thư viện như 'react-resizable'.\n4. Cập nhật giao diện người dùng để hỗ trợ các thao tác tùy chỉnh, đảm bảo tính trực quan và dễ sử dụng.\n5. Đảm bảo rằng các thay đổi được lưu trữ và có thể khôi phục khi người dùng tải lại trang.",
@@ -1501,7 +1501,7 @@
         "updatedAt": "2025-11-22T09:31:37.430Z"
       },
       {
-        "id": 42,
+        "id": "42",
         "title": "Cập nhật TodayOrdersWidget.tsx, TodayProfitWidget.tsx, TodayRevenueWidget.tsx sử dụng dữ liệu 7 ngày",
         "description": "Chuyển đổi các widget để sử dụng dữ liệu 7 ngày thay vì chỉ dữ liệu của ngày hôm nay.",
         "details": "1. Mở các file `TodayOrdersWidget.tsx`, `TodayProfitWidget.tsx`, và `TodayRevenueWidget.tsx`.\n2. Thay đổi logic lấy dữ liệu từ chỉ ngày hôm nay sang dữ liệu 7 ngày gần nhất. Sử dụng hàm API hoặc service hiện có để lấy dữ liệu 7 ngày.\n3. Đảm bảo rằng các widget vẫn hiển thị đúng định dạng và thông tin khi sử dụng dữ liệu 7 ngày.\n4. Cập nhật bất kỳ logic tính toán nào trong các widget để phản ánh dữ liệu 7 ngày (ví dụ: tính tổng, trung bình, v.v.).\n5. Kiểm tra và tối ưu hóa hiệu suất nếu cần thiết, đặc biệt khi xử lý lượng dữ liệu lớn hơn.",
@@ -1515,7 +1515,7 @@
         "updatedAt": "2025-11-22T09:28:50.278Z"
       },
       {
-        "id": 43,
+        "id": "43",
         "title": "Cập nhật MonthProfitWidget.tsx và MonthRevenueWidget.tsx sử dụng dữ liệu 30 ngày",
         "description": "Chuyển đổi các widget để sử dụng dữ liệu 30 ngày gần nhất thay vì dữ liệu hàng tháng.",
         "details": "1. Mở các file `MonthProfitWidget.tsx` và `MonthRevenueWidget.tsx`.\n2. Thay đổi logic lấy dữ liệu từ dữ liệu hàng tháng sang dữ liệu 30 ngày gần nhất. Sử dụng hàm API hoặc service hiện có để lấy dữ liệu 30 ngày.\n3. Đảm bảo rằng các widget vẫn hiển thị đúng định dạng và thông tin khi sử dụng dữ liệu 30 ngày.\n4. Cập nhật bất kỳ logic tính toán nào trong các widget để phản ánh dữ liệu 30 ngày (ví dụ: tính tổng, trung bình, v.v.).\n5. Kiểm tra và tối ưu hóa hiệu suất nếu cần thiết để đảm bảo các widget hoạt động mượt mà với dữ liệu mới.",
@@ -1529,7 +1529,7 @@
         "updatedAt": "2025-11-22T09:30:53.579Z"
       },
       {
-        "id": 44,
+        "id": "44",
         "title": "Thêm khả năng đọc dữ liệu trong CRMCopilot.tsx bằng useCopilotReadable",
         "description": "Thêm khả năng đọc dữ liệu từ widget trong CRMCopilot.tsx sử dụng useCopilotReadable.",
         "details": "1. Mở file `CRMCopilot.tsx` trong thư mục `app/(features)/crm/managements/_components/widgets`.\n2. Import hook `useCopilotReadable` từ thư viện tương ứng.\n3. Sử dụng `useCopilotReadable` để đọc dữ liệu từ các widget có trong thư mục.\n4. Tham khảo cách triển khai từ ví dụ trong `Dashboard.tsx` tại [CopilotKit GitHub](https://github.com/CopilotKit/CopilotKit/blob/main/examples/copilot-chat-with-your-data/components/Dashboard.tsx).\n5. Đảm bảo rằng dữ liệu được đọc và hiển thị đúng cách trong giao diện người dùng.",
@@ -1544,7 +1544,7 @@
         "updatedAt": "2025-11-22T09:31:32.613Z"
       },
       {
-        "id": 45,
+        "id": "45",
         "title": "Chuyển đổi useDashboardWidgets sang Zustand với localStorage",
         "description": "Chuyển đổi useDashboardWidgets từ React hook và localStorage sang Zustand với khả năng lưu trữ và khôi phục từ localStorage.",
         "details": "1. Tạo một store mới trong Zustand để quản lý trạng thái của dashboard widgets.\n2. Thiết lập khả năng khởi tạo từ localStorage khi ứng dụng tải.\n3. Thêm chức năng saveWidgets để lưu trạng thái hiện tại vào localStorage.\n4. Thêm chức năng reset layout để khôi phục trạng thái từ localStorage.\n5. Đảm bảo rằng không cần tham số defaultWidgets khi khởi tạo.\n6. Cập nhật các file liên quan: `CRMCopilot.tsx`, `useDashboardWidgets.ts`, và `CustomizableDashboardClient.tsx` để sử dụng Zustand store mới.",
@@ -1559,7 +1559,7 @@
         "updatedAt": "2025-11-22T13:48:04.514Z"
       },
       {
-        "id": 46,
+        "id": "46",
         "title": "Làm sạch và tái cấu trúc mã widget theo kiến trúc Clean/Onion",
         "description": "Loại bỏ mã dư thừa, tái cấu trúc mã widget theo nguyên tắc kiến trúc Clean/Onion, tổ chức lại các thành phần widget.",
         "details": "1. Phân tích mã hiện tại của các widget để xác định các phần mã dư thừa và không cần thiết. \n2. Áp dụng nguyên tắc kiến trúc Clean/Onion để tái cấu trúc mã, đảm bảo tách biệt rõ ràng giữa các lớp trình bày, logic và dữ liệu.\n3. Tổ chức lại các thành phần widget thành các module riêng biệt, đảm bảo mỗi module chỉ chịu trách nhiệm cho một chức năng cụ thể.\n4. Loại bỏ sự trùng lặp mã bằng cách tái sử dụng các component và hàm chung.\n5. Đảm bảo rằng mỗi lớp trong kiến trúc đều có trách nhiệm rõ ràng và không có sự phụ thuộc không cần thiết giữa các lớp.",
@@ -1575,7 +1575,7 @@
         "updatedAt": "2025-11-22T14:11:41.482Z"
       },
       {
-        "id": 47,
+        "id": "47",
         "title": "Cập nhật GridStackDashboard.tsx sử dụng @shared/ui/sidebar.tsx",
         "description": "Cập nhật GridStackDashboard.tsx để sử dụng sidebar dọc từ @shared/ui/sidebar.tsx và ẩn mặc định các widget trong nhóm. Thực hiện nhóm module có thể thu gọn với component sidebar. Đã hoàn thành việc thay thế và bổ sung các chức năng cần thiết.",
         "status": "done",
@@ -1591,14 +1591,14 @@
         "updatedAt": "2025-11-22T15:20:29.718Z"
       },
       {
-        "id": 48,
+        "id": "48",
         "title": "Xây dựng trang Quản lý Chi phí Vận hành với CRUD và các tab (Tổng quan, Nhập/Xuất, Danh mục)",
         "description": "Phát triển giao diện quản lý chi phí vận hành tại app/(features)/crm/managements/operational-costs/ với đầy đủ chức năng CRUD và các tab chuyên biệt.",
         "details": "1. Tạo thư mục và file trang tại 'app/(features)/crm/managements/operational-costs/'.\n2. Thiết kế giao diện sử dụng React, TypeScript và các thư viện UI hiện đại (ví dụ: shadcn/ui, Tailwind CSS) để đảm bảo tính nhất quán với hệ thống hiện tại.\n3. Tạo component chính với các tab: 'Tổng quan' (Summary), 'Nhập/Xuất' (Import/Export), 'Danh mục' (Category) sử dụng state quản lý tab hiện tại.\n4. Mỗi tab là một component riêng biệt, đảm bảo dễ bảo trì và mở rộng.\n5. Xây dựng chức năng CRUD cho từng tab:\n   - Tổng quan: Hiển thị danh sách chi phí, cho phép thêm/sửa/xóa chi phí.\n   - Nhập/Xuất: Tích hợp chức năng import/export dữ liệu (CSV, Excel), xác thực dữ liệu đầu vào, hiển thị tiến trình và kết quả.\n   - Danh mục: Quản lý các loại chi phí, cho phép thêm/sửa/xóa danh mục.\n6. Sử dụng server actions từ crm-actions.ts (task 16) để thực hiện các thao tác dữ liệu, đảm bảo đồng bộ với backend.\n7. Áp dụng best practices: quản lý state với hooks hoặc Zustand, xác thực dữ liệu đầu vào, xử lý lỗi và hiển thị thông báo cho người dùng.\n8. Tối ưu hiệu năng: sử dụng skeleton loading cho các bảng dữ liệu lớn, phân trang hoặc virtual scroll nếu cần.\n9. Đảm bảo khả năng mở rộng cho các chức năng nâng cao như lọc, tìm kiếm, thống kê chi phí.",
         "testStrategy": "1. Kiểm tra giao diện hiển thị đúng các tab và chuyển đổi tab mượt mà.\n2. Thực hiện đầy đủ các thao tác CRUD trên từng tab, xác nhận dữ liệu được cập nhật chính xác trên UI và backend.\n3. Kiểm tra chức năng import/export với các file mẫu, xác thực dữ liệu và xử lý lỗi nhập sai.\n4. Kiểm tra thông báo lỗi, loading, và trạng thái thành công khi thao tác dữ liệu.\n5. Kiểm thử bảo mật: xác nhận chỉ người dùng có quyền mới thao tác được.\n6. Kiểm tra tương thích trên các trình duyệt và thiết bị phổ biến.\n7. Thực hiện kiểm thử hồi quy để đảm bảo không ảnh hưởng đến các chức năng liên quan.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          16
+          "16"
         ],
         "priority": "medium",
         "subtasks": [
@@ -1609,7 +1609,8 @@
             "dependencies": [],
             "details": "Tạo mới thư mục 'operational-costs' và các file chính như index.tsx, các file component cho từng tab, và file style nếu cần. Đảm bảo cấu trúc phù hợp với kiến trúc dự án hiện tại.",
             "status": "pending",
-            "testStrategy": "Kiểm tra sự tồn tại của thư mục và các file, xác nhận import/export không lỗi khi chạy ứng dụng."
+            "testStrategy": "Kiểm tra sự tồn tại của thư mục và các file, xác nhận import/export không lỗi khi chạy ứng dụng.",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -1620,7 +1621,8 @@
             ],
             "details": "Sử dụng shadcn/ui hoặc Tailwind CSS để xây dựng giao diện nhất quán. Tạo component cha quản lý state tab hiện tại, render component con tương ứng với từng tab. Đảm bảo khả năng chuyển đổi tab mượt mà.",
             "status": "pending",
-            "testStrategy": "Kiểm tra giao diện hiển thị đúng các tab, chuyển đổi tab không lỗi, UI đồng nhất với hệ thống."
+            "testStrategy": "Kiểm tra giao diện hiển thị đúng các tab, chuyển đổi tab không lỗi, UI đồng nhất với hệ thống.",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -1631,7 +1633,8 @@
             ],
             "details": "Tạo form nhập liệu, bảng danh sách chi phí, các nút thao tác CRUD. Sử dụng hooks hoặc Zustand để quản lý state, gọi server actions để đồng bộ dữ liệu với backend. Xử lý lỗi và hiển thị thông báo cho người dùng.",
             "status": "pending",
-            "testStrategy": "Thực hiện các thao tác CRUD, xác nhận dữ liệu cập nhật đúng trên UI và backend, kiểm tra thông báo lỗi khi nhập sai."
+            "testStrategy": "Thực hiện các thao tác CRUD, xác nhận dữ liệu cập nhật đúng trên UI và backend, kiểm tra thông báo lỗi khi nhập sai.",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -1642,7 +1645,8 @@
             ],
             "details": "Sử dụng thư viện hỗ trợ đọc/ghi file CSV/Excel. Xây dựng UI cho phép chọn file, xác thực dữ liệu trước khi import, hiển thị tiến trình và kết quả import/export. Kết nối server actions để xử lý dữ liệu.",
             "status": "pending",
-            "testStrategy": "Kiểm tra import/export với file mẫu, xác thực dữ liệu, xử lý lỗi nhập sai, xác nhận dữ liệu được cập nhật đúng."
+            "testStrategy": "Kiểm tra import/export với file mẫu, xác thực dữ liệu, xử lý lỗi nhập sai, xác nhận dữ liệu được cập nhật đúng.",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -1653,19 +1657,21 @@
             ],
             "details": "Tạo form nhập liệu, bảng danh sách loại chi phí, các nút thao tác CRUD. Kết nối server actions để đồng bộ dữ liệu với backend. Áp dụng best practices về quản lý state, xác thực dữ liệu và xử lý lỗi.",
             "status": "pending",
-            "testStrategy": "Thực hiện các thao tác CRUD trên danh mục, xác nhận dữ liệu cập nhật đúng trên UI và backend, kiểm tra thông báo lỗi khi nhập sai."
+            "testStrategy": "Thực hiện các thao tác CRUD trên danh mục, xác nhận dữ liệu cập nhật đúng trên UI và backend, kiểm tra thông báo lỗi khi nhập sai.",
+            "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2025-11-24T02:44:05.565Z"
       },
       {
-        "id": 49,
+        "id": "49",
         "title": "Xây dựng trang Quản lý Kho với CRUD và các tab (Tổng quan, Nhập/Xuất, Danh mục)",
         "description": "Phát triển trang quản lý kho tại app/(features)/crm/managements/inventory/ với đầy đủ chức năng CRUD và các tab chuyên biệt: Tổng quan, Nhập/Xuất, Danh mục.",
         "details": "1. Tạo thư mục và file trang tại 'app/(features)/crm/managements/inventory/'.\n2. Thiết kế giao diện sử dụng React, TypeScript và các thư viện UI hiện đại (ví dụ: shadcn/ui, Tailwind CSS) để đảm bảo tính nhất quán với hệ thống hiện tại.\n3. Xây dựng component chính với các tab: 'Tổng quan' (Summary), 'Nhập/Xuất' (Import/Export), 'Danh mục' (Category) sử dụng state quản lý tab hiện tại. Mỗi tab là một component riêng biệt để dễ bảo trì và mở rộng.\n4. Tích hợp chức năng CRUD (Create, Read, Update, Delete) cho từng tab, sử dụng server actions từ crm-actions.ts (task 16) để thao tác dữ liệu kho: tạo mới, xem, cập nhật, xóa sản phẩm, danh mục, và quản lý nhập/xuất kho[1][2][3].\n5. Đảm bảo các thao tác CRUD tuân thủ best practices RESTful (nếu gọi API), xử lý lỗi và hiển thị thông báo rõ ràng cho người dùng.\n6. Ở tab Nhập/Xuất, xây dựng chức năng import/export dữ liệu kho qua file CSV/XLSX, xác thực dữ liệu đầu vào, cung cấp file mẫu và xử lý lỗi nhập sai.\n7. Áp dụng phân quyền thao tác (ví dụ: chỉ admin mới được xóa/xuất kho), xác thực quyền người dùng trước khi thực hiện các thao tác nhạy cảm[5].\n8. Tối ưu trải nghiệm người dùng với loading skeleton, xác nhận khi xóa, và cập nhật UI theo thời gian thực sau mỗi thao tác CRUD.\n9. Viết code theo kiến trúc component-based, tách biệt logic và UI, dễ mở rộng cho các module quản lý khác.",
         "testStrategy": "1. Kiểm tra giao diện hiển thị đúng các tab và chuyển đổi tab mượt mà.\n2. Thực hiện đầy đủ các thao tác CRUD trên từng tab, xác nhận dữ liệu được cập nhật chính xác trên UI và backend (server actions).\n3. Kiểm tra chức năng import/export với các file mẫu, xác thực dữ liệu và xử lý lỗi nhập sai.\n4. Kiểm tra phân quyền thao tác: chỉ người dùng đủ quyền mới thực hiện được các thao tác nhạy cảm.\n5. Kiểm tra loading skeleton, xác nhận khi xóa, và cập nhật UI theo thời gian thực.\n6. Đảm bảo không có lỗi console, UI hoạt động mượt mà trên các trình duyệt phổ biến.\n7. Viết test tự động (unit/integration) cho các component chính và logic CRUD.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          16
+          "16"
         ],
         "priority": "medium",
         "subtasks": [
@@ -1676,7 +1682,8 @@
             "dependencies": [],
             "details": "Tạo mới thư mục inventory trong đúng đường dẫn. Khởi tạo file index.tsx (hoặc tương đương) và các file cấu hình cần thiết. Đảm bảo trang có thể truy cập được từ hệ thống routing hiện tại.",
             "status": "pending",
-            "testStrategy": "Kiểm tra truy cập được trang inventory qua URL, xác nhận cấu trúc thư mục đúng chuẩn."
+            "testStrategy": "Kiểm tra truy cập được trang inventory qua URL, xác nhận cấu trúc thư mục đúng chuẩn.",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -1687,7 +1694,8 @@
             ],
             "details": "Sử dụng shadcn/ui hoặc Tailwind CSS để thiết kế giao diện nhất quán. Tạo component chính quản lý state tab hiện tại. Mỗi tab là một component riêng biệt, dễ bảo trì và mở rộng.",
             "status": "pending",
-            "testStrategy": "Kiểm tra hiển thị đúng các tab, chuyển đổi tab mượt mà, giao diện đồng nhất với hệ thống."
+            "testStrategy": "Kiểm tra hiển thị đúng các tab, chuyển đổi tab mượt mà, giao diện đồng nhất với hệ thống.",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -1698,7 +1706,8 @@
             ],
             "details": "Sử dụng server actions từ crm-actions.ts (task 16) để thao tác dữ liệu. Mỗi tab triển khai form nhập liệu, bảng dữ liệu, nút thao tác CRUD. Đảm bảo xử lý lỗi và hiển thị thông báo rõ ràng.",
             "status": "pending",
-            "testStrategy": "Thực hiện các thao tác CRUD trên từng tab, xác nhận dữ liệu cập nhật đúng trên UI và backend."
+            "testStrategy": "Thực hiện các thao tác CRUD trên từng tab, xác nhận dữ liệu cập nhật đúng trên UI và backend.",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -1709,7 +1718,8 @@
             ],
             "details": "Tích hợp thư viện đọc/ghi file CSV/XLSX. Xây dựng UI cho import/export, xác thực dữ liệu trước khi lưu, cung cấp file mẫu cho người dùng. Hiển thị lỗi rõ ràng khi dữ liệu không hợp lệ.",
             "status": "pending",
-            "testStrategy": "Kiểm tra import/export với file mẫu, xác thực dữ liệu và xử lý các trường hợp nhập sai định dạng."
+            "testStrategy": "Kiểm tra import/export với file mẫu, xác thực dữ liệu và xử lý các trường hợp nhập sai định dạng.",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -1720,22 +1730,21 @@
             ],
             "details": "Tích hợp kiểm tra quyền người dùng trước khi hiển thị hoặc cho phép thao tác nhạy cảm. Thêm loading skeleton, xác nhận khi xóa, cập nhật UI ngay sau thao tác CRUD. Đảm bảo code tách biệt logic và UI, dễ mở rộng.",
             "status": "pending",
-            "testStrategy": "Kiểm tra phân quyền với các vai trò khác nhau, xác nhận UI phản hồi đúng, loading skeleton hiển thị hợp lý, xác nhận khi xóa và cập nhật UI tức thì."
+            "testStrategy": "Kiểm tra phân quyền với các vai trò khác nhau, xác nhận UI phản hồi đúng, loading skeleton hiển thị hợp lý, xác nhận khi xóa và cập nhật UI tức thì.",
+            "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2025-11-24T02:44:14.157Z"
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-11-22T15:20:29.720Z",
-      "taskCount": 47,
-      "completedCount": 46,
+      "lastModified": "2025-11-24T02:44:14.166Z",
+      "taskCount": 49,
+      "completedCount": 48,
       "tags": [
         "master"
-      ],
-      "created": "2025-11-24T02:22:16.109Z",
-      "description": "Tasks for master context",
-      "updated": "2025-11-24T02:22:49.123Z"
+      ]
     }
   }
 }

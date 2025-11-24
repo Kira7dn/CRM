@@ -285,9 +285,11 @@ export async function getDashboardStats() {
       costRepo.getByDateRange(last30DaysStart, now),
     ])
 
-    // Calculate COGS (Cost of Goods Sold) from products with cost data
-    const productCostMap = new Map(
-      products.filter(p => p.cost).map(p => [p.id.toString(), p.cost!])
+    // Calculate COGS (Cost of Goods Sold) from inventory cost data
+    const inventoryRepo = new InventoryRepository()
+    const inventory = await inventoryRepo.getAll()
+    const inventoryCostMap = new Map(
+      inventory.map(inv => [inv.productId.toString(), inv.unitCost])
     )
 
     let last7DaysCOGS = 0
@@ -295,7 +297,7 @@ export async function getDashboardStats() {
 
     last7DaysOrders.forEach(order => {
       order.items.forEach(item => {
-        const cost = productCostMap.get(item.productId)
+        const cost = inventoryCostMap.get(item.productId)
         if (cost) {
           last7DaysCOGS += cost * item.quantity
         }
@@ -304,7 +306,7 @@ export async function getDashboardStats() {
 
     last30DaysOrders.forEach(order => {
       order.items.forEach(item => {
-        const cost = productCostMap.get(item.productId)
+        const cost = inventoryCostMap.get(item.productId)
         if (cost) {
           last30DaysCOGS += cost * item.quantity
         }
@@ -331,17 +333,20 @@ export async function getDashboardStats() {
     const last30DaysNetProfit = last30DaysGrossProfit - last30DaysOpCosts.total
     const last30DaysNetMargin = last30DaysRevenue > 0 ? (last30DaysNetProfit / last30DaysRevenue) * 100 : 0
 
-    // Top profit contributing products (using 30-day data)
+    // Top profit contributing products (using 30-day data with inventory cost)
     const productProfits = new Map<number, { name: string, revenue: number, cost: number, profit: number, margin: number }>()
 
     last30DaysOrders.forEach(order => {
       order.items.forEach(item => {
         const productId = parseInt(item.productId)
         const product = products.find(p => p.id === productId)
-        if (!product || !product.cost) return
+        if (!product) return
+
+        const inventoryCost = inventoryCostMap.get(item.productId)
+        if (!inventoryCost) return
 
         const revenue = item.totalPrice
-        const cost = product.cost * item.quantity
+        const cost = inventoryCost * item.quantity
         const profit = revenue - cost
         const margin = revenue > 0 ? (profit / revenue) * 100 : 0
 
@@ -484,21 +489,22 @@ export async function getInventoryAlerts() {
     const productMap = new Map(products.map(p => [p.id, p.name]))
 
     return {
-      lowStock: lowStock.map(inv => ({
-        inventoryId: inv.id,
-        productId: inv.productId,
-        productName: productMap.get(inv.productId) || "Unknown Product",
-        currentStock: inv.currentStock,
-        availableStock: inv.availableStock,
-        reorderPoint: inv.reorderPoint,
-        daysRemaining: inv.getDaysOfStockRemaining(),
+      lowStock: lowStock.map(summary => ({
+        productId: summary.productId,
+        productName: productMap.get(summary.productId) || "Unknown Product",
+        currentStock: summary.currentStock,
+        reorderPoint: summary.reorderPoint,
+        reorderQuantity: summary.reorderQuantity,
+        lastMovementDate: summary.lastMovementDate,
+        totalValue: summary.totalValue
       })),
-      outOfStock: outOfStock.map(inv => ({
-        inventoryId: inv.id,
-        productId: inv.productId,
-        productName: productMap.get(inv.productId) || "Unknown Product",
-        currentStock: inv.currentStock,
-        reservedStock: inv.reservedStock,
+      outOfStock: outOfStock.map(summary => ({
+        productId: summary.productId,
+        productName: productMap.get(summary.productId) || "Unknown Product",
+        currentStock: summary.currentStock,
+        reorderPoint: summary.reorderPoint,
+        reorderQuantity: summary.reorderQuantity,
+        lastMovementDate: summary.lastMovementDate
       })),
     }
   } catch (error) {

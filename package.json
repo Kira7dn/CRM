@@ -12,10 +12,7 @@
     "test:unit": "vitest run",
     "test:cov": "vitest run --coverage",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "seed-admin": "npx tsx --env-file=.env scripts/seed-admin.ts",
-    "seed-inventory": "npx tsx --env-file=.env scripts/seed-inventory-costs.ts",
-    "seed:customers": "npx tsx --env-file=.env scripts/seed-customers.ts",
-    "seed:orders": "npx tsx --env-file=.env scripts/seed-crm-data.ts 200 1000",
+    "seed:crm": "npx tsx --env-file=.env scripts/seed-crm-data.ts",
     "create-indexes": "npx tsx --env-file=.env scripts/create-indexes.ts",
     "warm-cache": "npx tsx --env-file=.env scripts/warm-cache.ts",
     "worker:campaign": "npx tsx --env-file=.env infrastructure/queue/campaign-worker.ts"

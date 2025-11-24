@@ -3,24 +3,25 @@
 import { useEffect, useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card"
 import { PackageX, PackageOpen, Loader2, AlertTriangle } from "lucide-react"
-import { getInventoryAlerts } from "../../../../../_actions/dashboard_actions"
+import { getInventoryAlerts } from "@/app/(features)/crm/_actions/dashboard_actions"
 
 interface InventoryAlert {
   lowStock: Array<{
-    inventoryId: number
     productId: number
     productName: string
     currentStock: number
-    availableStock: number
     reorderPoint: number
-    daysRemaining: number | null
+    reorderQuantity: number
+    lastMovementDate?: Date
+    totalValue?: number
   }>
   outOfStock: Array<{
-    inventoryId: number
     productId: number
     productName: string
     currentStock: number
-    reservedStock: number
+    reorderPoint: number
+    reorderQuantity: number
+    lastMovementDate?: Date
   }>
 }
 
@@ -110,7 +111,7 @@ export function InventoryAlertsWidget() {
             </h4>
             {alerts.outOfStock.map((item) => (
               <div
-                key={item.inventoryId}
+                key={item.productId}
                 className="p-2 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800"
               >
                 <div className="flex items-center justify-between">
@@ -122,7 +123,7 @@ export function InventoryAlertsWidget() {
                   </span>
                 </div>
                 <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                  Đã đặt trước: {item.reservedStock} sản phẩm
+                  Tồn kho: {item.currentStock} (Đặt lại tại: {item.reorderPoint})
                 </div>
               </div>
             ))}
@@ -138,33 +139,31 @@ export function InventoryAlertsWidget() {
             </h4>
             {alerts.lowStock.map((item) => (
               <div
-                key={item.inventoryId}
+                key={item.productId}
                 className="p-2 rounded-lg bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800"
               >
-                <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
                     {item.productName}
                   </span>
                   <span className="text-xs text-orange-600 dark:text-orange-400 font-semibold">
-                    Còn {item.availableStock}
+                    Còn {item.currentStock}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
-                  <span>Mức đặt lại: {item.reorderPoint}</span>
-                  {item.daysRemaining && (
-                    <span className="text-orange-600 dark:text-orange-400 font-medium">
-                      ~{item.daysRemaining} ngày
-                    </span>
+                <div className="text-xs text-gray-600 dark:text-gray-400">
+                  <div>Mức đặt lại: {item.reorderPoint}</div>
+                  {item.lastMovementDate && (
+                    <div>Cập nhật: {new Date(item.lastMovementDate).toLocaleDateString()}</div>
                   )}
                 </div>
                 <div className="mt-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
                   <div
-                    className={`h-1.5 rounded-full ${item.availableStock <= item.reorderPoint / 2
+                    className={`h-1.5 rounded-full ${item.currentStock <= item.reorderPoint / 2
                       ? "bg-red-500"
                       : "bg-orange-500"
                       }`}
                     style={{
-                      width: `${Math.min(100, (item.availableStock / item.reorderPoint) * 100)}%`,
+                      width: `${Math.min(100, (item.currentStock / item.reorderPoint) * 100)}%`,
                     }}
                   />
                 </div>

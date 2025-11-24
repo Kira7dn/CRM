@@ -48,11 +48,11 @@ export function WeekProfitWidget({
       <div className="p-2 rounded-lg bg-red-50 dark:bg-red-950/20">
         <div className="text-xs text-gray-600 dark:text-gray-400">Giá vốn</div>
         <div className="text-sm font-bold text-red-600 dark:text-red-400">
-          -{formatCurrency(cogs)}
+          {formatCurrency(cogs)}
         </div>
       </div>
       <div className="p-2 rounded-lg bg-green-50 dark:bg-green-950/20">
-        <div className="text-xs text-gray-600 dark:text-gray-400">LN gộp</div>
+        <div className="text-xs text-gray-600 dark:text-gray-400">Lợi nhuận gộp</div>
         <div className="text-sm font-bold text-green-600 dark:text-green-400">
           {formatCurrency(grossProfit)}
         </div>
@@ -61,7 +61,7 @@ export function WeekProfitWidget({
         </div>
       </div>
       <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
-        <div className="text-xs text-gray-600 dark:text-gray-400">LN ròng</div>
+        <div className="text-xs text-gray-600 dark:text-gray-400">Lợi nhuận ròng</div>
         <div className={`text-sm font-bold ${netProfit >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
           {formatCurrency(netProfit)}
         </div>

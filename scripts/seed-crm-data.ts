@@ -1,10 +1,18 @@
 /**
  * Comprehensive CRM data seeding script
- * Merges customer and order seeding with proper referential integrity
+ * Seeds inventory (with cost), operational costs, customers, and orders
+ * Ensures proper referential integrity across all entities
  *
  * Run with: npx tsx --env-file=.env scripts/seed-crm-data.ts [customers] [orders]
  * Example: npx tsx --env-file=.env scripts/seed-crm-data.ts 100 200
  * Default: 100 customers, 200 orders
+ *
+ * This script will:
+ * 1. Load existing products from database
+ * 2. Create inventory records with cost data for all products
+ * 3. Seed operational costs (rent, utilities, salaries, etc.)
+ * 4. Create customer records with Vietnamese names and addresses
+ * 5. Generate orders for customers using existing products
  */
 
 import { readFileSync } from "fs"
@@ -13,6 +21,9 @@ import { ObjectId } from "mongodb"
 import { CustomerRepository } from "../infrastructure/repositories/customer-repo"
 import { OrderRepository } from "../infrastructure/repositories/order-repo"
 import { ProductRepository } from "../infrastructure/repositories/product-repo"
+import { InventoryRepository } from "../infrastructure/repositories/inventory-repo"
+import { InventoryConfigRepository } from "../infrastructure/repositories/inventory-config-repo"
+import { OperationalCostRepository } from "../infrastructure/repositories/operational-cost-repo"
 import type { CustomerSource, CustomerTier, CustomerStatus } from "../core/domain/managements/customer"
 import type {
   OrderStatus,
@@ -25,25 +36,10 @@ import type { Product } from "../core/domain/managements/product"
 import type { Customer } from "../core/domain/managements/customer"
 
 // ============================================================================
-// SHARED HELPER FUNCTIONS
+// SHARED DATA & CONSTANTS
 // ============================================================================
 
-function randomItem<T>(array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)]
-}
-
-function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
-}
-
-// ============================================================================
-// CUSTOMER DATA & GENERATORS
-// ============================================================================
-
+// Vietnamese names for realistic data
 const firstNames = [
   "Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng",
   "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý"
@@ -74,14 +70,42 @@ const streets = [
   "Điện Biên Phủ", "Võ Văn Tần", "Cách Mạng Tháng 8", "Phan Đình Phùng", "Hoàng Diệu"
 ]
 
+// Customer related enums
 const customerSources: CustomerSource[] = ["zalo", "facebook", "website", "tiktok", "telegram"]
 const customerTiers: CustomerTier[] = ["new", "regular", "vip", "premium"]
 const customerStatuses: CustomerStatus[] = ["active", "inactive"]
 
+// Tag pools
 const customerTagPool = [
   "high-value", "frequent-buyer", "wholesale", "retail", "seafood-lover",
   "bulk-order", "seasonal-buyer", "vip-member", "corporate", "individual"
 ]
+
+const orderTagPool = [
+  "wholesale", "retail", "gift", "bulk-order", "repeat-customer",
+  "first-time", "seasonal", "promotion", "urgent", "corporate"
+]
+
+// ============================================================================
+// SHARED HELPER FUNCTIONS
+// ============================================================================
+
+function randomItem<T>(array: T[]): T {
+  return array[Math.floor(Math.random() * array.length)]
+}
+
+function randomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function randomDate(start: Date, end: Date): Date {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+}
+
+// ============================================================================
+// CUSTOMER DATA & GENERATORS
+// ============================================================================
+
 
 function generateVietnameseName(): string {
   const firstName = randomItem(firstNames)
@@ -123,12 +147,14 @@ function generatePlatformId(): string {
 function generateCustomerTags(): string[] {
   const count = randomInt(0, 3)
   const tags: string[] = []
-  for (let i = 0; i < count; i++) {
-    const tag = randomItem(customerTagPool)
-    if (!tags.includes(tag)) {
-      tags.push(tag)
-    }
+  const availableTags = [...customerTagPool] // Create a copy to avoid modifying the original
+
+  for (let i = 0; i < count && availableTags.length > 0; i++) {
+    const randomIndex = randomInt(0, availableTags.length - 1)
+    const tag = availableTags.splice(randomIndex, 1)[0]
+    tags.push(tag)
   }
+
   return tags
 }
 
@@ -149,10 +175,6 @@ const shippingProviders: ShippingProvider[] = [
   "ghn", "ghtk", "vnpost", "self_delivery"
 ]
 
-const orderTagPool = [
-  "wholesale", "retail", "gift", "bulk-order", "repeat-customer",
-  "first-time", "seasonal", "promotion", "urgent", "corporate"
-]
 
 function getStatusDistribution(): OrderStatus {
   const rand = Math.random()
@@ -221,12 +243,14 @@ function generateOrderTimestamps(status: OrderStatus, createdAt: Date) {
 function generateOrderTags(): string[] {
   const count = randomInt(0, 3)
   const tags: string[] = []
-  for (let i = 0; i < count; i++) {
-    const tag = randomItem(orderTagPool)
-    if (!tags.includes(tag)) {
-      tags.push(tag)
-    }
+  const availableTags = [...orderTagPool] // Create a copy to avoid modifying the original
+
+  for (let i = 0; i < count && availableTags.length > 0; i++) {
+    const randomIndex = randomInt(0, availableTags.length - 1)
+    const tag = availableTags.splice(randomIndex, 1)[0]
+    tags.push(tag)
   }
+
   return tags
 }
 
@@ -510,39 +534,321 @@ async function seedOrders(count: number, customers: Customer[], products: Produc
   console.log("  • Cancelled: ~15%")
 }
 
+/**
+ * Seed inventory records with cost data for all products
+ */
+async function seedInventory(products: Product[], defaultStock: number = 50): Promise<void> {
+  console.log(`\n🌱 Seeding inventory for ${products.length} products...`)
+
+  const inventoryRepo = new InventoryRepository()
+  const configRepo = new InventoryConfigRepository()
+  let createdMovements = 0
+  let createdConfigs = 0
+  let skipped = 0
+
+  for (const product of products) {
+    try {
+      // Check if inventory already exists
+      // const existing = await inventoryRepo.getByProductId(product.id)
+      // if (existing && existing.length > 0) {
+      //   console.log(`⏭️  Inventory for ${product.name} already exists`)
+      //   skipped++
+      //   continue
+      // }
+
+      // Add cost as 40-60% of selling price (typical margin)
+      const costRatio = 0.4 + Math.random() * 0.2 // 40-60%
+      const cost = Math.round(product.price * costRatio)
+
+      // Generate initial stock data
+      const initialStock = Math.floor(Math.random() * (defaultStock * 2)) + defaultStock // defaultStock to defaultStock*3 units
+      const reorderPoint = Math.floor(Math.random() * 30) + 20 // 20-50 units
+      const reorderQuantity = Math.floor(Math.random() * 100) + 50 // 50-150 units
+
+      // Create inventory configuration
+      const existingConfig = await configRepo.getByProductId(product.id)
+      if (!existingConfig) {
+        await configRepo.create({
+          productId: product.id,
+          reorderPoint,
+          reorderQuantity,
+        })
+        createdConfigs++
+      }
+
+      // Create initial stock movement (stock in)
+      await inventoryRepo.create({
+        productId: product.id,
+        type: "in",
+        quantity: initialStock,
+        unitCost: cost,
+        referenceOrderId: undefined,
+        reason: "Initial stock - Nhập hàng ban đầu",
+        performedBy: "system",
+        notes: `Initial inventory setup with ${initialStock} units at ${cost.toLocaleString()} VND/unit`,
+        createdAt: new Date()
+      })
+      createdMovements++
+
+      // Randomly create some stock movements to simulate history
+      const movementCount = Math.floor(Math.random() * 3) // 0-2 additional movements
+      for (let i = 0; i < movementCount; i++) {
+        const movementType = Math.random() > 0.5 ? "in" : "out"
+        const quantity = Math.floor(Math.random() * 20) + 5 // 5-25 units
+        const daysAgo = Math.floor(Math.random() * 30) + 1 // 1-30 days ago
+        const movementDate = new Date()
+        movementDate.setDate(movementDate.getDate() - daysAgo)
+
+        await inventoryRepo.create({
+          productId: product.id,
+          type: movementType,
+          quantity,
+          unitCost: cost,
+          reason: movementType === "in" ? "Nhập thêm hàng" : "Xuất hàng bán",
+          performedBy: "system",
+          notes: `${movementType === "in" ? "Stock in" : "Stock out"} simulation`,
+          createdAt: movementDate
+        })
+        createdMovements++
+      }
+
+      if (createdMovements % 10 === 0) {
+        console.log(`📝 Created ${createdMovements} movements for ${createdConfigs} products...`)
+      }
+    } catch (error) {
+      console.error(`❌ Failed to create inventory for product ${product.id}:`, error instanceof Error ? error.message : error)
+      skipped++
+    }
+  }
+
+  console.log("\n✅ Inventory seeding complete!")
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+  console.log(`✅ Stock movements created: ${createdMovements}`)
+  console.log(`✅ Inventory configs created: ${createdConfigs}`)
+  console.log(`⏭️  Skipped: ${skipped}`)
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+}
+
+/**
+ * Seed operational costs
+ */
+async function seedOperationalCosts(): Promise<void> {
+  console.log("\n🌱 Seeding operational costs...")
+
+  const costRepo = new OperationalCostRepository()
+  const now = new Date()
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+
+  const sampleCosts = [
+    // Fixed costs
+    {
+      category: "rent" as const,
+      type: "fixed" as const,
+      amount: 10000000, // 10M VND/month
+      description: "Office rent",
+      date: monthStart,
+    },
+    {
+      category: "utilities" as const,
+      type: "fixed" as const,
+      amount: 2000000, // 2M VND/month
+      description: "Electricity and water",
+      date: monthStart,
+    },
+    {
+      category: "staff_salary" as const,
+      type: "fixed" as const,
+      amount: 50000000, // 50M VND/month
+      description: "Staff salaries",
+      date: monthStart,
+    },
+    // Variable costs
+    {
+      category: "shipping" as const,
+      type: "variable" as const,
+      amount: 500000, // 500K VND
+      description: "Daily shipping costs",
+      date: now,
+    },
+    {
+      category: "packaging" as const,
+      type: "variable" as const,
+      amount: 300000, // 300K VND
+      description: "Packaging materials",
+      date: now,
+    },
+    {
+      category: "marketing" as const,
+      type: "variable" as const,
+      amount: 5000000, // 5M VND
+      description: "Facebook Ads campaign",
+      date: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+    },
+    {
+      category: "order_processing" as const,
+      type: "variable" as const,
+      amount: 200000, // 200K VND
+      description: "Payment gateway fees",
+      date: now,
+    },
+  ]
+
+  let created = 0
+  for (const costData of sampleCosts) {
+    try {
+      await costRepo.create(costData)
+      created++
+      console.log(`   ✓ ${costData.category}: ${costData.amount.toLocaleString()} VND (${costData.type})`)
+    } catch (error) {
+      console.error(`❌ Failed to create cost ${costData.category}:`, error instanceof Error ? error.message : error)
+    }
+  }
+
+  console.log("\n✅ Operational costs seeding complete!")
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+  console.log(`✅ Created: ${created}/${sampleCosts.length}`)
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+}
+
 // ============================================================================
 // MAIN ORCHESTRATION
 // ============================================================================
 
-async function seedCRMData(customerCount: number, orderCount: number) {
-  console.log("═══════════════════════════════════════════════════════")
-  console.log("🌱 CRM Data Seeding Script")
-  console.log("═══════════════════════════════════════════════════════")
-  console.log(`📊 Configuration:`)
-  console.log(`   • Customers to create: ${customerCount}`)
-  console.log(`   • Orders to create: ${orderCount}`)
-  console.log("═══════════════════════════════════════════════════════")
+interface SeedOptions {
+  seedInventory: boolean;
+  seedCosts: boolean;
+  seedCustomers: boolean;
+  seedOrders: boolean;
+  customerCount: number;
+  orderCount: number;
+  inventoryCount: number;
+}
+
+// Parse command line arguments
+const parseArguments = (): SeedOptions => {
+  const args = process.argv.slice(2);
+  const options: SeedOptions = {
+    seedInventory: args.includes('--inventory') || args.includes('-i'),
+    seedCosts: args.includes('--costs') || args.includes('-c'),
+    seedCustomers: args.includes('--customers') || args.includes('-u'),
+    seedOrders: args.includes('--orders') || args.includes('-o'),
+    customerCount: 100,    // Default values
+    orderCount: 200,       // Default values
+    inventoryCount: 50     // Default inventory count per product
+  };
+
+  // Check for --help or -h flag
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(`
+Seed CRM Data - Usage:
+  npx tsx --env-file=.env scripts/seed-crm-data.ts [options] [customerCount] [orderCount] [inventoryCount]
+
+Options:
+  -i, --inventory    Seed inventory data
+  -c, --costs        Seed operational costs
+  -u, --customers    Seed customers
+  -o, --orders       Seed orders
+  --inventory-count  Set initial stock quantity for each product (overrides inventoryCount parameter)
+  -h, --help         Show this help message
+
+Examples:
+  # Seed all data with default counts (100 customers, 200 orders, 50 inventory per product)
+  npx tsx --env-file=.env scripts/seed-crm-data.ts
+
+  # Seed only inventory with custom count
+  npx tsx --env-file=.env scripts/seed-crm-data.ts -i --inventory-count 100
+
+  # Seed customers and orders with custom counts
+  npx tsx --env-file=.env scripts/seed-crm-data.ts -u -o 50 100
+`);
+    process.exit(0);
+  }
+
+  // If no specific flags are provided, seed everything
+  if (!options.seedInventory && !options.seedCosts &&
+    !options.seedCustomers && !options.seedOrders) {
+    options.seedInventory = true;
+    options.seedCosts = true;
+    options.seedCustomers = true;
+    options.seedOrders = true;
+  }
+
+  // Parse counts if provided
+  const countArgs = args.filter(arg => /^\d+$/.test(arg));
+  if (countArgs.length >= 1) {
+    // First number is customer count
+    options.customerCount = Math.max(1, parseInt(countArgs[0], 10)) || 100;
+
+    // Second number is order count
+    if (countArgs.length >= 2) {
+      options.orderCount = Math.max(1, parseInt(countArgs[1], 10)) || 200;
+
+      // Third number is inventory count per product
+      if (countArgs.length >= 3) {
+        options.inventoryCount = Math.max(1, parseInt(countArgs[2], 10)) || 50;
+      }
+    }
+  }
+
+  // Check for --inventory-count flag
+  const inventoryCountIndex = args.findIndex(arg => arg === '--inventory-count');
+  if (inventoryCountIndex !== -1 && args[inventoryCountIndex + 1]) {
+    const count = parseInt(args[inventoryCountIndex + 1], 10);
+    if (!isNaN(count) && count > 0) {
+      options.inventoryCount = count;
+    }
+  }
+
+  return options;
+};
+
+async function seedCRMData(options: SeedOptions) {
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("🌱 CRM Data Seeding Script - Selected Options");
+  console.log("═══════════════════════════════════════════════════════");
+  console.log(`📊 Configuration:`);
+  console.log(`   • Seed Inventory: ${options.seedInventory ? `✅ (${options.inventoryCount} units)` : '❌'}`);
+  console.log(`   • Seed Operational Costs: ${options.seedCosts ? '✅' : '❌'}`);
+  console.log(`   • Seed Customers: ${options.seedCustomers ? `✅ (${options.customerCount})` : '❌'}`);
+  console.log(`   • Seed Orders: ${options.seedOrders ? `✅ (${options.orderCount})` : '❌'}`);
+  console.log("═══════════════════════════════════════════════════════");
 
   try {
-    // Step 1: Load and validate products
-    const products = await loadProducts()
+    // Always load products as they're needed for inventory and orders
+    const products = await loadProducts();
 
-    // Step 2: Seed customers with idempotency
-    const customers = await seedCustomers(customerCount)
+    // Seed inventory if requested
+    if (options.seedInventory) {
+      await seedInventory(products, options.inventoryCount);
+    }
 
-    // Step 3: Seed orders based on created customers and existing products
-    await seedOrders(orderCount, customers, products)
+    // Seed operational costs if requested
+    if (options.seedCosts) {
+      await seedOperationalCosts();
+    }
 
-    console.log("\n✨ All seeding complete!")
-    console.log("═══════════════════════════════════════════════════════")
-    console.log("📊 Summary:")
-    console.log(`   • Products available: ${products.length}`)
-    console.log(`   • Customers created: ${customers.length}`)
-    console.log(`   • Orders created: Check logs above`)
-    console.log("═══════════════════════════════════════════════════════")
+    // Seed customers if requested
+    let customers: Customer[] = [];
+    if (options.seedCustomers) {
+      customers = await seedCustomers(options.customerCount);
+    }
+
+    // Seed orders if requested (only if we have customers)
+    if (options.seedOrders) {
+      if (customers.length === 0 && options.seedCustomers) {
+        console.log("⚠️  No customers were created, cannot create orders.");
+      } else if (customers.length === 0) {
+        console.log("⚠️  No customers available. Use --customers flag to create customers first.");
+      } else {
+        await seedOrders(options.orderCount, customers, products);
+      }
+    }
+
+    console.log("\n✨ Seeding complete!");
+    console.log("═══════════════════════════════════════════════════════");
   } catch (error) {
-    console.error("\n❌ Seeding failed:", error instanceof Error ? error.message : error)
-    throw error
+    console.error("\n❌ Seeding failed:", error instanceof Error ? error.message : error);
+    throw error;
   }
 }
 
@@ -550,30 +856,39 @@ async function seedCRMData(customerCount: number, orderCount: number) {
 // CLI ENTRY POINT
 // ============================================================================
 
-// Parse command line arguments
-const customerCount = process.argv[2] ? parseInt(process.argv[2], 10) : 100
-const orderCount = process.argv[3] ? parseInt(process.argv[3], 10) : 200
+// Get options from command line
+const options = parseArguments();
 
-if (isNaN(customerCount) || customerCount < 1) {
-  console.error("❌ Invalid customer count. Please provide a positive number.")
-  console.log("Usage: npx tsx --env-file=.env scripts/seed-crm-data.ts [customers] [orders]")
-  console.log("Example: npx tsx --env-file=.env scripts/seed-crm-data.ts 100 200")
-  process.exit(1)
+// Display help if requested
+if (process.argv.includes('--help') || process.argv.includes('-h')) {
+  console.log("\n📝 Usage:");
+  console.log("  npx tsx --env-file=.env scripts/seed-crm-data.ts [options] [customerCount] [orderCount]");
+  console.log("\n🔧 Options:");
+  console.log("  -i, --inventory    Seed inventory data");
+  console.log("  -c, --costs        Seed operational costs");
+  console.log("  -u, --customers    Seed customers");
+  console.log("  -o, --orders       Seed orders");
+  console.log("  -h, --help         Show this help message");
+  console.log("\n📌 Examples:");
+  console.log("  # Seed everything (default: 100 customers, 200 orders)");
+  console.log("  npx tsx --env-file=.env scripts/seed-crm-data.ts");
+  console.log("  ");
+  console.log("  # Seed specific components");
+  console.log("  npx tsx --env-file=.env scripts/seed-crm-data.ts --inventory --customers");
+  console.log("  ");
+  console.log("  # Specify counts");
+  console.log("  npx tsx --env-file=.env scripts/seed-crm-data.ts --customers --orders 50 200 100");
+  console.log("  # ^ Creates 50 customers, 200 orders, and 100 initial stock per product");
+  process.exit(0);
 }
 
-if (isNaN(orderCount) || orderCount < 1) {
-  console.error("❌ Invalid order count. Please provide a positive number.")
-  console.log("Usage: npx tsx --env-file=.env scripts/seed-crm-data.ts [customers] [orders]")
-  console.log("Example: npx tsx --env-file=.env scripts/seed-crm-data.ts 100 200")
-  process.exit(1)
-}
-
-seedCRMData(customerCount, orderCount)
+// Run the seeding process
+seedCRMData(options)
   .then(() => {
-    console.log("✅ Script completed successfully!")
-    process.exit(0)
+    console.log("✅ Script completed successfully!");
+    process.exit(0);
   })
   .catch((error) => {
-    console.error("❌ Script failed:", error)
-    process.exit(1)
-  })
+    console.error("❌ Script failed:", error);
+    process.exit(1);
+  });

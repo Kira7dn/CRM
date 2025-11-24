@@ -31,7 +31,9 @@ import {
   LineChart,
   Menu,
   X,
-  LogOut
+  LogOut,
+  DollarSign,
+  Warehouse
 } from "lucide-react"
 import { cn } from "@shared/utils"
 
@@ -62,6 +64,8 @@ const NAV_GROUPS: Array<NavGroup & { key: string }> = [
       { href: "/crm/managements/products", label: "Sản phẩm", icon: Package, roles: ["admin", "sale", "warehouse"] },
       { href: "/crm/managements/orders", label: "Đơn hàng", icon: ShoppingCart, roles: ["admin", "sale", "warehouse"] },
       { href: "/crm/managements/categories", label: "Danh mục", icon: Tag, roles: ["admin", "sale"] },
+      { href: "/crm/managements/inventory", label: "Kho hàng", icon: Warehouse, roles: ["admin", "warehouse"] },
+      { href: "/crm/managements/operational-costs", label: "Chi phí", icon: DollarSign, roles: ["admin"] },
     ],
   },
   {

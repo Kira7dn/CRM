@@ -116,7 +116,6 @@ export class ProductRepository extends BaseRepository<Product, number> implement
       productData.name,
       productData.price,
       productData.originalPrice,
-      productData.cost,
       productData.image,
       productData.detail,
       normalizeSizes(doc),

@@ -1,166 +1,152 @@
-export type InventoryStatus = "in_stock" | "low_stock" | "out_of_stock" | "discontinued"
-
-export interface StockMovement {
-  type: "in" | "out" | "adjustment" | "return"
-  quantity: number
-  reason: string
-  performedBy?: string
-  timestamp: Date
-  referenceOrderId?: number
-  notes?: string
-}
+export type MovementType = "in" | "out" | "adjustment" | "return"
 
 /**
- * Inventory domain entity
- * Tracks stock levels and movements for products
+ * Stock Movement domain entity - Each record represents a transaction
+ * This is the primary entity for tracking inventory
  */
-export class Inventory {
+export class StockMovement {
   constructor(
     public readonly id: number,
     public productId: number, // Reference to Product
-    public currentStock: number,
-    public reservedStock: number, // Stock reserved for pending orders
-    public availableStock: number, // currentStock - reservedStock
+    public type: MovementType, // Type of movement
+    public quantity: number, // Quantity (always positive, type determines direction)
+    public unitCost: number, // Cost per unit at time of movement (for COGS)
+    public referenceOrderId?: number, // Link to order if applicable
+    public reason?: string, // Description of movement
+    public performedBy?: string, // Who performed the movement
+    public notes?: string, // Additional notes
+    public readonly createdAt: Date = new Date()
+  ) { }
+}
+
+/**
+ * Inventory summary - Calculated from stock movements
+ * Not stored as entity, computed on demand
+ */
+export interface InventorySummary {
+  productId: number
+  totalIn: number // Sum of all "in" movements
+  totalOut: number // Sum of all "out" movements
+  currentStock: number // totalIn - totalOut
+  averageCost: number // Weighted average cost
+  totalValue: number // currentStock * averageCost
+  lastMovementDate?: Date
+  reorderPoint: number // Configuration
+  reorderQuantity: number // Configuration
+}
+
+/**
+ * Product inventory configuration
+ * Stores reorder settings per product
+ */
+export class InventoryConfig {
+  constructor(
+    public readonly id: number,
+    public productId: number,
     public reorderPoint: number, // Minimum stock before alert
     public reorderQuantity: number, // Quantity to reorder
-    public status: InventoryStatus,
-    public movements: StockMovement[], // Stock movement history
-    public lastRestockedAt?: Date,
     public readonly createdAt: Date = new Date(),
     public updatedAt: Date = new Date()
-  ) {}
+  ) { }
+}
 
-  /**
-   * Check if stock is low (below reorder point)
-   */
-  isLowStock(): boolean {
-    return this.availableStock <= this.reorderPoint && this.availableStock > 0
+/**
+ * Calculate inventory summary from stock movements
+ */
+export function calculateInventorySummary(
+  movements: StockMovement[],
+  config?: InventoryConfig
+): InventorySummary {
+  let totalIn = 0
+  let totalOut = 0
+  let totalCostValue = 0
+  let totalInQuantity = 0
+  let lastMovementDate: Date | undefined
+
+  for (const movement of movements) {
+    if (movement.type === "in" || movement.type === "return") {
+      totalIn += movement.quantity
+      totalCostValue += movement.quantity * movement.unitCost
+      totalInQuantity += movement.quantity
+    } else if (movement.type === "out") {
+      totalOut += movement.quantity
+    } else if (movement.type === "adjustment") {
+      // Adjustment resets the stock to a specific value
+      totalIn = movement.quantity
+      totalOut = 0
+      totalCostValue = movement.quantity * movement.unitCost
+      totalInQuantity = movement.quantity
+    }
+
+    if (!lastMovementDate || movement.createdAt > lastMovementDate) {
+      lastMovementDate = movement.createdAt
+    }
   }
 
-  /**
-   * Check if out of stock
-   */
-  isOutOfStock(): boolean {
-    return this.availableStock <= 0
-  }
+  const currentStock = totalIn - totalOut
+  const averageCost = totalInQuantity > 0 ? totalCostValue / totalInQuantity : 0
+  const totalValue = currentStock * averageCost
 
-  /**
-   * Calculate stock turnover rate (movements in last 30 days)
-   */
-  getStockTurnover(): number {
-    const thirtyDaysAgo = new Date()
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-
-    const recentMovements = this.movements.filter(
-      m => m.type === "out" && new Date(m.timestamp) >= thirtyDaysAgo
-    )
-
-    const totalSold = recentMovements.reduce((sum, m) => sum + m.quantity, 0)
-    return totalSold
-  }
-
-  /**
-   * Get days of stock remaining based on average daily sales
-   */
-  getDaysOfStockRemaining(): number | null {
-    const turnover = this.getStockTurnover()
-    if (turnover === 0) return null
-
-    const avgDailySales = turnover / 30
-    return Math.floor(this.availableStock / avgDailySales)
-  }
-
-  /**
-   * Update stock status based on current levels
-   */
-  updateStatus(): InventoryStatus {
-    if (this.status === "discontinued") return "discontinued"
-    if (this.availableStock <= 0) return "out_of_stock"
-    if (this.availableStock <= this.reorderPoint) return "low_stock"
-    return "in_stock"
+  return {
+    productId: movements[0]?.productId || 0,
+    totalIn,
+    totalOut,
+    currentStock,
+    averageCost,
+    totalValue,
+    lastMovementDate,
+    reorderPoint: config?.reorderPoint || 0,
+    reorderQuantity: config?.reorderQuantity || 0,
   }
 }
 
 /**
- * Helper to add stock movement
+ * Check if stock is low based on summary
  */
-export function addStockMovement(
-  inventory: Inventory,
-  movement: Omit<StockMovement, "timestamp">
-): Inventory {
-  const newMovement: StockMovement = {
-    ...movement,
-    timestamp: new Date(),
-  }
-
-  inventory.movements.push(newMovement)
-
-  // Update current stock based on movement type
-  if (movement.type === "in" || movement.type === "return") {
-    inventory.currentStock += movement.quantity
-  } else if (movement.type === "out") {
-    inventory.currentStock -= movement.quantity
-  } else if (movement.type === "adjustment") {
-    inventory.currentStock = movement.quantity // Direct adjustment
-  }
-
-  // Recalculate available stock
-  inventory.availableStock = inventory.currentStock - inventory.reservedStock
-
-  // Update status
-  inventory.status = inventory.updateStatus()
-
-  // Update timestamp
-  inventory.updatedAt = new Date()
-  if (movement.type === "in") {
-    inventory.lastRestockedAt = new Date()
-  }
-
-  return inventory
+export function isLowStock(summary: InventorySummary): boolean {
+  return summary.currentStock > 0 && summary.currentStock <= summary.reorderPoint
 }
 
 /**
- * Reserve stock for order
+ * Check if out of stock based on summary
  */
-export function reserveStock(inventory: Inventory, quantity: number): boolean {
-  if (inventory.availableStock < quantity) {
-    return false
-  }
-
-  inventory.reservedStock += quantity
-  inventory.availableStock = inventory.currentStock - inventory.reservedStock
-  inventory.status = inventory.updateStatus()
-  inventory.updatedAt = new Date()
-
-  return true
+export function isOutOfStock(summary: InventorySummary): boolean {
+  return summary.currentStock <= 0
 }
 
 /**
- * Release reserved stock (order cancelled)
+ * Validation function for StockMovement
  */
-export function releaseReservedStock(inventory: Inventory, quantity: number): void {
-  inventory.reservedStock = Math.max(0, inventory.reservedStock - quantity)
-  inventory.availableStock = inventory.currentStock - inventory.reservedStock
-  inventory.status = inventory.updateStatus()
-  inventory.updatedAt = new Date()
-}
-
-/**
- * Validation function for Inventory entity
- */
-export function validateInventory(data: Partial<Inventory>): string[] {
+export function validateStockMovement(data: Partial<StockMovement>): string[] {
   const errors: string[] = []
 
   if (!data.productId) {
     errors.push("Product ID is required")
   }
 
-  if (data.currentStock !== undefined && data.currentStock < 0) {
-    errors.push("Current stock cannot be negative")
+  if (!data.type) {
+    errors.push("Movement type is required")
   }
 
-  if (data.reservedStock !== undefined && data.reservedStock < 0) {
-    errors.push("Reserved stock cannot be negative")
+  if (data.quantity === undefined || data.quantity <= 0) {
+    errors.push("Quantity must be positive")
+  }
+
+  if (data.unitCost === undefined || data.unitCost < 0) {
+    errors.push("Unit cost cannot be negative")
+  }
+
+  return errors
+}
+
+/**
+ * Validation function for InventoryConfig
+ */
+export function validateInventoryConfig(data: Partial<InventoryConfig>): string[] {
+  const errors: string[] = []
+
+  if (!data.productId) {
+    errors.push("Product ID is required")
   }
 
   if (data.reorderPoint !== undefined && data.reorderPoint < 0) {

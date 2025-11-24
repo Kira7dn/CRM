@@ -25,7 +25,7 @@ export function TopProfitProductsWidget({
 
   return (
     <div className="space-y-2">
-      {products.slice(0, 3).map((product, idx) => (
+      {products.slice(0, 5).map((product, idx) => (
         <div
           key={product.productId}
           className="p-2 rounded-lg bg-linear-to-r from-green-50 to-white dark:from-green-950/20 dark:to-gray-900 border border-green-200 dark:border-green-800"
@@ -44,10 +44,15 @@ export function TopProfitProductsWidget({
             </span>
           </div>
           <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
-            <span>DT: {formatCurrency(product.revenue)}</span>
-            <span className="font-semibold text-green-600 dark:text-green-400">
-              {product.margin.toFixed(1)}%
-            </span>
+            <span>Doanh thu: {formatCurrency(product.revenue)}</span>
+            <div className="flex items-center gap-2">
+              <span>
+                Biên lợi nhuận:
+              </span>
+              <span className="font-semibold text-green-600 dark:text-green-400">
+                {`${product.margin.toFixed(1)}%`}
+              </span>
+            </div>
           </div>
         </div>
       ))}
