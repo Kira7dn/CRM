@@ -1,7 +1,7 @@
 import { generateObject } from "ai"
 import { z } from "zod"
 import { aiConfig, isAIEnabled } from "./ai-config"
-import { CacheFactory, generateCacheKey } from "@/infrastructure/cache"
+import { CacheFactory, generateCacheKey } from "@/infrastructure/adapters/cache"
 
 /**
  * Revenue forecast result schema

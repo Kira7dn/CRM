@@ -24,7 +24,7 @@ import { ProductRepository } from "../infrastructure/repositories/product-repo"
 import { InventoryRepository } from "../infrastructure/repositories/inventory-repo"
 import { InventoryConfigRepository } from "../infrastructure/repositories/inventory-config-repo"
 import { OperationalCostRepository } from "../infrastructure/repositories/operational-cost-repo"
-import type { CustomerSource, CustomerTier, CustomerStatus } from "../core/domain/managements/customer"
+import type { CustomerSource } from "../core/domain/customers/customer"
 import type {
   OrderStatus,
   PaymentMethod,
@@ -33,7 +33,7 @@ import type {
   OrderItem
 } from "../core/domain/managements/order"
 import type { Product } from "../core/domain/managements/product"
-import type { Customer } from "../core/domain/managements/customer"
+import type { Customer } from "../core/domain/customers/customer"
 
 // ============================================================================
 // SHARED DATA & CONSTANTS
@@ -72,8 +72,6 @@ const streets = [
 
 // Customer related enums
 const customerSources: CustomerSource[] = ["zalo", "facebook", "website", "tiktok", "telegram"]
-const customerTiers: CustomerTier[] = ["new", "regular", "vip", "premium"]
-const customerStatuses: CustomerStatus[] = ["active", "inactive"]
 
 // Tag pools
 const customerTagPool = [
@@ -358,16 +356,6 @@ async function seedCustomers(count: number): Promise<Customer[]> {
       usedPlatforms.add(platform)
     }
 
-    // Tier distribution: 50% new, 30% regular, 15% vip, 5% premium
-    const tierRand = Math.random()
-    let tier: CustomerTier
-    if (tierRand < 0.5) tier = "new"
-    else if (tierRand < 0.8) tier = "regular"
-    else if (tierRand < 0.95) tier = "vip"
-    else tier = "premium"
-
-    const status = Math.random() > 0.1 ? "active" : "inactive" // 90% active
-
     try {
       const customer = await repo.create({
         id: new ObjectId().toString(),
@@ -377,8 +365,6 @@ async function seedCustomers(count: number): Promise<Customer[]> {
         address: Math.random() > 0.4 ? generateAddress() : undefined, // 60% have address
         platformIds,
         primarySource,
-        tier,
-        status,
         tags: generateCustomerTags(),
         notes: Math.random() > 0.8 ? "Generated test customer" : undefined, // 20% have notes
       })

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { AllowedFileType } from "@/infrastructure/storage/s3-storage-service";
+import type { AllowedFileType } from "@/infrastructure/adapters/storage/s3-storage-service";
 
 export interface UseFileUploadOptions {
   fileType: AllowedFileType;

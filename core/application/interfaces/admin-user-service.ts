@@ -1,4 +1,4 @@
-import type { AdminUser } from "@/core/domain/managements/admin-user"
+import type { AdminUser } from "@/core/domain/admin-user"
 import { ObjectId } from "mongodb"
 
 // Payload interfaces extending from domain

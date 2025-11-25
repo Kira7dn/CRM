@@ -1,4 +1,4 @@
-import type { Customer } from "@/core/domain/managements/customer"
+import type { Customer } from "@/core/domain/customers/customer"
 import type { CustomerService } from "@/core/application/interfaces/customer-service"
 
 export interface GetCustomerByIdRequest {

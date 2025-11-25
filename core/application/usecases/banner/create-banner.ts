@@ -1,4 +1,4 @@
-import type { Banner } from "@/core/domain/managements/banner"
+import type { Banner } from "@/core/domain/campaigns/banner"
 import type { BannerService, BannerPayload } from "@/core/application/interfaces/banner-service"
 
 export interface CreateBannerRequest extends BannerPayload { }

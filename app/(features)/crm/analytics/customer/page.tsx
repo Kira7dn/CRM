@@ -15,7 +15,6 @@ import {
   getRFMSegmentation,
 } from "./actions";
 import { CustomerMetricsCards } from "./_components/CustomerMetricsCards";
-import { CustomerSegmentationChart } from "./_components/CustomerSegmentationChart";
 import { ChurnRiskList } from "./_components/ChurnRiskList";
 import { RFMSegmentationChart } from "./_components/RFMSegmentationChart";
 import { DateRangePicker, type DateRange } from "../revenue/_components/DateRangePicker";
@@ -156,9 +155,6 @@ export default function CustomerAnalyticsPage() {
 
         {/* Metrics Cards */}
         {metrics && <CustomerMetricsCards metrics={metrics} />}
-
-        {/* Customer Segmentation Chart */}
-        <CustomerSegmentationChart segments={segments} />
 
         {/* Two Columns: RFM Segmentation & Churn Risk */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { Ticket as TicketModel, TicketStatus, TicketPriority } from "@/core/domain/customer-care/ticket";
-import { getTicketStatusColor, getTicketPriorityColor, isTicketOverdue } from "@/core/domain/customer-care/ticket";
+import type { Ticket as TicketModel, TicketStatus, TicketPriority } from "@/core/domain/customers/ticket";
+import { getTicketStatusColor, getTicketPriorityColor, isTicketOverdue } from "@/core/domain/customers/ticket";
 import { updateTicketStatusAction, assignTicketAction, resolveTicketAction } from "../actions";
 import { Badge } from "@/@shared/ui/badge";
 import { Button } from "@/@shared/ui/button";

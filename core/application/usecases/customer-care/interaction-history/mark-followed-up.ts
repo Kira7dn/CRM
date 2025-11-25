@@ -2,7 +2,7 @@
  * Use Case: Mark Interaction as Followed Up
  */
 
-import type { InteractionHistory } from "@/core/domain/customer-care/interaction-history";
+import type { InteractionHistory } from "@/core/domain/customers/interaction-history";
 import type { InteractionHistoryService } from "@/core/application/interfaces/interaction-history-service";
 
 export interface MarkFollowedUpRequest {
@@ -14,7 +14,7 @@ export interface MarkFollowedUpResponse {
 }
 
 export class MarkFollowedUpUseCase {
-  constructor(private interactionService: InteractionHistoryService) {}
+  constructor(private interactionService: InteractionHistoryService) { }
 
   async execute(
     request: MarkFollowedUpRequest

@@ -38,8 +38,7 @@ interface AnalyticsEntity {
 
 export class CustomerAnalyticsRepository
   extends BaseRepository<AnalyticsEntity, string>
-  implements CustomerAnalyticsService
-{
+  implements CustomerAnalyticsService {
   protected collectionName = "customers";
 
   /**
@@ -326,7 +325,6 @@ export class CustomerAnalyticsRepository
         favoriteCategories,
         averageDaysBetweenOrders: doc.averageDaysBetweenOrders,
         churnRisk,
-        tier: doc.tier,
         platform: doc.platform,
         phone: doc.phone,
       });

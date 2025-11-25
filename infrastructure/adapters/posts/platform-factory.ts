@@ -1,4 +1,4 @@
-import type { Platform } from "@/core/domain/managements/post";
+import type { Platform } from "@/core/domain/campaigns/post";
 import type {
   PlatformIntegrationService,
   PlatformIntegrationFactory,
@@ -35,7 +35,7 @@ export class PlatformFactory implements PlatformIntegrationFactory {
         service = createTikTokIntegration();
         break;
       case "zalo":
-        service = createZaloIntegration();
+        service = await createZaloIntegration();
         break;
       case "youtube":
         service = await createYouTubeIntegration();

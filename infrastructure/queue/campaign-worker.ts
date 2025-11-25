@@ -7,7 +7,7 @@
 
 import { Worker, Job, Queue } from "bullmq";
 import Redis from "ioredis";
-import { getEmailService } from "../services/email-service";
+import { getEmailService } from "../adapters/email-service";
 
 export interface CampaignJobData {
   campaignId: number;

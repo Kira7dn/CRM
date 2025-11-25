@@ -1,4 +1,4 @@
-import type { Campaign, CampaignStatus } from "@/core/domain/managements/campaign"
+import type { Campaign, CampaignStatus } from "@/core/domain/campaigns/campaign"
 
 export interface CampaignPayload extends Partial<Campaign> { }
 

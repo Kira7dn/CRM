@@ -30,7 +30,10 @@ const AUTH_RULES: AuthRule[] = [
 const ALLOWED_ORIGINS = new Set([
   'https://h5.zdn.vn',
   'http://localhost:3000',
-  'https://linkstrategy.io.vn'
+  'http://localhost:3001',
+  'https://linkstrategy.io.vn',
+  'https://api.cloud.copilotkit.ai',
+  'https://*.copilotkit.ai'
 ]);
 const ALLOW_CREDENTIALS = true;
 
@@ -42,27 +45,23 @@ function matchModule(pathname: string) {
 // ===== CORS handler =====
 function handleCors(request: NextRequest): NextResponse | null {
   const origin = request.headers.get('origin') || '';
-  const isAllowed = ALLOWED_ORIGINS.has(origin);
-  const allowOrigin = isAllowed ? origin : '*';
+  const isAllowed = ALLOWED_ORIGINS.has(origin) || origin.endsWith('.copilotkit.ai');
+  const allowOrigin = isAllowed ? origin : 'http://localhost:3001';
 
   // Preflight OPTIONS request
   if (request.method === 'OPTIONS') {
     const res = new NextResponse(null, { status: 204 });
     res.headers.set('Access-Control-Allow-Origin', allowOrigin);
-    res.headers.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
-    res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    if (ALLOW_CREDENTIALS && allowOrigin !== '*') {
-      res.headers.set('Access-Control-Allow-Credentials', 'true');
-    }
+    res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-copilotkit-action, x-copilotkit-conversation-id, x-copilotkit-messages');
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
     return res;
   }
 
   // For other requests, just set CORS headers
   const res = NextResponse.next();
   res.headers.set('Access-Control-Allow-Origin', allowOrigin);
-  if (ALLOW_CREDENTIALS && allowOrigin !== '*') {
-    res.headers.set('Access-Control-Allow-Credentials', 'true');
-  }
+  res.headers.set('Access-Control-Allow-Credentials', 'true');
   return res;
 }
 

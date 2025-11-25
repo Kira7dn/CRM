@@ -1,4 +1,4 @@
-import type { Banner } from "@/core/domain/managements/banner";
+import type { Banner } from "@/core/domain/campaigns/banner";
 
 export interface BannerPayload extends Partial<Banner> { }
 

@@ -1,5 +1,5 @@
 import { registerWorkers } from "@/infrastructure/queue/order-worker";
-import { ZaloPayGateway } from "@/infrastructure/gateways/zalopay-gateway";
+import { ZaloPayGateway } from "@/infrastructure/adapters/gateways/zalopay-gateway";
 import { OrderRepository } from "@/infrastructure/repositories/order-repo";
 import type { PaymentGateway } from "@/core/application/interfaces/payment-gateway";
 

@@ -1,4 +1,4 @@
-import type { Platform, PlatformMetadata, PostMedia, PostMetrics } from "@/core/domain/managements/post";
+import type { Platform, PlatformMetadata, PostMedia, PostMetrics } from "@/core/domain/campaigns/post";
 
 /**
  * Common interface for publishing posts to external platforms

@@ -2,7 +2,7 @@ import type {
   MessageTemplate,
   TemplateCategory,
   TemplatePlatform,
-} from "@/core/domain/customer-care/message-template";
+} from "@/core/domain/customers/message-template";
 import type {
   MessageTemplateService,
   MessageTemplatePayload,
@@ -17,8 +17,7 @@ interface MessageTemplateDocument extends Omit<MessageTemplate, "id"> {
 
 export class MessageTemplateRepository
   extends BaseRepository<MessageTemplate, string>
-  implements MessageTemplateService
-{
+  implements MessageTemplateService {
   protected collectionName = "message_templates";
 
   /**

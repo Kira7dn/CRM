@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { Post, PostMetrics, PlatformMetadata, PostMedia } from "@/core/domain/managements/post";
+import { Post, PostMetrics, PlatformMetadata, PostMedia } from "@/core/domain/campaigns/post";
 import type { PostService, PostPayload } from "@/core/application/interfaces/post-service";
 import { ObjectId } from "mongodb";
 

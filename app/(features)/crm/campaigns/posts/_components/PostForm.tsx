@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { createPostAction, updatePostAction } from '../actions'
-import type { Post, Platform, ContentType, PostMedia } from '@/core/domain/managements/post'
+import type { Post, Platform, ContentType, PostMedia } from '@/core/domain/campaigns/post'
 import { ImageUpload } from '@/app/(features)/crm/_components/ImageUpload'
 import { Button } from '@shared/ui/button'
 import { Label } from '@shared/ui/label'

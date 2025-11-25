@@ -2,25 +2,25 @@
  * Use Case: Create Interaction History
  */
 
-import type { InteractionHistory } from "@/core/domain/customer-care/interaction-history";
+import type { InteractionHistory } from "@/core/domain/customers/interaction-history";
 import {
   validateInteractionHistory,
   generateContentPreview,
   calculateSentiment,
-} from "@/core/domain/customer-care/interaction-history";
+} from "@/core/domain/customers/interaction-history";
 import type {
   InteractionHistoryService,
   InteractionHistoryPayload,
 } from "@/core/application/interfaces/interaction-history-service";
 
-export interface CreateInteractionRequest extends InteractionHistoryPayload {}
+export interface CreateInteractionRequest extends InteractionHistoryPayload { }
 
 export interface CreateInteractionResponse {
   interaction: InteractionHistory;
 }
 
 export class CreateInteractionUseCase {
-  constructor(private interactionService: InteractionHistoryService) {}
+  constructor(private interactionService: InteractionHistoryService) { }
 
   async execute(
     request: CreateInteractionRequest

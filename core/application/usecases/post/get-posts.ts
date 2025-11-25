@@ -1,4 +1,4 @@
-import type { Post } from "@/core/domain/managements/post"
+import type { Post } from "@/core/domain/campaigns/post"
 import type { PostService } from "@/core/application/interfaces/post-service"
 
 export interface GetPostsResponse {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { generateRiskAssessment } from "../../../../../_actions/ai-actions"
-import type { RiskAssessment } from "@/infrastructure/ai/risk-assessment-service"
+import type { RiskAssessment } from "@/infrastructure/adapters/ai/risk-assessment-service"
 
 /**
  * Provider component that fetches risk assessment data once

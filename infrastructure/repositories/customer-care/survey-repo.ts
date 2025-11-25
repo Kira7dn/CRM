@@ -2,12 +2,12 @@ import type {
   Survey,
   SurveyResponse,
   SurveyType,
-} from "@/core/domain/customer-care/survey";
+} from "@/core/domain/customers/survey";
 import {
   calculateNPS,
   calculateCSAT,
   calculateCES,
-} from "@/core/domain/customer-care/survey";
+} from "@/core/domain/customers/survey";
 import type {
   SurveyService,
   SurveyPayload,

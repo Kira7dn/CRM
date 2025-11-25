@@ -1,10 +1,10 @@
-import type { Ticket, TicketComment, TicketStatus, TicketPriority, TicketCategory } from "@/core/domain/customer-care/ticket";
+import type { Ticket, TicketComment, TicketStatus, TicketPriority, TicketCategory } from "@/core/domain/customers/ticket";
 
 /**
  * Ticket payload for create/update operations
  * Extends Partial<Ticket> to follow domain-driven design
  */
-export interface TicketPayload extends Partial<Ticket> {}
+export interface TicketPayload extends Partial<Ticket> { }
 
 /**
  * Ticket filter options

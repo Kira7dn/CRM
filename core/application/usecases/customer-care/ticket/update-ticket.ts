@@ -1,5 +1,5 @@
-import type { Ticket } from "@/core/domain/customer-care/ticket";
-import { validateTicket } from "@/core/domain/customer-care/ticket";
+import type { Ticket } from "@/core/domain/customers/ticket";
+import { validateTicket } from "@/core/domain/customers/ticket";
 import type { TicketService, TicketPayload } from "@/core/application/interfaces/customer-care/ticket-service";
 
 /**
@@ -21,7 +21,7 @@ export interface UpdateTicketResponse {
  * Use case for updating a ticket
  */
 export class UpdateTicketUseCase {
-  constructor(private ticketService: TicketService) {}
+  constructor(private ticketService: TicketService) { }
 
   async execute(request: UpdateTicketRequest): Promise<UpdateTicketResponse> {
     if (!request.ticketId || request.ticketId.trim().length === 0) {

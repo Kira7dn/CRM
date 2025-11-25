@@ -3,7 +3,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card"
 import { TrendingUp, Brain, Calendar, Loader2 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
-import type { RevenueForecast as ForecastType } from "@/infrastructure/ai/revenue-forecast-service"
+import type { RevenueForecast as ForecastType } from "@/infrastructure/adapters/ai/revenue-forecast-service"
 import { useEffect, useState, useMemo, useCallback } from "react"
 import { Badge } from "@/@shared/ui/badge"
 import { generateRevenueForecast } from "@/app/(features)/crm/_actions/ai-actions"

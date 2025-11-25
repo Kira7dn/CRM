@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache"
 import { getPostsUseCase, createPostUseCase, updatePostUseCase, deletePostUseCase } from "@/app/api/posts/depends"
-import type { Platform, ContentType, PostMedia, PlatformMetadata } from "@/core/domain/managements/post"
+import type { Platform, ContentType, PostMedia, PlatformMetadata } from "@/core/domain/campaigns/post"
 
 export async function createPostAction(formData: FormData) {
   const useCase = await createPostUseCase()
 
   const title = formData.get("title")?.toString() || ""
-  const body = formData.get("body")?.toString()
+  const body = formData.get("body")?.toString() || ""
   const contentType = formData.get("contentType")?.toString() as ContentType || "post"
   const platformsJson = formData.get("platforms")?.toString() || "[]"
   const mediaJson = formData.get("media")?.toString() || "[]"
@@ -67,13 +67,13 @@ export async function deletePostAction(id: string) {
 export async function updatePostAction(id: string, formData: FormData) {
   const useCase = await updatePostUseCase()
 
-  const title = formData.get("title")?.toString()
+  const title = formData.get("title")?.toString() || ""
   const body = formData.get("body")?.toString()
-  const contentType = formData.get("contentType")?.toString() as ContentType
-  const platformsJson = formData.get("platforms")?.toString()
-  const mediaJson = formData.get("media")?.toString()
-  const hashtagsStr = formData.get("hashtags")?.toString()
-  const scheduledAtStr = formData.get("scheduledAt")?.toString()
+  const contentType = (formData.get("contentType")?.toString() as ContentType) || "post"
+  const platformsJson = formData.get("platforms")?.toString() || ""
+  const mediaJson = formData.get("media")?.toString() || ""
+  const hashtagsStr = formData.get("hashtags")?.toString() || ""
+  const scheduledAtStr = formData.get("scheduledAt")?.toString() || ""
 
   const updateData: any = {
     id,

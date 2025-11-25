@@ -8,7 +8,7 @@
  */
 
 import { subDays, subMonths, startOfMonth, endOfMonth } from "date-fns";
-import { getCache } from "../infrastructure/cache/redis-cache";
+import { getCache } from "../infrastructure/adapters/cache/redis-cache";
 import { createGetRevenueMetricsUseCase } from "../app/api/analytics/revenue/depends";
 import { createGetRevenueForecastUseCase } from "../app/api/analytics/forecast/depends";
 

@@ -2,9 +2,9 @@ import type {
   MessageTemplate,
   TemplateCategory,
   TemplatePlatform,
-} from "@/core/domain/customer-care/message-template";
+} from "@/core/domain/customers/message-template";
 
-export interface MessageTemplatePayload extends Partial<MessageTemplate> {}
+export interface MessageTemplatePayload extends Partial<MessageTemplate> { }
 
 export interface MessageTemplateFilterOptions {
   category?: TemplateCategory;

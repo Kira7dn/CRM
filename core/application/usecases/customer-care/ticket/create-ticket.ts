@@ -1,5 +1,5 @@
-import type { Ticket, TicketPriority, TicketCategory, TicketSource } from "@/core/domain/customer-care/ticket";
-import { validateTicket, generateTicketNumber } from "@/core/domain/customer-care/ticket";
+import type { Ticket, TicketPriority, TicketCategory, TicketSource } from "@/core/domain/customers/ticket";
+import { validateTicket, generateTicketNumber } from "@/core/domain/customers/ticket";
 import type { TicketService, TicketPayload } from "@/core/application/interfaces/customer-care/ticket-service";
 
 /**
@@ -28,7 +28,7 @@ export interface CreateTicketResponse {
  * Use case for creating a new support ticket
  */
 export class CreateTicketUseCase {
-  constructor(private ticketService: TicketService) {}
+  constructor(private ticketService: TicketService) { }
 
   async execute(request: CreateTicketRequest): Promise<CreateTicketResponse> {
     // Validate ticket data

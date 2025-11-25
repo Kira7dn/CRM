@@ -2,8 +2,8 @@
  * Use Case: Submit Survey Response
  */
 
-import type { SurveyResponse, Survey } from "@/core/domain/customer-care/survey";
-import { validateSurveyResponse, extractScore } from "@/core/domain/customer-care/survey";
+import type { SurveyResponse, Survey } from "@/core/domain/customers/survey";
+import { validateSurveyResponse, extractScore } from "@/core/domain/customers/survey";
 import type {
   SurveyService,
   SurveyResponsePayload,
@@ -18,7 +18,7 @@ export interface SubmitResponseResponse {
 }
 
 export class SubmitResponseUseCase {
-  constructor(private surveyService: SurveyService) {}
+  constructor(private surveyService: SurveyService) { }
 
   async execute(
     request: SubmitResponseRequest

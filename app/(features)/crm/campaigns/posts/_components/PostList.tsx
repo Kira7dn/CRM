@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useTransition } from 'react'
-import type { Post, Platform } from '@/core/domain/managements/post'
+import type { Post, Platform } from '@/core/domain/campaigns/post'
 import { usePostStore } from '../_store/usePostStore'
 import { deletePostAction } from '../actions'
 import { Button } from '@shared/ui/button'

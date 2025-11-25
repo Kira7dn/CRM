@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { generateRiskAssessment } from "@/app/(features)/crm/_actions/ai-actions"
-import type { RiskAssessment } from "@/infrastructure/ai/risk-assessment-service"
+import type { RiskAssessment } from "@/infrastructure/adapters/ai/risk-assessment-service"
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card"
 import { Skeleton } from "@shared/ui/skeleton"
 import { AlertTriangle } from "lucide-react"

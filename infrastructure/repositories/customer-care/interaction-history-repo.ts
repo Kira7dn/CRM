@@ -3,7 +3,7 @@ import type {
   CustomerInteractionSummary,
   InteractionType,
   InteractionChannel,
-} from "@/core/domain/customer-care/interaction-history";
+} from "@/core/domain/customers/interaction-history";
 import type {
   InteractionHistoryService,
   InteractionHistoryPayload,

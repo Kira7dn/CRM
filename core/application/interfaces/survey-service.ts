@@ -2,11 +2,11 @@
  * Interface: Survey Service
  */
 
-import type { Survey, SurveyResponse, SurveyType } from "@/core/domain/customer-care/survey";
+import type { Survey, SurveyResponse, SurveyType } from "@/core/domain/customers/survey";
 
-export interface SurveyPayload extends Partial<Survey> {}
+export interface SurveyPayload extends Partial<Survey> { }
 
-export interface SurveyResponsePayload extends Partial<SurveyResponse> {}
+export interface SurveyResponsePayload extends Partial<SurveyResponse> { }
 
 export interface SurveyFilters {
   type?: SurveyType;

@@ -4,16 +4,6 @@
 export type CustomerSource = "zalo" | "facebook" | "telegram" | "tiktok" | "website" | "other";
 
 /**
- * Customer status types
- */
-export type CustomerStatus = "active" | "inactive" | "blocked";
-
-/**
- * Customer tier/segment
- */
-export type CustomerTier = "new" | "regular" | "vip" | "premium";
-
-/**
  * Platform-specific customer identifiers
  */
 export interface CustomerPlatformId {
@@ -41,8 +31,6 @@ export type Customer = {
 
   // Customer details
   address?: string;
-  tier: CustomerTier;
-  status: CustomerStatus;
   tags: string[]; // For segmentation (e.g., "high-value", "frequent-buyer")
 
   // Notes for customer management

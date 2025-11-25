@@ -1,4 +1,4 @@
-import type { Post } from "@/core/domain/managements/post"
+import type { Post } from "@/core/domain/campaigns/post"
 
 export interface PostPayload extends Partial<Post> { }
 

@@ -1,7 +1,7 @@
 import type {
   MessageTemplate,
   renderTemplate,
-} from "@/core/domain/customer-care/message-template";
+} from "@/core/domain/customers/message-template";
 import type { MessageTemplateService } from "@/core/application/interfaces/customer-care/message-template-service";
 
 export interface RenderTemplateRequest {
@@ -17,7 +17,7 @@ export interface RenderTemplateResponse {
 }
 
 export class RenderTemplateUseCase {
-  constructor(private templateService: MessageTemplateService) {}
+  constructor(private templateService: MessageTemplateService) { }
 
   async execute(
     request: RenderTemplateRequest
@@ -33,7 +33,7 @@ export class RenderTemplateUseCase {
 
     // Render template with provided data
     const { renderTemplate } = await import(
-      "@/core/domain/customer-care/message-template"
+      "@/core/domain/customers/message-template"
     );
     const { content, errors } = renderTemplate(template, request.data);
 

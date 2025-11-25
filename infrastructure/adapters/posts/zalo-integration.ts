@@ -3,17 +3,17 @@ import type {
   PlatformPublishRequest,
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
-import type { PostMetrics, PostMedia } from "@/core/domain/managements/post";
+import type { PostMetrics, PostMedia } from "@/core/domain/campaigns/post";
 
 /**
  * Zalo OA (Official Account) API Configuration
  */
 export interface ZaloConfig {
-  oaId: string; // Official Account ID
+  // oaId: string; // Official Account ID
   accessToken: string; // OA access token
-  refreshToken: string;
-  appId: string;
-  secretKey: string;
+  // refreshToken: string;
+  // appId: string;
+  // secretKey: string;
 }
 
 /**
@@ -46,6 +46,30 @@ interface ZaloFollowerListResponse extends ZaloResponse {
     }>;
   };
 }
+interface ZaloPayload {
+  type: string;
+  title: string;
+  author: string;
+  cover: {
+    cover_type: string, //photo|video
+    photo_url?: string,
+    video_id?: string,
+    cover_view?: string, //horizontal|vertical|square
+    status: string, //show|hide
+  };
+  description: string;
+  body: Array<{
+    type: string; //text|image|video|product
+    content?: string; //text only
+    url?: string; //đường dẫn đến trang chứa video|image
+    video_id?: string;
+    caption?: string;
+    thumb?: string; //Thumbnail của video. (Không bắt buộc).
+    id?: string; //id của sản phẩm trên cửa hàng của OA.
+  }>;
+  status: string;  //show|hide
+  comment: string; //show|hide
+}
 
 /**
  * Zalo Official Account API Integration
@@ -59,7 +83,7 @@ interface ZaloFollowerListResponse extends ZaloResponse {
  */
 export class ZaloIntegration implements ZaloIntegrationService {
   platform = "zalo" as const;
-  private baseUrl = "https://openapi.zalo.me/v2.0/oa";
+  private baseUrl = "https://openapi.zalo.me/v2.0";
 
   constructor(private config: ZaloConfig) { }
 
@@ -69,17 +93,22 @@ export class ZaloIntegration implements ZaloIntegrationService {
    */
   async publish(request: PlatformPublishRequest): Promise<PlatformPublishResponse> {
     try {
+      // Validate request
+      if (!request.title && !request.body) {
+        return {
+          success: false,
+          error: "Title or body is required for Zalo post",
+        };
+      }
       // Format message
       const message = this.formatMessage(request);
 
-      // Upload media if present
-      let mediaId: string | undefined;
+      // Handle different media types
       if (request.media.length > 0) {
-        mediaId = await this.uploadAttachment(request.media[0]);
+        return await this.publishWithMedia(message, request.media);
+      } else {
+        return await this.publishTextPost(message);
       }
-
-      // Send message to all followers
-      return await this.sendMessage(message, mediaId);
     } catch (error) {
       return {
         success: false,
@@ -317,38 +346,6 @@ export class ZaloIntegration implements ZaloIntegrationService {
   }
 
   /**
-   * Refresh access token
-   */
-  async refreshAccessToken(): Promise<string> {
-    try {
-      const url = "https://oauth.zaloapp.com/v4/oa/access_token";
-
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          secret_key: this.config.secretKey,
-        },
-        body: new URLSearchParams({
-          refresh_token: this.config.refreshToken,
-          app_id: this.config.appId,
-          grant_type: "refresh_token",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.error !== 0) {
-        throw new Error(data.message);
-      }
-
-      return data.access_token;
-    } catch (error) {
-      throw new Error(`Failed to refresh token: ${error instanceof Error ? error.message : "Unknown error"}`);
-    }
-  }
-
-  /**
    * Format message with hashtags
    */
   private formatMessage(request: PlatformPublishRequest): string {
@@ -363,23 +360,178 @@ export class ZaloIntegration implements ZaloIntegrationService {
 
     return message;
   }
+  /**
+   * Publish text-only post (article without media)
+   */
+  private async publishTextPost(message: string): Promise<PlatformPublishResponse> {
+    try {
+      const url = `${this.baseUrl}/article/create`;
+
+      const payload: ZaloPayload = {
+        type: "normal",
+        title: message.substring(0, 100), // Limit title length
+        author: "CRM System",
+        cover: {
+          cover_type: "photo",
+          status: "hide"
+        },
+        description: message.substring(0, 200),
+        body: [
+          {
+            type: "text",
+            content: message
+          }
+        ],
+        status: "show",
+        comment: "show"
+      };
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "access_token": this.config.accessToken,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data: ZaloResponse = await response.json();
+
+      if (data.error !== 0) {
+        return {
+          success: false,
+          error: data.message,
+        };
+      }
+
+      return {
+        success: true,
+        postId: data.data?.id || "",
+        permalink: data.data?.url || "",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      };
+    }
+  }
+  /**
+   * Publish post with media (photo/video)
+   */
+  private async publishWithMedia(message: string, media: PostMedia[]): Promise<PlatformPublishResponse> {
+    try {
+      const url = `${this.baseUrl}/article/create`;
+
+      // Sort media by order
+      const sortedMedia = media.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+      const firstMedia = sortedMedia[0];
+
+      // Build cover from first media
+      const cover: ZaloPayload["cover"] = {
+        cover_type: firstMedia.type === "video" ? "video" : "photo",
+        status: "show"
+      };
+
+      if (firstMedia.type === "image") {
+        cover.photo_url = firstMedia.url;
+        cover.cover_view = "horizontal";
+      } else if (firstMedia.type === "video") {
+        // For video, we need video_id - may need to upload first
+        cover.video_id = firstMedia.url; // Placeholder - may need proper video upload
+        cover.cover_view = "horizontal";
+      }
+
+      // Build body with text and media
+      const body: ZaloPayload["body"] = [];
+
+      // Add text content first
+      if (message) {
+        body.push({
+          type: "text",
+          content: message
+        });
+      }
+
+      // Add all media items
+      for (const item of sortedMedia) {
+        if (item.type === "image") {
+          body.push({
+            type: "image",
+            url: item.url,
+          });
+        } else if (item.type === "video") {
+          body.push({
+            type: "video",
+            url: item.url,
+            thumb: item.thumbnailUrl
+          });
+        }
+      }
+
+      const payload: ZaloPayload = {
+        type: "normal",
+        title: message.substring(0, 100) || "Post",
+        author: "CRM System",
+        cover: cover,
+        description: message.substring(0, 200),
+        body: body,
+        status: "show",
+        comment: "show"
+      };
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "access_token": this.config.accessToken,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data: ZaloResponse = await response.json();
+
+      if (data.error !== 0) {
+        return {
+          success: false,
+          error: data.message,
+        };
+      }
+
+      return {
+        success: true,
+        postId: data.data?.id || "",
+        permalink: data.data?.url || "",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      };
+    }
+  }
 }
+
 
 /**
  * Factory function to create ZaloIntegration
  */
-export function createZaloIntegration(): ZaloIntegration {
-  const config: ZaloConfig = {
-    oaId: process.env.ZALO_OA_ID || "",
-    accessToken: process.env.ZALO_ACCESS_TOKEN || "",
-    refreshToken: process.env.ZALO_REFRESH_TOKEN || "",
-    appId: process.env.ZALO_APP_ID || "",
-    secretKey: process.env.ZALO_SECRET_KEY || "",
-  };
+export async function createZaloIntegration(): Promise<ZaloIntegration> {
+  try {
+    const response = await fetch("https://n8n.linkstrategy.io.vn/webhook/zalo_access_token");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-  if (!config.oaId || !config.accessToken || !config.appId || !config.secretKey) {
-    throw new Error("Missing Zalo configuration. Please set ZALO_OA_ID, ZALO_ACCESS_TOKEN, ZALO_APP_ID, and ZALO_SECRET_KEY environment variables.");
+    const data = await response.json();
+    const accessToken = data?.access_token; // kiểm tra key trả về từ webhook
+    if (!accessToken) {
+      throw new Error("Failed to get Zalo access token from webhook.");
+    }
+
+    return new ZaloIntegration({ accessToken });
+  } catch (error) {
+    throw new Error(`Error fetching Zalo access token: ${error}`);
   }
-
-  return new ZaloIntegration(config);
 }
+

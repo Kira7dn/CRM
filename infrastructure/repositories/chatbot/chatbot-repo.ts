@@ -3,7 +3,7 @@ import type { ChatMessage, ChatConversation, MessageIntent } from "@/core/domain
 import { classifyIntent, generateMessageId, generateConversationId } from "@/core/domain/chatbot/chat-message";
 import type { ChatbotService, ChatbotQueryRequest, ChatbotQueryResponse } from "@/core/application/interfaces/chatbot/chatbot-service";
 import { BaseRepository } from "@/infrastructure/db/base-repository";
-import { getLLMService } from "@/infrastructure/services/llm-service";
+import { getLLMService } from "@/infrastructure/adapters/llm-service";
 
 /**
  * Chatbot Repository implementation

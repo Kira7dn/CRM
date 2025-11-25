@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import type { Ticket, TicketComment, TicketStatus } from "@/core/domain/customer-care/ticket";
-import { calculateResponseTime, calculateResolutionTime, isTicketOverdue } from "@/core/domain/customer-care/ticket";
+import type { Ticket, TicketComment, TicketStatus } from "@/core/domain/customers/ticket";
+import { calculateResponseTime, calculateResolutionTime, isTicketOverdue } from "@/core/domain/customers/ticket";
 import type { TicketService, TicketPayload, TicketFilterOptions } from "@/core/application/interfaces/customer-care/ticket-service";
 import { BaseRepository } from "@/infrastructure/db/base-repository";
 

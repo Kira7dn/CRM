@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import type { Customer } from "@/core/domain/managements/customer"
+import type { Customer } from "@/core/domain/customers/customer"
 import { createCustomerAction, updateCustomerAction } from "../actions"
 import { ImageUpload } from "@/app/(features)/crm/_components/ImageUpload"
 

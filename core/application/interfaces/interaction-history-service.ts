@@ -5,9 +5,9 @@
 import type {
   InteractionHistory,
   CustomerInteractionSummary,
-} from "@/core/domain/customer-care/interaction-history";
+} from "@/core/domain/customers/interaction-history";
 
-export interface InteractionHistoryPayload extends Partial<InteractionHistory> {}
+export interface InteractionHistoryPayload extends Partial<InteractionHistory> { }
 
 export interface InteractionHistoryFilters {
   customerId?: string;

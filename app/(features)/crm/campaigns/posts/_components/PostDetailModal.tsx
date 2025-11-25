@@ -1,6 +1,6 @@
 'use client'
 
-import type { Post, Platform } from '@/core/domain/managements/post'
+import type { Post, Platform } from '@/core/domain/campaigns/post'
 import { Button } from '@shared/ui/button'
 import { X, ExternalLink, TrendingUp, Eye, Heart, MessageCircle, Share2, Calendar, Tag } from 'lucide-react'
 

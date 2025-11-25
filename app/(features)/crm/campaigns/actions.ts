@@ -8,7 +8,7 @@ import {
   updateCampaignUseCase,
   deleteCampaignUseCase,
 } from "@/app/api/campaigns/depends"
-import type { CampaignStatus, CampaignType } from "@/core/domain/managements/campaign"
+import type { CampaignStatus, CampaignType } from "@/core/domain/campaigns/campaign"
 
 export async function getCampaignsAction(status?: CampaignStatus) {
   try {

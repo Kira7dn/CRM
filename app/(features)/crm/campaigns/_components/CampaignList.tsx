@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import type { Campaign } from "@/core/domain/managements/campaign"
+import type { Campaign } from "@/core/domain/campaigns/campaign"
 import { CampaignForm } from "./CampaignForm"
 import { deleteCampaignAction } from "../actions"
 

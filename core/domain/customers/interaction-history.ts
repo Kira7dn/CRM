@@ -4,7 +4,8 @@
  * Track all customer interactions across platforms
  */
 
-import type { TemplatePlatform } from "./message-template";
+import { TemplatePlatform } from "./message-template";
+
 
 export type InteractionType =
   | "message_sent" // Outbound message

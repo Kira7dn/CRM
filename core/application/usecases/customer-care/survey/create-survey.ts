@@ -2,21 +2,21 @@
  * Use Case: Create Survey
  */
 
-import type { Survey } from "@/core/domain/customer-care/survey";
-import { validateSurvey } from "@/core/domain/customer-care/survey";
+import type { Survey } from "@/core/domain/customers/survey";
+import { validateSurvey } from "@/core/domain/customers/survey";
 import type {
   SurveyService,
   SurveyPayload,
 } from "@/core/application/interfaces/survey-service";
 
-export interface CreateSurveyRequest extends SurveyPayload {}
+export interface CreateSurveyRequest extends SurveyPayload { }
 
 export interface CreateSurveyResponse {
   survey: Survey;
 }
 
 export class CreateSurveyUseCase {
-  constructor(private surveyService: SurveyService) {}
+  constructor(private surveyService: SurveyService) { }
 
   async execute(request: CreateSurveyRequest): Promise<CreateSurveyResponse> {
     // Validation

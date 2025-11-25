@@ -10,7 +10,7 @@ import {
   resolveTicketUseCase,
   addTicketCommentUseCase,
 } from "@/app/api/customer-care/tickets/depends";
-import type { TicketStatus, TicketPriority, TicketCategory, TicketSource } from "@/core/domain/customer-care/ticket";
+import type { TicketStatus, TicketPriority, TicketCategory, TicketSource } from "@/core/domain/customers/ticket";
 
 /**
  * Get all tickets with optional filters

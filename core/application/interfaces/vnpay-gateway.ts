@@ -1,4 +1,4 @@
-import type { VnpayIpnParams, VnpayIpnResult } from "@/infrastructure/gateways/vnpay-gateway";
+import type { VnpayIpnParams, VnpayIpnResult } from "@/infrastructure/adapters/gateways/vnpay-gateway";
 
 export interface VnpayGateway {
   /**

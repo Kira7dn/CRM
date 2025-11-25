@@ -1,7 +1,7 @@
 "use client"
 
 import { create } from "zustand"
-import type { Post } from "@/core/domain/managements/post"
+import type { Post } from "@/core/domain/campaigns/post"
 
 interface PostStore {
   posts: Post[]

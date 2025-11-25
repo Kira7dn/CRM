@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import type { Banner } from "@/core/domain/managements/banner"
+import type { Banner } from "@/core/domain/campaigns/banner"
 import { deleteBannerAction } from "../actions"
 import { BannerForm } from "./BannerForm"
 

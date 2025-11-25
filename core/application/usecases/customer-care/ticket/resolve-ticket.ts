@@ -1,4 +1,4 @@
-import type { Ticket } from "@/core/domain/customer-care/ticket";
+import type { Ticket } from "@/core/domain/customers/ticket";
 import type { TicketService } from "@/core/application/interfaces/customer-care/ticket-service";
 
 /**
@@ -21,7 +21,7 @@ export interface ResolveTicketResponse {
  * Use case for resolving a ticket
  */
 export class ResolveTicketUseCase {
-  constructor(private ticketService: TicketService) {}
+  constructor(private ticketService: TicketService) { }
 
   async execute(request: ResolveTicketRequest): Promise<ResolveTicketResponse> {
     if (!request.ticketId || request.ticketId.trim().length === 0) {

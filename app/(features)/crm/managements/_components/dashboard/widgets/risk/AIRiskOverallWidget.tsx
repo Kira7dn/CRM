@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { generateRiskAssessment } from "@/app/(features)/crm/_actions/ai-actions"
-import type { RiskAssessment } from "@/infrastructure/ai/risk-assessment-service"
+import type { RiskAssessment } from "@/infrastructure/adapters/ai/risk-assessment-service"
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card"
 import { Skeleton } from "@shared/ui/skeleton"
 import { Shield } from "lucide-react"
@@ -91,9 +91,9 @@ export function AIRiskOverallWidget() {
 
   return (
     <Card className={`border-2 ${assessment.overallRiskLevel === "critical" ? "border-red-300 dark:border-red-700" :
-        assessment.overallRiskLevel === "high" ? "border-orange-300 dark:border-orange-700" :
-          assessment.overallRiskLevel === "medium" ? "border-yellow-300 dark:border-yellow-700" :
-            "border-green-300 dark:border-green-700"
+      assessment.overallRiskLevel === "high" ? "border-orange-300 dark:border-orange-700" :
+        assessment.overallRiskLevel === "medium" ? "border-yellow-300 dark:border-yellow-700" :
+          "border-green-300 dark:border-green-700"
       }`}>
       <CardHeader>
         <CardTitle className="text-lg flex items-center justify-between">

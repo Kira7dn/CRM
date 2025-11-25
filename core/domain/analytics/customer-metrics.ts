@@ -5,7 +5,6 @@
  * This is a pure domain layer with no external dependencies.
  */
 
-import { CustomerTier } from "../managements/customer";
 import { DateRange } from "./revenue-metrics";
 
 /**
@@ -24,7 +23,6 @@ export interface CustomerMetrics {
  * Customer segment statistics by tier
  */
 export interface CustomerSegmentStats {
-  tier: CustomerTier;
   count: number;
   percentage: number;
   averageRevenue: number;
@@ -46,7 +44,6 @@ export interface PurchasePattern {
   favoriteCategories: FavoriteCategory[];
   averageDaysBetweenOrders: number;
   churnRisk: ChurnRisk;
-  tier: CustomerTier;
   platform?: string;
   phone?: string;
 }
@@ -90,7 +87,6 @@ export interface CohortRetention {
 export interface CustomerLifetimeValue {
   customerId: string;
   customerName: string;
-  tier: CustomerTier;
   lifetimeRevenue: number;
   lifetimeOrders: number;
   customerAge: number; // Days since first purchase

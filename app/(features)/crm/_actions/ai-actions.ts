@@ -2,8 +2,8 @@
 
 import { getOrdersUseCase } from "@/app/api/orders/depends"
 import { getAllCustomersUseCase } from "@/app/api/customers/depends"
-import { RevenueForecastService, type RevenueDataPoint } from "@/infrastructure/ai/revenue-forecast-service"
-import { RiskAssessmentService, type BusinessMetrics } from "@/infrastructure/ai/risk-assessment-service"
+import { RevenueForecastService, type RevenueDataPoint } from "@/infrastructure/adapters/ai/revenue-forecast-service"
+import { RiskAssessmentService, type BusinessMetrics } from "@/infrastructure/adapters/ai/risk-assessment-service"
 import {
   getDateBoundaries,
   filterOrdersByDate,

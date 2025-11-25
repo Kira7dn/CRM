@@ -1,7 +1,7 @@
 import type {
   MessageTemplate,
   validateMessageTemplate,
-} from "@/core/domain/customer-care/message-template";
+} from "@/core/domain/customers/message-template";
 import type {
   MessageTemplateService,
   MessageTemplatePayload,
@@ -16,7 +16,7 @@ export interface UpdateTemplateResponse {
 }
 
 export class UpdateTemplateUseCase {
-  constructor(private templateService: MessageTemplateService) {}
+  constructor(private templateService: MessageTemplateService) { }
 
   async execute(
     request: UpdateTemplateRequest
@@ -35,7 +35,7 @@ export class UpdateTemplateUseCase {
       };
 
       const { validateMessageTemplate } = await import(
-        "@/core/domain/customer-care/message-template"
+        "@/core/domain/customers/message-template"
       );
       const errors = validateMessageTemplate(templateToValidate);
       if (errors.length > 0) {

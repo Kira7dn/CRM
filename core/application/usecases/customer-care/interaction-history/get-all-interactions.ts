@@ -2,7 +2,7 @@
  * Use Case: Get All Interactions with Filters
  */
 
-import type { InteractionHistory } from "@/core/domain/customer-care/interaction-history";
+import type { InteractionHistory } from "@/core/domain/customers/interaction-history";
 import type {
   InteractionHistoryService,
   InteractionHistoryFilters,
@@ -18,7 +18,7 @@ export interface GetAllInteractionsResponse {
 }
 
 export class GetAllInteractionsUseCase {
-  constructor(private interactionService: InteractionHistoryService) {}
+  constructor(private interactionService: InteractionHistoryService) { }
 
   async execute(
     request: GetAllInteractionsRequest = {}

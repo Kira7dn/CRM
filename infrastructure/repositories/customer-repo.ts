@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/infrastructure/db/base-repository"
-import type { Customer } from "@/core/domain/managements/customer"
+import type { Customer } from "@/core/domain/customers/customer"
 import type {
   CustomerService,
   CustomerPayload

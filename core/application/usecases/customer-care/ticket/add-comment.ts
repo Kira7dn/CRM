@@ -1,5 +1,5 @@
-import type { Ticket, TicketComment } from "@/core/domain/customer-care/ticket";
-import { validateTicketComment } from "@/core/domain/customer-care/ticket";
+import type { Ticket, TicketComment } from "@/core/domain/customers/ticket";
+import { validateTicketComment } from "@/core/domain/customers/ticket";
 import type { TicketService } from "@/core/application/interfaces/customer-care/ticket-service";
 
 /**
@@ -24,7 +24,7 @@ export interface AddTicketCommentResponse {
  * Use case for adding a comment to a ticket
  */
 export class AddTicketCommentUseCase {
-  constructor(private ticketService: TicketService) {}
+  constructor(private ticketService: TicketService) { }
 
   async execute(request: AddTicketCommentRequest): Promise<AddTicketCommentResponse> {
     if (!request.ticketId || request.ticketId.trim().length === 0) {

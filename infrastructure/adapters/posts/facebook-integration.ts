@@ -3,7 +3,7 @@ import type {
   PlatformPublishRequest,
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
-import type { PostMetrics, PostMedia } from "@/core/domain/managements/post";
+import type { PostMetrics, PostMedia } from "@/core/domain/campaigns/post";
 
 /**
  * Facebook Graph API Configuration

@@ -1,6 +1,6 @@
 import { OrderRepository } from '@/infrastructure/repositories/order-repo';
 import { BullMQAdapter } from '@/infrastructure/queue/bullmq-adapter';
-import { ZaloPayGateway } from '@/infrastructure/gateways/zalopay-gateway';
+import { ZaloPayGateway } from '@/infrastructure/adapters/gateways/zalopay-gateway';
 import type { OrderService } from '@/core/application/interfaces/order-service';
 import { GetOrdersUseCase } from '@/core/application/usecases/order/get-orders';
 import { CreateOrderUseCase } from '@/core/application/usecases/order/create-order';
@@ -13,7 +13,7 @@ import { CheckPaymentStatusUseCase } from '@/core/application/usecases/order/che
 import { CheckOrderStatusUseCase } from '@/core/application/usecases/order/check-order-status';
 import { MacRequestUseCase } from '@/core/application/usecases/order/mac-request';
 import { HandleVnpayIpnUseCase } from '@/core/application/usecases/order/handle-vnpay-ipn';
-import { VnpayGatewayImpl } from '@/infrastructure/gateways/vnpay-gateway';
+import { VnpayGatewayImpl } from '@/infrastructure/adapters/gateways/vnpay-gateway';
 
 // Shared repository instance creator
 const createOrderRepository = async (): Promise<OrderService> => {

@@ -25,8 +25,8 @@ import {
   TopItemsQuery,
   OrderStatusQuery,
 } from "@/core/application/interfaces/analytics/revenue-analytics-service";
-import { getCache } from "@/infrastructure/cache/redis-cache";
-import { RevenueCacheKeys, CacheTTL } from "@/infrastructure/cache/cache-keys";
+import { getCache } from "@/infrastructure/adapters/cache/redis-cache";
+import { RevenueCacheKeys, CacheTTL } from "@/infrastructure/adapters/cache/cache-keys";
 
 /**
  * Dummy entity for BaseRepository (analytics doesn't have a primary entity)
@@ -37,8 +37,7 @@ interface AnalyticsEntity {
 
 export class RevenueAnalyticsRepository
   extends BaseRepository<AnalyticsEntity, string>
-  implements RevenueAnalyticsService
-{
+  implements RevenueAnalyticsService {
   protected collectionName = "orders";
   private cache = getCache();
 

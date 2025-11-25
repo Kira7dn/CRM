@@ -97,9 +97,6 @@ export function TopCustomersTable({ customers }: TopCustomersTableProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-2">
-                    {getTierBadge(customer.tier)}
-                  </td>
                   <td className="py-3 px-2 text-right font-semibold text-gray-900">
                     {formatCurrency(customer.totalRevenue)}
                   </td>

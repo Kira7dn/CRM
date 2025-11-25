@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import type { Customer } from "@/core/domain/managements/customer"
+import type { Customer } from "@/core/domain/customers/customer"
 import { deleteCustomerAction } from "../actions"
 import { CustomerForm } from "./CustomerForm"
 

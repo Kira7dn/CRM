@@ -2,27 +2,27 @@ import type {
   MessageTemplate,
   validateMessageTemplate,
   parseTemplateVariables,
-} from "@/core/domain/customer-care/message-template";
+} from "@/core/domain/customers/message-template";
 import type {
   MessageTemplateService,
   MessageTemplatePayload,
 } from "@/core/application/interfaces/customer-care/message-template-service";
 
-export interface CreateTemplateRequest extends MessageTemplatePayload {}
+export interface CreateTemplateRequest extends MessageTemplatePayload { }
 
 export interface CreateTemplateResponse {
   template: MessageTemplate;
 }
 
 export class CreateTemplateUseCase {
-  constructor(private templateService: MessageTemplateService) {}
+  constructor(private templateService: MessageTemplateService) { }
 
   async execute(
     request: CreateTemplateRequest
   ): Promise<CreateTemplateResponse> {
     // Import validation function
     const { validateMessageTemplate, parseTemplateVariables } = await import(
-      "@/core/domain/customer-care/message-template"
+      "@/core/domain/customers/message-template"
     );
 
     // Validate template

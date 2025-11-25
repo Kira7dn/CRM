@@ -1,5 +1,5 @@
 import type { BannerService } from "@/core/application/interfaces/banner-service";
-import type { Banner } from "@/core/domain/managements/banner";
+import type { Banner } from "@/core/domain/campaigns/banner";
 
 export interface GetBannersRequest { }
 

@@ -2,7 +2,7 @@
  * Use Case: Get Customer Interaction History
  */
 
-import type { InteractionHistory } from "@/core/domain/customer-care/interaction-history";
+import type { InteractionHistory } from "@/core/domain/customers/interaction-history";
 import type { InteractionHistoryService } from "@/core/application/interfaces/interaction-history-service";
 
 export interface GetCustomerInteractionsRequest {
@@ -16,7 +16,7 @@ export interface GetCustomerInteractionsResponse {
 }
 
 export class GetCustomerInteractionsUseCase {
-  constructor(private interactionService: InteractionHistoryService) {}
+  constructor(private interactionService: InteractionHistoryService) { }
 
   async execute(
     request: GetCustomerInteractionsRequest

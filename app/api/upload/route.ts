@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createS3StorageService } from "@/infrastructure/storage/s3-storage-service";
-import type { AllowedFileType } from "@/infrastructure/storage/s3-storage-service";
+import { createS3StorageService } from "@/infrastructure/adapters/storage/s3-storage-service";
+import type { AllowedFileType } from "@/infrastructure/adapters/storage/s3-storage-service";
 
 /**
  * POST /api/upload

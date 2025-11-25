@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import type { Campaign } from "@/core/domain/managements/campaign"
+import type { Campaign } from "@/core/domain/campaigns/campaign"
 import { createCampaignAction, updateCampaignAction } from "../actions"
 import { ImageUpload } from "@/app/(features)/crm/_components/ImageUpload"
 

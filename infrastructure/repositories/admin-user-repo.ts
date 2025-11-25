@@ -1,4 +1,4 @@
-import type { AdminUser } from "@/core/domain/managements/admin-user"
+import type { AdminUser } from "@/core/domain/admin-user"
 import type {
   AdminUserService,
   AdminUserPayload,

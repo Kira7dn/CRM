@@ -2,7 +2,7 @@
  * Use Case: Get All Surveys
  */
 
-import type { Survey } from "@/core/domain/customer-care/survey";
+import type { Survey } from "@/core/domain/customers/survey";
 import type {
   SurveyService,
   SurveyFilters,
@@ -18,7 +18,7 @@ export interface GetSurveysResponse {
 }
 
 export class GetSurveysUseCase {
-  constructor(private surveyService: SurveyService) {}
+  constructor(private surveyService: SurveyService) { }
 
   async execute(request: GetSurveysRequest = {}): Promise<GetSurveysResponse> {
     const surveys = await this.surveyService.getAll(request.filters);

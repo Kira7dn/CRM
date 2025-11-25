@@ -1,5 +1,5 @@
 import type { CampaignService } from "@/core/application/interfaces/campaign-service"
-import type { Campaign, CampaignStatus } from "@/core/domain/managements/campaign"
+import type { Campaign, CampaignStatus } from "@/core/domain/campaigns/campaign"
 
 export interface GetCampaignsByStatusRequest {
   status: CampaignStatus

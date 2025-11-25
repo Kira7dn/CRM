@@ -8,7 +8,7 @@ export default async function LoginPage() {
   const userId = cookieStore.get("admin_user_id")?.value
 
   if (userId) {
-    redirect("/crm/dashboard")
+    redirect("/crm/managements")
   }
 
   return (

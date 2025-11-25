@@ -32,7 +32,7 @@ export function LoginForm() {
       }
 
       // Redirect to dashboard on success
-      router.push("/crm/dashboard")
+      router.push("/crm/managements")
       router.refresh()
     } catch (err) {
       setError("An unexpected error occurred")

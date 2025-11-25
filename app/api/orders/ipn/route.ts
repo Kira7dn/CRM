@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { notifyOrderWebhook } from "@/lib/webhook";
-import type { VnpayIpnRequest } from "@/infrastructure/gateways/vnpay-gateway";
+import type { VnpayIpnRequest } from "@/infrastructure/adapters/gateways/vnpay-gateway";
 import { handleVnpayIpnUseCase } from "../depends";
 
 export async function POST(request: NextRequest) {

@@ -1,6 +1,6 @@
 import type { CampaignService, CampaignPayload } from "@/core/application/interfaces/campaign-service"
-import type { Campaign } from "@/core/domain/managements/campaign"
-import { validateCampaign } from "@/core/domain/managements/campaign"
+import type { Campaign } from "@/core/domain/campaigns/campaign"
+import { validateCampaign } from "@/core/domain/campaigns/campaign"
 
 export interface UpdateCampaignRequest {
   id: number

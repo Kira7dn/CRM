@@ -2,12 +2,12 @@
  * Use Case: Calculate Survey Metrics (NPS, CSAT, CES)
  */
 
-import type { Survey } from "@/core/domain/customer-care/survey";
+import type { Survey } from "@/core/domain/customers/survey";
 import {
   calculateNPS,
   calculateCSAT,
   calculateCES,
-} from "@/core/domain/customer-care/survey";
+} from "@/core/domain/customers/survey";
 import type { SurveyService } from "@/core/application/interfaces/survey-service";
 
 export interface CalculateMetricsRequest {
@@ -31,7 +31,7 @@ export interface CalculateMetricsResponse {
 }
 
 export class CalculateMetricsUseCase {
-  constructor(private surveyService: SurveyService) {}
+  constructor(private surveyService: SurveyService) { }
 
   async execute(
     request: CalculateMetricsRequest

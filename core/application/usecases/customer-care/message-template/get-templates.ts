@@ -1,4 +1,4 @@
-import type { MessageTemplate } from "@/core/domain/customer-care/message-template";
+import type { MessageTemplate } from "@/core/domain/customers/message-template";
 import type {
   MessageTemplateService,
   MessageTemplateFilterOptions,
@@ -14,7 +14,7 @@ export interface GetTemplatesResponse {
 }
 
 export class GetTemplatesUseCase {
-  constructor(private templateService: MessageTemplateService) {}
+  constructor(private templateService: MessageTemplateService) { }
 
   async execute(request: GetTemplatesRequest): Promise<GetTemplatesResponse> {
     const templates = await this.templateService.getAll(request.options);

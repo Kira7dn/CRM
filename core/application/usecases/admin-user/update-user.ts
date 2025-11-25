@@ -1,5 +1,5 @@
-import type { AdminUser } from "@/core/domain/managements/admin-user"
-import { validateAdminUser } from "@/core/domain/managements/admin-user"
+import type { AdminUser } from "@/core/domain/admin-user"
+import { validateAdminUser } from "@/core/domain/admin-user"
 import type { AdminUserService, AdminUserPayload } from "@/core/application/interfaces/admin-user-service"
 import { ObjectId } from "mongodb"
 
