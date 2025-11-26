@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev:next": "next dev -p 4001",
+    "dev:tunnel": "cloudflared tunnel run haisancrm",
+    "dev": "concurrently \"npm run dev:next\" \"npm run dev:tunnel\"",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -85,6 +87,7 @@
     "@types/webidl-conversions": "^7.0.3",
     "@vitest/coverage-v8": "^4.0.7",
     "@vitest/ui": "^4.0.7",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.1",
     "tailwindcss": "^4",

@@ -5,9 +5,13 @@ import { getCustomerByIdUseCase } from "../depends";
  * GET /api/customers/[id]
  * Fetch a customer by ID
  */
+type RouteParams = {
+  params: { id: string };
+};
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     const customerId = params.id;
