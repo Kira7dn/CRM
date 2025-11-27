@@ -146,7 +146,6 @@ export function CustomerForm({ customer, onClose }: CustomerFormProps) {
               value={avatarUrl}
               onChange={(url) => setAvatarUrl(url)}
               folder="avatars"
-              label="Customer Avatar"
               disabled={loading}
             />
 

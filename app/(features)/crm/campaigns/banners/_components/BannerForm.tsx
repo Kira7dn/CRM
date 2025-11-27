@@ -50,7 +50,6 @@ export function BannerForm({ banner, onClose }: BannerFormProps) {
               value={imageUrl}
               onChange={(url) => setImageUrl(url)}
               folder="banners"
-              label="Banner Image (Recommended: 1920x600px)"
               disabled={loading}
             />
 

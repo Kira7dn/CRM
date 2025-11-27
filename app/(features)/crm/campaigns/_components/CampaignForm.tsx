@@ -96,7 +96,6 @@ export function CampaignForm({ campaign, onClose }: CampaignFormProps) {
             value={imageUrl}
             onChange={(url) => setImageUrl(url)}
             folder="campaigns"
-            label="Campaign Image *"
             disabled={isSubmitting}
           />
 

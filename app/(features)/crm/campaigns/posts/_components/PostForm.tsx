@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useTransition, useCallback } from 'react'
+import { useState, useTransition } from 'react'
 import { createPostAction, updatePostAction } from '../actions'
 import type { Post, Platform, ContentType, PostMedia } from '@/core/domain/campaigns/post'
 import { MediaUpload } from '@/app/(features)/crm/_components/MediaUpload'
 import { Button } from '@shared/ui/button'
 import { Label } from '@shared/ui/label'
 import { Input } from '@shared/ui/input'
-import { X, Video, Loader2, AlertTriangle } from 'lucide-react'
+import { X, Loader2, AlertTriangle } from 'lucide-react'
 
 // Platform options
 const PLATFORMS: { value: Platform; label: string; color: string }[] = [
@@ -40,92 +40,51 @@ export default function PostForm({ post, onClose }: { post?: Post; onClose?: () 
   const [isSubmitting, startTransition] = useTransition()
   const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(post?.platforms.map(p => p.platform) || [])
   const [contentType, setContentType] = useState<ContentType>(post?.contentType || 'post')
-  const [media, setMedia] = useState<PostMedia[]>(post?.media || [])
+  const [media, setMedia] = useState<PostMedia | null>(post?.media?.[0] || null)
   const [hashtags, setHashtags] = useState(post?.hashtags?.join(' ') || '')
   const [scheduledAt, setScheduledAt] = useState(
     post?.scheduledAt ? new Date(post.scheduledAt).toISOString().slice(0, 16) : ''
   )
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Check support status
-  const getPlatformSupport = useCallback(
-    (platform: Platform) => CONTENT_PLATFORM_MAP[contentType]?.[platform] || 'unsupported',
-    [contentType]
-  )
+  const getPlatformSupport = (platform: Platform) =>
+    CONTENT_PLATFORM_MAP[contentType]?.[platform] || 'unsupported'
 
   const togglePlatform = (platform: Platform) => {
     if (getPlatformSupport(platform) !== "supported") return
-
     setSelectedPlatforms(prev =>
-      prev.includes(platform)
-        ? prev.filter(p => p !== platform)
-        : [...prev, platform]
+      prev.includes(platform) ? prev.filter(p => p !== platform) : [...prev, platform]
     )
   }
 
-  // Media type detection
-  const getMediaType = useCallback((ct: ContentType): 'image' | 'video' => {
-    return ['video', 'reel', 'live'].includes(ct) ? 'video' : 'image'
-  }, [])
-
-  const addMedia = (url: string) => {
-    const newMedia: PostMedia = { type: getMediaType(contentType), url, order: media.length }
-    setMedia(prev => [...prev, newMedia])
-  }
-
-  const removeMedia = (index: number) => {
-    setMedia(prev => prev.filter((_, i) => i !== index))
-  }
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {}
-
-    if (selectedPlatforms.length === 0) {
-      newErrors.platforms = 'Please select at least one supported platform'
-    }
-
-    selectedPlatforms.forEach((p) => {
-      if (getPlatformSupport(p) !== "supported") {
-        newErrors.platforms = 'One or more selected platforms do not support this content type'
-      }
-    })
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+  const isVideoContent = ['video', 'reel', 'short'].includes(contentType)
 
   const handleSubmit = async (formData: FormData) => {
-    if (!validateForm()) return
-
-    try {
-      formData.append('contentType', contentType)
-      formData.append('platforms', JSON.stringify(selectedPlatforms))
-      formData.append('media', JSON.stringify(media))
-      formData.append('hashtags', hashtags)
-      if (scheduledAt) formData.append('scheduledAt', scheduledAt)
-
-      await new Promise<void>((resolve, reject) => {
-        startTransition(async () => {
-          try {
-            if (post?.id) {
-              await updatePostAction(post.id, formData)
-              alert('Post updated successfully')
-            } else {
-              await createPostAction(formData)
-              alert('Post created successfully')
-            }
-            onClose?.()
-            resolve()
-          } catch (error) {
-            console.error('Error saving post:', error)
-            alert(error instanceof Error ? error.message : 'Failed to save post')
-            reject(error)
-          }
-        })
-      })
-    } catch (error) {
-      console.error('Form submission error:', error)
+    // Validate
+    if (selectedPlatforms.length === 0) {
+      setErrors({ platforms: 'Please select at least one platform' })
+      return
     }
+    setErrors({})
+
+    formData.append('contentType', contentType)
+    formData.append('platforms', JSON.stringify(selectedPlatforms))
+    formData.append('media', JSON.stringify(media ? [media] : []))
+    formData.append('hashtags', hashtags)
+    if (scheduledAt) formData.append('scheduledAt', scheduledAt)
+
+    startTransition(async () => {
+      try {
+        if (post?.id) {
+          await updatePostAction(post.id, formData)
+        } else {
+          await createPostAction(formData)
+        }
+        onClose?.()
+      } catch (error) {
+        alert(error instanceof Error ? error.message : 'Failed to save post')
+      }
+    })
   }
 
   return (
@@ -191,28 +150,13 @@ export default function PostForm({ post, onClose }: { post?: Post; onClose?: () 
       {/* Media */}
       <div>
         <Label>Media</Label>
-        <div className="grid grid-cols-2 gap-4">
-          {media.map((m, i) => (
-            <div key={i} className="relative border rounded-lg p-2">
-              {m.type === 'video'
-                ? <div className="aspect-video flex items-center justify-center bg-gray-200"><Video /></div>
-                : <img src={m.url} className="w-full aspect-video object-cover rounded" />}
-              <Button type="button" size="sm" variant="destructive"
-                onClick={() => removeMedia(i)} className="absolute top-1 right-1">
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
-          <div className="border-2 border-dashed rounded-lg p-4">
-            <MediaUpload
-              folder="posts"
-              onChange={addMedia}
-              type={["video", "reel", "short"].includes(contentType) ? "video" : "image"}
-              maxSize={["video", "reel", "short"].includes(contentType) ? 500 : 10}
-            />
-          </div>
-
-        </div>
+        <MediaUpload
+          value={media?.url}
+          onChange={(url) => setMedia(url ? { type: isVideoContent ? 'video' : 'image', url } : null)}
+          folder="posts"
+          type={isVideoContent ? "video" : "image"}
+          maxSize={isVideoContent ? 500 : 10}
+        />
       </div>
 
       {/* Hashtags */}

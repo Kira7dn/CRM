@@ -33,7 +33,8 @@ const ALLOWED_ORIGINS = new Set([
   'http://localhost:3001',
   'https://linkstrategy.io.vn',
   'https://api.cloud.copilotkit.ai',
-  'https://*.copilotkit.ai'
+  'https://*.copilotkit.ai',
+  'https://haisancrm.linkstrategy.io.vn/'
 ]);
 const ALLOW_CREDENTIALS = true;
 
@@ -46,17 +47,17 @@ function matchModule(pathname: string) {
 function handleCors(request: NextRequest): NextResponse | null {
   const origin = request.headers.get('origin') || '';
   const isAllowed = ALLOWED_ORIGINS.has(origin) || origin.endsWith('.copilotkit.ai');
-  const allowOrigin = isAllowed ? origin : 'http://localhost:3001';
+  const allowOrigin = isAllowed ? origin : 'http://localhost:4001';
 
-  // Preflight OPTIONS request
-  if (request.method === 'OPTIONS') {
-    const res = new NextResponse(null, { status: 204 });
-    res.headers.set('Access-Control-Allow-Origin', allowOrigin);
-    res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-copilotkit-action, x-copilotkit-conversation-id, x-copilotkit-messages');
-    res.headers.set('Access-Control-Allow-Credentials', 'true');
-    return res;
-  }
+  // // Preflight OPTIONS request
+  // if (request.method === 'OPTIONS') {
+  //   const res = new NextResponse(null, { status: 204 });
+  //   res.headers.set('Access-Control-Allow-Origin', allowOrigin);
+  //   res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  //   res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-copilotkit-action, x-copilotkit-conversation-id, x-copilotkit-messages');
+  //   res.headers.set('Access-Control-Allow-Credentials', 'true');
+  //   return res;
+  // }
 
   // For other requests, just set CORS headers
   const res = NextResponse.next();
@@ -71,7 +72,7 @@ export function proxy(request: NextRequest) {
 
   // Handle CORS first
   const corsRes = handleCors(request);
-  if (request.method === 'OPTIONS') return corsRes;
+  // if (request.method === 'OPTIONS') return corsRes;
 
   // Only protect /crm routes
   if (!pathname.startsWith("/crm")) {
@@ -116,26 +117,6 @@ export function proxy(request: NextRequest) {
       JSON.stringify({ message: "You do not have permission to modify this module." }),
       { status: 403, headers: corsRes?.headers || {} }
     );
-  }
-
-  // Stock-only for warehouse in Products
-  if (permission === "stock") {
-    if (request.method !== "GET" && !pathname.includes("stock")) {
-      return new NextResponse(
-        JSON.stringify({ message: "Warehouse can only modify stock." }),
-        { status: 403, headers: corsRes?.headers || {} }
-      );
-    }
-  }
-
-  // Order status-only for warehouse
-  if (permission === "status") {
-    if (request.method !== "GET" && !pathname.includes("status")) {
-      return new NextResponse(
-        JSON.stringify({ message: "Warehouse can only update order status." }),
-        { status: 403, headers: corsRes?.headers || {} }
-      );
-    }
   }
 
   // Full access → allow

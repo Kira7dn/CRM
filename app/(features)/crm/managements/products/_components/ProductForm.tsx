@@ -156,7 +156,6 @@ export function ProductForm({ product, categories, onClose }: ProductFormProps) 
               value={imageUrl}
               onChange={(url) => setImageUrl(url)}
               folder="products"
-              label="Product Image"
               disabled={loading}
             />
 
