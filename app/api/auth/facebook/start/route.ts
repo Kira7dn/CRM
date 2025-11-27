@@ -45,13 +45,22 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+const scope = [
+  "pages_manage_engagement",
+  "pages_read_engagement",
+  "pages_manage_metadata",
+  "pages_show_list",
+  "pages_read_engagement",
+  "pages_manage_posts",
+  "publish_video"
+].join(',');
 
 function buildAuthUrl(appId: string, redirectUri: string, state: string): string {
   const params = new URLSearchParams({
     client_id: appId,
     redirect_uri: redirectUri,
     state,
-    scope: "pages_show_list,pages_read_engagement,pages_manage_posts,instagram_basic,instagram_content_publish",
+    scope: scope,
     response_type: "code",
   })
 

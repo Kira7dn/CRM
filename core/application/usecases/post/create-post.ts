@@ -46,6 +46,8 @@ export class CreatePostUseCase {
             mentions: request.mentions ?? [],
             scheduledAt: request.scheduledAt,
           });
+          console.log(result);
+
 
           // Tìm metadata tương ứng trong post.platforms
           const metaIndex = platformsMetadata.findIndex((m) => m.platform === platform.platform);

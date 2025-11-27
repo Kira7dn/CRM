@@ -484,7 +484,7 @@ export class FacebookIntegration implements FacebookIntegrationService {
  * Factory function to create FacebookIntegration with user's access token
  * This retrieves the token from SocialAuth repository for the given user
  */
-export async function createFacebookIntegrationForUser(userId: string, pageId?: string): Promise<FacebookIntegration> {
+export async function createFacebookIntegrationForUser(userId: string): Promise<FacebookIntegration> {
   const { SocialAuthRepository } = await import("@/infrastructure/repositories/social-auth-repo");
   const { ObjectId } = await import("mongodb");
 
@@ -503,7 +503,7 @@ export async function createFacebookIntegrationForUser(userId: string, pageId?: 
   const config: FacebookConfig = {
     appId: process.env.FACEBOOK_APP_ID || "",
     appSecret: process.env.FACEBOOK_APP_SECRET || "",
-    pageId: pageId || process.env.FACEBOOK_PAGE_ID || "",
+    pageId: auth.openId,
     pageAccessToken: auth.accessToken,
   };
 

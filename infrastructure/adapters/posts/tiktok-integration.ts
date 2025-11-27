@@ -90,20 +90,8 @@ export class TikTokIntegration implements TikTokIntegrationService {
         };
       }
 
-      // Step 1: Initialize video upload
-      const uploadId = await this.uploadVideo(videoMedia);
-
-      // Step 2: Wait for processing
-      const status = await this.waitForProcessing(uploadId);
-      if (status !== "ready") {
-        return {
-          success: false,
-          error: `Video processing failed with status: ${status}`,
-        };
-      }
-
       // Step 3: Publish video
-      return await this.publishVideo(uploadId, request);
+      return await this.publishVideo(videoMedia, request);
     } catch (error) {
       return {
         success: false,
@@ -303,9 +291,9 @@ export class TikTokIntegration implements TikTokIntegrationService {
   /**
    * Publish video after upload
    */
-  private async publishVideo(videoId: string, request: PlatformPublishRequest): Promise<PlatformPublishResponse> {
+  private async publishVideo(media: PostMedia, request: PlatformPublishRequest): Promise<PlatformPublishResponse> {
     try {
-      const url = `${this.baseUrl}/post/video/publish/`;
+      const url = `${this.baseUrl}/post/publish/video/init/`;
 
       const caption = this.formatCaption(request);
 
@@ -316,7 +304,10 @@ export class TikTokIntegration implements TikTokIntegrationService {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          video_id: videoId,
+          source_info: {
+            source: "PULL_FROM_URL",
+            video_url: media.url
+          },
           post_info: {
             title: request.title,
             description: caption,
@@ -340,8 +331,8 @@ export class TikTokIntegration implements TikTokIntegrationService {
 
       return {
         success: true,
-        postId: videoId,
-        permalink: data.data?.share_url || `https://www.tiktok.com/@user/video/${videoId}`,
+        postId: data.publish_id,
+        permalink: data.data?.share_url || `https://www.tiktok.com/@user/video/${data.publish_id}`,
       };
     } catch (error) {
       return {

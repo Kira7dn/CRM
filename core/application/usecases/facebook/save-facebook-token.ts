@@ -9,6 +9,7 @@ import { ObjectId } from "mongodb"
 export interface SaveFacebookTokenRequest {
   userId: ObjectId
   openId: string
+  pageName: string
   accessToken: string
   refreshToken: string
   expiresInSeconds: number
@@ -22,7 +23,7 @@ export interface SaveFacebookTokenResponse {
 }
 
 export class SaveFacebookTokenUseCase {
-  constructor(private socialAuthService: SocialAuthService) {}
+  constructor(private socialAuthService: SocialAuthService) { }
 
   async execute(
     request: SaveFacebookTokenRequest
@@ -37,6 +38,7 @@ export class SaveFacebookTokenUseCase {
     const payload: SocialAuthPayload = {
       platform: "facebook",
       openId: request.openId,
+      pageName: request.pageName,
       accessToken: request.accessToken,
       refreshToken: request.refreshToken,
       expiresAt,

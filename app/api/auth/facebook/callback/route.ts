@@ -53,14 +53,18 @@ export async function GET(request: NextRequest) {
     }
 
     const saveTokenUseCase = await createSaveFacebookTokenUseCase()
-    const result = await saveTokenUseCase.execute({
+    const tokenPaydload = {
       userId,
-      openId: tokenResponse.data.user_id,
+      openId: tokenResponse.data.page_id,
+      pageName: tokenResponse.data.page_name,
       accessToken: tokenResponse.data.access_token,
       refreshToken: tokenResponse.data.refresh_token || tokenResponse.data.access_token,
       expiresInSeconds: tokenResponse.data.expires_in,
       scope: tokenResponse.data.scope,
-    })
+    }
+    console.log(tokenPaydload);
+
+    const result = await saveTokenUseCase.execute(tokenPaydload)
 
     if (!result.success) {
       return NextResponse.redirect(
@@ -93,7 +97,8 @@ async function exchangeCodeForToken(code: string): Promise<{
     access_token: string
     refresh_token?: string
     expires_in: number
-    user_id: string
+    page_id: string
+    page_name: string
     scope: string
   }
   error?: string
@@ -110,13 +115,13 @@ async function exchangeCodeForToken(code: string): Promise<{
     // Exchange code for short-lived token
     const params = new URLSearchParams({
       client_id: appId,
+      redirect_uri: redirectUri,
       client_secret: appSecret,
       code,
-      redirect_uri: redirectUri,
     })
 
     const response = await fetch(
-      `https://graph.facebook.com/v18.0/oauth/access_token?${params.toString()}`
+      `https://graph.facebook.com/v23.0/oauth/access_token?${params.toString()}`
     )
 
     const data = await response.json()
@@ -137,22 +142,20 @@ async function exchangeCodeForToken(code: string): Promise<{
     })
 
     const longLivedResponse = await fetch(
-      `https://graph.facebook.com/v18.0/oauth/access_token?${longLivedParams.toString()}`
+      `https://graph.facebook.com/v23.0/oauth/access_token?${longLivedParams.toString()}`
     )
 
     const longLivedData = await longLivedResponse.json()
+    console.log(longLivedData);
 
-    // Get user ID and pages
-    const meResponse = await fetch(
-      `https://graph.facebook.com/v18.0/me?fields=id&access_token=${longLivedData.access_token}`
-    )
-    const meData = await meResponse.json()
 
     // Get user's pages with page access tokens
     const pagesResponse = await fetch(
-      `https://graph.facebook.com/v18.0/me/accounts?access_token=${longLivedData.access_token}`
+      `https://graph.facebook.com/v23.0/me/accounts?access_token=${longLivedData.access_token}`
     )
     const pagesData = await pagesResponse.json()
+    console.log(pagesData);
+
 
     // Use the first page's access token (or you can let user choose)
     let pageAccessToken = longLivedData.access_token
@@ -168,8 +171,9 @@ async function exchangeCodeForToken(code: string): Promise<{
       success: true,
       data: {
         access_token: pageAccessToken, // Use page token instead of user token
-        expires_in: longLivedData.expires_in || 5184000, // 60 days default
-        user_id: meData.id,
+        expires_in: longLivedData.expires_in || 5184000,
+        page_id: pagesData.data[0].id,
+        page_name: pagesData.data[0].name,
         scope: data.scope || "",
       },
     }

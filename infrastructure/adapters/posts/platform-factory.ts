@@ -45,7 +45,7 @@ export class PlatformFactory implements PlatformIntegrationFactory {
 
     switch (platform) {
       case "facebook":
-        service = await createFacebookIntegrationForUser(userId, options?.pageId);
+        service = await createFacebookIntegrationForUser(userId);
         break;
       case "tiktok":
         service = await createTikTokIntegrationForUser(userId);

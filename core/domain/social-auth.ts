@@ -9,6 +9,7 @@ export class SocialAuth {
     public readonly id: ObjectId = new ObjectId(),
     public platform: SocialPlatform,
     public openId: string,
+    public pageName: string,
     public accessToken: string,
     public refreshToken: string,
     public expiresAt: Date,
@@ -16,7 +17,7 @@ export class SocialAuth {
     public scope?: string, // OAuth scopes granted
     public readonly createdAt: Date = new Date(),
     public updatedAt: Date = new Date()
-  ) {}
+  ) { }
 }
 
 // Validation function for social auth creation/update
@@ -33,6 +34,11 @@ export function validateSocialAuth(auth: Partial<SocialAuth>): string[] {
   // OpenId validation
   if (!auth.openId || auth.openId.trim().length === 0) {
     errors.push("OpenId is required")
+  }
+
+  // Page name validation
+  if (!auth.pageName || auth.pageName.trim().length === 0) {
+    errors.push("Page name is required")
   }
 
   // Access token validation

@@ -2,7 +2,7 @@ import type { SocialAuth, SocialPlatform } from "@/core/domain/social-auth"
 import { ObjectId } from "mongodb"
 
 // Payload interfaces extending from domain
-export interface SocialAuthPayload extends Partial<SocialAuth> {}
+export interface SocialAuthPayload extends Partial<SocialAuth> { }
 
 export interface RefreshTokenPayload {
   userId: ObjectId
