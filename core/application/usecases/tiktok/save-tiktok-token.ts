@@ -9,6 +9,7 @@ import { ObjectId } from "mongodb"
 export interface SaveTikTokTokenRequest {
   userId: ObjectId
   openId: string
+  pageName: string
   accessToken: string
   refreshToken: string
   expiresInSeconds: number
@@ -22,7 +23,7 @@ export interface SaveTikTokTokenResponse {
 }
 
 export class SaveTikTokTokenUseCase {
-  constructor(private socialAuthService: SocialAuthService) {}
+  constructor(private socialAuthService: SocialAuthService) { }
 
   async execute(
     request: SaveTikTokTokenRequest
@@ -38,6 +39,7 @@ export class SaveTikTokTokenUseCase {
     const payload: SocialAuthPayload = {
       platform: "tiktok",
       openId: request.openId,
+      pageName: request.pageName,
       accessToken: request.accessToken,
       refreshToken: request.refreshToken,
       expiresAt,

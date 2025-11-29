@@ -108,7 +108,7 @@ export async function createTikTokIntegration(userId: string) {
 | 1    | `/api/auth/tiktok/start`    | Redirect đến TikTok authorize |
 | 2    | `/api/auth/tiktok/callback` | Nhận `code`, đổi token        |
 | 3    | `/api/auth/tiktok/refresh`  | Gọi background refresh        |
-| 4    | `/crm/social/tiktok`        | UI connect TikTok             |
+| 4    | `/crm/social/connections`        | UI connect TikTok             |
 
 ---
 
@@ -133,7 +133,7 @@ await saveTokenUseCase.execute(...)
 
 ## 🖥 5. UI Page — Connect TikTok
 
-> File: `app/crm/social/tiktok/page.tsx`
+> File: `app/crm/social/connections/page.tsx`
 
 User clicks 👉 **Connect TikTok**
 Hiển thị trạng thái: Idle → Redirect → Connected → Error

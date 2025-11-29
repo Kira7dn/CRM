@@ -62,7 +62,7 @@ function buildAuthUrl(
 ): string {
   const params = new URLSearchParams({
     client_key: clientKey,
-    scope: "user.info.basic,video.list,video.upload", // Adjust scopes as needed
+    scope: "user.info.basic,video.list,video.upload,video.publish", // Adjust scopes as needed
     response_type: "code",
     redirect_uri: redirectUri,
     state,

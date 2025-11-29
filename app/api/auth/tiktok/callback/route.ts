@@ -21,14 +21,14 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error("TikTok OAuth error:", error)
       return NextResponse.redirect(
-        `${baseUrl}/crm/social/tiktok?error=${encodeURIComponent(error)}`
+        `${baseUrl}/crm/social/connections?error=${encodeURIComponent(error)}`
       )
     }
 
     // Validate authorization code
     if (!code) {
       return NextResponse.redirect(
-        `${baseUrl}/crm/social/tiktok?error=missing_code`
+        `${baseUrl}/crm/social/connections?error=missing_code`
       )
     }
 
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     if (!storedState || storedState.value !== state) {
       return NextResponse.redirect(
-        `${baseUrl}/crm/social/tiktok?error=invalid_state`
+        `${baseUrl}/crm/social/connections?error=invalid_state`
       )
     }
 
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     const userIdCookie = cookieStore.get("admin_user_id")
     if (!userIdCookie) {
       return NextResponse.redirect(
-        `${baseUrl}/crm/social/tiktok?error=not_authenticated`
+        `${baseUrl}/crm/social/connections?error=not_authenticated`
       )
     }
 
@@ -54,10 +54,11 @@ export async function GET(request: NextRequest) {
 
     // Exchange authorization code for access token
     const tokenResponse = await exchangeCodeForToken(code)
+    console.log("tokenResponse", tokenResponse);
 
     if (!tokenResponse.success || !tokenResponse.data) {
       return NextResponse.redirect(
-        `${baseUrl}/crm/social/tiktok?error=${encodeURIComponent(
+        `${baseUrl}/crm/social/connections?error=${encodeURIComponent(
           tokenResponse.error || "token_exchange_failed"
         )}`
       )
@@ -68,6 +69,7 @@ export async function GET(request: NextRequest) {
     const result = await saveTokenUseCase.execute({
       userId,
       openId: tokenResponse.data.open_id,
+      pageName: tokenResponse.data.pageName,
       accessToken: tokenResponse.data.access_token,
       refreshToken: tokenResponse.data.refresh_token,
       expiresInSeconds: tokenResponse.data.expires_in,
@@ -76,7 +78,7 @@ export async function GET(request: NextRequest) {
 
     if (!result.success) {
       return NextResponse.redirect(
-        `${baseUrl}/crm/social/tiktok?error=${encodeURIComponent(
+        `${baseUrl}/crm/social/connections?error=${encodeURIComponent(
           result.message || "save_token_failed"
         )}`
       )
@@ -84,7 +86,7 @@ export async function GET(request: NextRequest) {
 
     // Clear CSRF state cookie
     const response = NextResponse.redirect(
-      `${baseUrl}/crm/social/tiktok?success=true`
+      `${baseUrl}/crm/social/connections?success=true`
     )
     response.cookies.delete("tiktok_oauth_state")
 
@@ -93,7 +95,7 @@ export async function GET(request: NextRequest) {
     console.error("TikTok OAuth callback error:", error)
     const baseUrl = process.env.APP_URL || request.nextUrl.origin
     return NextResponse.redirect(
-      `${baseUrl}/crm/social/tiktok?error=${encodeURIComponent(
+      `${baseUrl}/crm/social/connections?error=${encodeURIComponent(
         error instanceof Error ? error.message : "callback_failed"
       )}`
     )
@@ -108,6 +110,7 @@ async function exchangeCodeForToken(code: string): Promise<{
     refresh_token: string
     expires_in: number
     open_id: string
+    pageName: string
     scope: string
   }
   error?: string
@@ -139,6 +142,7 @@ async function exchangeCodeForToken(code: string): Promise<{
     })
 
     const data = await response.json()
+    console.log(data);
 
     if (!response.ok || data.error) {
       return {
@@ -146,6 +150,17 @@ async function exchangeCodeForToken(code: string): Promise<{
         error: data.error_description || data.error || "Token exchange failed",
       }
     }
+    // Get user with page access tokens
+    const userResponse = await fetch(
+      `https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${data.access_token}`,
+      },
+    }
+    )
+    const userData = await userResponse.json()
+    console.log(userData);
 
     return {
       success: true,
@@ -154,6 +169,7 @@ async function exchangeCodeForToken(code: string): Promise<{
         refresh_token: data.refresh_token,
         expires_in: data.expires_in,
         open_id: data.open_id,
+        pageName: userData.data.user.display_name,
         scope: data.scope,
       },
     }
