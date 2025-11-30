@@ -20,6 +20,10 @@ export interface SocialAuthService {
     userId: ObjectId,
     platform: SocialPlatform
   ): Promise<SocialAuth | null>
+  getByChannelAndPlatform(
+    channelId: string,
+    platform: SocialPlatform
+  ): Promise<SocialAuth | null>
   create(payload: SocialAuthPayload): Promise<SocialAuth>
   update(
     payload: SocialAuthPayload & { id: ObjectId }

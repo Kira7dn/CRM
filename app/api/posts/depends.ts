@@ -6,12 +6,12 @@ import { CreatePostUseCase } from "@/core/application/usecases/marketing/post/po
 import { UpdatePostUseCase } from "@/core/application/usecases/marketing/post/post/update-post";
 import { DeletePostUseCase } from "@/core/application/usecases/marketing/post/post/delete-post";
 
-import type { PlatformIntegrationFactory } from "@/core/application/interfaces/social/platform-integration-service";
-import { getPlatformFactory } from "@/infrastructure/adapters/external/social";
+import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter";
+import { getPostingAdapterFactory } from "@/infrastructure/adapters/external/social/factories/posting-adapter-factory";
 
 // Khởi tạo các dependencies một lần duy nhất
 let postServiceInstance: PostService | null = null;
-const platformFactoryInstance: PlatformIntegrationFactory = getPlatformFactory();
+const platformFactoryInstance: PostingAdapterFactory = getPostingAdapterFactory();
 
 /**
  * Lấy hoặc tạo mới instance của PostService

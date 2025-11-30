@@ -1,24 +1,47 @@
 /**
- * Social Integration Services
- * Export all social integrations (unified posting + messaging) and factories
+ * Social Integration Adapters
+ * Exports new architecture with separated Auth, Posting, and Messaging adapters
  */
 
-// Unified Social Integration
-export type { SocialIntegration } from "./social-integration";
-export { BaseSocialIntegration } from "./social-integration";
-export { SocialIntegrationFactory, getSocialIntegrationFactory } from "./social-integration-factory";
+// ========== Auth Services (Interfaces from Application Layer) ==========
+export type { PlatformAuthService, PlatformAuthConfig } from "@/core/application/interfaces/social/auth-service";
+export { BasePlatformAuthService } from "./auth/platform-auth-service";
 
-// Platform-specific integrations
-export { FacebookIntegration, createFacebookIntegration, createFacebookIntegrationForUser } from "./facebook-integration";
-export { TikTokIntegration, createTikTokIntegration, createTikTokIntegrationForUser } from "./tiktok-integration";
-export { ZaloIntegration, createZaloIntegration } from "./zalo-integration";
-export { YouTubeIntegration, createYouTubeIntegration, createYouTubeIntegrationForUser } from "./youtube-integration";
+export type { FacebookAuthConfig } from "./auth/facebook-auth-service";
+export { FacebookAuthService, createFacebookAuthServiceForUser } from "./auth/facebook-auth-service";
 
-// Legacy Platform Factory (for backward compatibility)
-export { PlatformFactory, getPlatformFactory } from "./platform-factory";
+export type { TikTokAuthConfig } from "./auth/tiktok-auth-service";
+export { TikTokAuthService, createTikTokAuthServiceForUser, createTikTokAuthService } from "./auth/tiktok-auth-service";
 
-// Configuration types
-export type { FacebookConfig } from "./facebook-integration";
-export type { TikTokConfig } from "./tiktok-integration";
-export type { ZaloConfig } from "./zalo-integration";
-export type { YouTubeConfig } from "./youtube-integration";
+export type { YouTubeAuthConfig } from "./auth/youtube-auth-service";
+export { YouTubeAuthService, createYouTubeAuthServiceForUser } from "./auth/youtube-auth-service";
+
+export type { ZaloAuthConfig } from "./auth/zalo-auth-service";
+export { ZaloAuthService, createZaloAuthService } from "./auth/zalo-auth-service";
+
+// Token refresh helpers
+export { refreshYouTubeToken, refreshTikTokToken, refreshFacebookToken } from "./auth/token-refresh-helpers";
+
+// ========== Posting Adapters (Interfaces from Application Layer) ==========
+export type { PostingService, PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/social/posting-adapter";
+export { BasePostingAdapter } from "./posting/posting-service";
+
+export { FacebookPostingAdapter } from "./posting/facebook-posting-adapter";
+export { TikTokPostingAdapter } from "./posting/tiktok-posting-adapter";
+export { YouTubePostingAdapter } from "./posting/youtube-posting-adapter";
+export { ZaloPostingAdapter } from "./posting/zalo-posting-adapter";
+
+// ========== Messaging Adapters (Interfaces from Application Layer) ==========
+export type { MessagingService } from "@/core/application/interfaces/social/messaging-adapter";
+export { BaseMessagingAdapter } from "./messaging/messaging-service";
+
+export { FacebookMessagingAdapter } from "./messaging/facebook-messaging-adapter";
+export { TikTokMessagingAdapter } from "./messaging/tiktok-messaging-adapter";
+export { ZaloMessagingAdapter } from "./messaging/zalo-messaging-adapter";
+
+// ========== Factories (Interfaces from Application Layer) ==========
+export type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter";
+export { PlatformPostingAdapterFactory, getPostingAdapterFactory } from "./factories/posting-adapter-factory";
+
+export type { MessagingAdapterFactory } from "@/core/application/interfaces/social/messaging-adapter";
+export { PlatformMessagingAdapterFactory, getMessagingAdapterFactory } from "./factories/messaging-adapter-factory";

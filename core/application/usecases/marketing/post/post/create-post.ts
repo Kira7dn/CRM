@@ -1,6 +1,6 @@
 import type { Post, PostMedia, Platform, PlatformMetadata } from "@/core/domain/marketing/post"
 import type { PostService, PostPayload } from "@/core/application/interfaces/marketing/post-service"
-import type { PlatformIntegrationFactory } from "@/core/application/interfaces/social/platform-integration-service"
+import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter"
 
 export interface CreatePostRequest extends PostPayload {
   userId: string; // Required for platform authentication
@@ -22,7 +22,7 @@ export interface CreatePostResponse {
 export class CreatePostUseCase {
   constructor(
     private readonly postService: PostService,
-    private readonly platformFactory: PlatformIntegrationFactory
+    private readonly platformFactory: PostingAdapterFactory
   ) { }
 
   async execute(request: CreatePostRequest): Promise<CreatePostResponse> {

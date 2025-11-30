@@ -96,7 +96,8 @@ async function processTextMessage(data: any) {
 
     const useCase = await receiveMessageUseCase();
     await useCase.execute({
-      customerId: senderId,
+      channelId: process.env.ZALO_OA_ID || "zalo-default",
+      senderPlatformId: senderId,
       platform: "zalo",
       platformMessageId: data.msg_id,
       content: message.text,
@@ -123,7 +124,8 @@ async function processImageMessage(data: any) {
 
     const useCase = await receiveMessageUseCase();
     await useCase.execute({
-      customerId: senderId,
+      channelId: process.env.ZALO_OA_ID || "zalo-default",
+      senderPlatformId: senderId,
       platform: "zalo",
       platformMessageId: data.msg_id,
       content: "[Image]",
@@ -156,7 +158,8 @@ async function processFileMessage(data: any) {
 
     const useCase = await receiveMessageUseCase();
     await useCase.execute({
-      customerId: senderId,
+      channelId: process.env.ZALO_OA_ID || "zalo-default",
+      senderPlatformId: senderId,
       platform: "zalo",
       platformMessageId: data.msg_id,
       content: `[File: ${message.name || "Unknown"}]`,
@@ -191,7 +194,8 @@ async function processAudioMessage(data: any) {
 
     const useCase = await receiveMessageUseCase();
     await useCase.execute({
-      customerId: senderId,
+      channelId: process.env.ZALO_OA_ID || "zalo-default",
+      senderPlatformId: senderId,
       platform: "zalo",
       platformMessageId: data.msg_id,
       content: "[Audio message]",
@@ -224,7 +228,8 @@ async function processVideoMessage(data: any) {
 
     const useCase = await receiveMessageUseCase();
     await useCase.execute({
-      customerId: senderId,
+      channelId: process.env.ZALO_OA_ID || "zalo-default",
+      senderPlatformId: senderId,
       platform: "zalo",
       platformMessageId: data.msg_id,
       content: "[Video]",

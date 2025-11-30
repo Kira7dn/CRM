@@ -6,6 +6,8 @@ import { ReceiveMessageUseCase } from "@/core/application/usecases/messaging/rec
 import { SendMessageUseCase } from "@/core/application/usecases/messaging/send-message";
 import { AssignConversationUseCase } from "@/core/application/usecases/messaging/assign-conversation";
 import { SyncMessagesUseCase } from "@/core/application/usecases/messaging/sync-messages";
+import type { MessagingAdapterFactory } from "@/core/application/interfaces/social/messaging-adapter";
+import { getMessagingAdapterFactory } from "@/infrastructure/adapters/external/social/factories/messaging-adapter-factory";
 
 // Shared repository instance creators
 export const createMessageRepository = async (): Promise<MessageService> => {
@@ -15,6 +17,9 @@ export const createMessageRepository = async (): Promise<MessageService> => {
 export const createConversationRepository = async (): Promise<ConversationService> => {
   return new ConversationRepository();
 };
+
+// Shared messaging factory instance
+const messagingFactoryInstance: MessagingAdapterFactory = getMessagingAdapterFactory();
 
 // Create use case instances
 export const receiveMessageUseCase = async () => {
@@ -26,7 +31,7 @@ export const receiveMessageUseCase = async () => {
 export const sendMessageUseCase = async () => {
   const messageService = await createMessageRepository();
   const conversationService = await createConversationRepository();
-  return new SendMessageUseCase(messageService, conversationService);
+  return new SendMessageUseCase(messageService, conversationService, messagingFactoryInstance);
 };
 
 export const assignConversationUseCase = async () => {
@@ -37,5 +42,5 @@ export const assignConversationUseCase = async () => {
 export const syncMessagesUseCase = async () => {
   const messageService = await createMessageRepository();
   const conversationService = await createConversationRepository();
-  return new SyncMessagesUseCase(messageService, conversationService);
+  return new SyncMessagesUseCase(messageService, conversationService, messagingFactoryInstance);
 };

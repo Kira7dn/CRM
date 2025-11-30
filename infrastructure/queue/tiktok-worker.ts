@@ -161,7 +161,7 @@ export const shutdownTikTokWorker = async () => {
 async function handleRefreshToken(data: RefreshTokenJobData) {
   try {
     const { SocialAuthRepository } = await import("@/infrastructure/repositories/social/social-auth-repo");
-    const { refreshTikTokToken } = await import("@/infrastructure/adapters/external/social/tiktok-integration");
+    const { TikTokAuthService } = await import("../adapters/external/social/auth/tiktok-auth-service");
     const { createRefreshTikTokTokenUseCase } = await import("@/app/api/auth/tiktok/depends");
     const { ObjectId } = await import("mongodb");
 
@@ -184,21 +184,23 @@ async function handleRefreshToken(data: RefreshTokenJobData) {
 
     console.log(`[TikTokWorker] Refreshing token for user ${data.userId} (expires in ${daysUntilExpiry} days)`);
 
-    // Refresh the token
-    const newTokenData = await refreshTikTokToken(auth.refreshToken);
+    // Tạo instance của TikTokAuthService
+    const authService = new TikTokAuthService({
+      clientKey: process.env.TIKTOK_CLIENT_KEY || "",
+      clientSecret: process.env.TIKTOK_CLIENT_SECRET || "",
+      accessToken: auth.accessToken
+    });
 
-    if (!newTokenData) {
-      console.error(`[TikTokWorker] Failed to refresh token for user ${data.userId}`);
-      return;
-    }
+    // Làm mới token
+    const { accessToken, expiresIn } = await authService.refreshToken();
 
-    // Update the token in database
+    // Cập nhật token mới vào database
     const useCase = await createRefreshTikTokTokenUseCase();
     const result = await useCase.execute({
       userId: new ObjectId(data.userId),
-      newAccessToken: newTokenData.access_token,
-      newRefreshToken: newTokenData.refresh_token,
-      expiresInSeconds: newTokenData.expires_in,
+      newAccessToken: accessToken,
+      newRefreshToken: auth.refreshToken, // Sử dụng refresh token cũ
+      expiresInSeconds: expiresIn,
     });
 
     if (result.success) {
@@ -217,15 +219,21 @@ async function handleRefreshToken(data: RefreshTokenJobData) {
  */
 async function handleSyncAnalytics(data: SyncAnalyticsJobData) {
   try {
-    const { createTikTokIntegrationForUser } = await import("@/infrastructure/adapters/external/social/tiktok-integration");
+    const { createTikTokAuthServiceForUser } = await import("../adapters/external/social/auth/tiktok-auth-service");
 
-    const integration = await createTikTokIntegrationForUser(data.userId);
-    const metrics = await integration.getMetrics(data.postId);
+    // Tạo instance của TikTokAuthService
+    const authService = await createTikTokAuthServiceForUser(data.userId);
 
-    console.log(`[TikTokWorker] Synced analytics for post ${data.postId}:`, metrics);
+    // Xác nhận xác thực
+    const isValid = await authService.verifyAuth();
+    if (!isValid) {
+      throw new Error("Invalid TikTok authentication");
+    }
 
-    // TODO: Update post metrics in database
-    // This would require a PostRepository method to update metrics
+    console.log(`[TikTokWorker] Successfully verified auth for user ${data.userId} when syncing post ${data.postId}`);
+
+    // TODO: Thêm xử lý đồng bộ dữ liệu ở đây nếu cần
+
   } catch (error) {
     console.error(`[TikTokWorker] Error syncing analytics for post ${data.postId}:`, error);
     throw error;

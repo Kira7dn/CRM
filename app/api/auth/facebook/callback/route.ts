@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
-import { ObjectId } from "mongodb"
-import { createSaveFacebookTokenUseCase } from "../depends"
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,10 +39,9 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const userId = new ObjectId(userIdCookie.value)
     const tokenResponse = await exchangeCodeForToken(code)
 
-    if (!tokenResponse.success || !tokenResponse.data) {
+    if (!tokenResponse.success || !tokenResponse.user_token || !tokenResponse.pages) {
       return NextResponse.redirect(
         `${baseUrl}/crm/social/connections?error=${encodeURIComponent(
           tokenResponse.error || "token_exchange_failed"
@@ -52,31 +49,12 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const saveTokenUseCase = await createSaveFacebookTokenUseCase()
-    const tokenPaydload = {
-      userId,
-      openId: tokenResponse.data.page_id,
-      pageName: tokenResponse.data.page_name,
-      accessToken: tokenResponse.data.access_token,
-      refreshToken: tokenResponse.data.refresh_token || tokenResponse.data.access_token,
-      expiresInSeconds: tokenResponse.data.expires_in,
-      scope: tokenResponse.data.scope,
-    }
-    console.log(tokenPaydload);
+    // Redirect to page selection UI with user_token and pages data
+    const pageSelectionUrl = new URL(`${baseUrl}/crm/social/facebook/select-page`)
+    pageSelectionUrl.searchParams.set("user_token", tokenResponse.user_token)
+    pageSelectionUrl.searchParams.set("pages", JSON.stringify(tokenResponse.pages))
 
-    const result = await saveTokenUseCase.execute(tokenPaydload)
-
-    if (!result.success) {
-      return NextResponse.redirect(
-        `${baseUrl}/crm/social/connections?error=${encodeURIComponent(
-          result.message || "save_token_failed"
-        )}&platform=facebook`
-      )
-    }
-
-    const response = NextResponse.redirect(
-      `${baseUrl}/crm/social/connections?success=true&platform=facebook`
-    )
+    const response = NextResponse.redirect(pageSelectionUrl.toString())
     response.cookies.delete("facebook_oauth_state")
 
     return response
@@ -91,16 +69,18 @@ export async function GET(request: NextRequest) {
   }
 }
 
+interface FacebookPage {
+  id: string
+  name: string
+  access_token: string
+  category?: string
+  tasks?: string[]
+}
+
 async function exchangeCodeForToken(code: string): Promise<{
   success: boolean
-  data?: {
-    access_token: string
-    refresh_token?: string
-    expires_in: number
-    page_id: string
-    page_name: string
-    scope: string
-  }
+  user_token?: string
+  pages?: FacebookPage[]
   error?: string
 }> {
   const appId = process.env.FACEBOOK_APP_ID
@@ -112,7 +92,7 @@ async function exchangeCodeForToken(code: string): Promise<{
   }
 
   try {
-    // Exchange code for short-lived token
+    // Step 1: Exchange code for short-lived token
     const params = new URLSearchParams({
       client_id: appId,
       redirect_uri: redirectUri,
@@ -133,7 +113,7 @@ async function exchangeCodeForToken(code: string): Promise<{
       }
     }
 
-    // Exchange for long-lived token
+    // Step 2: Exchange for long-lived user token
     const longLivedParams = new URLSearchParams({
       grant_type: "fb_exchange_token",
       client_id: appId,
@@ -146,36 +126,27 @@ async function exchangeCodeForToken(code: string): Promise<{
     )
 
     const longLivedData = await longLivedResponse.json()
-    console.log(longLivedData);
+    console.log("Long-lived user token:", longLivedData)
 
-
-    // Get user's pages with page access tokens
+    // Step 3: Get user's pages with page access tokens
     const pagesResponse = await fetch(
       `https://graph.facebook.com/v23.0/me/accounts?access_token=${longLivedData.access_token}`
     )
     const pagesData = await pagesResponse.json()
-    console.log(pagesData);
+    console.log("User pages:", pagesData)
 
-
-    // Use the first page's access token (or you can let user choose)
-    let pageAccessToken = longLivedData.access_token
-    if (pagesData.data && pagesData.data.length > 0) {
-      // Use the first page's token
-      pageAccessToken = pagesData.data[0].access_token
-      console.log(`Using page token for: ${pagesData.data[0].name} (ID: ${pagesData.data[0].id})`)
-    } else {
-      console.warn("No pages found, using user access token (posting may fail)")
+    if (!pagesData.data || pagesData.data.length === 0) {
+      return {
+        success: false,
+        error: "No Facebook Pages found for this account",
+      }
     }
 
+    // Return user token and ALL pages for user to choose
     return {
       success: true,
-      data: {
-        access_token: pageAccessToken, // Use page token instead of user token
-        expires_in: longLivedData.expires_in || 5184000,
-        page_id: pagesData.data[0].id,
-        page_name: pagesData.data[0].name,
-        scope: data.scope || "",
-      },
+      user_token: longLivedData.access_token,
+      pages: pagesData.data,
     }
   } catch (error) {
     return {

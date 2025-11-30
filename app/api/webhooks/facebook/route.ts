@@ -50,6 +50,8 @@ export async function GET(request: NextRequest) {
 /**
  * POST: Receive Messages and Events
  * Facebook sends message events to this endpoint
+ *
+ * IMPORTANT: Facebook requires response within 200ms, so we use fire-and-forget pattern
  */
 export async function POST(request: NextRequest) {
   try {
@@ -77,11 +79,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ status: "ok" });
     }
 
-    // Process each entry in the webhook payload
-    const promises = data.entry.map((entry: any) => processEntry(entry));
-    await Promise.all(promises);
+    // Fire-and-forget: Process asynchronously and respond immediately
+    // This ensures Facebook gets response within 200ms
+    setImmediate(async () => {
+      try {
+        const promises = data.entry.map((entry: any) => processEntry(entry));
+        await Promise.all(promises);
+        console.log('[Facebook Webhook] All events processed successfully');
+      } catch (error: any) {
+        console.error('[Facebook Webhook] Async processing error:', error);
+        // Error is logged but doesn't affect the response (already sent)
+      }
+    });
 
-    return NextResponse.json({ status: "ok" });
+    // Respond immediately to Facebook
+    return NextResponse.json({ status: "received" }, { status: 200 });
   } catch (error: any) {
     console.error('[Facebook Webhook] Error processing webhook:', error);
     return NextResponse.json(
@@ -100,8 +112,15 @@ async function processEntry(entry: any) {
   for (const event of messaging) {
     if (event.message) {
       await processMessage(event);
+    } else if (event.delivery) {
+      await processDelivery(event);
+    } else if (event.read) {
+      await processRead(event);
+    } else if (event.postback) {
+      await processPostback(event);
+    } else {
+      console.log('[Facebook Webhook] Unsupported event type:', Object.keys(event));
     }
-    // TODO: Handle other event types (delivery, read, postback, etc.)
   }
 }
 
@@ -130,21 +149,103 @@ async function processMessage(event: any) {
       name: att.payload?.title || att.type,
     })) || [];
 
-    // Call ReceiveMessageUseCase
+    // Call ReceiveMessageUseCase with NEW interface
     const useCase = await receiveMessageUseCase();
     await useCase.execute({
-      customerId: senderId, // Using Facebook PSID as customer identifier
+      channelId: recipientId, // NEW: Page ID as channelId
+      senderPlatformId: senderId, // NEW: PSID as senderPlatformId
       platform: "facebook",
       platformMessageId: message.mid, // Facebook Message ID for idempotency
-      content: message.text || "[Media attachment]",
+      content: message.text || "",
       attachments,
       sentAt: new Date(timestamp),
+      metadata: {
+        messageType: message.attachments?.length ? "attachment" : "text",
+      },
     });
 
     console.log('[Facebook Webhook] Message processed successfully');
   } catch (error: any) {
     console.error('[Facebook Webhook] Error processing message:', error);
     throw error;
+  }
+}
+
+/**
+ * Process delivery receipt event
+ */
+async function processDelivery(event: any) {
+  try {
+    const { delivery } = event;
+    const mids = delivery.mids || [];
+    const watermark = delivery.watermark;
+
+    console.log('[Facebook Webhook] Delivery receipt for messages:', mids);
+
+    // TODO: Implement message status update
+    // const useCase = await updateMessageStatusUseCase();
+    // for (const messageId of mids) {
+    //   await useCase.execute({
+    //     platformMessageId: messageId,
+    //     status: "delivered",
+    //     deliveredAt: new Date(watermark),
+    //   });
+    // }
+  } catch (error: any) {
+    console.error('[Facebook Webhook] Error processing delivery:', error);
+  }
+}
+
+/**
+ * Process read receipt event
+ */
+async function processRead(event: any) {
+  try {
+    const { read } = event;
+    const watermark = read.watermark;
+
+    console.log('[Facebook Webhook] Read receipt up to:', watermark);
+
+    // TODO: Implement conversation read status update
+    // const useCase = await markConversationAsReadUseCase();
+    // await useCase.execute({
+    //   senderPlatformId: event.sender.id,
+    //   readAt: new Date(watermark),
+    // });
+  } catch (error: any) {
+    console.error('[Facebook Webhook] Error processing read receipt:', error);
+  }
+}
+
+/**
+ * Process postback event (button clicks, quick replies)
+ */
+async function processPostback(event: any) {
+  try {
+    const { postback, sender, recipient, timestamp } = event;
+    const senderId = sender.id;
+    const recipientId = recipient.id;
+
+    console.log('[Facebook Webhook] Postback received:', postback);
+
+    // Treat postback as a message
+    const useCase = await receiveMessageUseCase();
+    await useCase.execute({
+      channelId: recipientId,
+      senderPlatformId: senderId,
+      platform: "facebook",
+      platformMessageId: postback.mid || `postback-${Date.now()}`,
+      content: postback.title || postback.payload,
+      sentAt: new Date(timestamp),
+      metadata: {
+        messageType: "postback",
+        payload: postback.payload,
+      },
+    });
+
+    console.log('[Facebook Webhook] Postback processed successfully');
+  } catch (error: any) {
+    console.error('[Facebook Webhook] Error processing postback:', error);
   }
 }
 

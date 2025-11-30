@@ -16,19 +16,41 @@ export type ConversationPriority = "low" | "normal" | "high" | "urgent";
  */
 export interface Conversation {
   id: string; // MongoDB ObjectId as string
-  customerId: string; // Reference to Customer
+
+  // Channel and customer identification (NEW - improved design)
+  channelId: string; // Page ID / Zalo OA ID / TikTok Business Account
+  contactId?: string; // Mapped customer ID in CRM (future: replace customerId)
+  customerId: string; // DEPRECATED: Use contactId. Kept for backward compatibility
+
   platform: Platform;
   platformConversationId?: string; // External platform conversation/thread ID
+
+  // Status and priority
   status: ConversationStatus;
   priority?: ConversationPriority; // Priority level for routing
-  assignedTo?: number; // User ID of assigned agent
+
+  // Agent assignment (NEW - improved design)
+  agentId?: string; // CRM User ID (string) of assigned agent
+  assignedTo?: number; // DEPRECATED: Use agentId. Kept for backward compatibility
+  assignedGroup?: string; // Team assignment (e.g., "support", "sales", "bot")
+
+  // Chat management (NEW)
+  unreadCount?: number; // Number of unread messages for agent
+  isBotActive?: boolean; // Is chatbot handling this conversation?
+
+  // Tags and metadata
   tags?: string[]; // Labels for categorization (e.g., "support", "sales", "complaint")
   metadata?: Record<string, any>; // Additional platform-specific data
-  lastMessageAt: Date;
+
+  // Timestamps (NEW - improved tracking)
+  lastIncomingMessageAt?: Date; // Last message from customer
+  lastOutgoingMessageAt?: Date; // Last message from agent/page
+  lastMessageAt: Date; // Most recent message (for sorting)
+
   createdAt: Date;
   updatedAt?: Date;
   closedAt?: Date; // Timestamp when conversation was closed
-  resolvedBy?: number; // User ID who resolved/closed the conversation
+  resolvedBy?: string; // User ID who resolved/closed (changed to string)
 }
 
 /**
@@ -37,6 +59,12 @@ export interface Conversation {
 export function validateConversation(data: Partial<Conversation>): string[] {
   const errors: string[] = [];
 
+  // Require either channelId (new) for proper multi-channel support
+  if (!data.channelId || data.channelId.trim().length === 0) {
+    errors.push('channelId is required');
+  }
+
+  // Require customerId (will be replaced by contactId in future)
   if (!data.customerId || data.customerId.trim().length === 0) {
     errors.push('Customer ID is required');
   }

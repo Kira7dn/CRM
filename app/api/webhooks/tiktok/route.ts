@@ -171,15 +171,20 @@ async function processMessage(data: any) {
         console.log('[TikTok Webhook] Unsupported content type:', message.content_type);
     }
 
-    // Call ReceiveMessageUseCase
+    // Call ReceiveMessageUseCase with NEW interface
     const useCase = await receiveMessageUseCase();
     await useCase.execute({
-      customerId: senderId,
+      channelId: CLIENT_KEY || "tiktok-default", // TikTok Business Account identifier
+      senderPlatformId: senderId, // TikTok Open ID
       platform: "tiktok",
       platformMessageId: messageId,
       content,
       attachments: attachments.length > 0 ? attachments : undefined,
       sentAt: new Date(timestamp),
+      metadata: {
+        conversationId,
+        contentType: message.content_type,
+      },
     });
 
     console.log('[TikTok Webhook] Message processed successfully');

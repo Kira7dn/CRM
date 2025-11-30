@@ -3,7 +3,7 @@ import { cookies } from "next/headers"
 import { ObjectId } from "mongodb"
 import { createRefreshYouTubeTokenUseCase } from "../depends"
 import { SocialAuthRepository } from "@/infrastructure/repositories/social/social-auth-repo"
-import { refreshYouTubeToken } from "@/infrastructure/adapters/external/social/youtube-integration"
+import { refreshYouTubeToken } from "@/infrastructure/adapters/external/social/auth/token-refresh-helpers"
 
 export async function POST(request: NextRequest) {
   try {

@@ -2,7 +2,7 @@ import type { MessageService, MessagePayload } from "@/core/application/interfac
 import type { ConversationService } from "@/core/application/interfaces/messaging/conversation-service";
 import type { Message, Platform } from "@/core/domain/messaging/message";
 import { validateMessage } from "@/core/domain/messaging/message";
-import { getSocialIntegrationFactory } from "@/infrastructure/adapters/external/social/social-integration-factory";
+import type { MessagingAdapterFactory } from "@/core/application/interfaces/social/messaging-adapter";
 
 /**
  * Request payload for sending a message from CRM to platform
@@ -45,7 +45,8 @@ export interface SendMessageResponse {
 export class SendMessageUseCase {
   constructor(
     private messageService: MessageService,
-    private conversationService: ConversationService
+    private conversationService: ConversationService,
+    private messagingFactory: MessagingAdapterFactory
   ) { }
 
   async execute(request: SendMessageRequest): Promise<SendMessageResponse> {
@@ -67,17 +68,21 @@ export class SendMessageUseCase {
       );
     }
 
-    // Step 4: Get the appropriate social integration (supports both messaging and posting)
-    const factory = getSocialIntegrationFactory();
-    const integration = await factory.createForMessaging(request.platform);
+    // Step 4: Get the appropriate messaging adapter
+    const integration = await this.messagingFactory.create(request.platform, conversation.channelId);
 
     // Step 5: Send message via platform API
     let sent = false;
+    let platformMessageId: string | undefined;
+    let deliveryStatus: "sent" | "failed" | "pending" = "pending";
+
     try {
+      let sendResult;
+
       if (request.attachments && request.attachments.length > 0) {
         // Send message with attachments
         if (integration.sendMessageWithAttachments) {
-          await integration.sendMessageWithAttachments(
+          sendResult = await integration.sendMessageWithAttachments(
             request.platformUserId,
             request.content,
             request.attachments
@@ -88,18 +93,24 @@ export class SendMessageUseCase {
       } else {
         // Send text-only message
         if (integration.sendMessage) {
-          await integration.sendMessage(request.platformUserId, request.content);
+          sendResult = await integration.sendMessage(request.platformUserId, request.content);
         } else {
           throw new Error(`Platform ${request.platform} does not support sending messages`);
         }
       }
-      sent = true;
-      console.log('[SendMessageUseCase] Message sent successfully to platform');
+
+      // Capture platform message ID and status from send result
+      sent = sendResult.success;
+      platformMessageId = sendResult.platformMessageId;
+      deliveryStatus = sendResult.success ? "sent" : "failed";
+
+      console.log('[SendMessageUseCase] Message sent successfully to platform', { platformMessageId });
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('[SendMessageUseCase] Failed to send message to platform:', errorMessage);
       // Continue to save the message even if sending fails, but mark it
       sent = false;
+      deliveryStatus = "failed";
     }
 
     // Step 6: Create message payload
@@ -110,6 +121,8 @@ export class SendMessageUseCase {
       content: request.content,
       attachments: request.attachments,
       sentAt: now,
+      platformMessageId, // Store platform message ID for idempotency
+      deliveryStatus, // Track delivery status
       isRead: true, // Agent messages are automatically marked as read
     };
 
@@ -160,10 +173,9 @@ export class SendMessageUseCase {
     }
 
     // Validate platform is supported
-    const factory = getSocialIntegrationFactory();
-    if (!factory.isSupported(request.platform)) {
+    if (!this.messagingFactory.isSupported(request.platform)) {
       throw new Error(
-        `Unsupported platform: ${request.platform}. Supported platforms: ${factory.getSupportedPlatforms().join(', ')}`
+        `Unsupported platform: ${request.platform}. Supported platforms: ${this.messagingFactory.getSupportedPlatforms().join(', ')}`
       );
     }
   }

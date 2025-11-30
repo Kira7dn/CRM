@@ -7,13 +7,16 @@ import { validateMessage } from "@/core/domain/messaging/message";
  * Request payload for receiving a message from webhook
  */
 export interface ReceiveMessageRequest {
-  // Customer and platform identification
-  customerId: string;
+  // Channel and platform identification
+  channelId: string; // Page ID / Zalo OA ID / TikTok Business Account ID
   platform: Platform;
+
+  // Sender identification
+  senderPlatformId: string; // PSID (Facebook), Zalo UID, TikTok UID
   platformMessageId?: string; // For idempotency check
 
   // Message content
-  content: string;
+  content?: string;
   attachments?: Array<{
     type: "image" | "file" | "video" | "audio";
     url: string;
@@ -23,6 +26,7 @@ export interface ReceiveMessageRequest {
 
   // Metadata
   sentAt?: Date;
+  metadata?: Record<string, any>;
 }
 
 /**
@@ -71,7 +75,8 @@ export class ReceiveMessageUseCase {
 
     // Step 3: Find or create conversation
     const { conversation, isNew } = await this.findOrCreateConversation(
-      request.customerId,
+      request.channelId,
+      request.senderPlatformId,
       request.platform
     );
 
@@ -82,7 +87,7 @@ export class ReceiveMessageUseCase {
       conversationId: conversation.id,
       sender: "customer",
       platformMessageId: request.platformMessageId,
-      content: request.content,
+      content: request.content || "",
       attachments: request.attachments,
       sentAt: request.sentAt || new Date(),
       isRead: false,
@@ -111,12 +116,16 @@ export class ReceiveMessageUseCase {
    * Validate incoming request
    */
   private validateRequest(request: ReceiveMessageRequest): void {
-    if (!request.customerId || request.customerId.trim().length === 0) {
-      throw new Error('Customer ID is required');
+    if (!request.channelId || request.channelId.trim().length === 0) {
+      throw new Error('channelId is required');
+    }
+
+    if (!request.senderPlatformId || request.senderPlatformId.trim().length === 0) {
+      throw new Error('senderPlatformId is required');
     }
 
     if (!request.platform) {
-      throw new Error('Platform is required');
+      throw new Error('platform is required');
     }
 
     const validPlatforms: Platform[] = ["facebook", "zalo", "tiktok", "website"];
@@ -124,22 +133,24 @@ export class ReceiveMessageUseCase {
       throw new Error(`Invalid platform. Must be one of: ${validPlatforms.join(", ")}`);
     }
 
-    if (!request.content || request.content.trim().length === 0) {
-      throw new Error('Message content is required');
+    if (!request.content && (!request.attachments || request.attachments.length === 0)) {
+      throw new Error('Message must have content or attachments');
     }
   }
 
   /**
    * Find existing conversation or create new one
+   * Uses channelId + senderPlatformId for accurate mapping
    */
   private async findOrCreateConversation(
-    customerId: string,
+    channelId: string,
+    senderPlatformId: string,
     platform: Platform
   ): Promise<{ conversation: any; isNew: boolean }> {
-    // Try to find existing active conversation
-    let conversation = await this.conversationService.findByCustomerAndPlatform(
-      customerId,
-      platform
+    // Try to find existing active conversation using channelId + senderPlatformId
+    let conversation = await this.conversationService.findOpenByChannelAndCustomer(
+      channelId,
+      senderPlatformId
     );
 
     if (conversation) {
@@ -154,10 +165,12 @@ export class ReceiveMessageUseCase {
     // Create new conversation
     const now = new Date();
     conversation = await this.conversationService.create({
-      customerId,
+      channelId,
+      customerId: senderPlatformId, // Will be mapped to contactId later
       platform,
       status: "open",
       lastMessageAt: now,
+      lastIncomingMessageAt: now,
       createdAt: now,
     });
 

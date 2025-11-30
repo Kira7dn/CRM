@@ -1,6 +1,6 @@
 import type { Post, Platform } from "@/core/domain/marketing/post"
 import type { PostService, PostPayload } from "@/core/application/interfaces/marketing/post-service"
-import type { PlatformIntegrationFactory } from "@/core/application/interfaces/social/platform-integration-service"
+import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter"
 
 export interface UpdatePostRequest extends Omit<PostPayload, 'media'> {
   id: string;
@@ -19,7 +19,7 @@ export interface UpdatePostResponse {
 export class UpdatePostUseCase {
   constructor(
     private readonly postService: PostService,
-    private readonly platformFactory: PlatformIntegrationFactory
+    private readonly platformFactory: PostingAdapterFactory
   ) { }
 
   async execute(request: UpdatePostRequest): Promise<UpdatePostResponse> {

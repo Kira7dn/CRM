@@ -33,6 +33,17 @@ export class SocialAuthRepository
     return doc ? this.toDomain(doc) : null
   }
 
+  // Get social auth by channel ID (openId) and platform
+  async getByChannelAndPlatform(
+    channelId: string,
+    platform: SocialPlatform
+  ): Promise<SocialAuth | null> {
+    const collection = await this.getCollection()
+
+    const doc = await collection.findOne({ openId: channelId, platform })
+    return doc ? this.toDomain(doc) : null
+  }
+
   // Create new social auth
   async create(payload: SocialAuthPayload): Promise<SocialAuth> {
     const collection = await this.getCollection()

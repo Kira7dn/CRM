@@ -52,7 +52,8 @@ const scope = [
   "pages_show_list",
   "pages_read_engagement",
   "pages_manage_posts",
-  "publish_video"
+  "publish_video",
+  "pages_messaging"
 ].join(',');
 
 function buildAuthUrl(appId: string, redirectUri: string, state: string): string {

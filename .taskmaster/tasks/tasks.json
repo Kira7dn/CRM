@@ -2667,13 +2667,452 @@
         "recommendedSubtasks": 1,
         "expansionPrompt": "Chia nhỏ thành các bước: (1) Thiết lập biến môi trường cho tích hợp TikTok.",
         "updatedAt": "2025-11-26T14:31:24.260Z"
+      },
+      {
+        "id": "70",
+        "title": "Implement Facebook Login Flow",
+        "description": "Implement the user login flow to obtain a long-lived user access token from Facebook.",
+        "details": "Use Facebook OAuth to allow users to log in and obtain a long-lived user access token. Implement the exchangeCodeForToken function to handle token exchange and retrieval of user pages.",
+        "testStrategy": "Verify that the login flow correctly obtains a long-lived token and retrieves the list of pages.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-30T15:00:21.134Z"
+      },
+      {
+        "id": "71",
+        "title": "Fetch User Pages",
+        "description": "Fetch the list of pages associated with the user using the user access token.",
+        "details": "Call the Facebook Graph API endpoint /me/accounts with the user access token to retrieve the list of pages, page access tokens, and permissions.",
+        "testStrategy": "Ensure that the API call returns the correct list of pages and associated tokens.",
+        "priority": "medium",
+        "dependencies": [
+          "70"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "72",
+        "title": "Redirect to Page Selection UI",
+        "description": "Redirect users to the CRM interface to select a page from the list of fetched pages.",
+        "details": "Implement a redirect to /crm/social/select-page with the user token and pages as query parameters.",
+        "testStrategy": "Check that the redirect correctly passes the user token and pages to the frontend.",
+        "priority": "medium",
+        "dependencies": [
+          "71"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "73",
+        "title": "Create Page Selection API",
+        "description": "Develop an API endpoint to handle user page selection and subscribe to webhook messages.",
+        "details": "Create a POST endpoint /api/auth/facebook/select-page to receive page_id, page_name, and page_access_token. Subscribe to webhook messages for the selected page.",
+        "testStrategy": "Test the API to ensure it correctly subscribes to the webhook and processes user selections.",
+        "priority": "medium",
+        "dependencies": [
+          "72"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "74",
+        "title": "Subscribe to Webhook Messages",
+        "description": "Subscribe the selected page to receive webhook messages for specific events.",
+        "details": "Use the Facebook Graph API to subscribe the selected page to messages and messaging_postbacks using the page access token.",
+        "testStrategy": "Verify that the subscription is successful and that webhook messages are received for the selected events.",
+        "priority": "medium",
+        "dependencies": [
+          "73"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "75",
+        "title": "Save Page Token to Database",
+        "description": "Store the selected page's access token and details in the database.",
+        "details": "Implement database logic to save the page_id, page_name, and page_access_token using a use case pattern.",
+        "testStrategy": "Ensure that the page details are correctly saved and retrievable from the database.",
+        "priority": "medium",
+        "dependencies": [
+          "74"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "76",
+        "title": "Refactor Facebook Callback",
+        "description": "Refactor the Facebook callback to allow user page selection instead of auto-selecting the first page.",
+        "status": "done",
+        "dependencies": [
+          "70"
+        ],
+        "priority": "medium",
+        "details": "Modify the callback to return the user token and all pages array. Update the callback route to redirect to /crm/social/facebook/select-page. Create an API /api/auth/facebook/select-page for webhook subscription and token saving. Develop a page selection UI at /crm/social/facebook/select-page.",
+        "testStrategy": "Test the callback to ensure it correctly returns the list of pages and redirects properly. Verify the new API for webhook subscription and token saving functions correctly. Ensure the page selection UI operates as expected.",
+        "subtasks": [],
+        "updatedAt": "2025-11-30T12:10:31.404Z"
+      },
+      {
+        "id": "77",
+        "title": "Implement Error Handling",
+        "description": "Add comprehensive error handling for all API interactions and user flows.",
+        "details": "Implement try-catch blocks and error responses for all API calls and user interactions to handle failures gracefully.",
+        "testStrategy": "Simulate various failure scenarios to ensure errors are handled and reported correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "70",
+          "71",
+          "73"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "78",
+        "title": "UI Integration for Page Selection",
+        "description": "Integrate the page selection UI to display pages and handle user selection.",
+        "details": "Develop the frontend interface to display the list of pages and allow users to select one for further processing.",
+        "testStrategy": "Verify that the UI correctly displays pages and handles user interactions as expected.",
+        "priority": "medium",
+        "dependencies": [
+          "72"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "79",
+        "title": "End-to-End Testing",
+        "description": "Conduct end-to-end testing of the entire Facebook integration flow.",
+        "details": "Perform comprehensive testing from user login to page selection, webhook subscription, and database storage to ensure all components work together seamlessly.",
+        "testStrategy": "Execute test cases covering all user scenarios and edge cases to validate the complete flow.",
+        "priority": "medium",
+        "dependencies": [
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "80",
+        "title": "Update Conversation Domain",
+        "description": "Enhance the Conversation domain to include new fields and update existing ones.",
+        "details": "Add fields such as `channelId`, `contactId`, `agentId`, `assignedGroup`, `unreadCount`, `isBotActive`, `lastIncomingMessageAt`, `lastOutgoingMessageAt`. Update `assignedTo` to `agentId`.",
+        "testStrategy": "Unit tests to verify all fields are correctly added and updated in the Conversation domain.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-30T15:00:45.454Z"
+      },
+      {
+        "id": "81",
+        "title": "Update Message Domain",
+        "description": "Enhance the Message domain to include new fields and update existing ones.",
+        "details": "Add fields such as `channelId`, `senderType`, `senderPlatformId`, `messageType`. Ensure `conversationId` is optional.",
+        "testStrategy": "Unit tests to verify all fields are correctly added and updated in the Message domain.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-30T15:01:07.633Z"
+      },
+      {
+        "id": "82",
+        "title": "Implement Webhook Handler",
+        "description": "Develop a function to handle incoming webhooks and process messages, including support for channelId, delivery/read/postback events, and a fire-and-forget pattern for platforms like Facebook, TikTok, and Zalo.",
+        "status": "pending",
+        "dependencies": [
+          "80",
+          "81"
+        ],
+        "priority": "medium",
+        "details": "Create a function `handleIncomingWebhook` that processes incoming webhooks, finds or creates contacts and conversations, saves messages, and handles various events with a fire-and-forget pattern.",
+        "testStrategy": "Integration tests with mock webhook payloads to ensure messages and events are processed correctly across all supported platforms.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Update Webhook Handler for ChannelId Support",
+            "description": "Modify the existing webhook handler to include channelId in the processing logic.",
+            "dependencies": [],
+            "details": "Ensure that the channelId is correctly extracted and utilized in the `handleIncomingWebhook` function.",
+            "status": "pending",
+            "testStrategy": "Test with mock payloads containing channelId to verify correct processing.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Event Handling for Delivery/Read/Postback",
+            "description": "Add support for handling delivery, read, and postback events in the webhook handler.",
+            "dependencies": [],
+            "details": "Extend the `handleIncomingWebhook` function to process these events and update the system accordingly.",
+            "status": "pending",
+            "testStrategy": "Use mock events to ensure they are processed and logged correctly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Fire-and-Forget Pattern",
+            "description": "Ensure the webhook handler uses a fire-and-forget pattern for processing.",
+            "dependencies": [],
+            "details": "Optimize the `handleIncomingWebhook` function to process incoming data asynchronously without blocking.",
+            "status": "pending",
+            "testStrategy": "Verify that the handler processes incoming data efficiently without delays.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "83",
+        "title": "Develop ReceiveMessageUseCase",
+        "description": "Implement the use case for receiving messages according to the new domain model with enhanced multi-channel support.",
+        "status": "pending",
+        "dependencies": [
+          "80",
+          "81",
+          "82"
+        ],
+        "priority": "medium",
+        "details": "Create `ReceiveMessageUseCase` to validate requests, check idempotency, find or create conversations, and save messages. Enhanced with `channelId` and `senderPlatformId` for accurate multi-channel support. Utilize `findOpenByChannelAndCustomer` method for conversation handling.",
+        "testStrategy": "Unit tests for each step in the use case to ensure correct processing and error handling. Include tests for multi-channel support and updated validation logic.",
+        "subtasks": []
+      },
+      {
+        "id": "84",
+        "title": "Enhance SendMessageUseCase",
+        "description": "Update the SendMessageUseCase to align with the new domain model and add necessary features.",
+        "details": "Modify `SendMessageUseCase` to remove unnecessary fields, handle platformMessageId, and manage delivery status.",
+        "testStrategy": "Unit tests to verify message sending, status updates, and error handling.",
+        "priority": "medium",
+        "dependencies": [
+          "80",
+          "81"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-11-30T14:57:54.942Z"
+      },
+      {
+        "id": "85",
+        "title": "Implement FacebookMessagingAdapter",
+        "description": "Develop an adapter for sending messages via Facebook with enhanced features.",
+        "details": "Create `FacebookMessagingAdapter` to send messages, handle attachments, and manage typing indicators and read receipts.",
+        "testStrategy": "Integration tests with Facebook API to ensure messages are sent and received correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "84"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "86",
+        "title": "Optimize Webhook Processing",
+        "description": "Improve webhook processing to handle various event types and ensure idempotency.",
+        "details": "Enhance webhook processing to handle message, delivery, read, and postback events. Implement idempotency checks.",
+        "testStrategy": "Integration tests with different event types to ensure correct processing and idempotency.",
+        "priority": "medium",
+        "dependencies": [
+          "82",
+          "83"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "87",
+        "title": "Implement MessageSendResult Interface",
+        "description": "Create an interface for handling message send results with detailed status.",
+        "details": "Define `MessageSendResult` to include success status, platformMessageId, and error details.",
+        "testStrategy": "Unit tests to verify correct implementation and usage of the interface.",
+        "priority": "medium",
+        "dependencies": [
+          "85"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "88",
+        "title": "Refactor ProcessEntry Function",
+        "description": "Refactor the processEntry function to handle different event types modularly.",
+        "details": "Modify `processEntry` to delegate handling to specific functions for message, delivery, read, and postback events.",
+        "testStrategy": "Integration tests to ensure each event type is processed correctly and independently.",
+        "priority": "medium",
+        "dependencies": [
+          "86"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "89",
+        "title": "Enhance Logging and Error Handling",
+        "description": "Improve logging and error handling across the messaging system.",
+        "details": "Implement detailed logging and error handling to track message processing and API interactions.",
+        "testStrategy": "Manual testing and log reviews to ensure all errors are logged and handled appropriately.",
+        "priority": "medium",
+        "dependencies": [
+          "82",
+          "83",
+          "84",
+          "85",
+          "86"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "90",
+        "title": "Create SSE Stream Endpoint",
+        "description": "Develop the SSE stream endpoint to handle real-time updates.",
+        "details": "Implement the `/api/events/stream` endpoint using Express.js. Use WritableStream to maintain active client connections. Ensure the endpoint supports multiple concurrent connections.",
+        "testStrategy": "Test endpoint by connecting multiple clients and verifying real-time data flow.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "in-progress",
+        "subtasks": [],
+        "updatedAt": "2025-11-30T15:28:29.534Z"
+      },
+      {
+        "id": "91",
+        "title": "Implement Client Connection Management",
+        "description": "Manage client connections for the SSE stream.",
+        "details": "Track active connections in memory. Implement connection cleanup on client disconnect. Ensure connections are closed gracefully.",
+        "testStrategy": "Simulate client disconnects and verify connections are cleaned up without memory leaks.",
+        "priority": "high",
+        "dependencies": [
+          "90"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "92",
+        "title": "Create Broadcast Helper Function",
+        "description": "Develop a helper function to broadcast events to clients.",
+        "details": "Create a global `broadcastEvent(event, data)` function. Format events using SSE format and iterate through all connected clients to send events.",
+        "testStrategy": "Unit test the function with mock connections to ensure correct event formatting and delivery.",
+        "priority": "high",
+        "dependencies": [
+          "91"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "93",
+        "title": "Add Keep-Alive Ping Mechanism",
+        "description": "Implement keep-alive pings to maintain client connections.",
+        "details": "Send a ping message every 15 seconds to each connected client to keep the connection alive. Use `setInterval` for periodic pings.",
+        "testStrategy": "Verify that connections remain open with periodic pings and close when pings are stopped.",
+        "priority": "medium",
+        "dependencies": [
+          "91"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "94",
+        "title": "Integrate SSE Events in Webhook Handlers",
+        "description": "Emit SSE events from webhook handlers for various platforms.",
+        "details": "Modify Facebook, Zalo, and TikTok webhook handlers to emit `new_message` and `new_conversation` events using the `broadcastEvent` function.",
+        "testStrategy": "Mock webhook events and verify that corresponding SSE events are broadcasted correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "92"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "95",
+        "title": "Integrate SSE Events in Server Actions",
+        "description": "Emit SSE events from server actions for messages and customers.",
+        "details": "Emit `message_sent`, `customer_created`, `customer_updated`, `customer_deleted`, and `conversation_updated` events from respective server actions.",
+        "testStrategy": "Trigger server actions and verify that SSE events are emitted and received by clients.",
+        "priority": "medium",
+        "dependencies": [
+          "92"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "96",
+        "title": "Create SSE Connection Hook",
+        "description": "Develop a React hook for managing SSE connections.",
+        "details": "Create a `useSSEConnection` hook to establish and manage an EventSource connection to `/api/events/stream`. Handle reconnection logic and cleanup on component unmount.",
+        "testStrategy": "Test the hook in a sample component to ensure it handles connections and reconnections properly.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "97",
+        "title": "Update Message Management Client",
+        "description": "Replace polling with SSE for message updates.",
+        "details": "Modify the MessageManagementClient to use the `useSSEConnection` hook. Handle real-time updates for messages and conversations.",
+        "testStrategy": "Verify that messages and conversations update in real-time without polling.",
+        "priority": "medium",
+        "dependencies": [
+          "96"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "98",
+        "title": "Update Customer Management",
+        "description": "Implement SSE for real-time customer updates.",
+        "details": "Update the customer management component to use SSE for real-time updates. Remove the need for manual refreshes.",
+        "testStrategy": "Ensure customer list updates in real-time with SSE events.",
+        "priority": "medium",
+        "dependencies": [
+          "96"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "99",
+        "title": "Implement Error Handling & Optimization",
+        "description": "Enhance error handling and optimize SSE connections.",
+        "details": "Implement reconnection logic with exponential backoff. Handle SSE connection errors gracefully and add a connection status indicator in the UI. Optimize event filtering to send only relevant events to each client.",
+        "testStrategy": "Test reconnection logic under various network conditions and verify error handling in the UI.",
+        "priority": "medium",
+        "dependencies": [
+          "94",
+          "95",
+          "97",
+          "98"
+        ],
+        "status": "pending",
+        "subtasks": []
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-11-26T14:50:50.631Z",
-      "taskCount": 69,
-      "completedCount": 66,
+      "lastModified": "2025-11-30T15:28:29.537Z",
+      "taskCount": 99,
+      "completedCount": 71,
       "tags": [
         "master"
       ]

@@ -22,13 +22,32 @@ export class ConversationRepository
   protected toDomain(doc: Document): Conversation {
     return {
       id: doc._id.toString(),
+      // NEW fields
+      channelId: doc.channelId,
+      contactId: doc.contactId,
+      // Legacy field
       customerId: doc.customerId,
       platform: doc.platform,
+      platformConversationId: doc.platformConversationId,
       status: doc.status,
+      priority: doc.priority,
+      // NEW agent fields
+      agentId: doc.agentId,
       assignedTo: doc.assignedTo,
+      assignedGroup: doc.assignedGroup,
+      // NEW chat management
+      unreadCount: doc.unreadCount,
+      isBotActive: doc.isBotActive,
+      tags: doc.tags,
+      metadata: doc.metadata,
+      // NEW timestamps
+      lastIncomingMessageAt: doc.lastIncomingMessageAt,
+      lastOutgoingMessageAt: doc.lastOutgoingMessageAt,
       lastMessageAt: doc.lastMessageAt,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
+      closedAt: doc.closedAt,
+      resolvedBy: doc.resolvedBy,
     };
   }
 
@@ -37,18 +56,40 @@ export class ConversationRepository
    */
   protected toDocument(entity: Partial<Conversation>): Document {
     const doc: any = {
+      // NEW fields
+      channelId: entity.channelId,
+      contactId: entity.contactId,
+      // Legacy
       customerId: entity.customerId,
       platform: entity.platform,
+      platformConversationId: entity.platformConversationId,
       status: entity.status ?? "open",
+      priority: entity.priority,
+      // NEW agent fields
+      agentId: entity.agentId,
       assignedTo: entity.assignedTo,
+      assignedGroup: entity.assignedGroup,
+      // NEW chat management
+      unreadCount: entity.unreadCount,
+      isBotActive: entity.isBotActive,
+      tags: entity.tags,
+      metadata: entity.metadata,
+      // NEW timestamps
+      lastIncomingMessageAt: entity.lastIncomingMessageAt,
+      lastOutgoingMessageAt: entity.lastOutgoingMessageAt,
       lastMessageAt: entity.lastMessageAt,
       createdAt: entity.createdAt ?? new Date(),
       updatedAt: entity.updatedAt,
+      closedAt: entity.closedAt,
+      resolvedBy: entity.resolvedBy,
     };
 
     if (entity.id) {
       doc._id = new MongoObjectId(entity.id);
     }
+
+    // Remove undefined fields
+    Object.keys(doc).forEach(key => doc[key] === undefined && delete doc[key]);
 
     return doc;
   }
@@ -156,5 +197,22 @@ export class ConversationRepository
       { _id: new MongoObjectId(conversationId) },
       { $set: { status, updatedAt: new Date() } }
     );
+  }
+
+  /**
+   * NEW: Find open conversation by channelId and senderPlatformId
+   * This is the improved method for multi-channel support
+   */
+  async findOpenByChannelAndCustomer(
+    channelId: string,
+    senderPlatformId: string
+  ): Promise<Conversation | null> {
+    const collection = await this.getCollection();
+    const doc = await collection.findOne({
+      channelId,
+      customerId: senderPlatformId, // Using customerId to store senderPlatformId
+      status: { $ne: "closed" },
+    });
+    return doc ? this.toDomain(doc) : null;
   }
 }

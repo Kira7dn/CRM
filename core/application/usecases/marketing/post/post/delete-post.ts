@@ -1,6 +1,6 @@
 import type { PostService } from "@/core/application/interfaces/marketing/post-service"
 import type { Platform } from "@/core/domain/marketing/post"
-import type { PlatformIntegrationFactory } from "@/core/application/interfaces/social/platform-integration-service"
+import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter"
 
 export interface DeletePostRequest {
   id: string
@@ -17,7 +17,7 @@ export interface DeletePostResponse {
 export class DeletePostUseCase {
   constructor(
     private postService: PostService,
-    private platformFactory: PlatformIntegrationFactory
+    private platformFactory: PostingAdapterFactory
   ) { }
 
   async execute(request: DeletePostRequest): Promise<DeletePostResponse> {
