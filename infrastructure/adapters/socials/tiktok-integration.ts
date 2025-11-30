@@ -4,6 +4,8 @@ import type {
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
 import type { PostMetrics, PostMedia } from "@/core/domain/campaigns/post";
+import type { Message } from "@/core/domain/messaging/message";
+import { BaseSocialIntegration } from "./social-integration";
 
 /**
  * TikTok API Configuration
@@ -80,21 +82,27 @@ interface TikTokVideoInfoResponse {
 }
 
 /**
- * TikTok Content Posting API Integration
- * Implements posting videos to TikTok
+ * TikTok Content Posting and Messaging API Integration
+ * Implements both posting videos to TikTok and TikTok Business Messaging
  *
  * Required Scopes:
  * - video.upload
  * - video.publish
  * - video.list
+ * - user.info.basic (for messaging)
  *
- * API Documentation: https://developers.tiktok.com/doc/content-posting-api-get-started
+ * API Documentation:
+ * - Posts: https://developers.tiktok.com/doc/content-posting-api-get-started
+ * - Messaging: https://developers.tiktok.com/doc/messaging-api-overview
  */
-export class TikTokIntegration implements TikTokIntegrationService {
+export class TikTokIntegration extends BaseSocialIntegration implements TikTokIntegrationService {
   platform = "tiktok" as const;
   private baseUrl = "https://open.tiktokapis.com/v2";
+  private messagingBaseUrl = "https://business-api.tiktok.com/open_api/v1.3";
 
-  constructor(private config: TikTokConfig) { }
+  constructor(private config: TikTokConfig) {
+    super();
+  }
 
   /**
    * Publish video to TikTok
@@ -515,6 +523,141 @@ export class TikTokIntegration implements TikTokIntegrationService {
     }
 
     return caption;
+  }
+
+  // ========== Messaging Methods (TikTok Business Messaging) ==========
+
+  /**
+   * Send a text message to a user via TikTok Business Messaging
+   */
+  async sendMessage(platformUserId: string, content: string): Promise<void> {
+    this.validateParams({ platformUserId, content });
+
+    const payload = {
+      sender_id: platformUserId,
+      message: {
+        text: content,
+      },
+    };
+
+    await this.sendToTikTokMessaging("/message/send/", payload);
+  }
+
+  /**
+   * Send a message with attachments to a user
+   */
+  async sendMessageWithAttachments(
+    platformUserId: string,
+    content: string,
+    attachments: Array<{
+      type: "image" | "file" | "video" | "audio";
+      url: string;
+    }>
+  ): Promise<void> {
+    this.validateParams({ platformUserId });
+
+    // Send text message first if provided
+    if (content && content.trim().length > 0) {
+      await this.sendMessage(platformUserId, content);
+    }
+
+    // Send each attachment
+    for (const attachment of attachments) {
+      const payload = {
+        sender_id: platformUserId,
+        message: {
+          attachment: {
+            type: this.mapAttachmentType(attachment.type),
+            payload: {
+              url: attachment.url,
+            },
+          },
+        },
+      };
+
+      await this.sendToTikTokMessaging("/message/send/", payload);
+    }
+  }
+
+  /**
+   * Fetch message history (if supported by TikTok API)
+   */
+  async fetchHistory(platformUserId: string, limit: number = 50): Promise<Message[]> {
+    this.log("fetchHistory not yet implemented for TikTok", {
+      platformUserId,
+      limit,
+    });
+    throw new Error(
+      "fetchHistory is not yet implemented for TikTok Business Messaging. Messages should be stored via webhooks."
+    );
+  }
+
+  /**
+   * Send typing indicator to user
+   */
+  async sendTypingIndicator(platformUserId: string, typing: boolean): Promise<void> {
+    this.validateParams({ platformUserId });
+
+    const payload = {
+      sender_id: platformUserId,
+      sender_action: typing ? "typing_on" : "typing_off",
+    };
+
+    try {
+      await this.sendToTikTokMessaging("/message/typing/", payload);
+    } catch (error) {
+      // Typing indicators are optional, don't fail if not supported
+      this.log("Typing indicator failed (optional feature)", { error });
+    }
+  }
+
+  /**
+   * Send payload to TikTok Business Messaging API
+   */
+  private async sendToTikTokMessaging(endpoint: string, payload: any): Promise<void> {
+    try {
+      this.log(`Sending request to TikTok Messaging ${endpoint}`, payload);
+
+      const url = `${this.messagingBaseUrl}${endpoint}`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Token": this.config.accessToken,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.code !== 0) {
+        this.logError("TikTok Messaging API error", data);
+        throw new Error(`TikTok Messaging API error: ${data.message || "Unknown error"}`);
+      }
+
+      this.log("Message sent successfully", data);
+    } catch (error: any) {
+      this.logError("Failed to send message to TikTok", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Map our attachment type to TikTok's media type
+   */
+  private mapAttachmentType(type: string): string {
+    switch (type) {
+      case "image":
+        return "image";
+      case "video":
+        return "video";
+      case "audio":
+        return "audio";
+      case "file":
+      default:
+        return "file";
+    }
   }
 }
 

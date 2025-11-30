@@ -4,6 +4,8 @@ import type {
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
 import type { PostMetrics, PostMedia } from "@/core/domain/campaigns/post";
+import type { Message } from "@/core/domain/messaging/message";
+import { BaseSocialIntegration } from "./social-integration";
 
 /**
  * Facebook Graph API Configuration
@@ -38,20 +40,28 @@ interface FacebookInsightsResponse {
 
 /**
  * Facebook Graph API Integration Service
- * Implements posting to Facebook Pages
+ * Implements both posting to Facebook Pages and Messenger messaging
  *
  * Required Permissions:
  * - pages_read_engagement
  * - pages_manage_posts
  * - pages_read_user_content
+ * - pages_messaging (for Messenger)
  *
- * API Documentation: https://developers.facebook.com/docs/graph-api
+ * API Documentation:
+ * - Posts: https://developers.facebook.com/docs/graph-api
+ * - Messenger: https://developers.facebook.com/docs/messenger-platform
  */
-export class FacebookIntegration implements FacebookIntegrationService {
+export class FacebookIntegration extends BaseSocialIntegration implements FacebookIntegrationService {
   platform = "facebook" as const;
   private baseUrl = "https://graph.facebook.com/v19.0";
 
-  constructor(private config: FacebookConfig) { }
+  constructor(private config: FacebookConfig) {
+    super();
+    if (!this.config.pageAccessToken) {
+      console.warn("[FacebookIntegration] Page access token not configured");
+    }
+  }
 
   /**
    * Publish content to Facebook Page
@@ -477,6 +487,163 @@ export class FacebookIntegration implements FacebookIntegrationService {
     }
 
     return message;
+  }
+
+  // ========== Messaging Methods (Messenger Platform) ==========
+
+  /**
+   * Send a text message to a user via Facebook Messenger
+   */
+  async sendMessage(platformUserId: string, content: string): Promise<void> {
+    this.validateParams({ platformUserId, content });
+
+    const payload = {
+      recipient: {
+        id: platformUserId,
+      },
+      message: {
+        text: content,
+      },
+    };
+
+    await this.sendToMessenger(payload);
+  }
+
+  /**
+   * Send a message with attachments to a user
+   */
+  async sendMessageWithAttachments(
+    platformUserId: string,
+    content: string,
+    attachments: Array<{
+      type: "image" | "file" | "video" | "audio";
+      url: string;
+    }>
+  ): Promise<void> {
+    this.validateParams({ platformUserId });
+
+    // Facebook requires separate API calls for text and attachments
+    // Send text first if provided
+    if (content && content.trim().length > 0) {
+      await this.sendMessage(platformUserId, content);
+    }
+
+    // Send each attachment separately
+    for (const attachment of attachments) {
+      const payload = {
+        recipient: {
+          id: platformUserId,
+        },
+        message: {
+          attachment: {
+            type: this.mapAttachmentType(attachment.type),
+            payload: {
+              url: attachment.url,
+              is_reusable: true,
+            },
+          },
+        },
+      };
+
+      await this.sendToMessenger(payload);
+    }
+  }
+
+  /**
+   * Fetch message history (not directly supported by Facebook API)
+   * Facebook doesn't provide a direct API to fetch user message history
+   * You would need to store messages as they come through webhooks
+   */
+  async fetchHistory(platformUserId: string, limit: number = 50): Promise<Message[]> {
+    this.log("fetchHistory not supported by Facebook Messenger Platform", {
+      platformUserId,
+      limit,
+    });
+    throw new Error(
+      "fetchHistory is not supported by Facebook Messenger Platform. Messages should be stored via webhooks."
+    );
+  }
+
+  /**
+   * Send typing indicator to user
+   */
+  async sendTypingIndicator(platformUserId: string, typing: boolean): Promise<void> {
+    this.validateParams({ platformUserId });
+
+    const payload = {
+      recipient: {
+        id: platformUserId,
+      },
+      sender_action: typing ? "typing_on" : "typing_off",
+    };
+
+    await this.sendToMessenger(payload);
+  }
+
+  /**
+   * Mark message as read
+   */
+  async markAsRead(platformUserId: string): Promise<void> {
+    this.validateParams({ platformUserId });
+
+    const payload = {
+      recipient: {
+        id: platformUserId,
+      },
+      sender_action: "mark_seen",
+    };
+
+    await this.sendToMessenger(payload);
+  }
+
+  /**
+   * Send payload to Facebook Messenger Send API
+   */
+  private async sendToMessenger(payload: any): Promise<void> {
+    try {
+      this.log("Sending message to Facebook Messenger", payload);
+
+      const url = `${this.baseUrl}/me/messages?access_token=${this.config.pageAccessToken}`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        this.logError("Facebook Messenger API error", data);
+        throw new Error(
+          `Facebook Messenger API error: ${data.error?.message || "Unknown error"}`
+        );
+      }
+
+      this.log("Message sent successfully", data);
+    } catch (error: any) {
+      this.logError("Failed to send message to Facebook Messenger", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Map our attachment type to Facebook's attachment type
+   */
+  private mapAttachmentType(type: string): string {
+    switch (type) {
+      case "image":
+        return "image";
+      case "video":
+        return "video";
+      case "audio":
+        return "audio";
+      case "file":
+      default:
+        return "file";
+    }
   }
 }
 

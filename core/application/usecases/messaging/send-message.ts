@@ -2,7 +2,7 @@ import type { MessageService, MessagePayload } from "@/core/application/interfac
 import type { ConversationService } from "@/core/application/interfaces/conversation-service";
 import type { Message, Platform } from "@/core/domain/messaging/message";
 import { validateMessage } from "@/core/domain/messaging/message";
-import { MessagingGatewayFactory } from "@/infrastructure/adapters/gateways/messaging-gateway-factory";
+import { getSocialIntegrationFactory } from "@/infrastructure/adapters/socials/social-integration-factory";
 
 /**
  * Request payload for sending a message from CRM to platform
@@ -67,22 +67,23 @@ export class SendMessageUseCase {
       );
     }
 
-    // Step 4: Get the appropriate messaging gateway
-    const gateway = MessagingGatewayFactory.create(request.platform);
+    // Step 4: Get the appropriate social integration (supports both messaging and posting)
+    const factory = getSocialIntegrationFactory();
+    const integration = await factory.createForMessaging(request.platform);
 
     // Step 5: Send message via platform API
     let sent = false;
     try {
       if (request.attachments && request.attachments.length > 0) {
         // Send message with attachments
-        await gateway.sendMessageWithAttachments?.(
+        await integration.sendMessageWithAttachments?.(
           request.platformUserId,
           request.content,
           request.attachments
         );
       } else {
         // Send text-only message
-        await gateway.sendMessage(request.platformUserId, request.content);
+        await integration.sendMessage(request.platformUserId, request.content);
       }
       sent = true;
       console.log('[SendMessageUseCase] Message sent successfully to platform');
@@ -150,9 +151,10 @@ export class SendMessageUseCase {
     }
 
     // Validate platform is supported
-    if (!MessagingGatewayFactory.isSupported(request.platform)) {
+    const factory = getSocialIntegrationFactory();
+    if (!factory.isSupported(request.platform)) {
       throw new Error(
-        `Unsupported platform: ${request.platform}. Supported platforms: ${MessagingGatewayFactory.getSupportedPlatforms().join(', ')}`
+        `Unsupported platform: ${request.platform}. Supported platforms: ${factory.getSupportedPlatforms().join(', ')}`
       );
     }
   }

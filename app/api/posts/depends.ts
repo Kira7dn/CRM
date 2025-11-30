@@ -7,7 +7,7 @@ import { UpdatePostUseCase } from "@/core/application/usecases/post/update-post"
 import { DeletePostUseCase } from "@/core/application/usecases/post/delete-post";
 
 import type { PlatformIntegrationFactory } from "@/core/application/interfaces/platform-integration-service";
-import { getPlatformFactory } from "@/infrastructure/adapters/posts";
+import { getPlatformFactory } from "@/infrastructure/adapters/socials";
 
 // Khởi tạo các dependencies một lần duy nhất
 let postServiceInstance: PostService | null = null;

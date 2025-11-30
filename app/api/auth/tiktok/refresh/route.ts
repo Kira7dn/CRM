@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { ObjectId } from "mongodb"
 import { createRefreshTikTokTokenUseCase } from "../depends"
-import { refreshTikTokToken } from "@/infrastructure/adapters/posts/tiktok-integration"
+import { refreshTikTokToken } from "@/infrastructure/adapters/socials/tiktok-integration"
 import { SocialAuthRepository } from "@/infrastructure/repositories/social-auth-repo"
 
 /**

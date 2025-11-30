@@ -1,7 +1,6 @@
 import type { MessageService } from "@/core/application/interfaces/message-service";
 import type { ConversationService } from "@/core/application/interfaces/conversation-service";
-import type { MessagingGateway } from "@/infrastructure/adapters/gateways/messaging-gateway";
-import { MessagingGatewayFactory } from "@/infrastructure/adapters/gateways/messaging-gateway-factory";
+import { getSocialIntegrationFactory } from "@/infrastructure/adapters/socials/social-integration-factory";
 import { Platform } from "@/core/domain/messaging/message";
 
 export interface SyncMessagesRequest {
@@ -59,8 +58,9 @@ export class SyncMessagesUseCase {
       );
     }
 
-    // Get the appropriate messaging gateway
-    const gateway: MessagingGateway = MessagingGatewayFactory.create(platform);
+    // Get the appropriate social integration (supports both messaging and posting)
+    const factory = getSocialIntegrationFactory();
+    const integration = await factory.createForMessaging(platform);
 
     // Get existing messages to avoid duplicates
     const existingMessages = await this.messageService.getByConversationId(conversationId);

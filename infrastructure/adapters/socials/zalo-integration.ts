@@ -4,6 +4,8 @@ import type {
   PlatformPublishResponse,
 } from "@/core/application/interfaces/platform-integration-service";
 import type { PostMetrics, PostMedia } from "@/core/domain/campaigns/post";
+import type { Message } from "@/core/domain/messaging/message";
+import { BaseSocialIntegration } from "./social-integration";
 
 /**
  * Zalo OA (Official Account) API Configuration
@@ -73,19 +75,24 @@ interface ZaloPayload {
 
 /**
  * Zalo Official Account API Integration
- * Implements posting to Zalo OA followers
+ * Implements both posting to Zalo OA followers and direct messaging
  *
  * Required Permissions:
  * - manage_oa
  * - send_message
  *
- * API Documentation: https://developers.zalo.me/docs/api/official-account-api
+ * API Documentation:
+ * - OA API: https://developers.zalo.me/docs/api/official-account-api
+ * - Messaging: https://developers.zalo.me/docs/official-account/api/gui-tin-nhan-post-5022
  */
-export class ZaloIntegration implements ZaloIntegrationService {
+export class ZaloIntegration extends BaseSocialIntegration implements ZaloIntegrationService {
   platform = "zalo" as const;
   private baseUrl = "https://openapi.zalo.me/v2.0";
+  private messagingBaseUrl = "https://openapi.zalo.me/v3.0/oa";
 
-  constructor(private config: ZaloConfig) { }
+  constructor(private config: ZaloConfig) {
+    super();
+  }
 
   /**
    * Publish message to Zalo OA followers
@@ -508,6 +515,156 @@ export class ZaloIntegration implements ZaloIntegrationService {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
       };
+    }
+  }
+
+  // ========== Messaging Methods (Zalo OA Direct Messaging) ==========
+
+  /**
+   * Send a text message to a specific user via Zalo OA
+   */
+  async sendMessage(platformUserId: string, content: string): Promise<void> {
+    this.validateParams({ platformUserId, content });
+
+    const payload = {
+      recipient: {
+        user_id: platformUserId,
+      },
+      message: {
+        text: content,
+      },
+    };
+
+    await this.sendToZaloMessaging("/message", payload);
+  }
+
+  /**
+   * Send a message with attachments to a user
+   */
+  async sendMessageWithAttachments(
+    platformUserId: string,
+    content: string,
+    attachments: Array<{
+      type: "image" | "file" | "video" | "audio";
+      url: string;
+    }>
+  ): Promise<void> {
+    this.validateParams({ platformUserId });
+
+    // Send attachments based on type
+    for (const attachment of attachments) {
+      let payload: any;
+
+      switch (attachment.type) {
+        case "image":
+          payload = {
+            recipient: {
+              user_id: platformUserId,
+            },
+            message: {
+              attachment: {
+                type: "template",
+                payload: {
+                  template_type: "media",
+                  elements: [
+                    {
+                      media_type: "image",
+                      url: attachment.url,
+                    },
+                  ],
+                },
+              },
+            },
+          };
+          break;
+
+        case "file":
+          payload = {
+            recipient: {
+              user_id: platformUserId,
+            },
+            message: {
+              attachment: {
+                type: "file",
+                payload: {
+                  url: attachment.url,
+                },
+              },
+            },
+          };
+          break;
+
+        default:
+          // For unsupported types, send as text message
+          await this.sendMessage(
+            platformUserId,
+            content || `[${attachment.type}]: ${attachment.url}`
+          );
+          continue;
+      }
+
+      await this.sendToZaloMessaging("/message", payload);
+    }
+
+    // Send text message if provided and not sent yet
+    if (content && content.trim().length > 0) {
+      await this.sendMessage(platformUserId, content);
+    }
+  }
+
+  /**
+   * Fetch message history (not directly supported by Zalo OA API)
+   */
+  async fetchHistory(platformUserId: string, limit: number = 50): Promise<Message[]> {
+    this.log("fetchHistory not supported by Zalo OA API", {
+      platformUserId,
+      limit,
+    });
+    throw new Error(
+      "fetchHistory is not supported by Zalo OA API. Messages should be stored via webhooks."
+    );
+  }
+
+  /**
+   * Send typing indicator to user (if supported)
+   */
+  async sendTypingIndicator(platformUserId: string, typing: boolean): Promise<void> {
+    // Zalo OA doesn't support typing indicators in the current API version
+    this.log("Typing indicators not supported by Zalo OA", {
+      platformUserId,
+      typing,
+    });
+  }
+
+  /**
+   * Send payload to Zalo OA Messaging API
+   */
+  private async sendToZaloMessaging(endpoint: string, payload: any): Promise<void> {
+    try {
+      this.log(`Sending request to Zalo Messaging ${endpoint}`, payload);
+
+      const url = `${this.messagingBaseUrl}${endpoint}`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          access_token: this.config.accessToken,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.error !== 0) {
+        this.logError("Zalo Messaging API error", data);
+        throw new Error(`Zalo Messaging API error: ${data.message || "Unknown error"}`);
+      }
+
+      this.log("Message sent successfully", data);
+    } catch (error: any) {
+      this.logError("Failed to send message to Zalo", error);
+      throw error;
     }
   }
 }
