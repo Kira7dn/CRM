@@ -70,8 +70,8 @@ export class SyncMessagesUseCase {
         .map((m) => m.platformMessageId!)
     );
 
-    let newMessageCount = 0;
-    let existingMessageCount = 0;
+    const newMessageCount = 0;
+    const existingMessageCount = 0;
 
     try {
       // Fetch message history from platform

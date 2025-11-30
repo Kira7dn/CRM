@@ -242,9 +242,36 @@ export class ZaloIntegration extends BaseSocialIntegration implements ZaloIntegr
   }
 
   /**
-   * Send message to Zalo followers
+   * Get list of followers
    */
-  async sendMessage(message: string, mediaId?: string): Promise<PlatformPublishResponse> {
+  private async getFollowers(): Promise<Array<{ user_id: string }>> {
+    try {
+      const url = `${this.baseUrl}/getfollowers`;
+      const params = new URLSearchParams({
+        access_token: this.config.accessToken,
+        offset: "0",
+        count: "50", // Zalo limits to 50 per request
+      });
+
+      const response = await fetch(`${url}?${params.toString()}`);
+      const data: ZaloFollowerListResponse = await response.json();
+
+      if (data.error !== 0) {
+        throw new Error(data.message);
+      }
+
+      return data.data?.followers || [];
+    } catch (error) {
+      console.error("Failed to get Zalo followers:", error);
+      return [];
+    }
+  }
+
+  /**
+   * Send broadcast message to Zalo followers
+   * Implements the ZaloIntegrationService interface method
+   */
+  async broadcastMessage(message: string, mediaId?: string): Promise<PlatformPublishResponse> {
     try {
       // Get all followers
       const followers = await this.getFollowers();
@@ -257,7 +284,7 @@ export class ZaloIntegration extends BaseSocialIntegration implements ZaloIntegr
       }
 
       // Prepare message payload
-      const messagePayload: any = {
+      const messagePayload: Record<string, unknown> = {
         recipient: {
           user_id: followers.map((f) => f.user_id),
         },
@@ -282,7 +309,7 @@ export class ZaloIntegration extends BaseSocialIntegration implements ZaloIntegr
         };
 
         if (message) {
-          messagePayload.message.text = message;
+          (messagePayload.message as Record<string, unknown>).text = message;
         }
       } else {
         // Text-only message
@@ -292,7 +319,7 @@ export class ZaloIntegration extends BaseSocialIntegration implements ZaloIntegr
       }
 
       // Send broadcast message
-      const url = `${this.baseUrl}/message`;
+      const url = `${this.messagingBaseUrl}/message`;
       const params = new URLSearchParams({
         access_token: this.config.accessToken,
       });
@@ -326,47 +353,6 @@ export class ZaloIntegration extends BaseSocialIntegration implements ZaloIntegr
     }
   }
 
-  /**
-   * Get list of followers
-   */
-  private async getFollowers(): Promise<Array<{ user_id: string }>> {
-    try {
-      const url = `${this.baseUrl}/getfollowers`;
-      const params = new URLSearchParams({
-        access_token: this.config.accessToken,
-        offset: "0",
-        count: "50", // Zalo limits to 50 per request
-      });
-
-      const response = await fetch(`${url}?${params.toString()}`);
-      const data: ZaloFollowerListResponse = await response.json();
-
-      if (data.error !== 0) {
-        throw new Error(data.message);
-      }
-
-      return data.data?.followers || [];
-    } catch (error) {
-      console.error("Failed to get Zalo followers:", error);
-      return [];
-    }
-  }
-
-  /**
-   * Format message with hashtags
-   */
-  private formatMessage(request: PlatformPublishRequest): string {
-    let message = request.title;
-    if (request.body) {
-      message += `\n\n${request.body}`;
-    }
-
-    if (request.hashtags.length > 0) {
-      message += "\n\n" + request.hashtags.map((tag) => `#${tag}`).join(" ");
-    }
-
-    return message;
-  }
   /**
    * Publish text-only post (article without media)
    */

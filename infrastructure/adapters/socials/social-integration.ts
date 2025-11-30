@@ -27,12 +27,13 @@ export interface SocialIntegration extends PlatformIntegrationService {
 
   /**
    * Send a text message to a user on the platform
+   * Optional - only platforms with messaging support need to implement this
    *
    * @param platformUserId - The platform-specific user ID (PSID, Zalo User ID, TikTok Open ID)
    * @param content - The message text to send
    * @returns Promise that resolves when message is sent
    */
-  sendMessage(platformUserId: string, content: string): Promise<void>;
+  sendMessage?(platformUserId: string, content: string): Promise<void>;
 
   /**
    * Send a message with attachments to a user on the platform
@@ -89,7 +90,6 @@ export abstract class BaseSocialIntegration implements SocialIntegration {
   abstract delete(postId: string): Promise<boolean>;
   abstract getMetrics(postId: string): Promise<any>;
   abstract verifyAuth(): Promise<boolean>;
-  abstract sendMessage(platformUserId: string, content: string): Promise<void>;
 
   /**
    * Log integration activity

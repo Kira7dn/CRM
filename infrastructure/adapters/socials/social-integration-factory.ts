@@ -60,22 +60,22 @@ export class SocialIntegrationFactory implements PlatformIntegrationFactory {
       case "facebook":
         // Import dynamically to avoid circular dependencies
         const { createFacebookIntegrationForUser } = await import("./facebook-integration");
-        integration = await createFacebookIntegrationForUser(userId) as SocialIntegration;
+        integration = await createFacebookIntegrationForUser(userId);
         break;
 
       case "tiktok":
         const { createTikTokIntegrationForUser } = await import("./tiktok-integration");
-        integration = await createTikTokIntegrationForUser(userId) as SocialIntegration;
+        integration = await createTikTokIntegrationForUser(userId);
         break;
 
       case "zalo":
         const { createZaloIntegration } = await import("./zalo-integration");
-        integration = await createZaloIntegration() as SocialIntegration;
+        integration = await createZaloIntegration();
         break;
 
       case "youtube":
         const { createYouTubeIntegrationForUser } = await import("./youtube-integration");
-        integration = await createYouTubeIntegrationForUser(userId) as SocialIntegration;
+        integration = await createYouTubeIntegrationForUser(userId);
         break;
 
       default:
@@ -88,7 +88,7 @@ export class SocialIntegrationFactory implements PlatformIntegrationFactory {
   }
 
   /**
-   * Create integration without userId (for platforms that don't require it)
+   * Create integration using system credentials (for messaging without user context)
    * Currently only used for messaging on some platforms
    *
    * @param platform - Platform to create integration for
@@ -107,23 +107,34 @@ export class SocialIntegrationFactory implements PlatformIntegrationFactory {
     switch (platform) {
       case "facebook":
         const { createFacebookIntegration } = await import("./facebook-integration");
-        integration = await createFacebookIntegration() as SocialIntegration;
+        const fbToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+        const fbPageId = process.env.FACEBOOK_PAGE_ID;
+        if (!fbToken) {
+          throw new Error("FACEBOOK_PAGE_ACCESS_TOKEN environment variable not set");
+        }
+        integration = createFacebookIntegration(fbToken, fbPageId) as SocialIntegration;
         break;
 
       case "tiktok":
         const { createTikTokIntegration } = await import("./tiktok-integration");
-        integration = await createTikTokIntegration() as SocialIntegration;
+        const ttToken = process.env.TIKTOK_ACCESS_TOKEN;
+        if (!ttToken) {
+          throw new Error("TIKTOK_ACCESS_TOKEN environment variable not set");
+        }
+        integration = createTikTokIntegration(ttToken) as SocialIntegration;
         break;
 
       case "zalo":
         const { createZaloIntegration } = await import("./zalo-integration");
-        integration = await createZaloIntegration() as SocialIntegration;
+        integration = await createZaloIntegration();
         break;
 
       case "youtube":
-        const { createYouTubeIntegration } = await import("./youtube-integration");
-        integration = await createYouTubeIntegration() as SocialIntegration;
-        break;
+        throw new Error("YouTube does not support messaging");
+
+      case "website":
+      case "telegram":
+        throw new Error(`${platform} messaging not yet implemented`);
 
       default:
         throw new Error(`Unsupported platform: ${platform}`);

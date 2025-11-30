@@ -1,7 +1,8 @@
 /**
  * Platform types for social media marketing
+ * Note: "website" and "telegram" are messaging-only platforms
  */
-export type Platform = "facebook" | "youtube" | "tiktok" | "zalo";
+export type Platform = "facebook" | "youtube" | "tiktok" | "zalo" | "website" | "telegram";
 
 /**
  * Content types based on platform capabilities

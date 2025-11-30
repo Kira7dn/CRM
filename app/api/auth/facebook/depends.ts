@@ -1,9 +1,9 @@
 import { SocialAuthRepository } from "@/infrastructure/repositories/social-auth-repo"
 import type { SocialAuthService } from "@/core/application/interfaces/social-auth-service"
-import { SaveFacebookTokenUseCase } from "@/core/application/usecases/facebook/save-facebook-token"
-import { GetFacebookAuthUseCase } from "@/core/application/usecases/facebook/get-facebook-auth"
-import { RefreshFacebookTokenUseCase } from "@/core/application/usecases/facebook/refresh-facebook-token"
-import { DisconnectFacebookUseCase } from "@/core/application/usecases/facebook/disconnect-facebook"
+import { SaveFacebookTokenUseCase } from "@/core/application/usecases/social/facebook/save-facebook-token"
+import { GetFacebookAuthUseCase } from "@/core/application/usecases/social/facebook/get-facebook-auth"
+import { RefreshFacebookTokenUseCase } from "@/core/application/usecases/social/facebook/refresh-facebook-token"
+import { DisconnectFacebookUseCase } from "@/core/application/usecases/social/facebook/disconnect-facebook"
 
 // Factory for repository
 const createSocialAuthRepository = async (): Promise<SocialAuthService> => {

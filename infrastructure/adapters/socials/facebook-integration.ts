@@ -471,18 +471,12 @@ export class FacebookIntegration extends BaseSocialIntegration implements Facebo
 
   /**
    * Format message with hashtags and mentions
+   * Override base class to add mentions support
    */
-  private formatMessage(request: PlatformPublishRequest): string {
-    let message = request.title;
-    if (request.body) {
-      message += `\n\n${request.body}`;
-    }
+  protected formatMessage(request: PlatformPublishRequest): string {
+    let message = super.formatMessage(request);
 
-    if (request.hashtags.length > 0) {
-      message += "\n\n" + request.hashtags.map((tag) => `#${tag}`).join(" ");
-    }
-
-    if (request.mentions.length > 0) {
+    if (request.mentions && request.mentions.length > 0) {
       message += "\n" + request.mentions.map((mention) => `@${mention}`).join(" ");
     }
 

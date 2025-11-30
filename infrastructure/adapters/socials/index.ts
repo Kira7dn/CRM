@@ -4,7 +4,8 @@
  */
 
 // Unified Social Integration
-export { SocialIntegration, BaseSocialIntegration } from "./social-integration";
+export type { SocialIntegration } from "./social-integration";
+export { BaseSocialIntegration } from "./social-integration";
 export { SocialIntegrationFactory, getSocialIntegrationFactory } from "./social-integration-factory";
 
 // Platform-specific integrations

@@ -46,7 +46,7 @@ export class SendMessageUseCase {
   constructor(
     private messageService: MessageService,
     private conversationService: ConversationService
-  ) {}
+  ) { }
 
   async execute(request: SendMessageRequest): Promise<SendMessageResponse> {
     console.log('[SendMessageUseCase] Sending message:', request);
@@ -76,19 +76,28 @@ export class SendMessageUseCase {
     try {
       if (request.attachments && request.attachments.length > 0) {
         // Send message with attachments
-        await integration.sendMessageWithAttachments?.(
-          request.platformUserId,
-          request.content,
-          request.attachments
-        );
+        if (integration.sendMessageWithAttachments) {
+          await integration.sendMessageWithAttachments(
+            request.platformUserId,
+            request.content,
+            request.attachments
+          );
+        } else {
+          throw new Error(`Platform ${request.platform} does not support sending attachments`);
+        }
       } else {
         // Send text-only message
-        await integration.sendMessage(request.platformUserId, request.content);
+        if (integration.sendMessage) {
+          await integration.sendMessage(request.platformUserId, request.content);
+        } else {
+          throw new Error(`Platform ${request.platform} does not support sending messages`);
+        }
       }
       sent = true;
       console.log('[SendMessageUseCase] Message sent successfully to platform');
-    } catch (error: any) {
-      console.error('[SendMessageUseCase] Failed to send message to platform:', error);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('[SendMessageUseCase] Failed to send message to platform:', errorMessage);
       // Continue to save the message even if sending fails, but mark it
       sent = false;
     }

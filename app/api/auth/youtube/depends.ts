@@ -1,8 +1,8 @@
 import { SocialAuthRepository } from "@/infrastructure/repositories/social-auth-repo"
-import { SaveYouTubeTokenUseCase } from "@/core/application/usecases/youtube/save-youtube-token"
-import { GetYouTubeAuthUseCase } from "@/core/application/usecases/youtube/get-youtube-auth"
-import { RefreshYouTubeTokenUseCase } from "@/core/application/usecases/youtube/refresh-youtube-token"
-import { DisconnectYouTubeUseCase } from "@/core/application/usecases/youtube/disconnect-youtube"
+import { SaveYouTubeTokenUseCase } from "@/core/application/usecases/social/youtube/save-youtube-token"
+import { GetYouTubeAuthUseCase } from "@/core/application/usecases/social/youtube/get-youtube-auth"
+import { RefreshYouTubeTokenUseCase } from "@/core/application/usecases/social/youtube/refresh-youtube-token"
+import { DisconnectYouTubeUseCase } from "@/core/application/usecases/social/youtube/disconnect-youtube"
 
 const createSocialAuthRepository = async () => {
   return new SocialAuthRepository()

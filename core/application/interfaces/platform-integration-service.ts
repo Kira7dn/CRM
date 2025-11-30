@@ -100,9 +100,10 @@ export interface ZaloIntegrationService extends PlatformIntegrationService {
   uploadAttachment(media: PostMedia): Promise<string>;
 
   /**
-   * Send message to Zalo followers
+   * Send broadcast message to Zalo followers
+   * For direct messaging, use the messaging methods from SocialIntegration
    */
-  sendMessage(message: string, mediaId?: string): Promise<PlatformPublishResponse>;
+  broadcastMessage(message: string, mediaId?: string): Promise<PlatformPublishResponse>;
 }
 
 /**

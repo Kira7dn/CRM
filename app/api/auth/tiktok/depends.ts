@@ -1,9 +1,9 @@
 import { SocialAuthRepository } from "@/infrastructure/repositories/social-auth-repo"
 import type { SocialAuthService } from "@/core/application/interfaces/social-auth-service"
-import { SaveTikTokTokenUseCase } from "@/core/application/usecases/tiktok/save-tiktok-token"
-import { GetTikTokAuthUseCase } from "@/core/application/usecases/tiktok/get-tiktok-auth"
-import { RefreshTikTokTokenUseCase } from "@/core/application/usecases/tiktok/refresh-tiktok-token"
-import { DisconnectTikTokUseCase } from "@/core/application/usecases/tiktok/disconnect-tiktok"
+import { SaveTikTokTokenUseCase } from "@/core/application/usecases/auth/facebook/tiktok/save-tiktok-token"
+import { GetTikTokAuthUseCase } from "@/core/application/usecases/auth/facebook/tiktok/get-tiktok-auth"
+import { RefreshTikTokTokenUseCase } from "@/core/application/usecases/auth/facebook/tiktok/refresh-tiktok-token"
+import { DisconnectTikTokUseCase } from "@/core/application/usecases/auth/facebook/tiktok/disconnect-tiktok"
 
 // Factory for repository
 const createSocialAuthRepository = async (): Promise<SocialAuthService> => {

@@ -115,7 +115,7 @@ async function processMessage(data: any) {
 
     // Extract message content based on type
     let content = "";
-    let attachments: any[] = [];
+    const attachments: any[] = [];
 
     switch (message.content_type) {
       case "text":
