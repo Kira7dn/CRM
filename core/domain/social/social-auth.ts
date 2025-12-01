@@ -4,39 +4,6 @@ import { ObjectId } from "mongodb"
 
 export type SocialPlatform = "tiktok" | "facebook" | "youtube" | "zalo"
 
-// Platform-specific configuration interface
-export interface PlatformConfig {
-  // Common fields
-  webhookUrl?: string
-
-  // Zalo-specific
-  zalo?: {
-    appId: string
-    appSecret: string
-    oaId: string
-  }
-
-  // TikTok-specific
-  tiktok?: {
-    clientKey: string
-    clientSecret: string
-  }
-
-  // Facebook-specific
-  facebook?: {
-    appId: string
-    appSecret: string
-    pageId: string
-    verifyToken?: string
-  }
-
-  // YouTube-specific (future)
-  youtube?: {
-    clientId: string
-    clientSecret: string
-  }
-}
-
 export class SocialAuth {
   constructor(
     public readonly id: ObjectId = new ObjectId(),
@@ -48,7 +15,6 @@ export class SocialAuth {
     public expiresAt: Date,
     public userId: ObjectId, // Reference to AdminUser
     public scope?: string, // OAuth scopes granted
-    public platformConfig?: PlatformConfig, // Platform-specific configuration
     public readonly createdAt: Date = new Date(),
     public updatedAt: Date = new Date()
   ) { }

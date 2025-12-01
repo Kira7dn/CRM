@@ -1,4 +1,4 @@
-import { BasePlatformAuthService } from "./platform-auth-service";
+import { BasePlatformAuthService } from "./base-auth-service";
 import type { PlatformAuthConfig } from "@/core/application/interfaces/social/auth-service";
 
 /**

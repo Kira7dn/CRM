@@ -4,9 +4,7 @@ import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@shared/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs"
 import { Button } from "@shared/ui/button"
-import { Loader2 } from "lucide-react"
 import type { SocialPlatform } from "@/core/domain/social/social-auth"
-import PlatformSettingsForm from "./PlatformSettingsForm"
 import WebhookGuidePanel from "./WebhookGuidePanel"
 
 interface ConfigurationDialogProps {
@@ -14,7 +12,6 @@ interface ConfigurationDialogProps {
   onOpenChange: (open: boolean) => void
   platform: SocialPlatform
   connectionId: string
-  existingConfig?: any
 }
 
 export default function ConfigurationDialog({
@@ -22,39 +19,9 @@ export default function ConfigurationDialog({
   onOpenChange,
   platform,
   connectionId,
-  existingConfig,
 }: ConfigurationDialogProps) {
   const [activeTab, setActiveTab] = useState("settings")
   const [loading, setLoading] = useState(false)
-  const [config, setConfig] = useState(existingConfig || {})
-
-  const handleSave = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch("/api/social-auth/config", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          connectionId,
-          platform,
-          platformConfig: config,
-        }),
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || "Failed to save configuration")
-      }
-
-      // Success
-      onOpenChange(false)
-      window.location.reload() // Refresh to show updated config
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Failed to save")
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -67,18 +34,8 @@ export default function ConfigurationDialog({
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="settings">Platform Settings</TabsTrigger>
             <TabsTrigger value="webhook">Webhook Setup</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="settings" className="space-y-4 mt-4">
-            <PlatformSettingsForm
-              platform={platform}
-              config={config}
-              onChange={setConfig}
-            />
-          </TabsContent>
-
           <TabsContent value="webhook" className="space-y-4 mt-4">
             <WebhookGuidePanel platform={platform} />
           </TabsContent>
@@ -91,10 +48,6 @@ export default function ConfigurationDialog({
             disabled={loading}
           >
             Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save Configuration
           </Button>
         </div>
       </DialogContent>

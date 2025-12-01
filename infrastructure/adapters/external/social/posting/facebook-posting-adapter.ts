@@ -1,6 +1,6 @@
 import type { PostMetrics, PostMedia } from "@/core/domain/marketing/post";
 import type { FacebookAuthService } from "../auth/facebook-auth-service";
-import { BasePostingAdapter } from "./posting-service";
+import { BasePostingAdapter } from "./base-posting-service";
 import type { PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/social/posting-adapter";
 
 interface FacebookPostResponse {

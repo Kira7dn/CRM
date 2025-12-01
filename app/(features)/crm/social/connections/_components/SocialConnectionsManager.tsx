@@ -15,7 +15,6 @@ interface Connection {
   expiresAt: string
   createdAt: string
   scope?: string
-  platformConfig?: any
 }
 
 interface SocialConnectionsManagerProps {
@@ -30,7 +29,7 @@ const PLATFORMS = [
     color: "bg-[#0068FF]",
     icon: (
       <svg className="h-8 w-8 fill-white" viewBox="0 0 24 24">
-        <path d="M12 0C5.373 0 0 4.97 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.104.305 2.279.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.97 18.627 0 12 0zm.676 14.842h-5.16c-.415 0-.75-.224-.75-.5s.335-.5.75-.5h5.16c.414 0 .75.224.75.5s-.336.5-.75.5zm2.858-3.643h-8.02c-.414 0-.75-.224-.75-.5s.336-.5.75-.5h8.02c.414 0 .75.224.75.5s-.336.5-.75.5zm0-3.286h-8.02c-.414 0-.75-.224-.75-.5s.336-.5.75-.5h8.02c.414 0 .75.224.75.5s-.336.5-.75.5z"/>
+        <path d="M12 0C5.373 0 0 4.97 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.104.305 2.279.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.97 18.627 0 12 0zm.676 14.842h-5.16c-.415 0-.75-.224-.75-.5s.335-.5.75-.5h5.16c.414 0 .75.224.75.5s-.336.5-.75.5zm2.858-3.643h-8.02c-.414 0-.75-.224-.75-.5s.336-.5.75-.5h8.02c.414 0 .75.224.75.5s-.336.5-.75.5zm0-3.286h-8.02c-.414 0-.75-.224-.75-.5s.336-.5.75-.5h8.02c.414 0 .75.224.75.5s-.336.5-.75.5z" />
       </svg>
     ),
   },
@@ -41,7 +40,7 @@ const PLATFORMS = [
     color: "bg-black dark:bg-white",
     icon: (
       <svg className="h-8 w-8 fill-white dark:fill-black" viewBox="0 0 24 24">
-        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
       </svg>
     ),
   },
@@ -52,7 +51,7 @@ const PLATFORMS = [
     color: "bg-[#1877F2]",
     icon: (
       <svg className="h-8 w-8 fill-white" viewBox="0 0 24 24">
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
       </svg>
     ),
   },
@@ -63,7 +62,7 @@ const PLATFORMS = [
     color: "bg-[#FF0000]",
     icon: (
       <svg className="h-8 w-8 fill-white" viewBox="0 0 24 24">
-        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
       </svg>
     ),
   },
@@ -81,7 +80,6 @@ export default function SocialConnectionsManager({ connections: initialConnectio
   const [showConfigDialog, setShowConfigDialog] = useState(false)
   const [configPlatform, setConfigPlatform] = useState<SocialPlatform | null>(null)
   const [configConnectionId, setConfigConnectionId] = useState<string | null>(null)
-  const [configExisting, setConfigExisting] = useState<any>(null)
 
   // Handle OAuth callback status
   useEffect(() => {
@@ -100,7 +98,6 @@ export default function SocialConnectionsManager({ connections: initialConnectio
       if (connection) {
         setConfigPlatform(platform)
         setConfigConnectionId(connection.id)
-        setConfigExisting(connection.platformConfig)
         setShowConfigDialog(true)
       }
 
@@ -199,11 +196,10 @@ export default function SocialConnectionsManager({ connections: initialConnectio
       {/* Status Message */}
       {message && (
         <div
-          className={`p-4 rounded-lg border ${
-            message.type === "success"
+          className={`p-4 rounded-lg border ${message.type === "success"
               ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200"
               : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200"
-          }`}
+            }`}
         >
           <div className="flex items-center gap-2">
             {message.type === "success" ? (
@@ -241,11 +237,10 @@ export default function SocialConnectionsManager({ connections: initialConnectio
                   </div>
                 </div>
                 <div
-                  className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium w-fit ${
-                    isConnected
+                  className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium w-fit ${isConnected
                       ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
                       : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                  }`}
+                    }`}
                 >
                   {isConnected ? (
                     <>
@@ -291,7 +286,6 @@ export default function SocialConnectionsManager({ connections: initialConnectio
                         onClick={() => {
                           setConfigPlatform(platform.id)
                           setConfigConnectionId(connection.id)
-                          setConfigExisting(connection.platformConfig)
                           setShowConfigDialog(true)
                         }}
                         disabled={isLoading}
@@ -354,7 +348,6 @@ export default function SocialConnectionsManager({ connections: initialConnectio
           onOpenChange={setShowConfigDialog}
           platform={configPlatform}
           connectionId={configConnectionId}
-          existingConfig={configExisting}
         />
       )}
     </div>

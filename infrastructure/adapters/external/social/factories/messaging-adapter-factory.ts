@@ -90,8 +90,8 @@ export class PlatformMessagingAdapterFactory implements MessagingAdapterFactory 
       }
 
       case "zalo": {
-        const { createZaloAuthService } = await import("../auth/zalo-auth-service");
-        authService = await createZaloAuthService();
+        const { createZaloAuthServiceForUser } = await import("../auth/zalo-auth-service");
+        authService = await createZaloAuthServiceForUser(channelId);
         break;
       }
 

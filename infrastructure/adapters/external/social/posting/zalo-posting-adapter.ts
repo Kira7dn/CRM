@@ -1,6 +1,6 @@
 import type { PostMetrics } from "@/core/domain/marketing/post";
 import type { ZaloAuthService } from "../auth/zalo-auth-service";
-import { BasePostingAdapter } from "./posting-service";
+import { BasePostingAdapter } from "./base-posting-service";
 import type { PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/social/posting-adapter";
 
 export class ZaloPostingAdapter extends BasePostingAdapter {

@@ -5,7 +5,7 @@
 
 // ========== Auth Services (Interfaces from Application Layer) ==========
 export type { PlatformAuthService, PlatformAuthConfig } from "@/core/application/interfaces/social/auth-service";
-export { BasePlatformAuthService } from "./auth/platform-auth-service";
+export { BasePlatformAuthService } from "./auth/base-auth-service";
 
 export type { FacebookAuthConfig } from "./auth/facebook-auth-service";
 export { FacebookAuthService, createFacebookAuthServiceForUser } from "./auth/facebook-auth-service";
@@ -17,14 +17,14 @@ export type { YouTubeAuthConfig } from "./auth/youtube-auth-service";
 export { YouTubeAuthService, createYouTubeAuthServiceForUser } from "./auth/youtube-auth-service";
 
 export type { ZaloAuthConfig } from "./auth/zalo-auth-service";
-export { ZaloAuthService, createZaloAuthService } from "./auth/zalo-auth-service";
+export { ZaloAuthService, createZaloAuthServiceForUser } from "./auth/zalo-auth-service";
 
 // Token refresh helpers
 export { refreshYouTubeToken, refreshTikTokToken, refreshFacebookToken } from "./auth/token-refresh-helpers";
 
 // ========== Posting Adapters (Interfaces from Application Layer) ==========
 export type { PostingService, PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/social/posting-adapter";
-export { BasePostingAdapter } from "./posting/posting-service";
+export { BasePostingAdapter } from "./posting/base-posting-service";
 
 export { FacebookPostingAdapter } from "./posting/facebook-posting-adapter";
 export { TikTokPostingAdapter } from "./posting/tiktok-posting-adapter";

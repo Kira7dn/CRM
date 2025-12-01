@@ -1,6 +1,5 @@
 import { cookies } from "next/headers"
 import { ObjectId } from "mongodb"
-import { createGetTikTokAuthUseCase } from "@/app/api/auth/tiktok/depends"
 import SocialConnectionsManager from "./_components/SocialConnectionsManager"
 
 export default async function SocialConnectionsPage() {
