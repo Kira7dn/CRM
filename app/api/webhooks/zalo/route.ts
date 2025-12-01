@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { receiveMessageUseCase } from "@/app/api/messaging/depends";
+import { broadcastEvent } from "@/app/api/events/stream/route";
 import crypto from "crypto";
 
 /**
@@ -95,7 +96,7 @@ async function processTextMessage(data: any) {
     console.log('[Zalo Webhook] Processing text message from:', senderId);
 
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: process.env.ZALO_OA_ID || "zalo-default",
       senderPlatformId: senderId,
       platform: "zalo",
@@ -105,6 +106,25 @@ async function processTextMessage(data: any) {
     });
 
     console.log('[Zalo Webhook] Text message processed successfully');
+
+    // Broadcast SSE events for real-time UI updates
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "zalo",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "zalo",
+          channelId: process.env.ZALO_OA_ID || "zalo-default",
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[Zalo Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Zalo Webhook] Error processing text message:', error);
     throw error;
@@ -123,7 +143,7 @@ async function processImageMessage(data: any) {
     console.log('[Zalo Webhook] Processing image message from:', senderId);
 
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: process.env.ZALO_OA_ID || "zalo-default",
       senderPlatformId: senderId,
       platform: "zalo",
@@ -139,6 +159,25 @@ async function processImageMessage(data: any) {
     });
 
     console.log('[Zalo Webhook] Image message processed successfully');
+
+    // Broadcast SSE events
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "zalo",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "zalo",
+          channelId: process.env.ZALO_OA_ID || "zalo-default",
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[Zalo Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Zalo Webhook] Error processing image message:', error);
     throw error;
@@ -157,7 +196,7 @@ async function processFileMessage(data: any) {
     console.log('[Zalo Webhook] Processing file message from:', senderId);
 
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: process.env.ZALO_OA_ID || "zalo-default",
       senderPlatformId: senderId,
       platform: "zalo",
@@ -175,6 +214,25 @@ async function processFileMessage(data: any) {
     });
 
     console.log('[Zalo Webhook] File message processed successfully');
+
+    // Broadcast SSE events
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "zalo",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "zalo",
+          channelId: process.env.ZALO_OA_ID || "zalo-default",
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[Zalo Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Zalo Webhook] Error processing file message:', error);
     throw error;
@@ -193,7 +251,7 @@ async function processAudioMessage(data: any) {
     console.log('[Zalo Webhook] Processing audio message from:', senderId);
 
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: process.env.ZALO_OA_ID || "zalo-default",
       senderPlatformId: senderId,
       platform: "zalo",
@@ -209,6 +267,25 @@ async function processAudioMessage(data: any) {
     });
 
     console.log('[Zalo Webhook] Audio message processed successfully');
+
+    // Broadcast SSE events
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "zalo",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "zalo",
+          channelId: process.env.ZALO_OA_ID || "zalo-default",
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[Zalo Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Zalo Webhook] Error processing audio message:', error);
     throw error;
@@ -227,7 +304,7 @@ async function processVideoMessage(data: any) {
     console.log('[Zalo Webhook] Processing video message from:', senderId);
 
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: process.env.ZALO_OA_ID || "zalo-default",
       senderPlatformId: senderId,
       platform: "zalo",
@@ -243,6 +320,25 @@ async function processVideoMessage(data: any) {
     });
 
     console.log('[Zalo Webhook] Video message processed successfully');
+
+    // Broadcast SSE events
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "zalo",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "zalo",
+          channelId: process.env.ZALO_OA_ID || "zalo-default",
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[Zalo Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Zalo Webhook] Error processing video message:', error);
     throw error;

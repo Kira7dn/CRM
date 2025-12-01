@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { receiveMessageUseCase } from "@/app/api/messaging/depends";
+import { broadcastEvent } from "@/app/api/events/stream/route";
 import crypto from "crypto";
 
 /**
@@ -173,7 +174,7 @@ async function processMessage(data: any) {
 
     // Call ReceiveMessageUseCase with NEW interface
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: CLIENT_KEY || "tiktok-default", // TikTok Business Account identifier
       senderPlatformId: senderId, // TikTok Open ID
       platform: "tiktok",
@@ -188,6 +189,26 @@ async function processMessage(data: any) {
     });
 
     console.log('[TikTok Webhook] Message processed successfully');
+
+    // Broadcast SSE events for real-time UI updates
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "tiktok",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "tiktok",
+          channelId: CLIENT_KEY || "tiktok-default",
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[TikTok Webhook] SSE broadcast error:', sseError);
+      // Don't throw - SSE errors shouldn't block webhook processing
+    }
   } catch (error: any) {
     console.error('[TikTok Webhook] Error processing message:', error);
     throw error;

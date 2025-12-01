@@ -1,10 +1,10 @@
 import { CategoryRepository } from '@/infrastructure/repositories/catalog/category-repo';
 import type { CategoryService } from '@/core/application/interfaces/catalog/category-service';
-import { GetCategoriesUseCase } from '@/core/application/usecases/catalog/category/category/get-categories';
-import { CreateCategoryUseCase } from '@/core/application/usecases/catalog/category/category/create-category';
-import { GetCategoryByIdUseCase } from '@/core/application/usecases/catalog/category/category/get-category-by-id';
-import { UpdateCategoryUseCase } from '@/core/application/usecases/catalog/category/category/update-category';
-import { DeleteCategoryUseCase } from '@/core/application/usecases/catalog/category/category/delete-category';
+import { GetCategoriesUseCase } from '@/core/application/usecases/catalog/category/get-categories';
+import { CreateCategoryUseCase } from '@/core/application/usecases/catalog/category/create-category';
+import { GetCategoryByIdUseCase } from '@/core/application/usecases/catalog/category/get-category-by-id';
+import { UpdateCategoryUseCase } from '@/core/application/usecases/catalog/category/update-category';
+import { DeleteCategoryUseCase } from '@/core/application/usecases/catalog/category/delete-category';
 
 // Create CategoryRepository instance
 const createCategoryRepository = async (): Promise<CategoryService> => {

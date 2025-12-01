@@ -1,9 +1,9 @@
 import { OperationalCostRepository } from '@/infrastructure/repositories/sales/operational-cost-repo';
 import type { OperationalCostService } from '@/core/application/interfaces/sales/operational-cost-service';
-import { GetCostsUseCase } from '@/core/application/usecases/sales/operational-cost/operational-cost/get-costs';
-import { CreateCostUseCase } from '@/core/application/usecases/sales/operational-cost/operational-cost/create-cost';
-import { UpdateCostUseCase } from '@/core/application/usecases/sales/operational-cost/operational-cost/update-cost';
-import { DeleteCostUseCase } from '@/core/application/usecases/sales/operational-cost/operational-cost/delete-cost';
+import { GetCostsUseCase } from '@/core/application/usecases/sales/operational-cost/get-costs';
+import { CreateCostUseCase } from '@/core/application/usecases/sales/operational-cost/create-cost';
+import { UpdateCostUseCase } from '@/core/application/usecases/sales/operational-cost/update-cost';
+import { DeleteCostUseCase } from '@/core/application/usecases/sales/operational-cost/delete-cost';
 
 // Create OperationalCostRepository instance
 const createOperationalCostRepository = async (): Promise<OperationalCostService> => {

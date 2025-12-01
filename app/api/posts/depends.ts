@@ -1,10 +1,10 @@
 import { PostRepository } from "@/infrastructure/repositories/marketing/post-repo";
 import type { PostService } from "@/core/application/interfaces/marketing/post-service";
 
-import { GetPostsUseCase } from "@/core/application/usecases/marketing/post/post/get-posts";
-import { CreatePostUseCase } from "@/core/application/usecases/marketing/post/post/create-post";
-import { UpdatePostUseCase } from "@/core/application/usecases/marketing/post/post/update-post";
-import { DeletePostUseCase } from "@/core/application/usecases/marketing/post/post/delete-post";
+import { GetPostsUseCase } from "@/core/application/usecases/marketing/post/get-posts";
+import { CreatePostUseCase } from "@/core/application/usecases/marketing/post/create-post";
+import { UpdatePostUseCase } from "@/core/application/usecases/marketing/post/update-post";
+import { DeletePostUseCase } from "@/core/application/usecases/marketing/post/delete-post";
 
 import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter";
 import { getPostingAdapterFactory } from "@/infrastructure/adapters/external/social/factories/posting-adapter-factory";

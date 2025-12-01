@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { receiveMessageUseCase } from "@/app/api/messaging/depends";
+import { broadcastEvent } from "@/app/api/events/stream/route";
 import crypto from "crypto";
 
 /**
@@ -151,7 +152,7 @@ async function processMessage(event: any) {
 
     // Call ReceiveMessageUseCase with NEW interface
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: recipientId, // NEW: Page ID as channelId
       senderPlatformId: senderId, // NEW: PSID as senderPlatformId
       platform: "facebook",
@@ -165,6 +166,26 @@ async function processMessage(event: any) {
     });
 
     console.log('[Facebook Webhook] Message processed successfully');
+
+    // Broadcast SSE events for real-time UI updates
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "facebook",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "facebook",
+          channelId: recipientId,
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[Facebook Webhook] SSE broadcast error:', sseError);
+      // Don't throw - SSE errors shouldn't block webhook processing
+    }
   } catch (error: any) {
     console.error('[Facebook Webhook] Error processing message:', error);
     throw error;
@@ -191,6 +212,18 @@ async function processDelivery(event: any) {
     //     deliveredAt: new Date(watermark),
     //   });
     // }
+
+    // Broadcast SSE event for delivery confirmation
+    try {
+      broadcastEvent("message_delivered", {
+        platformMessageIds: mids,
+        deliveredAt: new Date(watermark),
+        platform: "facebook",
+        senderPlatformId: event.sender.id,
+      });
+    } catch (sseError: any) {
+      console.error('[Facebook Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Facebook Webhook] Error processing delivery:', error);
   }
@@ -212,6 +245,17 @@ async function processRead(event: any) {
     //   senderPlatformId: event.sender.id,
     //   readAt: new Date(watermark),
     // });
+
+    // Broadcast SSE event for read confirmation
+    try {
+      broadcastEvent("message_read", {
+        senderPlatformId: event.sender.id,
+        readAt: new Date(watermark),
+        platform: "facebook",
+      });
+    } catch (sseError: any) {
+      console.error('[Facebook Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Facebook Webhook] Error processing read receipt:', error);
   }
@@ -230,7 +274,7 @@ async function processPostback(event: any) {
 
     // Treat postback as a message
     const useCase = await receiveMessageUseCase();
-    await useCase.execute({
+    const result = await useCase.execute({
       channelId: recipientId,
       senderPlatformId: senderId,
       platform: "facebook",
@@ -244,6 +288,26 @@ async function processPostback(event: any) {
     });
 
     console.log('[Facebook Webhook] Postback processed successfully');
+
+    // Broadcast SSE events for postback (treated as message)
+    try {
+      broadcastEvent("new_message", {
+        message: result.message,
+        platform: "facebook",
+        messageType: "postback",
+      });
+
+      if (result.isNewConversation) {
+        broadcastEvent("new_conversation", {
+          conversationId: result.message.conversationId,
+          platform: "facebook",
+          channelId: recipientId,
+          senderPlatformId: senderId,
+        });
+      }
+    } catch (sseError: any) {
+      console.error('[Facebook Webhook] SSE broadcast error:', sseError);
+    }
   } catch (error: any) {
     console.error('[Facebook Webhook] Error processing postback:', error);
   }

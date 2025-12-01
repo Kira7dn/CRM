@@ -1,11 +1,11 @@
 import { campaignRepository } from "@/infrastructure/repositories/marketing/campaign-repo"
 import type { CampaignService } from "@/core/application/interfaces/marketing/campaign-service"
-import { GetAllCampaignsUseCase } from "@/core/application/usecases/marketing/campaign/campaign/get-all-campaigns"
-import { GetCampaignByIdUseCase } from "@/core/application/usecases/marketing/campaign/campaign/get-campaign-by-id"
-import { GetCampaignsByStatusUseCase } from "@/core/application/usecases/marketing/campaign/campaign/get-campaigns-by-status"
-import { CreateCampaignUseCase } from "@/core/application/usecases/marketing/campaign/campaign/create-campaign"
-import { UpdateCampaignUseCase } from "@/core/application/usecases/marketing/campaign/campaign/update-campaign"
-import { DeleteCampaignUseCase } from "@/core/application/usecases/marketing/campaign/campaign/delete-campaign"
+import { GetAllCampaignsUseCase } from "@/core/application/usecases/marketing/campaign/get-all-campaigns"
+import { GetCampaignByIdUseCase } from "@/core/application/usecases/marketing/campaign/get-campaign-by-id"
+import { GetCampaignsByStatusUseCase } from "@/core/application/usecases/marketing/campaign/get-campaigns-by-status"
+import { CreateCampaignUseCase } from "@/core/application/usecases/marketing/campaign/create-campaign"
+import { UpdateCampaignUseCase } from "@/core/application/usecases/marketing/campaign/update-campaign"
+import { DeleteCampaignUseCase } from "@/core/application/usecases/marketing/campaign/delete-campaign"
 
 const createCampaignRepository = async (): Promise<CampaignService> => {
   return campaignRepository

@@ -1,5 +1,5 @@
 import { ZaloPhoneGateway } from '@/infrastructure/adapters/external/utilities/zalo-phone-gateway';
-import { DecodePhoneUseCase } from '@/core/application/usecases/shared/phone/phone/decode-phone';
+import { DecodePhoneUseCase } from '@/core/application/usecases/shared/phone/decode-phone';
 
 const createPhoneService = async () => new ZaloPhoneGateway();
 
