@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef, useCallback } from 'react'
 import PostForm from './PostForm'
 import type { Post } from '@/core/domain/marketing/post'
 import {
@@ -16,16 +17,28 @@ interface PostFormModalProps {
 }
 
 export default function PostFormModal({ open, onClose, post, initialScheduledAt }: PostFormModalProps) {
+  const handleCloseRef = useRef<(() => Promise<void>) | null>(null)
+
+  const handleDialogOpenChange = useCallback(async (openState: boolean) => {
+    // When dialog tries to close (openState = false), call PostForm's handleClose
+    if (!openState && handleCloseRef.current) {
+      await handleCloseRef.current()
+    }
+  }, [])
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={handleDialogOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogTitle className="text-xl font-semibold mb-4">
-          {post ? 'Chỉnh sửa bài đăng' : 'Tạo bài đăng mới'}
+        <DialogTitle className="sr-only">
+          {post ? 'Edit Post' : 'Create New Post'}
         </DialogTitle>
         <PostForm
           post={post}
           onClose={onClose}
           initialScheduledAt={initialScheduledAt}
+          registerHandleClose={(handler) => {
+            handleCloseRef.current = handler
+          }}
         />
       </DialogContent>
     </Dialog>

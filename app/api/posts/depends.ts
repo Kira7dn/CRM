@@ -8,9 +8,12 @@ import { DeletePostUseCase } from "@/core/application/usecases/marketing/post/de
 
 import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter";
 import { getPostingAdapterFactory } from "@/infrastructure/adapters/external/social/factories/posting-adapter-factory";
+import { BullMQAdapter } from "@/infrastructure/queue/bullmq-adapter";
+import type { QueueService } from "@/core/application/interfaces/shared/queue-service";
 
 // Khởi tạo các dependencies một lần duy nhất
 let postServiceInstance: PostService | null = null;
+let queueServiceInstance: QueueService | null = null;
 const platformFactoryInstance: PostingAdapterFactory = getPostingAdapterFactory();
 
 /**
@@ -23,16 +26,27 @@ const getPostService = async (): Promise<PostService> => {
   return postServiceInstance;
 };
 
+/**
+ * Lấy hoặc tạo mới instance của QueueService
+ */
+const getQueueService = (): QueueService => {
+  if (!queueServiceInstance) {
+    queueServiceInstance = new BullMQAdapter();
+  }
+  return queueServiceInstance;
+};
+
 // 🔹 UseCase: Get Posts (không cần platform integration)
 export const getPostsUseCase = async (): Promise<GetPostsUseCase> => {
   const postService = await getPostService();
   return new GetPostsUseCase(postService);
 };
 
-// 🔹 UseCase: Create Post (có publish external platform)
+// 🔹 UseCase: Create Post (có publish external platform + queue scheduling)
 export const createPostUseCase = async (): Promise<CreatePostUseCase> => {
   const postService = await getPostService();
-  return new CreatePostUseCase(postService, platformFactoryInstance);
+  const queueService = getQueueService();
+  return new CreatePostUseCase(postService, platformFactoryInstance, queueService);
 };
 
 // 🔹 UseCase: Update Post (có update external platform)

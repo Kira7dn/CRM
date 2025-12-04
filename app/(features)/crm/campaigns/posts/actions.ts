@@ -26,12 +26,13 @@ export async function createPostAction(formData: FormData) {
   const mediaJson = formData.get("media")?.toString() || "[]"
   const hashtagsStr = formData.get("hashtags")?.toString() || ""
   const scheduledAtStr = formData.get("scheduledAt")?.toString()
+  const saveAsDraft = formData.get("saveAsDraft")?.toString() === "true"
 
   // Parse platforms from JSON
   const selectedPlatforms: Platform[] = JSON.parse(platformsJson)
   const platforms: PlatformMetadata[] = selectedPlatforms.map(platform => ({
     platform,
-    status: "draft" as const,
+    status: "draft" as const, // Will be overridden by use case logic
   }))
 
   // Parse media from JSON
@@ -58,6 +59,7 @@ export async function createPostAction(formData: FormData) {
     media,
     hashtags,
     scheduledAt,
+    saveAsDraft,
     createdAt: now,
     updatedAt: now,
   })

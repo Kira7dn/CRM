@@ -16,7 +16,7 @@ import { MediaUpload } from '@/app/(features)/crm/_components/MediaUpload'
 import { Button } from '@shared/ui/button'
 import { Label } from '@shared/ui/label'
 import { Input } from '@shared/ui/input'
-import { X, Loader2, AlertTriangle, CheckCircle2, XCircle, Sparkles, Zap, Settings, Info } from 'lucide-react'
+import { Loader2, AlertTriangle, CheckCircle2, XCircle, Sparkles, Zap, Settings, Info } from 'lucide-react'
 import PostContentSettings from './PostContentSettings'
 
 // Platform options
@@ -88,17 +88,34 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
   },
 }
 
-export default function PostForm({ post, onClose, initialScheduledAt }: { post?: Post; onClose?: () => void; initialScheduledAt?: Date }) {
+interface PostFormProps {
+  post?: Post
+  onClose?: () => void
+  initialScheduledAt?: Date
+  registerHandleClose?: (handler: () => Promise<void>) => void // For Modal to intercept Dialog close
+}
+
+export default function PostForm({ post, onClose, initialScheduledAt, registerHandleClose }: PostFormProps) {
   const [isSubmitting, startTransition] = useTransition()
   const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(post?.platforms.map(p => p.platform) || [])
   const [contentType, setContentType] = useState<ContentType>(post?.contentType || 'post')
   const [media, setMedia] = useState<PostMedia | null>(post?.media?.[0] || null)
   const [hashtags, setHashtags] = useState(post?.hashtags?.join(' ') || '')
+  // Helper to format date for datetime-local input (local timezone, not UTC)
+  const formatDateForInput = (date: Date): string => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    return `${year}-${month}-${day}T${hours}:${minutes}`
+  }
+
   const [scheduledAt, setScheduledAt] = useState(
     post?.scheduledAt
-      ? new Date(post.scheduledAt).toISOString().slice(0, 16)
+      ? formatDateForInput(new Date(post.scheduledAt))
       : initialScheduledAt
-        ? new Date(initialScheduledAt).toISOString().slice(0, 16)
+        ? formatDateForInput(new Date(initialScheduledAt))
         : ''
   )
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -111,6 +128,25 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
   const [similarityWarning, setSimilarityWarning] = useState<string | null>(null)
   const [showSettings, setShowSettings] = useState(false)
   const [hasBrandMemory, setHasBrandMemory] = useState(false)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [scoringData, setScoringData] = useState<{
+    score?: number
+    scoreBreakdown?: Record<string, number>
+    weaknesses?: string[]
+    suggestedFixes?: string[]
+  } | null>(null)
+
+  // Track if form has content
+  const hasContent = () => {
+    return title.trim().length > 0 || body.trim().length > 0
+  }
+
+  // Track changes
+  useEffect(() => {
+    if (!post && hasContent()) {
+      setHasUnsavedChanges(true)
+    }
+  }, [title, body, post])
 
   // Load brand memory status on mount
   useEffect(() => {
@@ -181,13 +217,27 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
             ))
           }
 
+          // Store scoring data
+          if (result.metadata?.score) {
+            setScoringData({
+              score: result.metadata.score,
+              scoreBreakdown: result.metadata.scoreBreakdown,
+              weaknesses: result.metadata.weaknesses,
+              suggestedFixes: result.metadata.suggestedFixes,
+            })
+          }
+
           // Check similarity
           const isSimilar = await handleCheckSimilarity(result.content || '', result.title || '')
+
+          const scoreInfo = result.metadata?.score
+            ? ` | Quality Score: ${result.metadata.score}/100`
+            : ''
 
           toast.success('High-quality content generated', {
             description: isSimilar
               ? '⚠️ Warning: Similar to existing content'
-              : `Generated with ${result.metadata?.passesCompleted?.length || 5} passes`,
+              : `Generated with ${result.metadata?.passesCompleted?.length || 5} passes${scoreInfo}`,
             icon: <Zap className="h-4 w-4" />
           })
         } else {
@@ -222,9 +272,9 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
     }
   }
 
-  const handleSubmit = async (formData: FormData) => {
-    // Validate
-    if (selectedPlatforms.length === 0) {
+  const handleSubmit = async (formData: FormData, saveAsDraft = false) => {
+    // Validate only if not saving as draft
+    if (!saveAsDraft && selectedPlatforms.length === 0) {
       setErrors({ platforms: 'Please select at least one platform' })
       return
     }
@@ -234,13 +284,23 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
     formData.append('platforms', JSON.stringify(selectedPlatforms))
     formData.append('media', JSON.stringify(media ? [media] : []))
     formData.append('hashtags', hashtags)
+    formData.append('saveAsDraft', String(saveAsDraft))
     if (scheduledAt) formData.append('scheduledAt', scheduledAt)
 
     startTransition(async () => {
       try {
-        // Show loading toast
-        const loadingToast = toast.loading('Publishing to platforms...', {
-          description: `Uploading to ${selectedPlatforms.length} platform(s)`,
+        // Show loading toast with appropriate message
+        const loadingMessage = saveAsDraft
+          ? 'Saving draft...'
+          : scheduledAt
+            ? 'Scheduling post...'
+            : 'Publishing to platforms...'
+        const loadingDescription = saveAsDraft
+          ? 'Saving your draft'
+          : `Uploading to ${selectedPlatforms.length} platform(s)`
+
+        const loadingToast = toast.loading(loadingMessage, {
+          description: loadingDescription,
         })
 
         if (post?.id) {
@@ -251,6 +311,15 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
 
           // Dismiss loading toast
           toast.dismiss(loadingToast)
+
+          // Handle draft save
+          if (saveAsDraft) {
+            toast.success('Draft saved successfully', {
+              description: 'You can continue editing later',
+            })
+            onClose?.()
+            return
+          }
 
           // Store embedding for similarity check in future (async, don't wait)
           if (result?.postId && body) {
@@ -301,6 +370,7 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
           }
         }
 
+        setHasUnsavedChanges(false)
         onClose?.()
       } catch (error) {
         toast.error('Failed to save post', {
@@ -310,15 +380,52 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
     })
   }
 
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    handleSubmit(formData, false)
+  }
+
+  const handleSaveDraft = async () => {
+    const form = document.querySelector('form') as HTMLFormElement
+    if (form) {
+      const formData = new FormData(form)
+      await handleSubmit(formData, true)
+      setHasUnsavedChanges(false)
+    }
+  }
+
+  const handleClose = async () => {
+    // Auto-save draft if has unsaved changes and content
+    if (!post && hasUnsavedChanges && hasContent()) {
+      const shouldSave = confirm('You have unsaved changes. Save as draft before closing?')
+      if (shouldSave) {
+        await handleSaveDraft()
+      }
+    }
+    onClose?.()
+  }
+
+  // Register handleClose with Modal on mount
+  useEffect(() => {
+    if (registerHandleClose) {
+      registerHandleClose(handleClose)
+    }
+  }, [registerHandleClose, hasUnsavedChanges, post])
+
   return (
-    <form action={handleSubmit} className="space-y-6 p-6 bg-white dark:bg-gray-800 rounded-lg border">
-      <div className="flex justify-between items-center">
+    <form onSubmit={handleFormSubmit} className="space-y-6 p-6 bg-white dark:bg-gray-800 rounded-lg border">
+      <div className="flex items-center gap-2">
         <h2 className="text-xl font-semibold">{post ? 'Edit Post' : 'Create New Post'}</h2>
-        {onClose && <Button type="button" variant="ghost" size="sm" onClick={onClose}><X /></Button>}
+        {hasUnsavedChanges && !post && (
+          <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+            • Unsaved changes
+          </span>
+        )}
       </div>
 
       {/* AI Generate Section */}
-      <div className="border rounded-lg p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 space-y-3">
+      <div className="border rounded-lg p-4 bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 space-y-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-purple-600" />
@@ -420,6 +527,66 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
           </div>
         </div>
       </div>
+
+      {/* Quality Score Display */}
+      {scoringData && scoringData.score !== undefined && (
+        <div className="border rounded-lg p-4 bg-linear-to-r from-green-50 to-blue-50 dark:from-green-900/10 dark:to-blue-900/10 space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-lg">AI Quality Score: {scoringData.score}/100</h3>
+            <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+              scoringData.score >= 80 ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200' :
+              scoringData.score >= 60 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200' :
+              'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200'
+            }`}>
+              {scoringData.score >= 80 ? 'Excellent' : scoringData.score >= 60 ? 'Good' : 'Needs Improvement'}
+            </div>
+          </div>
+
+          {/* Score Breakdown */}
+          {scoringData.scoreBreakdown && (
+            <div className="grid grid-cols-5 gap-3">
+              {Object.entries(scoringData.scoreBreakdown).map(([key, value]) => (
+                <div key={key} className="text-center">
+                  <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">{value}/20</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 capitalize mt-1">
+                    {key === 'brandVoice' ? 'Brand Voice' : key === 'platformFit' ? 'Platform Fit' : key}
+                  </div>
+                  <div className="mt-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full ${value >= 16 ? 'bg-green-500' : value >= 12 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                      style={{ width: `${(value / 20) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Weaknesses */}
+          {scoringData.weaknesses && scoringData.weaknesses.length > 0 && (
+            <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+              <h4 className="font-medium text-sm text-red-700 dark:text-red-300 mb-2">⚠️ Areas for Improvement:</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
+                {scoringData.weaknesses.map((weakness, idx) => (
+                  <li key={idx}>{weakness}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Suggested Fixes */}
+          {scoringData.suggestedFixes && scoringData.suggestedFixes.length > 0 && (
+            <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+              <h4 className="font-medium text-sm text-blue-700 dark:text-blue-300 mb-2">💡 Suggested Improvements:</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
+                {scoringData.suggestedFixes.map((fix, idx) => (
+                  <li key={idx}>{fix}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Title */}
       <div>
@@ -550,11 +717,25 @@ export default function PostForm({ post, onClose, initialScheduledAt }: { post?:
       </div>
 
       {/* Actions */}
-      <div className="flex justify-end gap-2">
-        {onClose && <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>}
-        <Button type="submit" disabled={isSubmitting} className="min-w-[120px]">
-          {isSubmitting ? <><Loader2 className="animate-spin" /> Saving...</> : post ? 'Update Post' : 'Create Post'}
-        </Button>
+      <div className="flex justify-between items-center gap-2">
+        <div>
+          {!post && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleSaveDraft}
+              disabled={isSubmitting}
+            >
+              Save as Draft
+            </Button>
+          )}
+        </div>
+        <div className="flex gap-2">
+          {onClose && <Button type="button" variant="outline" onClick={handleClose}>Cancel</Button>}
+          <Button type="submit" disabled={isSubmitting} className="min-w-[120px]">
+            {isSubmitting ? <><Loader2 className="animate-spin" /> Saving...</> : post ? 'Update Post' : scheduledAt ? 'Schedule Post' : 'Publish Now'}
+          </Button>
+        </div>
       </div>
     </form>
   )

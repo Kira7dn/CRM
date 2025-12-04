@@ -4053,13 +4053,279 @@
         "status": "done",
         "subtasks": [],
         "updatedAt": "2025-12-03T14:16:26.410Z"
+      },
+      {
+        "id": "150",
+        "title": "Implement Scoring Logic in Multi-Pass Execution",
+        "description": "Add scoring logic to the end of the multi-pass execution process.",
+        "details": "Update `generate-post-multi-pass.ts` to include a scoring pass after the enhance pass. Implement a scoring system that evaluates content based on clarity, engagement, brand voice, platform fit, and safety. Return a JSON object with the score and breakdown.",
+        "testStrategy": "Verify that the scoring pass correctly evaluates content and returns a valid JSON object with scores and breakdowns.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T03:20:26.356Z"
+      },
+      {
+        "id": "151",
+        "title": "Update GeneratePostMultiPassResponse Interface",
+        "description": "Enhance the response interface to include scoring details.",
+        "details": "Modify the `GeneratePostMultiPassResponse` interface to include new fields: `score`, `scoreBreakdown`, `weaknesses`, and `suggestedFixes`. Ensure these fields are populated in the response object.",
+        "testStrategy": "Check that the response object includes the new fields and that they are correctly populated with scoring data.",
+        "priority": "medium",
+        "dependencies": [
+          "150"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T03:20:43.330Z"
+      },
+      {
+        "id": "152",
+        "title": "Enhance PostForm UI for Scoring",
+        "description": "Display scoring breakdown and weaknesses in the PostForm UI.",
+        "details": "Update `PostForm.tsx` to display the score breakdown and weaknesses. Ensure the UI is intuitive and clearly presents the scoring information to the user.",
+        "testStrategy": "Test the UI to ensure that scoring information is displayed correctly and is user-friendly.",
+        "priority": "medium",
+        "dependencies": [
+          "151"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T03:22:32.235Z"
+      },
+      {
+        "id": "153",
+        "title": "Create Perplexity Service Adapter",
+        "description": "Develop an adapter to interact with the Perplexity API for research insights.",
+        "details": "Implement `infrastructure/adapters/perplexity-service.ts` to handle API requests to Perplexity. Ensure it can search topics and return structured insights and citations.",
+        "testStrategy": "Mock API responses and verify that the adapter correctly handles requests and responses.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T03:23:57.106Z"
+      },
+      {
+        "id": "154",
+        "title": "Develop Research Topic Use Case",
+        "description": "Create a use case for researching topics using the Perplexity API.",
+        "details": "Implement `core/application/usecases/marketing/post/research-topic.ts` to utilize the Perplexity service for gathering insights, risks, and recommended angles for a given topic.",
+        "testStrategy": "Test the use case with various topics to ensure it returns accurate and structured research data.",
+        "priority": "medium",
+        "dependencies": [
+          "153"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T03:25:06.615Z"
+      },
+      {
+        "id": "155",
+        "title": "Integrate Research Insights into Multi-Pass",
+        "description": "Incorporate research insights into the multi-pass generation process.",
+        "details": "Modify `generate-post-multi-pass.ts` to call the research use case before the idea pass. Inject research insights into the prompts used in subsequent passes.",
+        "testStrategy": "Ensure that research insights are correctly integrated and influence the content generation process.",
+        "priority": "medium",
+        "dependencies": [
+          "154"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:31:00.824Z"
+      },
+      {
+        "id": "156",
+        "title": "Create RAG Knowledge Retrieval Use Case",
+        "description": "Implement a use case for retrieving knowledge using vector search.",
+        "details": "Develop `core/application/usecases/marketing/post/retrieve-knowledge.ts` to perform vector searches and retrieve relevant knowledge context for a given topic.",
+        "testStrategy": "Test the retrieval process with various topics to ensure relevant knowledge is accurately retrieved and formatted.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:31:58.588Z"
+      },
+      {
+        "id": "157",
+        "title": "Integrate RAG Context into Multi-Pass",
+        "description": "Incorporate RAG knowledge retrieval into the multi-pass process.",
+        "details": "Update `generate-post-multi-pass.ts` to include RAG context in the draft and enhance passes. Ensure the retrieved knowledge is effectively used to improve content quality.",
+        "testStrategy": "Verify that RAG context is correctly integrated and enhances the content generation process.",
+        "priority": "medium",
+        "dependencies": [
+          "156"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:33:22.576Z"
+      },
+      {
+        "id": "158",
+        "title": "Enhance UI for Research and RAG Insights",
+        "description": "Update UI to display research insights and RAG sources.",
+        "details": "Modify `PostForm.tsx` to show research insights and RAG sources. Ensure the UI clearly presents this information alongside the content.",
+        "testStrategy": "Test the UI to ensure research and RAG insights are displayed correctly and enhance user understanding.",
+        "priority": "medium",
+        "dependencies": [
+          "155",
+          "157"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:33:28.658Z"
+      },
+      {
+        "id": "159",
+        "title": "Implement Progress Indicators in UI",
+        "description": "Add progress indicators for each pass in the content generation process.",
+        "details": "Update `PostForm.tsx` to include progress indicators for each stage of the multi-pass process, from idea to scoring.",
+        "testStrategy": "Ensure that progress indicators accurately reflect the current stage of content generation and update in real-time.",
+        "priority": "low",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:33:34.639Z"
+      },
+      {
+        "id": "160",
+        "title": "Inject QueueService into CreatePostUseCase",
+        "description": "Modify CreatePostUseCase to include QueueService for scheduling posts.",
+        "details": "Inject the QueueService into the CreatePostUseCase constructor to enable scheduling of posts instead of immediate publishing.",
+        "testStrategy": "Verify that the QueueService is correctly injected and available within CreatePostUseCase.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:59:12.169Z"
+      },
+      {
+        "id": "161",
+        "title": "Add Scheduling Logic to CreatePostUseCase",
+        "description": "Implement logic to schedule posts if postStatus is 'scheduled'.",
+        "details": "Add logic to CreatePostUseCase to calculate delay and use QueueService to add a job for scheduled posts.",
+        "testStrategy": "Create a post with a scheduled status and verify that a job is added to the queue with the correct delay.",
+        "priority": "medium",
+        "dependencies": [
+          "160"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:59:18.299Z"
+      },
+      {
+        "id": "162",
+        "title": "Update Dependency Injection for BullMQAdapter",
+        "description": "Modify dependency injection to include BullMQAdapter in CreatePostUseCase.",
+        "details": "Update app/api/posts/depends.ts to inject BullMQAdapter into CreatePostUseCase.",
+        "testStrategy": "Ensure that BullMQAdapter is correctly injected and used within CreatePostUseCase.",
+        "priority": "medium",
+        "dependencies": [
+          "160"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T06:59:24.400Z"
+      },
+      {
+        "id": "163",
+        "title": "Create Scheduled Post Worker",
+        "description": "Develop a worker to handle scheduled post publishing.",
+        "details": "Create infrastructure/queue/scheduled-post-worker.ts to process publish-scheduled-post jobs using BullMQ.",
+        "testStrategy": "Test worker by adding jobs to the queue and verifying they are processed correctly.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T07:00:12.080Z"
+      },
+      {
+        "id": "164",
+        "title": "Implement Post Publishing in Worker",
+        "description": "Use PostingAdapterFactory to publish posts to platforms within the worker.",
+        "details": "Implement logic in the worker to publish posts using PostingAdapterFactory and update PostRepository with results.",
+        "testStrategy": "Verify that posts are published to all specified platforms and results are updated in the database.",
+        "priority": "medium",
+        "dependencies": [
+          "163"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T07:00:18.235Z"
+      },
+      {
+        "id": "165",
+        "title": "Add Worker Script to Package.json",
+        "description": "Create a script to start the scheduled post worker.",
+        "details": "Add a script named worker:scheduled-posts to package.json to start the scheduled post worker.",
+        "testStrategy": "Run the script and ensure the worker starts correctly and processes jobs.",
+        "priority": "medium",
+        "dependencies": [
+          "163"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T07:01:11.165Z"
+      },
+      {
+        "id": "166",
+        "title": "Create Standalone Worker Script",
+        "description": "Develop a standalone script to run the scheduled post worker.",
+        "details": "Create scripts/start-scheduled-post-worker.ts to initialize and run the worker in standalone mode.",
+        "testStrategy": "Execute the script and verify the worker runs independently and processes jobs.",
+        "priority": "medium",
+        "dependencies": [
+          "163"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T07:01:17.261Z"
+      },
+      {
+        "id": "167",
+        "title": "Remove Obsolete Code",
+        "description": "Clean up old code related to scheduled post status updates.",
+        "details": "Remove app/api/posts/update-scheduled-status/route.ts, UpdateScheduledPostsStatusUseCase, and useScheduledPostUpdater hook.",
+        "testStrategy": "Ensure that the application functions correctly without the removed code.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T07:01:23.233Z"
+      },
+      {
+        "id": "168",
+        "title": "Update Documentation for Scheduled Post Publishing",
+        "description": "Revise documentation to reflect changes in scheduled post publishing.",
+        "details": "Update SCHEDULED_POST_PUBLISHING.md to include new worker-based approach and remove references to old methods.",
+        "testStrategy": "Review documentation for accuracy and completeness regarding the new implementation.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T07:01:29.183Z"
+      },
+      {
+        "id": "169",
+        "title": "Test and Validate Worker Deployment",
+        "description": "Ensure the worker is correctly deployed and functioning in production environments.",
+        "details": "Deploy the worker using pm2, Docker, or Kubernetes and verify it processes jobs as expected in production.",
+        "testStrategy": "Monitor the worker in production for job processing accuracy and performance.",
+        "priority": "medium",
+        "dependencies": [
+          "165",
+          "166"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T07:01:35.248Z"
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-12-03T14:19:12.465Z",
-      "taskCount": 149,
-      "completedCount": 148,
+      "lastModified": "2025-12-04T07:01:35.251Z",
+      "taskCount": 169,
+      "completedCount": 168,
       "tags": [
         "master"
       ]

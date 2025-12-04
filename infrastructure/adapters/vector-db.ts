@@ -96,27 +96,44 @@ export class VectorDBService {
     await this.initializeCollection()
 
     try {
+      // Generate UUID v4 for Qdrant point id
+      const pointId = this.generateUUID()
+
       await this.client.upsert(this.collectionName, {
         wait: true,
         points: [
           {
-            id: embedding.id,
+            id: pointId,
             vector: embedding.embedding,
             payload: {
+              embeddingId: embedding.id, // Store original ID in payload
               postId: embedding.postId,
               content: embedding.content,
-              platform: embedding.metadata.platform,
-              topic: embedding.metadata.topic,
-              title: embedding.metadata.title,
+              platform: embedding.metadata.platform || null,
+              topic: embedding.metadata.topic || null,
+              title: embedding.metadata.title || null,
               createdAt: embedding.createdAt.toISOString(),
             },
           },
         ],
       })
+
+      console.log('[VectorDB] Stored embedding:', { pointId, postId: embedding.postId })
     } catch (error) {
-      console.error("Failed to store embedding:", error)
+      console.error("[VectorDB] Failed to store embedding:", error)
       throw new Error(`Failed to store embedding: ${error instanceof Error ? error.message : String(error)}`)
     }
+  }
+
+  /**
+   * Generate UUID v4 (simple implementation)
+   */
+  private generateUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0
+      const v = c === 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
   }
 
   /**
@@ -162,16 +179,24 @@ export class VectorDBService {
   }
 
   /**
-   * Delete embedding by ID
+   * Delete embedding by ID (searches by embeddingId in payload)
    */
-  async deleteEmbedding(id: string): Promise<void> {
+  async deleteEmbedding(embeddingId: string): Promise<void> {
     try {
       await this.client.delete(this.collectionName, {
         wait: true,
-        points: [id],
+        filter: {
+          must: [
+            {
+              key: "embeddingId",
+              match: { value: embeddingId },
+            },
+          ],
+        },
       })
+      console.log('[VectorDB] Deleted embedding:', embeddingId)
     } catch (error) {
-      console.error("Failed to delete embedding:", error)
+      console.error("[VectorDB] Failed to delete embedding:", error)
       throw new Error(`Failed to delete embedding: ${error instanceof Error ? error.message : String(error)}`)
     }
   }

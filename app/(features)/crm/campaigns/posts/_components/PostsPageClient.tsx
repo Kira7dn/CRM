@@ -7,6 +7,7 @@ import PostsView from './PostsView'
 import PostFormModal from './PostFormModal'
 import PostContentSettings from './PostContentSettings'
 import type { Post } from '@/core/domain/marketing/post'
+import { useScheduledPostUpdater } from '../_hooks/useScheduledPostUpdater'
 
 interface PostsPageClientProps {
   initialPosts: Post[]
@@ -15,6 +16,9 @@ interface PostsPageClientProps {
 export default function PostsPageClient({ initialPosts }: PostsPageClientProps) {
   const [showSettings, setShowSettings] = useState(false)
   const [showCreatePost, setShowCreatePost] = useState(false)
+
+  // Auto-update scheduled posts to published when time passes
+  useScheduledPostUpdater()
 
   return (
     <div className="container mx-auto max-w-6xl p-6 space-y-6">

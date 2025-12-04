@@ -18,7 +18,8 @@
     "create-indexes": "npx tsx --env-file=.env scripts/create-indexes.ts",
     "warm-cache": "npx tsx --env-file=.env scripts/warm-cache.ts",
     "worker:campaign": "npx tsx --env-file=.env infrastructure/queue/campaign-worker.ts",
-    "worker:tiktok": "npx tsx --env-file=.env scripts/start-tiktok-worker.ts"
+    "worker:tiktok": "npx tsx --env-file=.env scripts/start-tiktok-worker.ts",
+    "worker:scheduled-posts": "npx tsx --env-file=.env scripts/start-scheduled-post-worker.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.69",
