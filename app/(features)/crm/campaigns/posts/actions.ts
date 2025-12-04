@@ -153,7 +153,13 @@ export async function updatePostAction(id: string, formData: FormData) {
   revalidatePath("/crm/posts")
 }
 
-export async function generatePostContentAction(params: { topic?: string; platform?: string }) {
+export async function generatePostContentAction(params: {
+  topic?: string
+  platform?: string
+  idea?: string // NEW
+  productUrl?: string // NEW
+  detailInstruction?: string // NEW
+}) {
   try {
     const useCase = await createGeneratePostContentUseCase()
     const result = await useCase.execute(params)
@@ -248,6 +254,9 @@ export async function generatePostMultiPassAction(params: {
   topic?: string
   platform?: string
   sessionId?: string
+  idea?: string // NEW
+  productUrl?: string // NEW
+  detailInstruction?: string // NEW
 }) {
   try {
     // Get brand memory
@@ -260,8 +269,11 @@ export async function generatePostMultiPassAction(params: {
       topic: params.topic,
       platform: params.platform,
       sessionId: params.sessionId,
+      idea: params.idea, // NEW
+      productUrl: params.productUrl, // NEW
+      detailInstruction: params.detailInstruction, // NEW
       brandMemory: brandMemory ? {
-        productDescription: brandMemory.productDescription,
+        brandDescription: brandMemory.brandDescription, // FIXED: was productDescription
         contentStyle: brandMemory.contentStyle,
         language: brandMemory.language,
         brandVoice: brandMemory.brandVoice,
@@ -279,5 +291,78 @@ export async function generatePostMultiPassAction(params: {
   } catch (error) {
     console.error("Failed to generate multi-pass content:", error)
     return { success: false, error: String(error) }
+  }
+}
+
+/**
+ * Save schedule items as draft posts
+ */
+export async function saveScheduleToPostsAction(scheduleItems: Array<{
+  title: string
+  idea: string
+  scheduledDate: string
+  platform: string
+}>) {
+  try {
+    const cookieStore = await cookies()
+    const userIdCookie = cookieStore.get("admin_user_id")
+    if (!userIdCookie) {
+      throw new Error("Unauthorized - Please login first")
+    }
+
+    const useCase = await createPostUseCase()
+    const results = []
+    const errors = []
+
+    for (const item of scheduleItems) {
+      try {
+        // Parse scheduled date (YYYY-MM-DD format)
+        const [year, month, day] = item.scheduledDate.split('-').map(Number)
+        const scheduledAt = new Date(year, month - 1, day, 10, 0, 0) // Default to 10:00 AM
+
+        // Map platform string to Platform type
+        const platform = item.platform.toLowerCase() as Platform
+
+        const now = new Date()
+
+        const result = await useCase.execute({
+          userId: userIdCookie.value,
+          title: item.title,
+          body: item.idea, // Use idea as initial body content
+          contentType: 'post' as ContentType,
+          platforms: [{
+            platform,
+            status: 'draft' as const,
+          }],
+          media: [],
+          hashtags: [],
+          scheduledAt,
+          saveAsDraft: true, // Save as draft so user can edit before publishing
+          createdAt: now,
+          updatedAt: now,
+        })
+
+        results.push({ success: true, postId: result.post.id, title: item.title })
+      } catch (error) {
+        console.error(`[SaveSchedule] Failed to save item "${item.title}":`, error)
+        errors.push({ title: item.title, error: error instanceof Error ? error.message : 'Unknown error' })
+      }
+    }
+
+    revalidatePath("/crm/posts")
+
+    return {
+      success: true,
+      savedCount: results.length,
+      failedCount: errors.length,
+      results,
+      errors
+    }
+  } catch (error) {
+    console.error("[SaveSchedule] Action error:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to save schedule"
+    }
   }
 }

@@ -43,10 +43,11 @@ export class RetrieveKnowledgeUseCase {
       // Generate embedding for topic
       const embedding = await this.generateEmbedding(request.topic)
 
-      // Search similar content in vector DB
+      // Search similar content in vector DB - ONLY knowledge resources
       const results = await vectorDB.searchSimilar(embedding, {
         limit: request.limit || 5,
-        scoreThreshold: 0.7
+        scoreThreshold: 0.7,
+        contentType: "knowledge_resource"  // NEW: Filter only knowledge resources
       })
 
       // Build context from results

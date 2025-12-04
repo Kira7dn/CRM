@@ -42,6 +42,7 @@ export class StoreContentEmbeddingUseCase {
       content: request.content,
       embedding,
       metadata: {
+        contentType: "draft_content",  // Mark as draft content (not published, not knowledge)
         title: request.title,
         platform: request.platform,
         topic: request.topic,

@@ -16,6 +16,9 @@ const ResponseSchema = z.object({
 export interface GeneratePostContentRequest {
   topic?: string
   platform?: string
+  idea?: string // NEW: Post idea from schedule
+  productUrl?: string // NEW: Product URL for context
+  detailInstruction?: string // NEW: Specific instructions for this post
 }
 
 export interface GeneratePostContentResponse {
@@ -33,7 +36,7 @@ export class GeneratePostContentUseCase {
     // Load settings (business logic)
     const settings = this.loadSettings()
 
-    // Build prompt (business logic)
+    // Build prompt (business logic) - UPDATED with new fields
     const prompt = `Generate social media post content:
 
 Product: ${settings.productDescription}
@@ -41,6 +44,9 @@ Style: ${settings.contentStyle}
 Language: ${settings.language}
 ${params.topic ? `Topic: ${params.topic}` : ""}
 ${params.platform ? `Platform: ${params.platform}` : ""}
+${params.idea ? `Post Idea: ${params.idea}` : ""}
+${params.productUrl ? `Product URL for reference: ${params.productUrl}` : ""}
+${params.detailInstruction ? `Specific Instructions: ${params.detailInstruction}` : ""}
 
 Generate:
 1. One main post title (10-200 characters)

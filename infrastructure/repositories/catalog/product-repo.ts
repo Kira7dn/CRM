@@ -120,6 +120,7 @@ export class ProductRepository extends BaseRepository<Product, number> implement
       productData.detail,
       normalizeSizes(doc),
       productData.colors,
+      productData.url,
       productData.createdAt,
       productData.updatedAt
     );

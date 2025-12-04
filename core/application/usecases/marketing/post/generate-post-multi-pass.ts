@@ -54,8 +54,11 @@ const ScoringPassSchema = z.object({
 export interface GeneratePostMultiPassRequest {
   topic?: string
   platform?: string
+  idea?: string // NEW: Post idea from schedule
+  productUrl?: string // NEW: Product URL for context
+  detailInstruction?: string // NEW: Specific instructions for this post
   brandMemory?: {
-    productDescription: string
+    brandDescription: string // FIXED: was productDescription
     contentStyle: string
     language: string
     brandVoice?: { tone: string; writingPatterns: string[] }
@@ -313,7 +316,7 @@ Return ONLY valid JSON (no markdown):
     }
 
     const parts = [
-      `Product: ${brandMemory.productDescription}`,
+      `Brand: ${brandMemory.brandDescription}`, // FIXED: was productDescription
       `Style: ${brandMemory.contentStyle}`,
       `Language: ${brandMemory.language}`,
     ]
@@ -344,6 +347,9 @@ ${brandContext}
 
 ${request.topic ? `Topic: ${request.topic}` : ""}
 ${request.platform ? `Platform: ${request.platform}` : ""}
+${request.idea ? `Initial Idea: ${request.idea}` : ""}
+${request.productUrl ? `Product URL for reference: ${request.productUrl}` : ""}
+${request.detailInstruction ? `Specific Instructions: ${request.detailInstruction}` : ""}
 
 Requirements:
 - Each idea must be unique and not repetitive

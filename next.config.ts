@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '100mb',
     },
+    serverComponentsExternalPackages: ["pdf-parse"],
   },
   serverExternalPackages: ['instrumentation'],
   allowedDevOrigins: ["haisancrm.linkstrategy.io.vn"],

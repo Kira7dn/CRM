@@ -4319,13 +4319,271 @@
         "status": "done",
         "subtasks": [],
         "updatedAt": "2025-12-04T07:01:35.248Z"
+      },
+      {
+        "id": "170",
+        "title": "Create Domain Entity for Resource",
+        "description": "Define the Resource domain entity in TypeScript.",
+        "details": "Create a new file `core/domain/marketing/resource.ts` and define the `Resource` interface with fields such as id, userId, name, fileType, s3Url, s3Key, size, chunkCount, and uploadedAt. Implement a validation function to ensure required fields are present.",
+        "testStrategy": "Write unit tests to validate the creation of Resource objects and ensure validation errors are thrown for missing fields.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "171",
+        "title": "Implement Resource Service Interface",
+        "description": "Define the interface for ResourceService.",
+        "details": "Create a new file `core/application/interfaces/marketing/resource-service.ts` and define the `ResourceService` interface with methods for getAll, getById, create, and delete. Use the Resource interface defined in the previous task.",
+        "testStrategy": "Create mock implementations of the ResourceService interface and test each method to ensure they return expected results.",
+        "priority": "medium",
+        "dependencies": [
+          "170"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "172",
+        "title": "Develop Resource Repository",
+        "description": "Implement the ResourceRepository class for MongoDB operations.",
+        "details": "In `infrastructure/repositories/marketing/resource-repo.ts`, implement the ResourceRepository class extending BaseRepository. Implement methods to interact with MongoDB for CRUD operations on Resource entities.",
+        "testStrategy": "Write integration tests to verify that the repository methods correctly interact with MongoDB and handle data as expected.",
+        "priority": "medium",
+        "dependencies": [
+          "171"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "173",
+        "title": "Create UploadResource Use Case",
+        "description": "Implement the use case for uploading resources to S3 and storing metadata.",
+        "details": "In `core/application/usecases/marketing/resource/upload-resource.ts`, implement the UploadResourceUseCase class. Handle file upload to S3, text extraction, chunking, and storing metadata in MongoDB and VectorDB.",
+        "testStrategy": "Test the complete upload process with different file types (.md, .txt, .pdf) and verify that all steps (S3 upload, DB storage, chunking) are completed successfully.",
+        "priority": "medium",
+        "dependencies": [
+          "172"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "174",
+        "title": "Implement GetResources Use Case",
+        "description": "Develop the use case to retrieve a list of resources.",
+        "details": "Create `core/application/usecases/marketing/resource/get-resources.ts` and implement the GetResourcesUseCase class to fetch resources from the database for a given userId.",
+        "testStrategy": "Test retrieval of resources for various user IDs and ensure the correct list of resources is returned.",
+        "priority": "medium",
+        "dependencies": [
+          "172"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "175",
+        "title": "Implement DeleteResource Use Case",
+        "description": "Develop the use case to delete resources from S3, DB, and VectorDB.",
+        "details": "In `core/application/usecases/marketing/resource/delete-resource.ts`, implement the DeleteResourceUseCase class. Ensure it deletes the resource from S3, MongoDB, and VectorDB.",
+        "testStrategy": "Test the deletion process for resources and verify that all related data is removed from S3, MongoDB, and VectorDB.",
+        "priority": "medium",
+        "dependencies": [
+          "172"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "176",
+        "title": "Create DocumentChunker Utility",
+        "description": "Implement a utility for chunking text documents.",
+        "details": "In `infrastructure/utils/document-chunker.ts`, implement the DocumentChunker class with a static method to chunk text based on specified size and overlap.",
+        "testStrategy": "Test the chunking function with various text inputs and ensure the output chunks are correctly sized and overlapped.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "177",
+        "title": "Develop PDFParser Utility",
+        "description": "Implement a utility to extract text from PDF files.",
+        "details": "In `infrastructure/utils/pdf-parser.ts`, implement the PDFParser class using the `pdf-parse` library to extract text from PDF files.",
+        "testStrategy": "Test PDF parsing with different PDF files to ensure text is accurately extracted.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "178",
+        "title": "Update VectorDB Service",
+        "description": "Enhance VectorDB service to handle new metadata fields.",
+        "details": "Update the VectorDB service to include new metadata fields such as contentType, resourceId, and chunkIndex. Modify methods to handle these fields appropriately.",
+        "testStrategy": "Test storing and retrieving embeddings with the new metadata fields to ensure they are correctly handled.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "179",
+        "title": "Create API Routes for Resource Management",
+        "description": "Develop API routes for managing resources.",
+        "details": "Implement API routes in `app/api/resources/route.ts` for GET and POST requests, and in `app/api/resources/[id]/route.ts` for DELETE requests. Ensure they interact with the use cases correctly.",
+        "testStrategy": "Test API endpoints for resource creation, retrieval, and deletion to ensure they function as expected and handle errors gracefully.",
+        "priority": "medium",
+        "dependencies": [
+          "173",
+          "174",
+          "175"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "180",
+        "title": "Update Product Domain Model",
+        "description": "Add a new field 'url' to the Product domain model.",
+        "details": "Modify the Product constructor in `core/domain/catalog/product.ts` to include a new field `url` of type string.",
+        "testStrategy": "Write unit tests to ensure the 'url' field is correctly added and can be set and retrieved.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:36:13.959Z"
+      },
+      {
+        "id": "181",
+        "title": "Update BrandMemory Domain Model",
+        "description": "Rename 'productDescription' to 'brandDescription' and add new fields to BrandMemory domain model.",
+        "details": "In `core/domain/brand-memory.ts`, rename `productDescription` to `brandDescription`. Add `contentsInstruction` and `selectedProductIds` fields.",
+        "testStrategy": "Verify through unit tests that the fields are correctly renamed and added, and that data can be set and retrieved accurately.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:36:26.776Z"
+      },
+      {
+        "id": "182",
+        "title": "Update PostContentSettings Component",
+        "description": "Modify PostContentSettings component to reflect domain model changes and add new UI elements.",
+        "details": "In `app/(features)/crm/campaigns/posts/_components/PostContentSettings.tsx`, update the component to change `productDescription` to `brandDescription`. Add a multi-select product picker and a `contentsInstruction` textarea.",
+        "testStrategy": "Perform UI tests to ensure the new fields are displayed and function correctly, including multi-select functionality.",
+        "priority": "medium",
+        "dependencies": [
+          "181"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:36:38.708Z"
+      },
+      {
+        "id": "183",
+        "title": "Create GeneratePostSchedule Use Case",
+        "description": "Develop a use case for generating a monthly post schedule using AI.",
+        "details": "Create `GeneratePostScheduleUseCase` in `core/application/usecases/marketing/post/generate-post-schedule.ts` to generate 20-30 post ideas based on brand context.",
+        "testStrategy": "Implement integration tests to validate that the use case generates the correct number of post ideas with appropriate content.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:36:50.031Z"
+      },
+      {
+        "id": "184",
+        "title": "Add Post Schedule Button",
+        "description": "Add a button to initiate post schedule generation in the posts page.",
+        "details": "In `posts/page.tsx`, add a button labeled 'Lên kế hoạch Post' to trigger the post schedule generation process.",
+        "testStrategy": "Conduct UI tests to ensure the button is visible and triggers the schedule generation correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "183"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:37:02.873Z"
+      },
+      {
+        "id": "185",
+        "title": "Display and Save Post Schedule",
+        "description": "Display the generated post schedule and provide an option to save it.",
+        "details": "Implement functionality to display the generated schedule and allow users to save it to the scheduler.",
+        "testStrategy": "Perform end-to-end tests to ensure the schedule is displayed correctly and can be saved without errors.",
+        "priority": "medium",
+        "dependencies": [
+          "184"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:37:14.611Z"
+      },
+      {
+        "id": "186",
+        "title": "Enhance PostForm with Idea Field",
+        "description": "Add an editable 'idea' field to PostForm, pre-filled from the schedule.",
+        "details": "In `app/(features)/crm/campaigns/posts/_components/PostForm.tsx`, add an `idea` field that is pre-filled with data from the generated schedule.",
+        "testStrategy": "Verify through UI tests that the idea field is correctly populated and editable.",
+        "priority": "medium",
+        "dependencies": [
+          "185"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:37:25.917Z"
+      },
+      {
+        "id": "187",
+        "title": "Add Product Dropdown to PostForm",
+        "description": "Include a product dropdown in PostForm allowing selection of 0-1 product.",
+        "details": "Modify `PostForm.tsx` to include a dropdown for selecting a single product from the list.",
+        "testStrategy": "Test the dropdown functionality to ensure it allows selection of up to one product and integrates with the form data.",
+        "priority": "medium",
+        "dependencies": [
+          "186"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:37:37.368Z"
+      },
+      {
+        "id": "188",
+        "title": "Add DetailContentsInstruction to PostForm",
+        "description": "Add a textarea for detailed content instructions in PostForm.",
+        "details": "In `PostForm.tsx`, add a `detailContentsInstruction` textarea to capture additional instructions for content generation.",
+        "testStrategy": "Ensure through UI tests that the textarea is displayed and captures input correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "187"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:37:49.737Z"
+      },
+      {
+        "id": "189",
+        "title": "Update Content Generation Logic",
+        "description": "Enhance content generation logic to use idea, product, and detailed instructions.",
+        "details": "Update the logic in `PostForm.tsx` to pass the selected product URL, idea, and detailed instructions to the LLM for content generation.",
+        "testStrategy": "Conduct integration tests to validate that the content generation uses all inputs correctly and produces the expected output.",
+        "priority": "medium",
+        "dependencies": [
+          "188"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-04T13:38:04.176Z"
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-12-04T07:01:35.251Z",
-      "taskCount": 169,
-      "completedCount": 168,
+      "lastModified": "2025-12-04T13:38:04.184Z",
+      "taskCount": 189,
+      "completedCount": 178,
       "tags": [
         "master"
       ]

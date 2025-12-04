@@ -22,8 +22,8 @@ export interface BrandVoice {
 export interface BrandMemory {
   id: string
 
-  // Basic settings (from ContentSettings)
-  productDescription: string
+  // Basic settings (UPDATED)
+  brandDescription: string  // CHANGED from productDescription
   niche: string
   contentStyle: ContentStyle
   language: Language
@@ -32,6 +32,12 @@ export interface BrandMemory {
   brandVoice: BrandVoice
   ctaLibrary: string[] // Call-to-action templates
   keyPoints: string[] // Key product/service selling points
+
+  // NEW: Content instruction for AI
+  contentsInstruction?: string  // Guide AI to create post ideas
+
+  // NEW: Selected products
+  selectedProductIds?: number[]  // Products for brand context
 
   // Metadata
   createdAt?: Date
@@ -42,7 +48,7 @@ export interface BrandMemory {
  * Default brand memory values
  */
 export const DEFAULT_BRAND_MEMORY: Omit<BrandMemory, 'id'> = {
-  productDescription: 'Premium fresh seafood from Cô Tô Island, delivered daily',
+  brandDescription: 'Premium fresh seafood from Cô Tô Island, delivered daily',  // CHANGED
   niche: 'Fresh seafood, ocean-to-table quality',
   contentStyle: 'professional',
   language: 'vietnamese',
@@ -64,7 +70,9 @@ export const DEFAULT_BRAND_MEMORY: Omit<BrandMemory, 'id'> = {
     'Vận chuyển 0-4 độ C',
     'Hoàn toàn không ướp đá',
     'Cam kết tươi sống'
-  ]
+  ],
+  contentsInstruction: '',  // NEW
+  selectedProductIds: [],   // NEW
 }
 
 /**
@@ -73,8 +81,8 @@ export const DEFAULT_BRAND_MEMORY: Omit<BrandMemory, 'id'> = {
 export function validateBrandMemory(memory: Partial<BrandMemory>): string[] {
   const errors: string[] = []
 
-  if (!memory.productDescription || memory.productDescription.trim().length === 0) {
-    errors.push('Product description is required')
+  if (!memory.brandDescription || memory.brandDescription.trim().length === 0) {
+    errors.push('Brand description is required')
   }
 
   if (!memory.niche || memory.niche.trim().length === 0) {

@@ -12,96 +12,38 @@ import {
   getBrandMemoryAction
 } from '../actions'
 import type { Post, Platform, ContentType, PostMedia } from '@/core/domain/marketing/post'
-import { MediaUpload } from '@/app/(features)/crm/_components/MediaUpload'
 import { Button } from '@shared/ui/button'
-import { Label } from '@shared/ui/label'
-import { Input } from '@shared/ui/input'
-import { Loader2, AlertTriangle, CheckCircle2, XCircle, Sparkles, Zap, Settings, Info } from 'lucide-react'
-import PostContentSettings from './PostContentSettings'
+import { Loader2, CheckCircle2, XCircle, Zap } from 'lucide-react'
 
-// Platform options
-const PLATFORMS: { value: Platform; label: string; color: string }[] = [
-  { value: 'facebook', label: 'Facebook', color: 'bg-blue-600' },
-  { value: 'youtube', label: 'YouTube', color: 'bg-red-600' },
-  { value: 'tiktok', label: 'TikTok', color: 'bg-black' },
-  { value: 'zalo', label: 'Zalo', color: 'bg-blue-400' },
-]
-
-// Content types
-const CONTENT_TYPES: { value: ContentType; label: string }[] = [
-  { value: 'reel', label: 'Reel / Shorts' },
-  { value: 'post', label: 'Photo Post' },
-  { value: 'video', label: 'Video dài (>60s)' },
-  { value: 'article', label: 'Article / Bài viết dài' },
-  { value: 'story', label: 'Story' }, // Thêm dòng này
-]
-
-// Compatibility mapping
-const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "warning" | "unsupported">> = {
-  reel: {
-    facebook: "supported",
-    youtube: "supported",
-    tiktok: "supported",
-    zalo: "unsupported",
-    website: "unsupported",
-    telegram: "unsupported"
-  },
-  short: {
-    facebook: "supported",
-    youtube: "supported",
-    tiktok: "supported",
-    zalo: "unsupported",
-    website: "unsupported",
-    telegram: "unsupported"
-  },
-  post: {
-    facebook: "supported",
-    youtube: "unsupported",
-    tiktok: "warning",
-    zalo: "supported",
-    website: "supported",
-    telegram: "supported"
-  },
-  video: {
-    facebook: "supported",
-    youtube: "supported",
-    tiktok: "unsupported",
-    zalo: "unsupported",
-    website: "supported",
-    telegram: "unsupported"
-  },
-  article: {
-    facebook: "warning",
-    youtube: "supported",
-    tiktok: "unsupported",
-    zalo: "supported",
-    website: "supported",
-    telegram: "supported"
-  },
-  story: {
-    facebook: "supported",
-    youtube: "unsupported",
-    tiktok: "supported",
-    zalo: "unsupported",
-    website: "unsupported",
-    telegram: "unsupported"
-  },
-}
+// Extracted components
+import AIGenerationSection from './form-sections/AIGenerationSection'
+import QualityScoreDisplay from './form-sections/QualityScoreDisplay'
+import ContentInputFields from './form-sections/ContentInputFields'
+import PlatformSelector from './form-sections/PlatformSelector'
+import MediaHashtagSchedule from './form-sections/MediaHashtagSchedule'
 
 interface PostFormProps {
   post?: Post
   onClose?: () => void
   initialScheduledAt?: Date
-  registerHandleClose?: (handler: () => Promise<void>) => void // For Modal to intercept Dialog close
+  initialIdea?: string // NEW: Pre-fill from schedule
+  registerHandleClose?: (handler: () => Promise<void>) => void
 }
 
-export default function PostForm({ post, onClose, initialScheduledAt, registerHandleClose }: PostFormProps) {
+export default function PostForm({
+  post,
+  onClose,
+  initialScheduledAt,
+  initialIdea,
+  registerHandleClose
+}: PostFormProps) {
   const [isSubmitting, startTransition] = useTransition()
   const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(post?.platforms.map(p => p.platform) || [])
   const [contentType, setContentType] = useState<ContentType>(post?.contentType || 'post')
   const [media, setMedia] = useState<PostMedia | null>(post?.media?.[0] || null)
   const [hashtags, setHashtags] = useState(post?.hashtags?.join(' ') || '')
-  // Helper to format date for datetime-local input (local timezone, not UTC)
+
+  // Helper to format date for datetime-local input
   const formatDateForInput = (date: Date): string => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -118,6 +60,7 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
         ? formatDateForInput(new Date(initialScheduledAt))
         : ''
   )
+
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isGenerating, setIsGenerating] = useState(false)
   const [generationMode, setGenerationMode] = useState<'simple' | 'multi-pass'>('multi-pass')
@@ -136,6 +79,12 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
     suggestedFixes?: string[]
   } | null>(null)
 
+  // NEW FIELDS for Tasks 186-188
+  const [idea, setIdea] = useState(initialIdea || '')
+  const [selectedProduct, setSelectedProduct] = useState<{ id: number; name: string; url?: string } | null>(null)
+  const [products, setProducts] = useState<Array<{ id: number; name: string; url?: string }>>([])
+  const [detailContentsInstruction, setDetailContentsInstruction] = useState('')
+
   // Track if form has content
   const hasContent = () => {
     return title.trim().length > 0 || body.trim().length > 0
@@ -148,24 +97,30 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
     }
   }, [title, body, post])
 
-  // Load brand memory status on mount
+  // Load brand memory status and products on mount
   useEffect(() => {
     const checkBrandMemory = async () => {
       const result = await getBrandMemoryAction()
       setHasBrandMemory(result.success && !!result.brandMemory)
     }
     checkBrandMemory()
+
+    // Load products for dropdown
+    const loadProducts = async () => {
+      try {
+        const res = await fetch('/api/products')
+        const data = await res.json()
+        setProducts(data.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          url: p.url
+        })))
+      } catch (error) {
+        console.error('Failed to load products:', error)
+      }
+    }
+    loadProducts()
   }, [])
-
-  const getPlatformSupport = (platform: Platform) =>
-    CONTENT_PLATFORM_MAP[contentType]?.[platform] || 'unsupported'
-
-  const togglePlatform = (platform: Platform) => {
-    if (getPlatformSupport(platform) !== "supported") return
-    setSelectedPlatforms(prev =>
-      prev.includes(platform) ? prev.filter(p => p !== platform) : [...prev, platform]
-    )
-  }
 
   const isVideoContent = ['video', 'reel', 'short'].includes(contentType)
 
@@ -191,6 +146,7 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
     }
   }
 
+  // UPDATED: Task 189 - Pass idea, product, detailInstruction to generation
   const handleGenerateAI = async () => {
     setIsGenerating(true)
     setSimilarityWarning(null)
@@ -198,26 +154,26 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
 
     try {
       if (generationMode === 'multi-pass') {
-        // Multi-pass generation with progress
         setGenerationProgress(['🤔 Generating ideas...'])
 
         const result = await generatePostMultiPassAction({
-          topic: title || undefined,
-          platform: selectedPlatforms[0]
+          topic: title || idea || undefined, // Use idea if no title
+          platform: selectedPlatforms[0],
+          idea: idea || undefined, // NEW
+          productUrl: selectedProduct?.url, // NEW
+          detailInstruction: detailContentsInstruction || undefined, // NEW
         })
 
         if (result.success) {
           setTitle(result.title || '')
           setBody(result.content || '')
 
-          // Show completed passes
           if (result.metadata?.passesCompleted) {
             setGenerationProgress(result.metadata.passesCompleted.map(pass =>
               `✓ ${pass.charAt(0).toUpperCase() + pass.slice(1)} pass completed`
             ))
           }
 
-          // Store scoring data
           if (result.metadata?.score) {
             setScoringData({
               score: result.metadata.score,
@@ -227,7 +183,6 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
             })
           }
 
-          // Check similarity
           const isSimilar = await handleCheckSimilarity(result.content || '', result.title || '')
 
           const scoreInfo = result.metadata?.score
@@ -246,8 +201,11 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
       } else {
         // Simple single-pass generation
         const result = await generatePostContentAction({
-          topic: title || undefined,
-          platform: selectedPlatforms[0]
+          topic: title || idea || undefined,
+          platform: selectedPlatforms[0],
+          idea: idea || undefined, // NEW
+          productUrl: selectedProduct?.url, // NEW
+          detailInstruction: detailContentsInstruction || undefined, // NEW
         })
 
         if (result.success && result.content) {
@@ -255,9 +213,7 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
           setBody(result.content.content)
           setVariations(result.content.variations)
 
-          // Check similarity
           await handleCheckSimilarity(result.content.content, result.content.title)
-
           toast.success('Content generated successfully')
         } else {
           throw new Error(result.error || 'Generation failed')
@@ -273,7 +229,6 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
   }
 
   const handleSubmit = async (formData: FormData, saveAsDraft = false) => {
-    // Validate only if not saving as draft
     if (!saveAsDraft && selectedPlatforms.length === 0) {
       setErrors({ platforms: 'Please select at least one platform' })
       return
@@ -289,7 +244,6 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
 
     startTransition(async () => {
       try {
-        // Show loading toast with appropriate message
         const loadingMessage = saveAsDraft
           ? 'Saving draft...'
           : scheduledAt
@@ -308,11 +262,8 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
           toast.success('Post updated successfully', { id: loadingToast })
         } else {
           const result = await createPostAction(formData)
-
-          // Dismiss loading toast
           toast.dismiss(loadingToast)
 
-          // Handle draft save
           if (saveAsDraft) {
             toast.success('Draft saved successfully', {
               description: 'You can continue editing later',
@@ -321,7 +272,7 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
             return
           }
 
-          // Store embedding for similarity check in future (async, don't wait)
+          // Store embedding for similarity check
           if (result?.postId && body) {
             storeContentEmbeddingAction({
               postId: result.postId,
@@ -359,7 +310,6 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
               })
             }
 
-            // Show summary
             if (result.platformResults.length > 1) {
               toast.info('Publishing Summary', {
                 description: `${successfulPlatforms.length} succeeded, ${failedPlatforms.length} failed`,
@@ -396,7 +346,6 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
   }
 
   const handleClose = async () => {
-    // Auto-save draft if has unsaved changes and content
     if (!post && hasUnsavedChanges && hasContent()) {
       const shouldSave = confirm('You have unsaved changes. Save as draft before closing?')
       if (shouldSave) {
@@ -406,7 +355,6 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
     onClose?.()
   }
 
-  // Register handleClose with Modal on mount
   useEffect(() => {
     if (registerHandleClose) {
       registerHandleClose(handleClose)
@@ -424,297 +372,58 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
         )}
       </div>
 
-      {/* AI Generate Section */}
-      <div className="border rounded-lg p-4 bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 space-y-3">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-purple-600" />
-            <h3 className="font-semibold">AI Content Generation</h3>
-          </div>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowSettings(!showSettings)}
-            className="gap-2"
-          >
-            <Settings className="h-4 w-4" />
-            {hasBrandMemory ? 'Brand Configured' : 'Configure'}
-          </Button>
-        </div>
-
-        {/* Brand Settings Dialog */}
-        <PostContentSettings
-          open={showSettings}
-          onClose={() => setShowSettings(false)}
-        />
-
-        {/* Generation Mode Toggle */}
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant={generationMode === 'simple' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setGenerationMode('simple')}
-            className="flex-1 gap-2"
-          >
-            <Sparkles className="h-4 w-4" />
-            Simple (3-5s)
-          </Button>
-          <Button
-            type="button"
-            variant={generationMode === 'multi-pass' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setGenerationMode('multi-pass')}
-            className="flex-1 gap-2"
-          >
-            <Zap className="h-4 w-4" />
-            Multi-pass (15-25s)
-          </Button>
-        </div>
-
-        {/* Generation Progress */}
-        {generationProgress.length > 0 && (
-          <div className="text-xs space-y-1 text-gray-600 dark:text-gray-400">
-            {generationProgress.map((progress, idx) => (
-              <div key={idx}>{progress}</div>
-            ))}
-          </div>
-        )}
-
-        {/* Similarity Warning */}
-        {similarityWarning && (
-          <div className="flex items-start gap-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
-            <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
-            <div className="text-sm text-yellow-800 dark:text-yellow-200">
-              {similarityWarning}
-            </div>
-          </div>
-        )}
-
-        {/* Generate Button */}
-        <Button
-          type="button"
-          variant="default"
-          onClick={handleGenerateAI}
-          disabled={isGenerating}
-          className="w-full gap-2"
-        >
-          {isGenerating ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Generating{generationMode === 'multi-pass' ? ' (Multi-pass)' : ''}...
-            </>
-          ) : (
-            <>
-              {generationMode === 'multi-pass' ? (
-                <Zap className="h-4 w-4" />
-              ) : (
-                <Sparkles className="h-4 w-4" />
-              )}
-              Generate with AI
-            </>
-          )}
-        </Button>
-
-        {/* Info */}
-        <div className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400">
-          <Info className="h-3 w-3 mt-0.5" />
-          <div>
-            {generationMode === 'multi-pass'
-              ? 'Multi-pass uses 5 stages (Idea → Angle → Outline → Draft → Enhance) for higher quality.'
-              : 'Simple mode generates content quickly in one pass.'}
-          </div>
-        </div>
-      </div>
+      {/* AI Generation Section */}
+      <AIGenerationSection
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+        hasBrandMemory={hasBrandMemory}
+        generationMode={generationMode}
+        setGenerationMode={setGenerationMode}
+        generationProgress={generationProgress}
+        similarityWarning={similarityWarning}
+        handleGenerateAI={handleGenerateAI}
+        isGenerating={isGenerating}
+      />
 
       {/* Quality Score Display */}
-      {scoringData && scoringData.score !== undefined && (
-        <div className="border rounded-lg p-4 bg-linear-to-r from-green-50 to-blue-50 dark:from-green-900/10 dark:to-blue-900/10 space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-lg">AI Quality Score: {scoringData.score}/100</h3>
-            <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-              scoringData.score >= 80 ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200' :
-              scoringData.score >= 60 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200' :
-              'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200'
-            }`}>
-              {scoringData.score >= 80 ? 'Excellent' : scoringData.score >= 60 ? 'Good' : 'Needs Improvement'}
-            </div>
-          </div>
+      <QualityScoreDisplay scoringData={scoringData} />
 
-          {/* Score Breakdown */}
-          {scoringData.scoreBreakdown && (
-            <div className="grid grid-cols-5 gap-3">
-              {Object.entries(scoringData.scoreBreakdown).map(([key, value]) => (
-                <div key={key} className="text-center">
-                  <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">{value}/20</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400 capitalize mt-1">
-                    {key === 'brandVoice' ? 'Brand Voice' : key === 'platformFit' ? 'Platform Fit' : key}
-                  </div>
-                  <div className="mt-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full ${value >= 16 ? 'bg-green-500' : value >= 12 ? 'bg-yellow-500' : 'bg-red-500'}`}
-                      style={{ width: `${(value / 20) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+      {/* Content Input Fields (includes NEW fields: idea, product, detailInstruction) */}
+      <ContentInputFields
+        title={title}
+        setTitle={setTitle}
+        body={body}
+        setBody={setBody}
+        variations={variations}
+        setVariations={setVariations}
+        idea={idea}
+        setIdea={setIdea}
+        detailContentsInstruction={detailContentsInstruction}
+        setDetailContentsInstruction={setDetailContentsInstruction}
+        selectedProduct={selectedProduct}
+        setSelectedProduct={setSelectedProduct}
+        products={products}
+      />
 
-          {/* Weaknesses */}
-          {scoringData.weaknesses && scoringData.weaknesses.length > 0 && (
-            <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
-              <h4 className="font-medium text-sm text-red-700 dark:text-red-300 mb-2">⚠️ Areas for Improvement:</h4>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                {scoringData.weaknesses.map((weakness, idx) => (
-                  <li key={idx}>{weakness}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+      {/* Platform Selector */}
+      <PlatformSelector
+        contentType={contentType}
+        setContentType={setContentType}
+        selectedPlatforms={selectedPlatforms}
+        setSelectedPlatforms={setSelectedPlatforms}
+        errors={errors}
+      />
 
-          {/* Suggested Fixes */}
-          {scoringData.suggestedFixes && scoringData.suggestedFixes.length > 0 && (
-            <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
-              <h4 className="font-medium text-sm text-blue-700 dark:text-blue-300 mb-2">💡 Suggested Improvements:</h4>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                {scoringData.suggestedFixes.map((fix, idx) => (
-                  <li key={idx}>{fix}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Title */}
-      <div>
-        <Label htmlFor="title">Title *</Label>
-        <Input
-          id="title"
-          name="title"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-
-      {/* Content Body */}
-      <div>
-        <Label htmlFor="body">Content</Label>
-        <textarea
-          id="body"
-          name="body"
-          rows={6}
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          className="w-full border rounded-md p-3"
-        />
-      </div>
-
-      {/* Variations Selector */}
-      {variations.length > 0 && (
-        <div className="border rounded-lg p-4 space-y-3 bg-blue-50 dark:bg-blue-900/10">
-          <h3 className="font-semibold flex items-center gap-2">
-            <Sparkles className="h-4 w-4" />
-            AI Generated Variations
-          </h3>
-          <div className="space-y-2">
-            {variations.map((variation, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => {
-                  setTitle(variation.title)
-                  setBody(variation.content)
-                }}
-                className="w-full text-left p-3 border rounded-md hover:bg-white dark:hover:bg-gray-800 bg-white dark:bg-gray-900 transition-colors"
-              >
-                <div className="font-medium text-xs text-gray-500 uppercase mb-1">
-                  {variation.style}
-                </div>
-                <div className="font-semibold text-sm mb-1">{variation.title}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                  {variation.content}
-                </div>
-              </button>
-            ))}
-          </div>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setVariations([])}
-          >
-            Hide Variations
-          </Button>
-        </div>
-      )}
-
-      {/* Content Type */}
-      <div>
-        <Label>Content Type *</Label>
-        <div className="flex flex-wrap gap-2">
-          {CONTENT_TYPES.map(ct => (
-            <button key={ct.value} type="button" onClick={() => setContentType(ct.value)}
-              className={`px-4 py-2 rounded-md border 
-                ${contentType === ct.value ? 'bg-primary text-white' : 'bg-gray-200'}`}>
-              {ct.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Platforms */}
-      <div>
-        <Label>Supported Platforms *</Label>
-        <div className="flex flex-wrap gap-2">
-          {PLATFORMS.map(p => {
-            const support = getPlatformSupport(p.value)
-            return (
-              <button
-                key={p.value}
-                type="button"
-                disabled={support === "unsupported"}
-                onClick={() => togglePlatform(p.value)}
-                className={`px-4 py-2 rounded-md text-white flex items-center gap-1
-                  ${support === "unsupported" ? 'bg-gray-300 opacity-50 cursor-not-allowed' :
-                    selectedPlatforms.includes(p.value) ? p.color : 'bg-gray-500'}
-                  ${support === "warning" ? 'border-yellow-400 border' : ''}`}
-              >
-                {p.label}
-                {support === "warning" && <AlertTriangle className="h-4 w-4 text-yellow-300" />}
-              </button>
-            )
-          })}
-        </div>
-        {errors.platforms && <p className="text-red-500 text-sm">{errors.platforms}</p>}
-      </div>
-
-      {/* Media */}
-      <div>
-        <Label>Media</Label>
-        <MediaUpload
-          value={media?.url}
-          onChange={(url) => setMedia(url ? { type: isVideoContent ? 'video' : 'image', url } : null)}
-          folder="posts"
-          type={isVideoContent ? "video" : "image"}
-          maxSize={isVideoContent ? 500 : 10}
-        />
-      </div>
-
-      {/* Hashtags */}
-      <div>
-        <Label htmlFor="hashtags">Hashtags (space-separated)</Label>
-        <Input id="hashtags" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
-      </div>
-
-      {/* Schedule */}
-      <div>
-        <Label htmlFor="scheduledAt">Schedule (optional)</Label>
-        <Input type="datetime-local" id="scheduledAt" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} />
-      </div>
+      {/* Media, Hashtags, Schedule */}
+      <MediaHashtagSchedule
+        media={media}
+        setMedia={setMedia}
+        isVideoContent={isVideoContent}
+        hashtags={hashtags}
+        setHashtags={setHashtags}
+        scheduledAt={scheduledAt}
+        setScheduledAt={setScheduledAt}
+      />
 
       {/* Actions */}
       <div className="flex justify-between items-center gap-2">
@@ -733,7 +442,13 @@ export default function PostForm({ post, onClose, initialScheduledAt, registerHa
         <div className="flex gap-2">
           {onClose && <Button type="button" variant="outline" onClick={handleClose}>Cancel</Button>}
           <Button type="submit" disabled={isSubmitting} className="min-w-[120px]">
-            {isSubmitting ? <><Loader2 className="animate-spin" /> Saving...</> : post ? 'Update Post' : scheduledAt ? 'Schedule Post' : 'Publish Now'}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="animate-spin" /> Saving...
+              </>
+            ) : (
+              post ? 'Update Post' : scheduledAt ? 'Schedule Post' : 'Publish Now'
+            )}
           </Button>
         </div>
       </div>

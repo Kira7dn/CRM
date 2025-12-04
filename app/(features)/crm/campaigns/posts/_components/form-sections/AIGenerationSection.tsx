@@ -1,0 +1,134 @@
+'use client'
+
+import { Button } from '@shared/ui/button'
+import { Sparkles, Zap, Settings, Info, Loader2, AlertTriangle } from 'lucide-react'
+import PostContentSettings from '../PostContentSettings'
+
+interface AIGenerationSectionProps {
+  showSettings: boolean
+  setShowSettings: (show: boolean) => void
+  hasBrandMemory: boolean
+  generationMode: 'simple' | 'multi-pass'
+  setGenerationMode: (mode: 'simple' | 'multi-pass') => void
+  generationProgress: string[]
+  similarityWarning: string | null
+  handleGenerateAI: () => Promise<void>
+  isGenerating: boolean
+}
+
+export default function AIGenerationSection({
+  showSettings,
+  setShowSettings,
+  hasBrandMemory,
+  generationMode,
+  setGenerationMode,
+  generationProgress,
+  similarityWarning,
+  handleGenerateAI,
+  isGenerating,
+}: AIGenerationSectionProps) {
+  return (
+    <div className="border rounded-lg p-4 bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 space-y-3">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-purple-600" />
+          <h3 className="font-semibold">AI Content Generation</h3>
+        </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowSettings(!showSettings)}
+          className="gap-2"
+        >
+          <Settings className="h-4 w-4" />
+          {hasBrandMemory ? 'Brand Configured' : 'Configure'}
+        </Button>
+      </div>
+
+      {/* Brand Settings Dialog */}
+      <PostContentSettings
+        open={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
+
+      {/* Generation Mode Toggle */}
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          variant={generationMode === 'simple' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setGenerationMode('simple')}
+          className="flex-1 gap-2"
+        >
+          <Sparkles className="h-4 w-4" />
+          Simple (3-5s)
+        </Button>
+        <Button
+          type="button"
+          variant={generationMode === 'multi-pass' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setGenerationMode('multi-pass')}
+          className="flex-1 gap-2"
+        >
+          <Zap className="h-4 w-4" />
+          Multi-pass (15-25s)
+        </Button>
+      </div>
+
+      {/* Generation Progress */}
+      {generationProgress.length > 0 && (
+        <div className="text-xs space-y-1 text-gray-600 dark:text-gray-400">
+          {generationProgress.map((progress, idx) => (
+            <div key={idx}>{progress}</div>
+          ))}
+        </div>
+      )}
+
+      {/* Similarity Warning */}
+      {similarityWarning && (
+        <div className="flex items-start gap-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
+          <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
+          <div className="text-sm text-yellow-800 dark:text-yellow-200">
+            {similarityWarning}
+          </div>
+        </div>
+      )}
+
+      {/* Generate Button */}
+      <Button
+        type="button"
+        variant="default"
+        onClick={handleGenerateAI}
+        disabled={isGenerating}
+        className="w-full gap-2"
+      >
+        {isGenerating ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Generating{generationMode === 'multi-pass' ? ' (Multi-pass)' : ''}...
+          </>
+        ) : (
+          <>
+            {generationMode === 'multi-pass' ? (
+              <Zap className="h-4 w-4" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            Generate with AI
+          </>
+        )}
+      </Button>
+
+      {/* Info */}
+      <div className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400">
+        <Info className="h-3 w-3 mt-0.5" />
+        <div>
+          {generationMode === 'multi-pass'
+            ? 'Multi-pass uses 5 stages (Idea → Angle → Outline → Draft → Enhance) for higher quality.'
+            : 'Simple mode generates content quickly in one pass.'}
+        </div>
+      </div>
+    </div>
+  )
+}

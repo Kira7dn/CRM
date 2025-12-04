@@ -15,6 +15,7 @@ export class Product {
     public detail: string | undefined,
     public sizes: SizeOption[] | undefined,
     public colors: string[] | undefined,
+    public url: string | undefined,
     public readonly createdAt: Date,
     public updatedAt: Date
   ) {}

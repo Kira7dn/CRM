@@ -1,0 +1,17 @@
+Nhằm mục đích bổ sung và làm rõ input để LLM có thể đưa ra được post idea schedule (Kế hoạch sản xuất nội dung trong vòng 1 tháng) và post content (Nội dung bài viết) chất lượng nhất. Chúng ta sẽ cần:
+- Nút Lên kế hoạch Post có trong posts\page để AI đưa ra kế hoạch sản xuất nội dung bao gồm title, idea, lịch và cập nhật trực tiếp vào trong schedular,  nội dung được config trong PostContentSettings
+- Products bổ sung vào trong Brand Config (người dùng quyền được lựa chọn nhiều sản phẩm từ danh sách products có sẵn), 
+- PostContentSettings sẽ cần đổi productDescription thành brandDescription (đây là nơi người dùng nhập thông tin định nghĩa cho Brand, giúp LLM nhận diện được giá trị cốt lõi của thương hiệu, nhằm tạo ra post idea schedule và post contents)
+- PostContentSettings sẽ cần thêm contentsInstruction: string (user có thể nhập rule, yêu cầu, hướng dẫn cụ thể cho AI thực hiện để đưa ra content ideas, được dùng khi người dùng click vào nút post idea schedule)
+- PostForm sẽ cần phải có thêm idea được generate ra từ post idea schedule, người dùng có thể chỉnh sửa trước khi lựa chọn generate post content
+- PostForm sẽ cần có drop down để người dùng có thể lựa chọn 0-1 Product để đưa vào content, khi đó LLM sẽ dựa vào thông tin của sản phẩm để đưa post content, đặc biệt sẽ đính kèm product url (cần thêm vào product domain) để hiện thị trong post id.
+- PostForm cần có thêm detailContentsInstruction để bổ sung thêm rule, yêu cầu, hướng dẫn cụ thể cho AI thực hiện để đưa ra post content
+
+
+Module liên quan:
+- app\(features)\crm\campaigns\posts\page.tsx
+- app\(features)\crm\campaigns\posts\_components\PostContentSettings.tsx
+- app\(features)\crm\campaigns\posts\_components\PostForm.tsx
+- core\domain\catalog\product.ts
+- core\domain\marketing\post.ts
+- core\domain\brand-memory.ts

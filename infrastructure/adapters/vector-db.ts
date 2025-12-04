@@ -6,18 +6,28 @@
 import { QdrantClient } from "@qdrant/js-client-rest"
 
 /**
+ * Content Type for vector embeddings
+ * Distinguishes between different types of content
+ */
+export type ContentType = "published_post" | "knowledge_resource" | "draft_content"
+
+/**
  * Content Embedding stored in vector DB
  */
 export interface ContentEmbedding {
   id: string
-  postId: string
+  postId: string // Can be postId or resourceId
   content: string
   embedding: number[]
   metadata: {
+    contentType: ContentType       // NEW: Distinguish content types
     platform?: string
     topic?: string
     title?: string
     score?: number
+    resourceId?: string             // NEW: Resource ID (if knowledge_resource)
+    chunkIndex?: number             // NEW: Chunk index (if knowledge_resource)
+    fileType?: string               // NEW: File type (if knowledge_resource)
   }
   createdAt: Date
 }
@@ -31,9 +41,13 @@ export interface SimilarityResult {
   content: string
   score: number
   metadata: {
+    contentType?: ContentType
     platform?: string
     topic?: string
     title?: string
+    resourceId?: string
+    chunkIndex?: number
+    fileType?: string
   }
 }
 
@@ -82,6 +96,16 @@ export class VectorDBService {
         })
 
         console.log(`Created Qdrant collection: ${this.collectionName}`)
+        // 🚨 MUST: Define schema, otherwise filters won't work
+        await this.client.createPayloadIndex(this.collectionName, {
+          field_name: "embeddingId",
+          field_schema: {
+            type: "keyword",
+            indexed: true,
+          }
+        })
+
+        console.log(`[VectorDB] Payload schema created.`)
       }
     } catch (error) {
       console.error("Failed to initialize Qdrant collection:", error)
@@ -99,21 +123,37 @@ export class VectorDBService {
       // Generate UUID v4 for Qdrant point id
       const pointId = this.generateUUID()
 
+      // Prepare payload with required fields
+      const payload: Record<string, any> = {
+        embeddingId: embedding.id,
+        postId: embedding.postId,
+        content: embedding.content,
+        contentType: embedding.metadata.contentType,
+        createdAt: embedding.createdAt.toISOString(),
+      }
+
+      // Add optional fields if they exist
+      if (embedding.metadata.platform) payload.platform = embedding.metadata.platform
+      if (embedding.metadata.topic) payload.topic = embedding.metadata.topic
+      if (embedding.metadata.title) payload.title = embedding.metadata.title
+      if (embedding.metadata.resourceId) payload.resourceId = embedding.metadata.resourceId
+      if (typeof embedding.metadata.chunkIndex !== 'undefined') payload.chunkIndex = embedding.metadata.chunkIndex
+      if (embedding.metadata.fileType) payload.fileType = embedding.metadata.fileType
+
+      // Ensure we're not sending null/undefined values
+      Object.keys(payload).forEach(key => {
+        if (payload[key] === null || payload[key] === undefined) {
+          delete payload[key]
+        }
+      })
+
       await this.client.upsert(this.collectionName, {
         wait: true,
         points: [
           {
             id: pointId,
             vector: embedding.embedding,
-            payload: {
-              embeddingId: embedding.id, // Store original ID in payload
-              postId: embedding.postId,
-              content: embedding.content,
-              platform: embedding.metadata.platform || null,
-              topic: embedding.metadata.topic || null,
-              title: embedding.metadata.title || null,
-              createdAt: embedding.createdAt.toISOString(),
-            },
+            payload,
           },
         ],
       })
@@ -145,19 +185,36 @@ export class VectorDBService {
     options: {
       limit?: number
       scoreThreshold?: number
+      contentType?: ContentType | ContentType[]  // NEW: Filter by content type
       filter?: Record<string, any>
     } = {}
   ): Promise<SimilarityResult[]> {
     await this.initializeCollection()
 
-    const { limit = 5, scoreThreshold = 0.7, filter } = options
+    const { limit = 5, scoreThreshold = 0.7, contentType, filter } = options
+
+    // Build filter with contentType
+    let qdrantFilter = filter
+    if (contentType) {
+      const types = Array.isArray(contentType) ? contentType : [contentType]
+      qdrantFilter = {
+        ...filter,
+        must: [
+          ...(filter?.must || []),
+          {
+            key: "contentType",
+            match: { any: types }
+          }
+        ]
+      }
+    }
 
     try {
       const results = await this.client.search(this.collectionName, {
         vector: queryEmbedding,
         limit,
         score_threshold: scoreThreshold,
-        filter,
+        filter: qdrantFilter,
         with_payload: true,
       })
 
@@ -167,9 +224,13 @@ export class VectorDBService {
         content: result.payload?.content as string,
         score: result.score,
         metadata: {
+          contentType: result.payload?.contentType as ContentType,
           platform: result.payload?.platform as string,
           topic: result.payload?.topic as string,
           title: result.payload?.title as string,
+          resourceId: result.payload?.resourceId as string,
+          chunkIndex: result.payload?.chunkIndex as number,
+          fileType: result.payload?.fileType as string,
         },
       }))
     } catch (error) {
@@ -179,27 +240,51 @@ export class VectorDBService {
   }
 
   /**
-   * Delete embedding by ID (searches by embeddingId in payload)
-   */
-  async deleteEmbedding(embeddingId: string): Promise<void> {
-    try {
-      await this.client.delete(this.collectionName, {
-        wait: true,
-        filter: {
-          must: [
-            {
-              key: "embeddingId",
-              match: { value: embeddingId },
-            },
-          ],
+ * Delete embedding by its resourceId (stored in Qdrant payload)
+ */
+  async deleteEmbedding(resourceId: string): Promise<void> {
+    if (!resourceId || typeof resourceId !== "string") {
+      throw new Error("deleteEmbedding() requires a valid resourceId string")
+    }
+
+    await this.initializeCollection()
+    // 🚨 MUST: Define schema, otherwise filters won't work
+    // await this.client.createPayloadIndex(this.collectionName, {
+    //   field_name: "resourceId",
+    //   field_schema: {
+    //     type: "keyword",
+    //     indexed: true,
+    //   }
+    // })
+
+    // Qdrant Cloud requires full filter schema structure
+    const filter = {
+      must: [
+        {
+          key: "resourceId",
+          match: {
+            value: resourceId,
+          },
         },
-      })
-      console.log('[VectorDB] Deleted embedding:', embeddingId)
-    } catch (error) {
-      console.error("[VectorDB] Failed to delete embedding:", error)
-      throw new Error(`Failed to delete embedding: ${error instanceof Error ? error.message : String(error)}`)
+      ],
+    }
+
+    try {
+      console.log("[VectorDB] Deleting embedding with filter:", JSON.stringify(filter))
+      const response = await this.client.delete(this.collectionName, {
+        filter,
+      });
+
+      console.log(`[VectorDB] Successfully deleted embedding ${resourceId}`, response)
+
+    } catch (error: any) {
+      const errorMessage = error?.response?.data || error?.message || String(error)
+      console.error(`[VectorDB] Failed to delete embedding ${resourceId}:`, errorMessage)
+
+      throw new Error(`Failed to delete embedding: ${errorMessage}`)
     }
   }
+
 
   /**
    * Delete all embeddings for a post

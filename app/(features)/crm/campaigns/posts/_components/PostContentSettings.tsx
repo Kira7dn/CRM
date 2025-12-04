@@ -32,10 +32,12 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
   const [settings, setSettings] = useState<Omit<BrandMemory, 'id' | 'createdAt' | 'updatedAt'>>(DEFAULT_BRAND_MEMORY)
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [products, setProducts] = useState<Array<{id: number, name: string}>>([])
 
   useEffect(() => {
     if (open) {
       loadSettings()
+      loadProducts()
     }
   }, [open])
 
@@ -55,6 +57,16 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
       setSettings(DEFAULT_BRAND_MEMORY)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const loadProducts = async () => {
+    try {
+      const res = await fetch('/api/products')
+      const data = await res.json()
+      setProducts(data.map((p: any) => ({ id: p.id, name: p.name })))
+    } catch (error) {
+      console.error('Failed to load products:', error)
     }
   }
 
@@ -161,19 +173,19 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {/* Product Description */}
+          {/* Brand Description */}
           <div className="space-y-2">
-            <Label htmlFor="productDescription">
-              Product Description
+            <Label htmlFor="brandDescription">
+              Brand Description
               <span className="text-xs text-gray-500 ml-2">
-                General description of your products
+                General description of your brand and what it represents
               </span>
             </Label>
             <textarea
-              id="productDescription"
-              value={settings.productDescription}
+              id="brandDescription"
+              value={settings.brandDescription}
               onChange={(e) =>
-                setSettings({ ...settings, productDescription: e.target.value })
+                setSettings({ ...settings, brandDescription: e.target.value })
               }
               rows={3}
               className="w-full border rounded-md p-3"
@@ -394,6 +406,58 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
                 Add Key Point
               </Button>
             </div>
+          </div>
+
+          {/* Selected Products */}
+          <div className="space-y-2">
+            <Label>
+              Selected Products
+              <span className="text-xs text-gray-500 ml-2">
+                Products to include in brand context for AI
+              </span>
+            </Label>
+            <div className="border rounded-md p-3 space-y-2 max-h-48 overflow-y-auto">
+              {products.map(product => (
+                <label key={product.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                  <input
+                    type="checkbox"
+                    checked={settings.selectedProductIds?.includes(product.id) || false}
+                    onChange={(e) => {
+                      const currentIds = settings.selectedProductIds || []
+                      const newIds = e.target.checked
+                        ? [...currentIds, product.id]
+                        : currentIds.filter(id => id !== product.id)
+                      setSettings({ ...settings, selectedProductIds: newIds })
+                    }}
+                    className="h-4 w-4"
+                  />
+                  <span className="text-sm">{product.name}</span>
+                </label>
+              ))}
+              {products.length === 0 && (
+                <p className="text-sm text-gray-500">No products available</p>
+              )}
+            </div>
+          </div>
+
+          {/* Contents Instruction */}
+          <div className="space-y-2">
+            <Label htmlFor="contentsInstruction">
+              Contents Instruction
+              <span className="text-xs text-gray-500 ml-2">
+                Guide AI to create post ideas (used for schedule generation)
+              </span>
+            </Label>
+            <textarea
+              id="contentsInstruction"
+              value={settings.contentsInstruction || ''}
+              onChange={(e) =>
+                setSettings({ ...settings, contentsInstruction: e.target.value })
+              }
+              rows={4}
+              className="w-full border rounded-md p-3"
+              placeholder="e.g., Focus on seasonal products, highlight sustainability, include customer stories..."
+            />
           </div>
 
           {/* Info Box */}
