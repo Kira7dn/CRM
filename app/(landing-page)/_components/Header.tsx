@@ -125,7 +125,7 @@ export default function Header() {
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
                     >
                         <Image
-                            src="/logo-short.svg"
+                            src="/logo.svg"
                             alt={brandConfig.brand.shortName}
                             width={40}
                             height={40}

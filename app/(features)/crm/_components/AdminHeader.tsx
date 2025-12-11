@@ -34,7 +34,8 @@ import {
   LogOut,
   DollarSign,
   Warehouse,
-  MessageCircleMore
+  MessageCircleMore,
+  LinkIcon
 } from "lucide-react"
 import { cn } from "@shared/utils"
 
@@ -97,6 +98,13 @@ const NAV_GROUPS: Array<NavGroup & { key: string }> = [
       { href: "/crm/campaigns", label: "Tổng quan", icon: BarChart3, roles: ["admin", "sale"] },
       { href: "/crm/campaigns/banners", label: "Banner", icon: ImageIcon, roles: ["admin", "sale"] },
       { href: "/crm/campaigns/posts", label: "Bài viết", icon: FileText, roles: ["admin", "sale"] },
+    ],
+  },
+  {
+    key: "socials",
+    label: "Nền tảng",
+    items: [
+      { href: "/crm/social/connections", label: "Kết nối", icon: LinkIcon, roles: ["admin", "sale"] },
     ],
   },
 ]
@@ -181,7 +189,7 @@ const MobileNavSection = ({
               href={item.href}
               onClick={onNavigate}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition",
+                "flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-medium transition",
                 isActive(item.href)
                   ? "bg-accent text-accent-foreground"
                   : "hover:bg-accent hover:text-accent-foreground"
@@ -234,10 +242,10 @@ export function AdminHeader({ userName, userRole = 'sale' }: AdminHeaderProps) {
           {/* Logo/Brand */}
           <div className="flex items-center">
             <Link href="/crm/managements" className="flex items-center space-x-2 hover:opacity-80 transition">
-              <Image src="/logo-full.png" alt="Logo" width={32} height={32} />
+              <Image src="/logo.png" alt="Logo" width={32} height={32} />
               <div className="flex flex-col">
                 <span className="text-lg font-bold leading-tight">
-                  Hải Sản Ngày Mới
+                  Link Strategy
                 </span>
                 <span className="text-xs text-muted-foreground">
                   CRM: Quản lý Quan hệ Khách hàng
@@ -265,7 +273,7 @@ export function AdminHeader({ userName, userRole = 'sale' }: AdminHeaderProps) {
                     asChild
                   >
                     <Link href="/crm/users" passHref className="flex items-center gap-1">
-                      <div>Users Management</div>
+                      <div>Quản lý Tài khoản</div>
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
@@ -278,7 +286,7 @@ export function AdminHeader({ userName, userRole = 'sale' }: AdminHeaderProps) {
             {/* User Info - Hidden on small screens */}
             <div className="hidden md:block text-right">
               <div className="text-sm font-medium">
-                {userName || "Admin"}
+                {userName}
               </div>
               <div className="text-xs text-muted-foreground capitalize">
                 {userRole}
@@ -318,7 +326,7 @@ export function AdminHeader({ userName, userRole = 'sale' }: AdminHeaderProps) {
             {/* User Info - Mobile */}
             <div className="px-3 py-2 mb-2 bg-muted rounded-lg">
               <div className="text-sm font-medium">
-                {userName || "Admin"}
+                {userName}
               </div>
               <div className="text-xs text-muted-foreground capitalize">
                 {userRole}

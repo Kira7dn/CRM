@@ -1,6 +1,6 @@
-tunnel: haisancrm
+tunnel: crm
 credentials-file: .cloudflared\4cc84d45-a97c-45dc-a200-1f95573d0b05.json
 ingress:
-  - hostname: haisancrm.linkstrategy.io.vn 
+  - hostname: crm.linkstrategy.io.vn 
     service: http://localhost:4001
   - service: http_status:404

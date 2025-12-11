@@ -9,7 +9,6 @@ import PostFormModal from './PostFormModal'
 import PostContentSettings from './PostContentSettings'
 import ResourceManager from './ResourceManager'
 import type { Post } from '@/core/domain/marketing/post'
-import { useScheduledPostUpdater } from '../_hooks/useScheduledPostUpdater'
 import { toast } from 'sonner'
 import { saveScheduleToPostsAction } from '../actions'
 
@@ -32,9 +31,6 @@ export default function PostsPageClient({ initialPosts }: PostsPageClientProps) 
   const [generatedSchedule, setGeneratedSchedule] = useState<PostScheduleItem[]>([])
   const [generating, setGenerating] = useState(false)
   const [saving, setSaving] = useState(false)
-
-  // Auto-update scheduled posts to published when time passes
-  useScheduledPostUpdater()
 
   const handleGenerateSchedule = async () => {
     setGenerating(true)

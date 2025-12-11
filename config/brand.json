@@ -15,9 +15,9 @@
     ]
   },
   "assets": {
-    "logoFull": "/logo-full.png",
-    "logoShort": "/logo-short.png",
-    "logoPage": "/logo-page.svg",
+    "logoFull": "/logo.png",
+    "logoShort": "/logo.png",
+    "logoPage": "/logo.svg",
     "wallpaper": "/wallpaper.png",
     "heroImages": {
       "desktop": "/images/hero/co-to-desktop.jpg",

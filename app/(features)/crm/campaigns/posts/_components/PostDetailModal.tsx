@@ -16,6 +16,7 @@ const PLATFORM_COLORS: Record<Platform, string> = {
   youtube: 'bg-red-600',
   website: 'bg-gray-600',
   telegram: 'bg-blue-400',
+  wordpress: 'bg-[#21759B]',
 }
 
 const PLATFORM_NAMES: Record<Platform, string> = {
@@ -25,6 +26,7 @@ const PLATFORM_NAMES: Record<Platform, string> = {
   youtube: 'YouTube',
   website: 'Website',
   telegram: 'Telegram',
+  wordpress: 'WordPress',
 }
 
 export default function PostDetailModal({ post, onClose }: PostDetailModalProps) {

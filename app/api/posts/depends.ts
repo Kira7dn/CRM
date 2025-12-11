@@ -52,7 +52,8 @@ export const createPostUseCase = async (): Promise<CreatePostUseCase> => {
 // 🔹 UseCase: Update Post (có update external platform)
 export const updatePostUseCase = async (): Promise<UpdatePostUseCase> => {
   const postService = await getPostService();
-  return new UpdatePostUseCase(postService, platformFactoryInstance);
+  const queueService = getQueueService();
+  return new UpdatePostUseCase(postService, platformFactoryInstance, queueService);
 };
 
 // 🔹 UseCase: Delete Post (có delete external platform)

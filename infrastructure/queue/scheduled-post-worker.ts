@@ -1,4 +1,3 @@
-import 'server-only'
 import { Worker, Job, Queue } from 'bullmq'
 import Redis from 'ioredis'
 import { PostingAdapterFactory } from '@/core/application/interfaces/social/posting-adapter'
@@ -41,14 +40,27 @@ export const getScheduledPostWorker = (): Worker | null => scheduledPostWorkerIn
  * Initialize Scheduled Post Worker
  */
 export const initializeScheduledPostWorker = (): Worker => {
-  if (scheduledPostWorkerInstance) return scheduledPostWorkerInstance
+  if (scheduledPostWorkerInstance) {
+    console.log('[ScheduledPostWorker] Returning existing worker instance')
+    return scheduledPostWorkerInstance
+  }
 
+  console.log('[ScheduledPostWorker] Initializing new worker instance...')
   const platformFactory = getPostingAdapterFactory()
 
   scheduledPostWorkerInstance = new Worker(
     'scheduled-posts',
     async (job: Job<PublishScheduledPostJobData>) => {
       console.log(`[ScheduledPostWorker] Processing job ${job.id}:`, job.data)
+      console.log(`[ScheduledPostWorker] Job details:`, {
+        id: job.id,
+        name: job.name,
+        data: job.data,
+        opts: job.opts,
+        attemptsMade: job.attemptsMade,
+        processedOn: job.processedOn,
+        timestamp: new Date().toISOString()
+      })
 
       const { postId, userId, platforms } = job.data
 
@@ -121,14 +133,34 @@ export const initializeScheduledPostWorker = (): Worker => {
 
   // Event listeners
   scheduledPostWorkerInstance.on('completed', (job) => {
-    console.log(`[ScheduledPostWorker] Job ${job.id} completed`)
+    console.log(`[ScheduledPostWorker] Job ${job.id} completed successfully`, {
+      id: job.id,
+      name: job.name,
+      returnvalue: job.returnvalue,
+      timestamp: new Date().toISOString()
+    })
   })
 
   scheduledPostWorkerInstance.on('failed', (job, error) => {
-    console.error(`[ScheduledPostWorker] Job ${job?.id} failed:`, error)
+    console.error(`[ScheduledPostWorker] Job ${job?.id} failed:`, {
+      id: job?.id,
+      name: job?.name,
+      data: job?.data,
+      error: error?.message,
+      stack: error?.stack,
+      timestamp: new Date().toISOString()
+    })
   })
 
-  console.log('[ScheduledPostWorker] Worker initialized')
+  scheduledPostWorkerInstance.on('error', (error) => {
+    console.error('[ScheduledPostWorker] Worker error:', {
+      error: error?.message,
+      stack: error?.stack,
+      timestamp: new Date().toISOString()
+    })
+  })
+
+  console.log('[ScheduledPostWorker] Worker initialized and listening for jobs')
 
   return scheduledPostWorkerInstance
 }

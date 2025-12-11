@@ -75,7 +75,19 @@ export class CreatePostUseCase {
         })
 
         // Add job to queue
-        await this.queueService.addJob(
+        console.log(`[CreatePostUseCase] Adding job to queue:`, {
+          queue: "scheduled-posts",
+          jobName: "publish-scheduled-post",
+          postId: post.id,
+          userId: request.userId,
+          platforms: request.platforms,
+          delay,
+          scheduledAt: request.scheduledAt,
+          currentTime: new Date().toISOString(),
+          willExecuteAt: new Date(Date.now() + delay).toISOString()
+        })
+
+        const jobId = await this.queueService.addJob(
           "scheduled-posts",
           "publish-scheduled-post",
           {
@@ -86,11 +98,25 @@ export class CreatePostUseCase {
           { delay }
         )
 
-        console.log(`[CreatePostUseCase] Scheduled job for post ${post.id} with delay ${delay}ms`)
+        console.log(`[CreatePostUseCase] ✓ Job scheduled successfully for post ${post.id} with job ID ${jobId} and delay ${delay}ms (${Math.round(delay / 1000 / 60)} minutes)`)
+
+        // Update post with job ID
+        const updatedPost = await this.postService.update({
+          id: post.id,
+          platforms: request.platforms.map(p => ({
+            platform: p.platform,
+            status: "scheduled" as const,
+            postId: undefined,
+            permalink: undefined,
+            publishedAt: undefined,
+            error: undefined,
+            scheduledJobId: jobId,
+          })),
+        })
 
         // Return with scheduled status
         return {
-          post,
+          post: updatedPost || post,
           platformResults: request.platforms.map(p => ({
             platform: p.platform,
             success: true,

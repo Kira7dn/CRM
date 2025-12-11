@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import {
   createPostAction,
   updatePostAction,
+  deletePostAction,
   generatePostContentAction,
   generatePostMultiPassAction,
   checkContentSimilarityAction,
@@ -12,8 +13,9 @@ import {
   getBrandMemoryAction
 } from '../actions'
 import type { Post, Platform, ContentType, PostMedia } from '@/core/domain/marketing/post'
+import { formatDateForInput } from '@/lib/date-utils'
 import { Button } from '@shared/ui/button'
-import { Loader2, CheckCircle2, XCircle, Zap } from 'lucide-react'
+import { Loader2, CheckCircle2, XCircle, Zap, Trash2 } from 'lucide-react'
 
 // Extracted components
 import AIGenerationSection from './form-sections/AIGenerationSection'
@@ -37,21 +39,12 @@ export default function PostForm({
   initialIdea,
   registerHandleClose
 }: PostFormProps) {
+
   const [isSubmitting, startTransition] = useTransition()
   const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(post?.platforms.map(p => p.platform) || [])
   const [contentType, setContentType] = useState<ContentType>(post?.contentType || 'post')
   const [media, setMedia] = useState<PostMedia | null>(post?.media?.[0] || null)
   const [hashtags, setHashtags] = useState(post?.hashtags?.join(' ') || '')
-
-  // Helper to format date for datetime-local input
-  const formatDateForInput = (date: Date): string => {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    return `${year}-${month}-${day}T${hours}:${minutes}`
-  }
 
   const [scheduledAt, setScheduledAt] = useState(
     post?.scheduledAt
@@ -330,6 +323,25 @@ export default function PostForm({
     })
   }
 
+  const handleDeletePost = async () => {
+    if (!post?.id) return
+
+    const shouldDelete = confirm('Bạn có chắc chắn muốn xóa post này?')
+    if (!shouldDelete) return
+
+    startTransition(async () => {
+      try {
+        await deletePostAction(post.id)
+        toast.success('Post đã được xóa thành công')
+        onClose?.()
+      } catch (error) {
+        toast.error('Không thể xóa post', {
+          description: error instanceof Error ? error.message : 'Unknown error'
+        })
+      }
+    })
+  }
+
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -427,7 +439,18 @@ export default function PostForm({
 
       {/* Actions */}
       <div className="flex justify-between items-center gap-2">
-        <div>
+        <div className="flex gap-2">
+          {post && (
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDeletePost}
+              disabled={isSubmitting}
+            >
+              <Trash2 className="h-4 w-4 mr-1" />
+              Xóa
+            </Button>
+          )}
           {!post && (
             <Button
               type="button"

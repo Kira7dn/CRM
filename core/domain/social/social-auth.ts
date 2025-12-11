@@ -2,7 +2,7 @@
 
 import { ObjectId } from "mongodb"
 
-export type SocialPlatform = "tiktok" | "facebook" | "youtube" | "zalo"
+export type SocialPlatform = "tiktok" | "facebook" | "youtube" | "zalo" | "wordpress"
 
 export class SocialAuth {
   constructor(
@@ -27,8 +27,8 @@ export function validateSocialAuth(auth: Partial<SocialAuth>): string[] {
   // Platform validation
   if (!auth.platform) {
     errors.push("Platform is required")
-  } else if (!["tiktok", "facebook", "youtube", "zalo"].includes(auth.platform)) {
-    errors.push("Platform must be one of: tiktok, facebook, youtube, zalo")
+  } else if (!["tiktok", "facebook", "youtube", "zalo", "wordpress"].includes(auth.platform)) {
+    errors.push("Platform must be one of: tiktok, facebook, youtube, zalo, wordpress")
   }
 
   // OpenId validation

@@ -19,6 +19,7 @@ const PLATFORM_COLORS: Record<Platform, string> = {
   youtube: '#FF0000',
   website: '#6B7280',
   telegram: '#26A5E4',
+  wordpress: '#21759B',
 }
 
 interface CalendarEvent {
@@ -59,10 +60,35 @@ export default function PostScheduler({ initialPosts }: { initialPosts: Post[] }
       const isPublished = post.platforms.some(p => p.status === 'published')
       const isFailed = post.platforms.some(p => p.status === 'failed')
 
+      const eventStart = post.scheduledAt ? new Date(post.scheduledAt) : new Date(post.createdAt)
+
+      // Fix positioning: use same time for all events to avoid layout issues
+      const fixedStart = new Date(eventStart.getFullYear(), eventStart.getMonth(), eventStart.getDate(), 10, 0, 0)
+      const fixedEnd = new Date(eventStart.getFullYear(), eventStart.getMonth(), eventStart.getDate(), 10, 30, 0)
+
+      // Log date mismatches
+      const dbDate = eventStart.getDate()
+      const displayDate = fixedStart.getDate()
+      const dbMonth = eventStart.getMonth()
+      const displayMonth = fixedStart.getMonth()
+
+      if (dbDate !== displayDate || dbMonth !== displayMonth) {
+        console.log('[POST SCHEDULE MISMATCH]', {
+          postId: post.id,
+          title: post.title,
+          dbScheduledAt: post.scheduledAt,
+          dbDate: `${dbMonth + 1}/${dbDate}`,
+          displayDate: `${displayMonth + 1}/${displayDate}`,
+          eventStart: eventStart.toString(),
+          fixedStart: fixedStart.toString()
+        })
+      }
+
       return {
         id: post.id,
         title: post.title,
-        start: post.scheduledAt ? new Date(post.scheduledAt) : new Date(post.createdAt),
+        start: fixedStart,
+        end: fixedEnd,
         backgroundColor: isPublished ? '#10B981' : isFailed ? '#EF4444' : backgroundColor,
         borderColor: isPublished ? '#059669' : isFailed ? '#DC2626' : backgroundColor,
         extendedProps: {
@@ -144,6 +170,7 @@ export default function PostScheduler({ initialPosts }: { initialPosts: Post[] }
           height="auto"
           firstDay={1}
           displayEventTime={false}
+          displayEventEnd={false}
           dayMaxEvents={2}
           editable={false}
           selectable={true}

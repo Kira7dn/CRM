@@ -1,6 +1,7 @@
-import type { Post, Platform } from "@/core/domain/marketing/post"
+import type { Post, Platform, PostStatus, PlatformMetadata } from "@/core/domain/marketing/post"
 import type { PostService, PostPayload } from "@/core/application/interfaces/marketing/post-service"
 import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter"
+import type { QueueService } from "@/core/application/interfaces/shared/queue-service"
 
 export interface UpdatePostRequest extends Omit<PostPayload, 'media'> {
   id: string;
@@ -19,33 +20,92 @@ export interface UpdatePostResponse {
 export class UpdatePostUseCase {
   constructor(
     private readonly postService: PostService,
-    private readonly platformFactory: PostingAdapterFactory
+    private readonly platformFactory: PostingAdapterFactory,
+    private readonly queueService: QueueService
   ) { }
 
   async execute(request: UpdatePostRequest): Promise<UpdatePostResponse> {
-    // 1️⃣ Update trong database
+    // 1️⃣ Lấy post hiện tại để kiểm tra trạng thái scheduling
+    const existingPost = await this.postService.getById(request.id);
+    if (!existingPost) {
+      return { post: null, error: "Post not found" };
+    }
+
+    // 2️⃣ Xử lý cập nhật scheduled job nếu có thay đổi scheduleAt
+    let updatedPlatforms = existingPost.platforms;
+    const hasScheduleChange = request.scheduledAt !== undefined &&
+      request.scheduledAt !== existingPost.scheduledAt;
+
+    if (hasScheduleChange) {
+      console.log(`[UpdatePostUseCase] Schedule changed from ${existingPost.scheduledAt} to ${request.scheduledAt}`);
+
+      // Xóa các scheduled jobs cũ cho tất cả platforms
+      for (const platformMeta of existingPost.platforms) {
+        if (platformMeta.scheduledJobId) {
+          console.log(`[UpdatePostUseCase] Removing old scheduled job ${platformMeta.scheduledJobId} for platform ${platformMeta.platform}`);
+          await this.queueService.removeJob("scheduled-posts", platformMeta.scheduledJobId);
+        }
+      }
+
+      // Nếu có scheduleAt mới và là trong tương lai, tạo job mới
+      if (request.scheduledAt && new Date(request.scheduledAt) > new Date()) {
+        const delay = new Date(request.scheduledAt).getTime() - Date.now();
+
+        // Tạo job mới cho mỗi platform
+        updatedPlatforms = await Promise.all(existingPost.platforms.map(async (platformMeta: PlatformMetadata) => {
+          const jobId = await this.queueService.addJob(
+            "scheduled-posts",
+            "publish-scheduled-post",
+            {
+              postId: existingPost.id,
+              userId: request.userId,
+              platforms: [{ platform: platformMeta.platform }],
+            },
+            { delay }
+          );
+
+          console.log(`[UpdatePostUseCase] ✓ Created new job ${jobId} for platform ${platformMeta.platform} with delay ${delay}ms`);
+
+          return {
+            ...platformMeta,
+            status: "scheduled" as PostStatus,
+            scheduledJobId: jobId,
+          };
+        }));
+      } else {
+        // Nếu không có scheduleAt mới hoặc scheduleAt trong quá khứ, cập nhật status
+        updatedPlatforms = existingPost.platforms.map((platformMeta: PlatformMetadata) => ({
+          ...platformMeta,
+          status: request.scheduledAt ? "published" as PostStatus : "draft" as PostStatus,
+          scheduledJobId: undefined,
+        }));
+      }
+    }
+
+    // 3️⃣ Update trong database với platforms đã được cập nhật
     const post = await this.postService.update({
       ...request,
-      media: request.media ?? []
+      media: request.media ?? [],
+      platforms: updatedPlatforms,
     });
 
     if (!post) {
       return { post: null, error: "Post not found or update failed" };
     }
 
-    // 2️⃣ Nếu không cần sync lên platform hoặc không có platform
+    // 4️⃣ Nếu không cần sync lên platform hoặc không có platform
     if (!request.syncToPlatform || !request.platform) {
       return { post };
     }
 
     try {
-      // 3️⃣ Lấy service tương ứng với platform
+      // 5️⃣ Lấy service tương ứng với platform
       const platformService = await this.platformFactory.create(
         request.platform,
         request.userId
       );
 
-      // 4️⃣ Gửi request update lên platform
+      // 6️⃣ Gửi request update lên platform
       const platformMeta = post.platforms.find((p) => p.platform === request.platform);
 
       if (!platformMeta || !platformMeta.postId) {

@@ -78,9 +78,9 @@ export const metadata: Metadata = {
     google: 'your-google-site-verification-code',
   },
   icons: {
-    icon: '/logo-full.svg',
-    shortcut: '/logo-full.svg',
-    apple: '/logo-full.png',
+    icon: '/logo.svg',
+    shortcut: '/logo.svg',
+    apple: '/logo.png',
   },
   // themeColor moved to generateViewport
 };

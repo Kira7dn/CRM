@@ -50,6 +50,18 @@ export class BullMQAdapter implements QueueService {
     return job.id || '';
   }
 
+  async removeJob(queueName: string, jobId: string): Promise<boolean> {
+    const queue = this.getQueue(queueName);
+    try {
+      await queue.remove(jobId);
+      console.log(`[BullMQAdapter] Removed job ${jobId} from queue ${queueName}`);
+      return true;
+    } catch (error) {
+      console.error(`[BullMQAdapter] Failed to remove job ${jobId} from queue ${queueName}:`, error);
+      return false;
+    }
+  }
+
   // Cleanup method
   async close(queueName: string): Promise<void> {
     const queue = this.queues.get(queueName);

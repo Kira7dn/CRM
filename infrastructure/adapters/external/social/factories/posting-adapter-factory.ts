@@ -54,6 +54,12 @@ export class PlatformPostingAdapterFactory implements PostingAdapterFactory {
         break;
       }
 
+      case "wordpress": {
+        const { WordPressPostingAdapter } = await import("../posting/wordpress-posting-adapter");
+        adapter = new WordPressPostingAdapter(authService as any);
+        break;
+      }
+
       default:
         throw new Error(`Unsupported platform for posting: ${platform}`);
     }
@@ -100,6 +106,12 @@ export class PlatformPostingAdapterFactory implements PostingAdapterFactory {
         break;
       }
 
+      case "wordpress": {
+        const { createWordPressAuthServiceForUser } = await import("../auth/wordpress-auth-service");
+        authService = await createWordPressAuthServiceForUser(userId);
+        break;
+      }
+
       default:
         throw new Error(`Unsupported platform: ${platform}`);
     }
@@ -120,7 +132,7 @@ export class PlatformPostingAdapterFactory implements PostingAdapterFactory {
   }
 
   getSupportedPlatforms(): Platform[] {
-    return ["facebook", "tiktok", "zalo", "youtube"];
+    return ["facebook", "tiktok", "zalo", "youtube", "wordpress"];
   }
 
   isSupported(platform: Platform): boolean {

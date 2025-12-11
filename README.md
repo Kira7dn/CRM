@@ -1,7 +1,6 @@
-# 🧭 Hải Sản Ngày Mới - CRM Platform
+# CRM Platform
 
-Production-ready CRM system for Hải Sản Ngày Mới (Fresh Seafood from Cô Tô Island)
-
+Production-ready CRM system
 [![Next.js](https://img.shields.io/badge/Next.js-16.0.1-black)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2.0-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
@@ -274,5 +273,3 @@ npm run lint              # Run ESLint
 MIT License
 
 ---
-
-**Made for Hải Sản Ngày Mới - Fresh Seafood from Cô Tô Island**

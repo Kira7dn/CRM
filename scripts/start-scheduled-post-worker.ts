@@ -8,6 +8,11 @@
 import { initializeScheduledPostWorker, closeScheduledPostWorker } from '../infrastructure/queue/scheduled-post-worker'
 
 console.log('[ScheduledPostWorker] Starting worker...')
+console.log('[ScheduledPostWorker] Environment check:', {
+  REDIS_URL: process.env.REDIS_URL ? 'SET' : 'NOT SET',
+  NODE_ENV: process.env.NODE_ENV,
+  timestamp: new Date().toISOString()
+})
 
 // Initialize worker
 const worker = initializeScheduledPostWorker()
@@ -23,3 +28,4 @@ process.on('SIGTERM', shutdown)
 process.on('SIGINT', shutdown)
 
 console.log('[ScheduledPostWorker] Worker is running. Press Ctrl+C to stop.')
+console.log('[ScheduledPostWorker] Waiting for scheduled jobs...')

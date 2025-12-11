@@ -10,6 +10,7 @@ const PLATFORMS: { value: Platform; label: string; color: string }[] = [
   { value: 'youtube', label: 'YouTube', color: 'bg-red-600' },
   { value: 'tiktok', label: 'TikTok', color: 'bg-black' },
   { value: 'zalo', label: 'Zalo', color: 'bg-blue-400' },
+  { value: 'wordpress', label: 'WordPress', color: 'bg-[#21759B]' },
 ]
 
 // Content types
@@ -29,7 +30,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     tiktok: "supported",
     zalo: "unsupported",
     website: "unsupported",
-    telegram: "unsupported"
+    telegram: "unsupported",
+    wordpress: "unsupported"
   },
   short: {
     facebook: "supported",
@@ -37,7 +39,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     tiktok: "supported",
     zalo: "unsupported",
     website: "unsupported",
-    telegram: "unsupported"
+    telegram: "unsupported",
+    wordpress: "unsupported"
   },
   post: {
     facebook: "supported",
@@ -45,7 +48,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     tiktok: "warning",
     zalo: "supported",
     website: "supported",
-    telegram: "supported"
+    telegram: "supported",
+    wordpress: "supported"
   },
   video: {
     facebook: "supported",
@@ -53,7 +57,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     tiktok: "unsupported",
     zalo: "unsupported",
     website: "supported",
-    telegram: "unsupported"
+    telegram: "unsupported",
+    wordpress: "warning"
   },
   article: {
     facebook: "warning",
@@ -61,7 +66,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     tiktok: "unsupported",
     zalo: "supported",
     website: "supported",
-    telegram: "supported"
+    telegram: "supported",
+    wordpress: "supported"
   },
   story: {
     facebook: "supported",
@@ -69,7 +75,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     tiktok: "supported",
     zalo: "unsupported",
     website: "unsupported",
-    telegram: "unsupported"
+    telegram: "unsupported",
+    wordpress: "unsupported"
   },
 }
 

@@ -4577,13 +4577,150 @@
         "status": "done",
         "subtasks": [],
         "updatedAt": "2025-12-04T13:38:04.176Z"
+      },
+      {
+        "id": "190",
+        "title": "Update SocialPlatform Type",
+        "description": "Add 'wordpress' to the SocialPlatform type in the domain layer.",
+        "details": "Update the SocialPlatform type in core/domain/social/social-auth.ts to include 'wordpress'.",
+        "testStrategy": "Verify that the SocialPlatform type includes 'wordpress' and that it compiles without errors.",
+        "priority": "medium",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:02:33.521Z"
+      },
+      {
+        "id": "191",
+        "title": "Create WordPress OAuth Gateway",
+        "description": "Implement the WordPress OAuth Gateway in the infrastructure layer.",
+        "details": "Create a new file infrastructure/adapters/external/social/auth/wordpress-oauth-gateway.ts. Implement the WordPressOAuthGateway class with methods getAuthorizationUrl, exchangeToken, and refreshToken.",
+        "testStrategy": "Write unit tests to ensure each method returns the expected results and handles errors appropriately.",
+        "priority": "medium",
+        "dependencies": [
+          "190"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:03:28.387Z"
+      },
+      {
+        "id": "192",
+        "title": "Implement WordPress Auth Service",
+        "description": "Develop the WordPress Auth Service extending BasePlatformAuthService.",
+        "details": "Create infrastructure/adapters/external/social/auth/wordpress-auth-service.ts. Implement WordPressAuthService with methods for authorization URL retrieval, token verification, and refresh.",
+        "testStrategy": "Test each method for correct functionality and error handling, including token refresh and verification.",
+        "priority": "medium",
+        "dependencies": [
+          "191"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:04:41.653Z"
+      },
+      {
+        "id": "193",
+        "title": "Create WordPress Post Gateway",
+        "description": "Develop the WordPress Post Gateway for publishing posts.",
+        "details": "Create infrastructure/adapters/external/social/posts/wordpress-post-gateway.ts. Implement the WordPressPostGateway class with a publish method.",
+        "testStrategy": "Test the publish method to ensure it correctly posts to WordPress using mock data.",
+        "priority": "medium",
+        "dependencies": [
+          "192"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:05:33.280Z"
+      },
+      {
+        "id": "194",
+        "title": "Update Social Auth Repository",
+        "description": "Extend the Social Auth Repository to support WordPress.",
+        "details": "Either update the existing repository or create a new one at infrastructure/repositories/wordpress-auth-repo.ts extending BaseRepository.",
+        "testStrategy": "Ensure the repository correctly handles WordPress-specific data and integrates with existing patterns.",
+        "priority": "medium",
+        "dependencies": [
+          "192"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "195",
+        "title": "Detect WordPress Type Use Case",
+        "description": "Implement the use case to detect WordPress type.",
+        "details": "Create core/application/usecases/social/wordpress/detect-wordpress-type.ts. Implement the DetectWordPressTypeUseCase class to determine the WordPress type based on site URL.",
+        "testStrategy": "Test with various site URLs to ensure correct type detection.",
+        "priority": "medium",
+        "dependencies": [
+          "194"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:07:30.716Z"
+      },
+      {
+        "id": "196",
+        "title": "Get WordPress Authorization URL Use Case",
+        "description": "Develop the use case to get WordPress authorization URL.",
+        "details": "Create core/application/usecases/social/wordpress/get-wordpress-authorization-url.ts. Implement the GetWordPressAuthorizationUrlUseCase class to generate the authorization URL.",
+        "testStrategy": "Verify that the generated URL is correct for both WordPress.com and self-hosted sites.",
+        "priority": "medium",
+        "dependencies": [
+          "195"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:07:39.060Z"
+      },
+      {
+        "id": "197",
+        "title": "Exchange WordPress Token Use Case",
+        "description": "Implement the use case to exchange WordPress tokens.",
+        "details": "Create core/application/usecases/social/wordpress/exchange-wordpress-token.ts. Implement the ExchangeWordPressTokenUseCase class to handle token exchange.",
+        "testStrategy": "Test the token exchange process with valid and invalid codes to ensure robustness.",
+        "priority": "medium",
+        "dependencies": [
+          "196"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:07:47.890Z"
+      },
+      {
+        "id": "198",
+        "title": "Publish WordPress Post Use Case",
+        "description": "Develop the use case to publish posts to WordPress.",
+        "details": "Create core/application/usecases/social/wordpress/publish-wordpress-post.ts. Implement the PublishWordPressPostUseCase class to handle post publishing.",
+        "testStrategy": "Ensure posts are correctly published to WordPress and handle any errors during the process.",
+        "priority": "medium",
+        "dependencies": [
+          "197"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:07:56.270Z"
+      },
+      {
+        "id": "199",
+        "title": "Update Platform Auth Factory",
+        "description": "Modify the factory pattern to include WordPress Auth Service.",
+        "details": "Update infrastructure/factories/platform-auth-factory.ts to return a new instance of WordPressAuthService when 'wordpress' is specified.",
+        "testStrategy": "Test the factory to ensure it correctly instantiates WordPressAuthService.",
+        "priority": "medium",
+        "dependencies": [
+          "198"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-11T13:08:58.740Z"
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-12-04T13:38:04.184Z",
-      "taskCount": 189,
-      "completedCount": 178,
+      "lastModified": "2025-12-11T13:08:58.744Z",
+      "taskCount": 199,
+      "completedCount": 187,
       "tags": [
         "master"
       ]

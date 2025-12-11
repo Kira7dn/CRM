@@ -16,6 +16,7 @@ const PLATFORM_COLORS: Record<Platform, string> = {
   youtube: 'bg-red-600 text-white',
   website: 'bg-gray-600 text-white',
   telegram: 'bg-blue-400 text-white',
+  wordpress: 'bg-[#21759B] text-white',
 }
 
 const PLATFORM_LABELS: Record<Platform, string> = {
@@ -25,6 +26,7 @@ const PLATFORM_LABELS: Record<Platform, string> = {
   youtube: 'YT',
   website: 'WS',
   telegram: 'TG',
+  wordpress: 'WP',
 }
 
 export default function PostList({ initialPosts }: { initialPosts: Post[] }) {

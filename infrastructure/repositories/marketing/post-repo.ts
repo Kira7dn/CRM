@@ -78,6 +78,7 @@ export class PostRepository extends BaseRepository<Post, string> implements Post
 
   protected toDomain(doc: any): Post {
     const { _id, ...postData } = doc;
+
     return new Post(
       _id.toString(),
       postData.title,

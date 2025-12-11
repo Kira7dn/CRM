@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
+import { parseDateTimeLocal } from "@/lib/date-utils"
 import { getPostsUseCase, createPostUseCase, updatePostUseCase, deletePostUseCase } from "@/app/api/posts/depends"
 import { createGeneratePostContentUseCase, createGeneratePostMultiPassUseCase } from "@/app/api/content-generation/depends"
 import { createGetBrandMemoryUseCase, createSaveBrandMemoryUseCase } from "@/app/api/brand-memory/depends"
@@ -45,8 +46,8 @@ export async function createPostAction(formData: FormData) {
     .map(tag => tag.slice(1))
     .filter(tag => tag.length > 0)
 
-  // Parse scheduled date
-  const scheduledAt = scheduledAtStr ? new Date(scheduledAtStr) : undefined
+  // Parse scheduled date (handle timezone properly)
+  const scheduledAt = scheduledAtStr ? parseDateTimeLocal(scheduledAtStr) : undefined
 
   const now = new Date()
 
@@ -146,7 +147,7 @@ export async function updatePostAction(id: string, formData: FormData) {
   }
 
   if (scheduledAtStr) {
-    updateData.scheduledAt = new Date(scheduledAtStr)
+    updateData.scheduledAt = parseDateTimeLocal(scheduledAtStr)
   }
 
   await useCase.execute(updateData)

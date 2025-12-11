@@ -1,8 +1,9 @@
 /**
  * Platform types for social media marketing
  * Note: "website" and "telegram" are messaging-only platforms
+ * Note: "wordpress" for blog post publishing
  */
-export type Platform = "facebook" | "youtube" | "tiktok" | "zalo" | "website" | "telegram";
+export type Platform = "facebook" | "youtube" | "tiktok" | "zalo" | "website" | "telegram" | "wordpress";
 
 /**
  * Content types based on platform capabilities
@@ -41,6 +42,7 @@ export interface PlatformMetadata {
   publishedAt?: Date;
   status: PostStatus;
   error?: string;        // Error message if failed
+  scheduledJobId?: string; // Queue job ID for scheduled posts
 }
 
 /**

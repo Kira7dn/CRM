@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     serverComponentsExternalPackages: ["pdf-parse"],
   },
   serverExternalPackages: ['instrumentation'],
-  allowedDevOrigins: ["haisancrm.linkstrategy.io.vn"],
+  allowedDevOrigins: ["crm.linkstrategy.io.vn"],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'image.tmdb.org' },

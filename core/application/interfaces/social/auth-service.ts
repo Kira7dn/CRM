@@ -36,7 +36,7 @@ export interface PlatformAuthService {
 
   /**
    * Refresh access token
-   * @returns new access token and expiration time
+   * @returns new access token and expiration time, or null if refresh failed
    */
-  refreshToken?(): Promise<{ accessToken: string; expiresIn: number }>;
+  refreshToken?(): Promise<{ accessToken: string; expiresIn: number } | null>;
 }
