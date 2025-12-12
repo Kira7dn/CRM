@@ -1,7 +1,7 @@
 import type { PostMetrics, PostMedia } from "@/core/domain/marketing/post";
 import type { TikTokAuthService } from "../auth/tiktok-auth-service";
 import { BasePostingAdapter } from "./base-posting-service";
-import type { PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/social/posting-adapter";
+import type { PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/marketing/posting-adapter";
 
 /**
  * TikTok API Response Types

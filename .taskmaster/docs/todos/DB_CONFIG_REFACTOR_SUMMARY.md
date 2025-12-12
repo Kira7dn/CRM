@@ -243,7 +243,7 @@ platformConfig: {
 ### Step 1: Update Auth Services
 ```typescript
 // Before
-export class FacebookAuthService extends BasePlatformAuthService {
+export class FacebookAuthService extends BasePlatformOAuthService {
   async verifyAuth() {
     const appId = process.env.FACEBOOK_APP_ID
     // ...
@@ -251,7 +251,7 @@ export class FacebookAuthService extends BasePlatformAuthService {
 }
 
 // After
-export class FacebookAuthService extends BasePlatformAuthService {
+export class FacebookAuthService extends BasePlatformOAuthService {
   constructor(
     config: PlatformAuthConfig,
     private platformConfig: PlatformConfig

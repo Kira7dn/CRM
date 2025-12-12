@@ -2,7 +2,7 @@ import type { MessageService, MessagePayload } from "@/core/application/interfac
 import type { ConversationService } from "@/core/application/interfaces/messaging/conversation-service";
 import type { Message, Platform } from "@/core/domain/messaging/message";
 import { validateMessage } from "@/core/domain/messaging/message";
-import type { MessagingAdapterFactory } from "@/core/application/interfaces/social/messaging-adapter";
+import type { MessagingAdapterFactory } from "@/core/application/interfaces/messaging/messaging-adapter";
 
 /**
  * Request payload for sending a message from CRM to platform

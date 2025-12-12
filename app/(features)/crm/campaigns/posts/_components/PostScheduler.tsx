@@ -20,6 +20,7 @@ const PLATFORM_COLORS: Record<Platform, string> = {
   website: '#6B7280',
   telegram: '#26A5E4',
   wordpress: '#21759B',
+  instagram: '#E4405F',
 }
 
 interface CalendarEvent {

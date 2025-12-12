@@ -11,6 +11,7 @@ const PLATFORMS: { value: Platform; label: string; color: string }[] = [
   { value: 'tiktok', label: 'TikTok', color: 'bg-black' },
   { value: 'zalo', label: 'Zalo', color: 'bg-blue-400' },
   { value: 'wordpress', label: 'WordPress', color: 'bg-[#21759B]' },
+  { value: 'instagram', label: 'Instagram', color: 'bg-pink-600' },
 ]
 
 // Content types
@@ -31,7 +32,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     zalo: "unsupported",
     website: "unsupported",
     telegram: "unsupported",
-    wordpress: "unsupported"
+    wordpress: "unsupported",
+    instagram: "supported"
   },
   short: {
     facebook: "supported",
@@ -40,7 +42,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     zalo: "unsupported",
     website: "unsupported",
     telegram: "unsupported",
-    wordpress: "unsupported"
+    wordpress: "unsupported",
+    instagram: "supported"
   },
   post: {
     facebook: "supported",
@@ -49,7 +52,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     zalo: "supported",
     website: "supported",
     telegram: "supported",
-    wordpress: "supported"
+    wordpress: "supported",
+    instagram: "supported"
   },
   video: {
     facebook: "supported",
@@ -58,7 +62,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     zalo: "unsupported",
     website: "supported",
     telegram: "unsupported",
-    wordpress: "warning"
+    wordpress: "warning",
+    instagram: "supported"
   },
   article: {
     facebook: "warning",
@@ -67,7 +72,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     zalo: "supported",
     website: "supported",
     telegram: "supported",
-    wordpress: "supported"
+    wordpress: "supported",
+    instagram: "unsupported"
   },
   story: {
     facebook: "supported",
@@ -76,7 +82,8 @@ const CONTENT_PLATFORM_MAP: Record<ContentType, Record<Platform, "supported" | "
     zalo: "unsupported",
     website: "unsupported",
     telegram: "unsupported",
-    wordpress: "unsupported"
+    wordpress: "unsupported",
+    instagram: "supported"
   },
 }
 

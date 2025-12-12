@@ -163,15 +163,96 @@ export default function WebhookGuidePanel({ platform }: WebhookGuidePanelProps) 
     </div>
   )
 
+  const renderInstagramGuide = () => (
+    <div className="space-y-4">
+      <div className="space-y-3">
+        <h3 className="font-semibold">Instagram Webhook Setup:</h3>
+
+        <Alert>
+          <AlertDescription>
+            Instagram webhooks are configured through Facebook App settings since Instagram is part of Meta's ecosystem.
+          </AlertDescription>
+        </Alert>
+
+        <ol className="space-y-3 list-decimal list-inside">
+          <li>
+            Go to{" "}
+            <a
+              href="https://developers.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline inline-flex items-center gap-1"
+            >
+              Facebook Developers Portal
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          </li>
+
+          <li>Select your app that has Instagram products configured</li>
+
+          <li>Navigate to <strong>Webhooks</strong> in the left menu</li>
+
+          <li>
+            Configure webhook URL:
+            <div className="flex items-center gap-2 mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-md font-mono text-sm">
+              <code className="flex-1 break-all">{webhookUrl}</code>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={copyToClipboard}
+                className="shrink-0"
+              >
+                {copied ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </li>
+
+          <li>
+            Subscribe to Instagram fields:
+            <ul className="list-disc list-inside ml-6 mt-2 space-y-1 text-sm">
+              <li><code>feed</code> - New posts, comments, likes</li>
+              <li><code>mentions</code> - Account mentions</li>
+              <li><code>story_insights</code> - Story performance metrics</li>
+              <li><code>media</code> - Media updates</li>
+            </ul>
+          </li>
+
+          <li>
+            For enhanced security, enable mTLS (Mutual TLS):
+            <ul className="list-disc list-inside ml-6 mt-2 space-y-1 text-sm">
+              <li>Upload your server certificate</li>
+              <li>Configure client certificate validation</li>
+              <li>Test webhook delivery with mTLS enabled</li>
+            </ul>
+          </li>
+
+          <li>Save and test your webhook configuration</li>
+        </ol>
+      </div>
+    </div>
+  )
+
   return (
     <div className="space-y-6">
       {platform === "zalo" && renderZaloGuide()}
       {platform === "tiktok" && renderTikTokGuide()}
       {platform === "facebook" && renderFacebookGuide()}
+      {platform === "instagram" && renderInstagramGuide()}
       {platform === "youtube" && (
         <Alert>
           <AlertDescription>
             YouTube webhook guide coming soon...
+          </AlertDescription>
+        </Alert>
+      )}
+      {platform === "wordpress" && (
+        <Alert>
+          <AlertDescription>
+            WordPress webhook guide coming soon...
           </AlertDescription>
         </Alert>
       )}

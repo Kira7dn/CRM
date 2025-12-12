@@ -1,5 +1,5 @@
 import type { Message } from "@/core/domain/messaging/message";
-import type { SendMessageResult } from "@/core/application/interfaces/social/messaging-adapter";
+import type { SendMessageResult } from "@/core/application/interfaces/messaging/messaging-adapter";
 import type { FacebookAuthService } from "../auth/facebook-auth-service";
 import { BaseMessagingAdapter } from "./messaging-service";
 

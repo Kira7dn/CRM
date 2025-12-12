@@ -1,4 +1,4 @@
-import type { SendMessageResult } from "@/core/application/interfaces/social/messaging-adapter";
+import type { SendMessageResult } from "@/core/application/interfaces/messaging/messaging-adapter";
 import type { ZaloAuthService } from "../auth/zalo-auth-service";
 import { BaseMessagingAdapter } from "./messaging-service";
 

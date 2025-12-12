@@ -1,5 +1,5 @@
 import type { Platform } from "@/core/domain/messaging/message";
-import type { MessagingService, SendMessageResult } from "@/core/application/interfaces/social/messaging-adapter";
+import type { MessagingService, SendMessageResult } from "@/core/application/interfaces/messaging/messaging-adapter";
 
 /**
  * Base class for messaging adapters with common utilities

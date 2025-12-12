@@ -1,14 +1,14 @@
-import { BasePlatformAuthService } from "./base-auth-service";
-import type { PlatformAuthConfig } from "@/core/application/interfaces/social/auth-service";
+import { BasePlatformOAuthService } from "./utils/base-auth-service";
+import type { PlatformOAuthConfig } from "@/core/application/interfaces/social/platform-oauth-adapter";
 
-export interface YouTubeAuthConfig extends PlatformAuthConfig {
+export interface YouTubeAuthConfig extends PlatformOAuthConfig {
   apiKey: string;
   clientId: string;
   clientSecret: string;
   refreshToken: string;
 }
 
-export class YouTubeAuthService extends BasePlatformAuthService {
+export class YouTubeAuthService extends BasePlatformOAuthService {
   protected baseUrl = "https://www.googleapis.com/youtube/v3";
   private _cachedAccessToken: string | null = null;
   private _tokenExpireTime: number | null = null;
@@ -107,27 +107,4 @@ export class YouTubeAuthService extends BasePlatformAuthService {
       throw new Error(`Failed to refresh YouTube token: ${errorMessage}`);
     }
   }
-}
-
-export async function createYouTubeAuthServiceForUser(userId: string): Promise<YouTubeAuthService> {
-  const { SocialAuthRepository } = await import("@/infrastructure/repositories/social/social-auth-repo");
-  const { ObjectId } = await import("mongodb");
-
-  const repo = new SocialAuthRepository();
-  const auth = await repo.getByUserAndPlatform(new ObjectId(userId), "youtube");
-
-  if (!auth) {
-    throw new Error("YouTube account not connected for this user");
-  }
-
-  const config: YouTubeAuthConfig = {
-    apiKey: process.env.YOUTUBE_API_KEY || "",
-    clientId: process.env.YOUTUBE_CLIENT_ID || "",
-    clientSecret: process.env.YOUTUBE_CLIENT_SECRET || "",
-    refreshToken: auth.refreshToken,
-    accessToken: auth.accessToken,
-    expiresAt: auth.expiresAt,
-  };
-
-  return new YouTubeAuthService(config);
 }

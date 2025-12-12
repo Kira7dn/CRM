@@ -1,13 +1,13 @@
-import { BasePlatformAuthService } from "./base-auth-service";
-import type { PlatformAuthConfig } from "@/core/application/interfaces/social/auth-service";
+import { BasePlatformOAuthService } from "./utils/base-auth-service";
+import type { PlatformOAuthConfig } from "@/core/application/interfaces/social/platform-oauth-adapter";
 
-export interface TikTokAuthConfig extends PlatformAuthConfig {
+export interface TikTokAuthConfig extends PlatformOAuthConfig {
   clientKey: string;
   clientSecret: string;
   refreshToken?: string; // cần cho refresh
 }
 
-export class TikTokAuthService extends BasePlatformAuthService {
+export class TikTokAuthService extends BasePlatformOAuthService {
   protected baseUrl = "https://open.tiktokapis.com";
   private _cachedAccessToken: string | null = null;
   private _tokenExpireTime: number | null = null;
@@ -93,35 +93,4 @@ export class TikTokAuthService extends BasePlatformAuthService {
       expiresIn: data.data.expires_in,
     };
   }
-}
-
-/** Factory tạo TikTokAuthService từ DB token */
-export async function createTikTokAuthServiceForUser(userId: string): Promise<TikTokAuthService> {
-  const { SocialAuthRepository } = await import("@/infrastructure/repositories/social/social-auth-repo");
-  const { ObjectId } = await import("mongodb");
-
-  const repo = new SocialAuthRepository();
-  const auth = await repo.getByUserAndPlatform(new ObjectId(userId), "tiktok");
-
-  if (!auth) {
-    throw new Error("TikTok account not connected for this user");
-  }
-
-  if (new Date() >= auth.expiresAt) {
-    throw new Error("TikTok token has expired. Please reconnect your account.");
-  }
-
-  const config: TikTokAuthConfig = {
-    clientKey: process.env.TIKTOK_CLIENT_KEY || "",
-    clientSecret: process.env.TIKTOK_CLIENT_SECRET || "",
-    accessToken: auth.accessToken,
-    refreshToken: auth.refreshToken,
-    expiresAt: auth.expiresAt,
-  };
-
-  if (!config.clientKey || !config.clientSecret) {
-    throw new Error("Missing TikTok OAuth config. Set TIKTOK_CLIENT_KEY and TIKTOK_CLIENT_SECRET.");
-  }
-
-  return new TikTokAuthService(config);
 }

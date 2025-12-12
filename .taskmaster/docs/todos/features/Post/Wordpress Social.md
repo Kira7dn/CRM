@@ -28,7 +28,7 @@
 ### 3. Infrastructure Layer - Auth Service
 - [ ] Tạo [infrastructure/adapters/external/social/auth/wordpress-auth-service.ts](infrastructure/adapters/external/social/auth/wordpress-auth-service.ts)
   ```ts
-  export class WordPressAuthService extends BasePlatformAuthService {
+  export class WordPressAuthService extends BasePlatformOAuthService {
     constructor(protected config: WordPressPlatformConfig)
     getAuthorizationUrl(state?: string): string
     async verifyAuth(): Promise<boolean>
@@ -215,7 +215,7 @@ export class WordPressOAuthGateway {
 <summary>WordPressAuthService (click to expand)</summary>
 
 ```ts
-export class WordPressAuthService extends BasePlatformAuthService {
+export class WordPressAuthService extends BasePlatformOAuthService {
   private oauth: WordPressOAuthGateway;
 
   constructor(protected config: WordPressPlatformConfig) {

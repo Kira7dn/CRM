@@ -1,6 +1,6 @@
 import type { MessageService } from "@/core/application/interfaces/messaging/message-service";
 import type { ConversationService } from "@/core/application/interfaces/messaging/conversation-service";
-import type { MessagingAdapterFactory } from "@/core/application/interfaces/social/messaging-adapter";
+import type { MessagingAdapterFactory } from "@/core/application/interfaces/messaging/messaging-adapter";
 import { Platform } from "@/core/domain/messaging/message";
 
 export interface SyncMessagesRequest {

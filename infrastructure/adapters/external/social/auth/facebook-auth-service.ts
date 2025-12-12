@@ -1,10 +1,10 @@
-import { BasePlatformAuthService } from "./base-auth-service";
-import type { PlatformAuthConfig } from "@/core/application/interfaces/social/auth-service";
+import { BasePlatformOAuthService } from "./utils/base-auth-service";
+import type { PlatformOAuthConfig } from "@/core/application/interfaces/social/platform-oauth-adapter";
 
 /**
  * Facebook-specific configuration
  */
-export interface FacebookAuthConfig extends PlatformAuthConfig {
+export interface FacebookAuthConfig extends PlatformOAuthConfig {
   appId: string;
   appSecret: string;
 }
@@ -13,7 +13,7 @@ export interface FacebookAuthConfig extends PlatformAuthConfig {
  * Facebook Authentication Service
  * Handles Facebook page access token management and verification
  */
-export class FacebookAuthService extends BasePlatformAuthService {
+export class FacebookAuthService extends BasePlatformOAuthService {
   protected baseUrl = "https://graph.facebook.com/v19.0";
   private _cachedAccessToken: string | null = null;
   private _tokenExpireTime: number | null = null;
@@ -113,69 +113,4 @@ export class FacebookAuthService extends BasePlatformAuthService {
       throw error;
     }
   }
-}
-
-/**
- * Factory function to create FacebookAuthService from user's stored credentials
- */
-export async function createFacebookAuthServiceForUser(userId: string): Promise<FacebookAuthService> {
-  const { SocialAuthRepository } = await import("@/infrastructure/repositories/social/social-auth-repo");
-  const { ObjectId } = await import("mongodb");
-
-  const repo = new SocialAuthRepository();
-  const auth = await repo.getByUserAndPlatform(new ObjectId(userId), "facebook");
-
-  if (!auth) {
-    throw new Error("Facebook account not connected for this user");
-  }
-
-  if (new Date() >= auth.expiresAt) {
-    throw new Error("Facebook token has expired. Please reconnect your account.");
-  }
-
-  const config: FacebookAuthConfig = {
-    appId: process.env.FACEBOOK_APP_ID || "",
-    appSecret: process.env.FACEBOOK_APP_SECRET || "",
-    pageId: auth.openId,
-    accessToken: auth.accessToken,
-    expiresAt: auth.expiresAt,
-  };
-
-  if (!config.appId || !config.appSecret) {
-    throw new Error("Missing Facebook client configuration. Set FACEBOOK_APP_ID and FACEBOOK_APP_SECRET.");
-  }
-
-  return new FacebookAuthService(config);
-}
-
-/**
- * Factory function to create FacebookAuthService from channel ID (Page ID)
- */
-export async function createFacebookAuthServiceForChannel(channelId: string): Promise<FacebookAuthService> {
-  const { SocialAuthRepository } = await import("@/infrastructure/repositories/social/social-auth-repo");
-
-  const repo = new SocialAuthRepository();
-  const auth = await repo.getByChannelAndPlatform(channelId, "facebook");
-
-  if (!auth) {
-    throw new Error(`Facebook Page not connected: ${channelId}`);
-  }
-
-  if (new Date() >= auth.expiresAt) {
-    throw new Error("Facebook token has expired. Please reconnect your account.");
-  }
-
-  const config: FacebookAuthConfig = {
-    appId: process.env.FACEBOOK_APP_ID || "",
-    appSecret: process.env.FACEBOOK_APP_SECRET || "",
-    pageId: auth.openId,
-    accessToken: auth.accessToken,
-    expiresAt: auth.expiresAt,
-  };
-
-  if (!config.appId || !config.appSecret) {
-    throw new Error("Missing Facebook client configuration. Set FACEBOOK_APP_ID and FACEBOOK_APP_SECRET.");
-  }
-
-  return new FacebookAuthService(config);
 }

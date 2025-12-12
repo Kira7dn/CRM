@@ -2,7 +2,7 @@
 
 import { ObjectId } from "mongodb"
 
-export type SocialPlatform = "tiktok" | "facebook" | "youtube" | "zalo" | "wordpress"
+export type SocialPlatform = "tiktok" | "facebook" | "youtube" | "zalo" | "wordpress" | "instagram"
 
 export class SocialAuth {
   constructor(
@@ -11,9 +11,9 @@ export class SocialAuth {
     public openId: string,
     public pageName: string,
     public accessToken: string,
-    public refreshToken: string,
     public expiresAt: Date,
     public userId: ObjectId, // Reference to AdminUser
+    public refreshToken?: string,
     public scope?: string, // OAuth scopes granted
     public readonly createdAt: Date = new Date(),
     public updatedAt: Date = new Date()
@@ -27,8 +27,8 @@ export function validateSocialAuth(auth: Partial<SocialAuth>): string[] {
   // Platform validation
   if (!auth.platform) {
     errors.push("Platform is required")
-  } else if (!["tiktok", "facebook", "youtube", "zalo", "wordpress"].includes(auth.platform)) {
-    errors.push("Platform must be one of: tiktok, facebook, youtube, zalo, wordpress")
+  } else if (!["tiktok", "facebook", "youtube", "zalo", "wordpress", "instagram"].includes(auth.platform)) {
+    errors.push("Platform must be one of: tiktok, facebook, youtube, zalo, wordpress, instagram")
   }
 
   // OpenId validation
@@ -46,10 +46,8 @@ export function validateSocialAuth(auth: Partial<SocialAuth>): string[] {
     errors.push("Access token is required")
   }
 
-  // Refresh token validation
-  if (!auth.refreshToken || auth.refreshToken.trim().length === 0) {
-    errors.push("Refresh token is required")
-  }
+  // Refresh token validation - optional for platforms that don't support it
+  // Some platforms (Facebook/Instagram page tokens) use access token as refresh token
 
   // Expires at validation
   if (!auth.expiresAt) {

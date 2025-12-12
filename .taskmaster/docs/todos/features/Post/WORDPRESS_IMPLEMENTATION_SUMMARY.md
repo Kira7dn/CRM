@@ -13,7 +13,7 @@ WordPress Social Integration đã được triển khai hoàn tất theo đúng 
 
 ### Infrastructure Layer - OAuth & Auth
 - ✅ [infrastructure/adapters/external/social/auth/wordpress-oauth-gateway.ts](infrastructure/adapters/external/social/auth/wordpress-oauth-gateway.ts) - OAuth 2.0 flow handler
-- ✅ [infrastructure/adapters/external/social/auth/wordpress-auth-service.ts](infrastructure/adapters/external/social/auth/wordpress-auth-service.ts) - Auth service extends `BasePlatformAuthService`
+- ✅ [infrastructure/adapters/external/social/auth/wordpress-auth-service.ts](infrastructure/adapters/external/social/auth/wordpress-auth-service.ts) - Auth service extends `BasePlatformOAuthService`
 
 ### Infrastructure Layer - Posts
 - ✅ [infrastructure/adapters/external/social/posts/wordpress-post-gateway.ts](infrastructure/adapters/external/social/posts/wordpress-post-gateway.ts) - Post publishing gateway

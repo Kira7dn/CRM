@@ -8,7 +8,7 @@ import { ReceiveMessageUseCase } from "@/core/application/usecases/messaging/rec
 import { SendMessageUseCase } from "@/core/application/usecases/messaging/send-message";
 import { AssignConversationUseCase } from "@/core/application/usecases/messaging/assign-conversation";
 import { SyncMessagesUseCase } from "@/core/application/usecases/messaging/sync-messages";
-import type { MessagingAdapterFactory } from "@/core/application/interfaces/social/messaging-adapter";
+import type { MessagingAdapterFactory } from "@/core/application/interfaces/messaging/messaging-adapter";
 import { getMessagingAdapterFactory } from "@/infrastructure/adapters/external/social/factories/messaging-adapter-factory";
 
 // Shared repository instance creators

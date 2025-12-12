@@ -1,41 +1,66 @@
-import type { SocialAuth, SocialPlatform } from "@/core/domain/social/social-auth"
-import { ObjectId } from "mongodb"
+import type { SocialAuth, SocialPlatform } from "@/core/domain/social/social-auth";
+import { ObjectId } from "mongodb";
 
-// Payload interfaces extending from domain
+/**
+ * Payload for creating/updating SocialAuth domain object
+ */
 export interface SocialAuthPayload extends Partial<SocialAuth> { }
 
+/**
+ * Payload for refreshing token & updating DB
+ */
 export interface RefreshTokenPayload {
-  userId: ObjectId
-  platform: SocialPlatform
-  newAccessToken: string
-  newRefreshToken: string
-  expiresInSeconds: number
+  userId: ObjectId;
+  platform: SocialPlatform;
+  newAccessToken: string;
+  newRefreshToken?: string;   // some platforms don't return refresh token
+  expiresInSeconds: number;
 }
 
-// Service interface
+/**
+ * Social Authentication Repository Interface
+ * Handles all database operations for SocialAuth
+ * (UseCases orchestrate flow; repo only does persistence)
+ */
 export interface SocialAuthService {
-  // Basic CRUD
-  getById(id: ObjectId): Promise<SocialAuth | null>
+  /** ──────────────────────────────────────────────────────────────
+   * Basic CRUD Operations
+   * ───────────────────────────────────────────────────────────────
+   */
+  getById(id: ObjectId): Promise<SocialAuth | null>;
+
   getByUserAndPlatform(
     userId: ObjectId,
     platform: SocialPlatform
-  ): Promise<SocialAuth | null>
+  ): Promise<SocialAuth | null>;
+
   getByChannelAndPlatform(
     channelId: string,
     platform: SocialPlatform
-  ): Promise<SocialAuth | null>
-  create(payload: SocialAuthPayload): Promise<SocialAuth>
-  update(
-    payload: SocialAuthPayload & { id: ObjectId }
-  ): Promise<SocialAuth | null>
-  delete(id: ObjectId): Promise<boolean>
+  ): Promise<SocialAuth | null>;
 
-  // Platform-specific operations
+  create(payload: SocialAuthPayload): Promise<SocialAuth>;
+
+  update(payload: SocialAuthPayload & { id: ObjectId }): Promise<SocialAuth | null>;
+
+  delete(id: ObjectId): Promise<boolean>;
+
+  /** ──────────────────────────────────────────────────────────────
+   * Platform-Specific Operations
+   * ───────────────────────────────────────────────────────────────
+   */
   deleteByUserAndPlatform(
     userId: ObjectId,
     platform: SocialPlatform
-  ): Promise<boolean>
-  refreshToken(payload: RefreshTokenPayload): Promise<SocialAuth | null>
-  getAllByUser(userId: ObjectId): Promise<SocialAuth[]>
-  getAllByPlatform(platform: SocialPlatform): Promise<SocialAuth[]>
+  ): Promise<boolean>;
+
+  /**
+   * Refresh token and update DB with new token values
+   * (UseCase computes "expiresAt" based on expiresInSeconds)
+   */
+  refreshToken(payload: RefreshTokenPayload): Promise<SocialAuth | null>;
+
+  getAllByUser(userId: ObjectId): Promise<SocialAuth[]>;
+
+  getAllByPlatform(platform: SocialPlatform): Promise<SocialAuth[]>;
 }

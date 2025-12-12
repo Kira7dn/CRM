@@ -91,11 +91,13 @@ export async function deletePostAction(id: string) {
     throw new Error("Unauthorized - Please login first")
   }
 
-  await useCase.execute({
+  const result = await useCase.execute({
     id,
     userId: userIdCookie.value
   })
+
   revalidatePath("/crm/posts")
+  return result
 }
 
 export async function updatePostAction(id: string, formData: FormData) {

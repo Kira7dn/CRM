@@ -4,7 +4,7 @@ import type { CustomerService } from "@/core/application/interfaces/customers/cu
 import type { Message, Platform } from "@/core/domain/messaging/message";
 import type { CustomerSource } from "@/core/domain/customers/customer";
 import { validateMessage } from "@/core/domain/messaging/message";
-import { MessagingAdapterFactory } from "../../interfaces/social/messaging-adapter";
+import { MessagingAdapterFactory } from "../../interfaces/messaging/messaging-adapter";
 
 /**
  * Request payload for receiving a message from webhook

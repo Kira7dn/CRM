@@ -2,7 +2,7 @@
   "master": {
     "tasks": [
       {
-        "id": "1",
+        "id": 1,
         "title": "Thiết lập môi trường phát triển",
         "description": "Cài đặt và cấu hình môi trường phát triển cho Chat Box AI Agent.",
         "details": "Cài đặt Node.js, MongoDB, và các công cụ cần thiết. Thiết lập cấu trúc thư mục dự án theo kiến trúc đề xuất.",
@@ -13,7 +13,7 @@
         "subtasks": []
       },
       {
-        "id": "2",
+        "id": 2,
         "title": "Tái sử dụng component ChatbotWidget app/(features)/_shared/_components/chatbot/_components/ChatbotWidget.tsx",
         "description": "Phát triển component ChatbotWidget trong React.",
         "details": "Tái sử dụng file ChatbotWidget.tsx và xây dựng giao diện cơ bản cho chat box.",
@@ -26,7 +26,7 @@
         "subtasks": []
       },
       {
-        "id": "3",
+        "id": 3,
         "title": "Tích hợp lưu trữ lịch sử chat",
         "description": "Chức năng lưu trữ lịch sử chat đã được triển khai với các thành phần: Domain Layer, Repository Layer, Use Cases, và API Layer. Hệ thống cho phép lưu trữ và truy xuất lịch sử chat theo user trong MongoDB.",
         "status": "done",
@@ -40,7 +40,7 @@
         "updatedAt": "2025-11-21T04:07:33.339Z"
       },
       {
-        "id": "4",
+        "id": 4,
         "title": "Phát triển AI Intent Parser",
         "description": "Tích hợp CopilotKit để xử lý intent từ tin nhắn người dùng, tận dụng GPT-4o để phân tích và định tuyến hành động.",
         "status": "done",
@@ -65,7 +65,7 @@
         "updatedAt": "2025-11-21T04:13:12.341Z"
       },
       {
-        "id": "5",
+        "id": 5,
         "title": "Tạo API endpoint cho AI Agent",
         "description": "Endpoint cho AI Agent đã được triển khai qua CopilotKit runtime tại /api/copilotkit. Không cần tạo endpoint mới.",
         "status": "done",
@@ -79,7 +79,7 @@
         "updatedAt": "2025-11-21T04:14:32.786Z"
       },
       {
-        "id": "6",
+        "id": 6,
         "title": "Phát triển hệ thống Quick Actions",
         "description": "Tạo hệ thống gợi ý hành động nhanh dựa trên ngữ cảnh.",
         "details": "Xây dựng logic để AI gợi ý các hành động tiếp theo và hiển thị nút bấm tương ứng.",
@@ -93,7 +93,7 @@
         "updatedAt": "2025-11-21T04:14:38.235Z"
       },
       {
-        "id": "7",
+        "id": 7,
         "title": "Tích hợp Usecase Factories",
         "description": "Kết nối AI Orchestrator với Usecase Factories để thực thi các hành động.",
         "details": "Sử dụng pattern Factory để gọi các usecase từ depends.ts dựa trên intent đã phân tích.",
@@ -107,7 +107,7 @@
         "updatedAt": "2025-11-21T04:14:43.548Z"
       },
       {
-        "id": "8",
+        "id": 8,
         "title": "Phát triển chức năng Resume Session",
         "description": "Chức năng resume session đã được triển khai thành công. Cho phép hệ thống tự động resume session khi user quay lại.",
         "status": "done",
@@ -121,7 +121,7 @@
         "updatedAt": "2025-11-21T04:17:11.774Z"
       },
       {
-        "id": "9",
+        "id": 9,
         "title": "Tích hợp phân quyền theo role",
         "description": "Phân quyền chức năng chat theo vai trò người dùng (admin/sale/warehouse) đã được triển khai đầy đủ trong các hành động của CopilotKit. Không cần tích hợp thêm.",
         "status": "done",
@@ -135,7 +135,7 @@
         "updatedAt": "2025-11-21T04:18:35.787Z"
       },
       {
-        "id": "10",
+        "id": 10,
         "title": "Tích hợp AI Data Analytics",
         "description": "Phát triển chức năng phân tích dữ liệu và báo cáo cho giai đoạn sau.",
         "status": "deferred",
@@ -195,7 +195,7 @@
         ]
       },
       {
-        "id": "11",
+        "id": 11,
         "title": "Install CopilotKit Packages",
         "description": "Install necessary CopilotKit packages for the project.",
         "details": "Run `npm install @copilotkit/react-core @copilotkit/react-ui @copilotkit/runtime` to install the required packages.",
@@ -207,7 +207,7 @@
         "updatedAt": "2025-11-21T03:09:43.096Z"
       },
       {
-        "id": "12",
+        "id": 12,
         "title": "Set Up CopilotKit Provider in Layout",
         "description": "Integrate CopilotKit provider into the root layout of the application.",
         "details": "Update `app/layout.tsx` to include the CopilotKit provider as shown in the PRD.",
@@ -221,7 +221,7 @@
         "updatedAt": "2025-11-21T03:18:18.494Z"
       },
       {
-        "id": "13",
+        "id": 13,
         "title": "Create CopilotKit API Route with OpenAIAdapter",
         "description": "Set up the API route for CopilotKit using OpenAIAdapter.",
         "details": "Create `app/api/copilotkit/route.ts` and implement the API route using the provided code snippet.",
@@ -235,7 +235,7 @@
         "updatedAt": "2025-11-21T03:18:23.576Z"
       },
       {
-        "id": "14",
+        "id": 14,
         "title": "Develop Basic CRMCopilot Component",
         "description": "Create the initial CRMCopilot component with CopilotSidebar.",
         "details": "Implement the CRMCopilot component in `app/(features)/_shared/_components/chatbot/CRMCopilot.tsx` using the provided code.",
@@ -250,7 +250,7 @@
         "updatedAt": "2025-11-21T03:21:51.518Z"
       },
       {
-        "id": "15",
+        "id": 15,
         "title": "Implement Basic Actions (getOrder, searchCustomers)",
         "description": "Develop basic actions for retrieving orders and searching customers.",
         "details": "Use `useCopilotAction` to implement `getOrder` and `searchCustomers` actions in the CRMCopilot component.",
@@ -264,7 +264,7 @@
         "updatedAt": "2025-11-21T03:25:19.110Z"
       },
       {
-        "id": "16",
+        "id": 16,
         "title": "Create Server Actions File (crm-actions.ts)",
         "description": "Set up server actions for CRM operations.",
         "details": "Create `app/(features)/_shared/_components/chatbot/actions/crm-actions.ts` and implement server actions as described in the PRD.",
@@ -278,7 +278,7 @@
         "updatedAt": "2025-11-21T03:31:12.013Z"
       },
       {
-        "id": "17",
+        "id": 17,
         "title": "Connect Actions to Existing Use Cases",
         "description": "Successfully connected all CopilotKit actions to existing use cases via depends.ts. Implemented order actions (getOrder, createOrder, updateOrderStatus), customer actions (searchCustomers, getCustomer), and navigation actions.",
         "status": "done",
@@ -303,7 +303,7 @@
         "updatedAt": "2025-11-21T03:43:54.957Z"
       },
       {
-        "id": "18",
+        "id": 18,
         "title": "Add Role-Based Permission Checks",
         "description": "Role-based permission checks have been implemented in task 17. All CopilotKit actions now include comprehensive permission validation.",
         "status": "done",
@@ -316,7 +316,7 @@
         "subtasks": []
       },
       {
-        "id": "19",
+        "id": 19,
         "title": "Implement Navigation Actions",
         "description": "Navigation actions have been implemented in task 17. The actions `navigateToOrder` and `navigateToCustomer` are fully functional.",
         "status": "done",
@@ -330,7 +330,7 @@
         "updatedAt": "2025-11-21T03:46:50.138Z"
       },
       {
-        "id": "20",
+        "id": 20,
         "title": "Integrate CRMCopilot in CRM Layout",
         "description": "CRMCopilot component has been successfully integrated into the CRM layout for user interaction.",
         "status": "done",
@@ -344,7 +344,7 @@
         "updatedAt": "2025-11-21T03:48:03.973Z"
       },
       {
-        "id": "21",
+        "id": 21,
         "title": "Add Dashboard UI Customization with Drag-and-Drop",
         "description": "Implement a feature allowing users to customize their dashboard layout using drag-and-drop functionality for cards/widgets.",
         "details": "Develop a drag-and-drop interface using a library like React DnD or similar. Create a customizable dashboard component where users can add, remove, and rearrange widgets. Ensure the layout state is saved in the user's profile for persistence. Update the UI to reflect changes immediately and handle edge cases such as overlapping widgets or invalid drop zones. Consider accessibility and responsiveness for different screen sizes.",
@@ -423,7 +423,7 @@
         "updatedAt": "2025-11-21T07:23:31.029Z"
       },
       {
-        "id": "22",
+        "id": 22,
         "title": "Create Scripts for Generating Customer and Order Test Data",
         "description": "Develop scripts to generate test data for customers and orders using existing product data.",
         "details": "Implement scripts in a dedicated directory, such as `scripts/test-data`, to automate the generation of customer and order test data. Utilize existing product data as a basis for creating realistic test scenarios. Ensure the scripts can be executed independently and support various configurations for data volume and complexity. Consider using libraries like Faker.js for generating random but realistic data attributes. Document the scripts with usage instructions and configuration options.",
@@ -505,7 +505,7 @@
         "updatedAt": "2025-11-21T07:39:35.545Z"
       },
       {
-        "id": "23",
+        "id": 23,
         "title": "Add Conversation History Feature to CRMCopilot Chatbot",
         "description": "Implement a feature to store and display conversation history in the CRMCopilot chatbot component.",
         "details": "Enhance the CRMCopilot component located at `app/(features)/_shared/_components/chatbot/CRMCopilot.tsx` to include conversation history. Create a new state to manage the history of interactions. Use local storage or a database to persist conversation data. Update the UI to display past interactions in a scrollable view. Ensure that the history is loaded when the component mounts and updated in real-time as new messages are sent or received. Consider privacy and data retention policies when storing conversation data.",
@@ -585,7 +585,7 @@
         "updatedAt": "2025-11-21T07:30:27.406Z"
       },
       {
-        "id": "24",
+        "id": 24,
         "title": "Fix React Key Prop Warning in DraggableWidget Component",
         "description": "Resolve the React warning about missing unique key props in the DraggableWidget component.",
         "details": "Identify the list rendering in `app/(features)/crm/managements/page.tsx` at line 45 where the `InventoryAlertsClient` component is used. Ensure each child element in the list has a unique `key` prop. This can be achieved by using a unique identifier from the data being mapped over, such as an ID or index. Review the data structure to find a suitable unique identifier. Update the component to include this key prop and test to ensure the warning is resolved.",
@@ -663,7 +663,7 @@
         "updatedAt": "2025-11-21T07:48:20.582Z"
       },
       {
-        "id": "25",
+        "id": 25,
         "title": "Cải thiện UI/UX của Widget Editor",
         "description": "Nâng cấp giao diện và trải nghiệm người dùng của Widget Editor với bố cục mới và tổ chức module.",
         "details": "1. Chuyển danh sách widget từ bố cục ngang sang dọc ở bên trái, giao diện chính ở bên phải.\n2. Nhóm các widget theo module và chỉ cho phép thêm widget vào nhóm module tương ứng.\n3. Chuẩn hóa kích thước widget trên toàn bộ hệ thống.\n4. Tách widget thành các module độc lập để dễ bảo trì.\n5. Cập nhật CSS và JavaScript để hỗ trợ bố cục và chức năng mới.\n6. Đảm bảo tính tương thích với các phần khác của ứng dụng.",
@@ -743,7 +743,7 @@
         "updatedAt": "2025-11-21T07:51:48.581Z"
       },
       {
-        "id": "26",
+        "id": 26,
         "title": "Implement Module-Based Drag Zones for Widget Editor",
         "description": "Create module-specific drag zones in the widget editor to organize widgets by their respective modules.",
         "details": "1. Divide the widget editor UI into distinct sections for each module: finance, customer, order, product, risk, and forecast.\n2. Implement drag-and-drop functionality using a library like React DnD to allow widgets to be moved only within their designated module zones.\n3. Ensure that each module zone only accepts widgets corresponding to its type, e.g., financial widgets in the finance section.\n4. Update the UI to visually differentiate between module zones and provide feedback during drag-and-drop operations.\n5. Refactor existing widget handling code to support module-specific constraints and improve maintainability.\n6. Collaborate with the design team to ensure the UI aligns with the overall application design and user experience standards.",
@@ -822,7 +822,7 @@
         "updatedAt": "2025-11-21T07:59:27.984Z"
       },
       {
-        "id": "27",
+        "id": 27,
         "title": "Tách Widget Dashboard Thành Các Module Nhỏ",
         "description": "Chia nhỏ các widget lớn trên dashboard thành các module độc lập để cải thiện tính modular và khả năng tái sử dụng.",
         "details": "1. Phân tích các widget hiện tại như 'Chỉ số chính', 'Phân tích lợi nhuận', và 'Phân tích khách hàng' để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chỉ số hoặc phân tích cụ thể.\n3. Sử dụng các thư viện như React để tạo các component module độc lập.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard thông qua chức năng kéo thả đã có.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -902,7 +902,7 @@
         "updatedAt": "2025-11-21T08:17:49.503Z"
       },
       {
-        "id": "28",
+        "id": 28,
         "title": "Cải thiện Widget Editor: Nhóm Widget theo Module trong UI",
         "description": "Nhóm các widget theo module trong giao diện Widget Editor và đảm bảo chỉ có thể kéo thả widget vào khu vực module tương ứng.",
         "details": "1. Phân tích cấu trúc hiện tại của Widget Editor để xác định cách nhóm các widget theo module: tài chính, khách hàng, đơn hàng, sản phẩm, rủi ro, dự báo.\n2. Cập nhật giao diện bên trái để hiển thị danh sách widget được nhóm theo module.\n3. Cập nhật giao diện bên phải để tạo các khu vực module tương ứng, chỉ cho phép kéo thả widget vào khu vực module phù hợp.\n4. Sử dụng thư viện React DnD để triển khai chức năng kéo thả, đảm bảo mỗi widget chỉ có thể được thả vào khu vực module tương ứng.\n5. Cập nhật CSS để phân biệt rõ ràng các khu vực module và cung cấp phản hồi trực quan khi kéo thả.",
@@ -917,7 +917,7 @@
         "updatedAt": "2025-11-21T08:17:11.974Z"
       },
       {
-        "id": "29",
+        "id": 29,
         "title": "Tách và Cải Tiến Module Widget",
         "description": "Chia các widget thành các module riêng biệt và cải tiến giao diện với cơ chế lưới và nút điều chỉnh.",
         "details": "1. Phân tích các widget hiện tại như 'Chỉ số chính', 'Phân tích lợi nhuận', 'Phân tích khách hàng', 'Chỉ số nâng cao', và 'Biểu đồ đơn hàng' để xác định cách tách chúng thành các module độc lập.\n2. Sử dụng cơ chế lưới với chiều rộng cố định (n cột) và chiều cao linh hoạt để sắp xếp các module trên giao diện.\n3. Thêm các nút lên/xuống cho mỗi nhóm trong giao diện người dùng của Widget để cho phép người dùng điều chỉnh thứ tự hiển thị.\n4. Đảm bảo mỗi module có thể hoạt động độc lập và có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -933,7 +933,7 @@
         "updatedAt": "2025-11-21T08:20:46.531Z"
       },
       {
-        "id": "30",
+        "id": 30,
         "title": "Sửa lỗi TypeScript trong CustomizableDashboardClient.tsx",
         "description": "Khắc phục lỗi TypeScript liên quan đến kiểu dữ liệu không khớp trong CustomizableDashboardClient.tsx.",
         "details": "1. Xác định vị trí lỗi trong file `CustomizableDashboardClient.tsx`.\n2. Kiểm tra kiểu dữ liệu của `SetStateAction<Widget[]>` và đảm bảo rằng tất cả các phần tử trong mảng đều không phải là `undefined`.\n3. Sử dụng TypeScript để kiểm tra và đảm bảo rằng các phần tử trong mảng có kiểu dữ liệu chính xác.\n4. Thêm kiểm tra điều kiện hoặc sử dụng phương pháp lọc để loại bỏ các phần tử `undefined` trước khi gán vào `SetStateAction<Widget[]>`.\n5. Cập nhật tài liệu và bình luận trong mã nguồn để giải thích sự thay đổi và lý do của nó.",
@@ -948,7 +948,7 @@
         "updatedAt": "2025-11-21T08:12:32.309Z"
       },
       {
-        "id": "31",
+        "id": 31,
         "title": "Tách Widget Lớn Thành Các Module Kéo Thả Độc Lập",
         "description": "Chia nhỏ các widget lớn như DashboardStats, AIRiskAssessmentClient, ProfitAnalysisClient, CustomerInsights, EnhancedMetrics thành các module độc lập có thể kéo thả trên dashboard.",
         "details": "1. Phân tích các widget hiện tại để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chức năng cụ thể.\n3. Sử dụng thư viện React DnD để tạo các component module độc lập có thể kéo thả.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -964,7 +964,7 @@
         "updatedAt": "2025-11-21T08:39:19.016Z"
       },
       {
-        "id": "32",
+        "id": 32,
         "title": "Integrate react-gridstack in CustomizableDashboardClient",
         "description": "Update CustomizableDashboardClient to use react-gridstack for improved drag-and-drop functionality.",
         "details": "1. Analyze the current implementation of drag-and-drop in `CustomizableDashboardClient` located in `app/(features)/crm/managements/page.tsx`.\n2. Replace the existing drag-and-drop logic with the `react-gridstack` library.\n3. Follow the example provided in the repository `https://github.com/Inder2108/react-gridstack-example` to understand the integration process.\n4. Ensure that all widgets are compatible with the gridstack layout and can be resized and rearranged.\n5. Update any related styles and ensure the UI remains consistent with the overall design.\n6. Refactor any code that directly interacts with the previous drag-and-drop implementation to work with `react-gridstack`.",
@@ -1044,7 +1044,7 @@
         "updatedAt": "2025-11-21T15:23:32.292Z"
       },
       {
-        "id": "33",
+        "id": 33,
         "title": "Add Skeleton Loading to AIRiskAssessment Component",
         "description": "Implement skeleton loading in the AIRiskAssessment component to enhance user experience during data loading.",
         "status": "done",
@@ -1058,7 +1058,7 @@
         "updatedAt": "2025-11-21T14:55:21.373Z"
       },
       {
-        "id": "34",
+        "id": 34,
         "title": "Refactor Widgets for Consistency in CRM Management",
         "description": "Refactor all widgets in app/(features)/crm/managements/_components/widgets to follow the same pattern as RiskAlerts.tsx and TodayRevenueWidget.tsx for consistency.",
         "status": "done",
@@ -1073,7 +1073,7 @@
         "updatedAt": "2025-11-21T15:02:59.707Z"
       },
       {
-        "id": "35",
+        "id": 35,
         "title": "Tách Các Widget Phức Tạp Thành Module Kéo Thả Độc Lập",
         "description": "Tách các widget lớn như AIRiskAssessmentClient, OrdersChart, TodayProfitWidget, MonthProfitWidget thành các module độc lập có thể kéo thả.",
         "details": "1. Phân tích các widget hiện tại để xác định các phần có thể tách rời.\n2. Thiết kế lại mỗi widget thành các module nhỏ hơn, mỗi module chỉ tập trung vào một chức năng cụ thể.\n3. Sử dụng thư viện React DnD để tạo các component module độc lập có thể kéo thả.\n4. Đảm bảo mỗi module có thể được thêm, xóa, và sắp xếp lại trên dashboard.\n5. Cập nhật tài liệu hướng dẫn sử dụng và bảo trì cho các module mới.",
@@ -1153,7 +1153,7 @@
         "updatedAt": "2025-11-21T15:41:42.922Z"
       },
       {
-        "id": "36",
+        "id": 36,
         "title": "Xây dựng cơ chế cache cho AI Generate với Redis hoặc in-memory cache",
         "description": "Thiết kế và triển khai lớp cache cho các hàm AI Generate trong infrastructure/ai/risk-assessment-service.ts và app/(features)/crm/managements/ai-actions.ts nhằm giảm số lần gọi AI API, sử dụng Redis hoặc in-memory cache với TTL phù hợp.",
         "details": "1. Phân tích các điểm gọi AI API trong hai file chỉ định để xác định các hàm cần cache.\n2. Thiết kế interface cache chung (ví dụ: ICacheService) với các phương thức get/set/delete, hỗ trợ generic type và TTL (time-to-live).\n3. Cài đặt Redis client (node-redis) và xây dựng lớp RedisCacheService tuân thủ interface trên. Đảm bảo kết nối, xử lý lỗi và đóng kết nối đúng chuẩn[2][3][8].\n4. Xây dựng lớp InMemoryCacheService fallback khi Redis không khả dụng, sử dụng Map hoặc LRU cache, có TTL tự động xóa key hết hạn.\n5. Tích hợp cache vào các hàm AI Generate: kiểm tra cache trước khi gọi API, nếu có dữ liệu hợp lệ thì trả về, nếu không thì gọi API, lưu kết quả vào cache với TTL cấu hình (ví dụ: 5-30 phút tùy use case)[1][2][3].\n6. Đảm bảo type safety với TypeScript, log cache hit/miss để theo dõi hiệu quả cache.\n7. Cấu hình TTL động nếu cần (ví dụ: cho phép truyền TTL qua tham số hoặc config).\n8. Viết tài liệu hướng dẫn sử dụng, cấu hình và mở rộng cache layer.\nLưu ý: Xử lý cache invalidation khi dữ liệu nguồn thay đổi, đảm bảo không trả về dữ liệu cũ nếu có cập nhật quan trọng. Ưu tiên Redis cho môi trường production, in-memory cho local/dev hoặc khi Redis lỗi.",
@@ -1231,7 +1231,7 @@
         "updatedAt": "2025-11-22T02:04:21.766Z"
       },
       {
-        "id": "37",
+        "id": 37,
         "title": "Tách và Chuẩn hóa Các Widget Phức Tạp Thành Module Độc Lập, Tối Ưu Chia Sẻ Props và Hiệu Suất",
         "description": "Tách các widget phức tạp như AIRiskAssessmentClient, OrdersChart, TodayProfitWidget, MonthProfitWidget thành các module nhỏ hơn, đảm bảo chia sẻ logic, props và tối ưu hiệu suất render.",
         "details": "1. Phân tích AIRiskAssessmentClient để tách thành 3 widget độc lập: AIRiskOverallWidget, AIRiskIdentifiedWidget, AIRiskOpportunitiesWidget. Refactor để chỉ gọi generateRiskAssessment() một lần duy nhất ở cấp cha, truyền props kết quả xuống các widget con qua context hoặc props nhằm tránh lặp lại logic và tối ưu hiệu suất.\n2. Tách OrdersChart thành hai widget riêng biệt: OrderStatusWidget và PaymentStatusWidget. Đảm bảo mỗi widget chỉ nhận dữ liệu liên quan, sử dụng memoization (React.memo, useMemo) để tránh render lại không cần thiết.\n3. Tách TodayProfitWidget và MonthProfitWidget thành bốn widget: RevenueWidget, CostWidget, GrossProfitWidget, NetProfitWidget. Chuẩn hóa interface props, đảm bảo mỗi widget chỉ nhận đúng dữ liệu cần thiết, đồng thời sử dụng các pattern như compound component hoặc context nếu cần chia sẻ logic chung.\n4. Đảm bảo tất cả widget mới tuân thủ chuẩn hóa giao diện, style và khả năng kéo thả (drag & drop) theo các module đã có (sử dụng React DnD hoặc TileLayout). Cập nhật lại tài liệu hướng dẫn sử dụng và bảo trì cho từng widget mới.\n5. Áp dụng best practice về phân tách component: mỗi widget là một file riêng, có test riêng, không phụ thuộc trực tiếp vào widget khác, chỉ nhận dữ liệu qua props hoặc context.",
@@ -1312,7 +1312,7 @@
         "updatedAt": "2025-11-22T05:50:15.246Z"
       },
       {
-        "id": "38",
+        "id": 38,
         "title": "Bổ sung tính năng quản lý widget Dashboard qua Copilot Agent với AG-UI integration",
         "description": "Phát triển endpoint agent và tích hợp giao diện AG-UI cho phép Copilot thêm/xóa widget trên Dashboard thông qua chat, đồng bộ trạng thái UI theo thời gian thực.",
         "details": "1. Xây dựng endpoint agent mới theo mẫu route.ts của AG-UI, sử dụng FastAPI hoặc framework tương tự để nhận và xử lý các lệnh từ Copilot (thêm/xóa widget, cập nhật trạng thái dashboard). Endpoint này cần tuân thủ chuẩn sự kiện AG-UI (ví dụ: STATE_DELTA, TOOL_CALL_START, TEXT_MESSAGE_CONTENT) để đồng bộ hóa trạng thái UI với backend.\n2. Tích hợp CopilotKit hoặc các React hooks/component AG-UI vào dashboard, tham khảo shared_state/page.tsx để đồng bộ hóa trạng thái widget giữa agent và frontend. Đảm bảo các sự kiện từ agent (thêm/xóa widget) được phản ánh ngay lập tức trên giao diện người dùng.\n3. Phát triển logic agent (tham khảo agent.py) để nhận lệnh tự nhiên từ chat (ví dụ: \"thêm widget doanh thu\", \"xóa biểu đồ đơn hàng\") và chuyển đổi thành hành động cập nhật dashboard. Sử dụng intent recognition để phân tích lệnh, cập nhật state, và gửi sự kiện AG-UI phù hợp về frontend.\n4. Đảm bảo đồng bộ hai chiều: khi người dùng thao tác trực tiếp trên dashboard (kéo thả, thêm/xóa widget), trạng thái cũng được cập nhật về agent để duy trì nhất quán.\n5. Áp dụng best practice về bảo mật endpoint, kiểm soát quyền truy cập, và kiểm thử với nhiều loại lệnh chat khác nhau. Tối ưu hiệu suất truyền sự kiện bằng STATE_DELTA để chỉ gửi phần thay đổi.\n6. Cập nhật tài liệu hướng dẫn sử dụng tính năng mới cho cả người dùng cuối và lập trình viên.",
@@ -1396,7 +1396,7 @@
         "updatedAt": "2025-11-22T06:05:22.277Z"
       },
       {
-        "id": "39",
+        "id": 39,
         "title": "Gộp và refactor script seed dữ liệu khách hàng và đơn hàng thành một script tổng hợp, đảm bảo tính toàn vẹn và idempotency",
         "description": "Gộp hai script seed-customers.ts và seed-orders.ts thành một script duy nhất, đảm bảo đơn hàng liên kết đúng với khách hàng và sản phẩm, xử lý lỗi, logging, và idempotency.",
         "details": "1. Tạo một script mới (ví dụ: scripts/seed-crm-data.ts) sử dụng TypeScript, gộp logic từ seed-customers.ts và seed-orders.ts.\n2. Đọc dữ liệu sản phẩm từ scripts/seeds/crm_db.products.json, tạo khách hàng (nếu chưa tồn tại) và tạo đơn hàng liên kết đúng với khách hàng và sản phẩm.\n3. Đảm bảo tính toàn vẹn tham chiếu: mỗi đơn hàng phải liên kết với một khách hàng đã tạo và sản phẩm hợp lệ. Sử dụng các khoá ngoại hoặc kiểm tra tồn tại trước khi tạo bản ghi mới.\n4. Áp dụng best practices TypeScript: sử dụng type/interface rõ ràng cho dữ liệu khách hàng, sản phẩm, đơn hàng; tránh dùng any; chia nhỏ hàm xử lý thành các helper function riêng biệt để dễ bảo trì và kiểm thử[1][4][7].\n5. Thêm error handling: sử dụng try/catch cho các thao tác I/O, ghi log chi tiết khi có lỗi hoặc khi tạo mới dữ liệu. Sử dụng thư viện logging như winston hoặc console với format rõ ràng.\n6. Đảm bảo script idempotent: kiểm tra dữ liệu trước khi tạo mới (ví dụ: kiểm tra email khách hàng, mã đơn hàng, mã sản phẩm), chỉ tạo mới khi chưa tồn tại. Có thể dùng upsert hoặc kiểm tra tồn tại trước khi insert.\n7. Tách các hàm seed thành module riêng (seedCustomers, seedOrders, seedProducts) để dễ mở rộng và kiểm thử[1][3][7].\n8. Viết unit test cho các hàm seed, kiểm tra tính đúng đắn của liên kết giữa khách hàng, đơn hàng, sản phẩm. Sử dụng Jest hoặc tương tự để kiểm thử tự động[3].\n9. Cập nhật tài liệu hướng dẫn sử dụng script, mô tả cách chạy, các tham số cấu hình (nếu có).",
@@ -1470,7 +1470,7 @@
         "updatedAt": "2025-11-22T06:14:01.910Z"
       },
       {
-        "id": "40",
+        "id": 40,
         "title": "Sửa lỗi đồng bộ hóa UI trong CRMCopilot.tsx",
         "description": "Khắc phục lỗi UI không tự động cập nhật sau khi thay đổi Agent trong CRMCopilot.tsx.",
         "details": "1. Xác định vị trí trong CRMCopilot.tsx nơi xảy ra lỗi đồng bộ hóa giữa localStorage và UI.\n2. Tạo một custom hook sử dụng useEffect để lắng nghe sự thay đổi trong localStorage.\n3. Khi phát hiện thay đổi, cập nhật state của component để UI tự động làm mới mà không cần tải lại trang.\n4. Đảm bảo rằng hook này được tối ưu hóa để tránh render không cần thiết.\n5. Kiểm tra và cập nhật tài liệu nếu cần thiết để đảm bảo các thành viên khác trong nhóm hiểu rõ cách sử dụng hook mới này.",
@@ -1485,7 +1485,7 @@
         "updatedAt": "2025-11-22T09:25:24.237Z"
       },
       {
-        "id": "41",
+        "id": 41,
         "title": "Thêm tính năng tùy chỉnh widget trong CRMCopilot.tsx",
         "description": "Cho phép người dùng thay đổi kích thước, di chuyển và sắp xếp lại các nhóm widget trong CRMCopilot.tsx.",
         "details": "1. Phân tích cấu trúc hiện tại của CRMCopilot.tsx để xác định cách tích hợp các tính năng tùy chỉnh.\n2. Sử dụng thư viện React DnD để triển khai chức năng kéo thả cho việc di chuyển và sắp xếp lại widget.\n3. Thêm khả năng thay đổi kích thước widget bằng cách sử dụng thư viện như 'react-resizable'.\n4. Cập nhật giao diện người dùng để hỗ trợ các thao tác tùy chỉnh, đảm bảo tính trực quan và dễ sử dụng.\n5. Đảm bảo rằng các thay đổi được lưu trữ và có thể khôi phục khi người dùng tải lại trang.",
@@ -1501,7 +1501,7 @@
         "updatedAt": "2025-11-22T09:31:37.430Z"
       },
       {
-        "id": "42",
+        "id": 42,
         "title": "Cập nhật TodayOrdersWidget.tsx, TodayProfitWidget.tsx, TodayRevenueWidget.tsx sử dụng dữ liệu 7 ngày",
         "description": "Chuyển đổi các widget để sử dụng dữ liệu 7 ngày thay vì chỉ dữ liệu của ngày hôm nay.",
         "details": "1. Mở các file `TodayOrdersWidget.tsx`, `TodayProfitWidget.tsx`, và `TodayRevenueWidget.tsx`.\n2. Thay đổi logic lấy dữ liệu từ chỉ ngày hôm nay sang dữ liệu 7 ngày gần nhất. Sử dụng hàm API hoặc service hiện có để lấy dữ liệu 7 ngày.\n3. Đảm bảo rằng các widget vẫn hiển thị đúng định dạng và thông tin khi sử dụng dữ liệu 7 ngày.\n4. Cập nhật bất kỳ logic tính toán nào trong các widget để phản ánh dữ liệu 7 ngày (ví dụ: tính tổng, trung bình, v.v.).\n5. Kiểm tra và tối ưu hóa hiệu suất nếu cần thiết, đặc biệt khi xử lý lượng dữ liệu lớn hơn.",
@@ -1515,7 +1515,7 @@
         "updatedAt": "2025-11-22T09:28:50.278Z"
       },
       {
-        "id": "43",
+        "id": 43,
         "title": "Cập nhật MonthProfitWidget.tsx và MonthRevenueWidget.tsx sử dụng dữ liệu 30 ngày",
         "description": "Chuyển đổi các widget để sử dụng dữ liệu 30 ngày gần nhất thay vì dữ liệu hàng tháng.",
         "details": "1. Mở các file `MonthProfitWidget.tsx` và `MonthRevenueWidget.tsx`.\n2. Thay đổi logic lấy dữ liệu từ dữ liệu hàng tháng sang dữ liệu 30 ngày gần nhất. Sử dụng hàm API hoặc service hiện có để lấy dữ liệu 30 ngày.\n3. Đảm bảo rằng các widget vẫn hiển thị đúng định dạng và thông tin khi sử dụng dữ liệu 30 ngày.\n4. Cập nhật bất kỳ logic tính toán nào trong các widget để phản ánh dữ liệu 30 ngày (ví dụ: tính tổng, trung bình, v.v.).\n5. Kiểm tra và tối ưu hóa hiệu suất nếu cần thiết để đảm bảo các widget hoạt động mượt mà với dữ liệu mới.",
@@ -1529,7 +1529,7 @@
         "updatedAt": "2025-11-22T09:30:53.579Z"
       },
       {
-        "id": "44",
+        "id": 44,
         "title": "Thêm khả năng đọc dữ liệu trong CRMCopilot.tsx bằng useCopilotReadable",
         "description": "Thêm khả năng đọc dữ liệu từ widget trong CRMCopilot.tsx sử dụng useCopilotReadable.",
         "details": "1. Mở file `CRMCopilot.tsx` trong thư mục `app/(features)/crm/managements/_components/widgets`.\n2. Import hook `useCopilotReadable` từ thư viện tương ứng.\n3. Sử dụng `useCopilotReadable` để đọc dữ liệu từ các widget có trong thư mục.\n4. Tham khảo cách triển khai từ ví dụ trong `Dashboard.tsx` tại [CopilotKit GitHub](https://github.com/CopilotKit/CopilotKit/blob/main/examples/copilot-chat-with-your-data/components/Dashboard.tsx).\n5. Đảm bảo rằng dữ liệu được đọc và hiển thị đúng cách trong giao diện người dùng.",
@@ -1544,7 +1544,7 @@
         "updatedAt": "2025-11-22T09:31:32.613Z"
       },
       {
-        "id": "45",
+        "id": 45,
         "title": "Chuyển đổi useDashboardWidgets sang Zustand với localStorage",
         "description": "Chuyển đổi useDashboardWidgets từ React hook và localStorage sang Zustand với khả năng lưu trữ và khôi phục từ localStorage.",
         "details": "1. Tạo một store mới trong Zustand để quản lý trạng thái của dashboard widgets.\n2. Thiết lập khả năng khởi tạo từ localStorage khi ứng dụng tải.\n3. Thêm chức năng saveWidgets để lưu trạng thái hiện tại vào localStorage.\n4. Thêm chức năng reset layout để khôi phục trạng thái từ localStorage.\n5. Đảm bảo rằng không cần tham số defaultWidgets khi khởi tạo.\n6. Cập nhật các file liên quan: `CRMCopilot.tsx`, `useDashboardWidgets.ts`, và `CustomizableDashboardClient.tsx` để sử dụng Zustand store mới.",
@@ -1559,7 +1559,7 @@
         "updatedAt": "2025-11-22T13:48:04.514Z"
       },
       {
-        "id": "46",
+        "id": 46,
         "title": "Làm sạch và tái cấu trúc mã widget theo kiến trúc Clean/Onion",
         "description": "Loại bỏ mã dư thừa, tái cấu trúc mã widget theo nguyên tắc kiến trúc Clean/Onion, tổ chức lại các thành phần widget.",
         "details": "1. Phân tích mã hiện tại của các widget để xác định các phần mã dư thừa và không cần thiết. \n2. Áp dụng nguyên tắc kiến trúc Clean/Onion để tái cấu trúc mã, đảm bảo tách biệt rõ ràng giữa các lớp trình bày, logic và dữ liệu.\n3. Tổ chức lại các thành phần widget thành các module riêng biệt, đảm bảo mỗi module chỉ chịu trách nhiệm cho một chức năng cụ thể.\n4. Loại bỏ sự trùng lặp mã bằng cách tái sử dụng các component và hàm chung.\n5. Đảm bảo rằng mỗi lớp trong kiến trúc đều có trách nhiệm rõ ràng và không có sự phụ thuộc không cần thiết giữa các lớp.",
@@ -1575,7 +1575,7 @@
         "updatedAt": "2025-11-22T14:11:41.482Z"
       },
       {
-        "id": "47",
+        "id": 47,
         "title": "Cập nhật GridStackDashboard.tsx sử dụng @shared/ui/sidebar.tsx",
         "description": "Cập nhật GridStackDashboard.tsx để sử dụng sidebar dọc từ @shared/ui/sidebar.tsx và ẩn mặc định các widget trong nhóm. Thực hiện nhóm module có thể thu gọn với component sidebar. Đã hoàn thành việc thay thế và bổ sung các chức năng cần thiết.",
         "status": "done",
@@ -1591,7 +1591,7 @@
         "updatedAt": "2025-11-22T15:20:29.718Z"
       },
       {
-        "id": "48",
+        "id": 48,
         "title": "Xây dựng trang Quản lý Chi phí Vận hành với CRUD và các tab (Tổng quan, Nhập/Xuất, Danh mục)",
         "description": "Phát triển giao diện quản lý chi phí vận hành tại app/(features)/crm/managements/operational-costs/ với đầy đủ chức năng CRUD và các tab chuyên biệt.",
         "details": "1. Tạo thư mục và file trang tại 'app/(features)/crm/managements/operational-costs/'.\n2. Thiết kế giao diện sử dụng React, TypeScript và các thư viện UI hiện đại (ví dụ: shadcn/ui, Tailwind CSS) để đảm bảo tính nhất quán với hệ thống hiện tại.\n3. Tạo component chính với các tab: 'Tổng quan' (Summary), 'Nhập/Xuất' (Import/Export), 'Danh mục' (Category) sử dụng state quản lý tab hiện tại.\n4. Mỗi tab là một component riêng biệt, đảm bảo dễ bảo trì và mở rộng.\n5. Xây dựng chức năng CRUD cho từng tab:\n   - Tổng quan: Hiển thị danh sách chi phí, cho phép thêm/sửa/xóa chi phí.\n   - Nhập/Xuất: Tích hợp chức năng import/export dữ liệu (CSV, Excel), xác thực dữ liệu đầu vào, hiển thị tiến trình và kết quả.\n   - Danh mục: Quản lý các loại chi phí, cho phép thêm/sửa/xóa danh mục.\n6. Sử dụng server actions từ crm-actions.ts (task 16) để thực hiện các thao tác dữ liệu, đảm bảo đồng bộ với backend.\n7. Áp dụng best practices: quản lý state với hooks hoặc Zustand, xác thực dữ liệu đầu vào, xử lý lỗi và hiển thị thông báo cho người dùng.\n8. Tối ưu hiệu năng: sử dụng skeleton loading cho các bảng dữ liệu lớn, phân trang hoặc virtual scroll nếu cần.\n9. Đảm bảo khả năng mở rộng cho các chức năng nâng cao như lọc, tìm kiếm, thống kê chi phí.",
@@ -1664,7 +1664,7 @@
         "updatedAt": "2025-11-24T02:44:05.565Z"
       },
       {
-        "id": "49",
+        "id": 49,
         "title": "Xây dựng trang Quản lý Kho với CRUD và các tab (Tổng quan, Nhập/Xuất, Danh mục)",
         "description": "Phát triển trang quản lý kho tại app/(features)/crm/managements/inventory/ với đầy đủ chức năng CRUD và các tab chuyên biệt: Tổng quan, Nhập/Xuất, Danh mục.",
         "details": "1. Tạo thư mục và file trang tại 'app/(features)/crm/managements/inventory/'.\n2. Thiết kế giao diện sử dụng React, TypeScript và các thư viện UI hiện đại (ví dụ: shadcn/ui, Tailwind CSS) để đảm bảo tính nhất quán với hệ thống hiện tại.\n3. Xây dựng component chính với các tab: 'Tổng quan' (Summary), 'Nhập/Xuất' (Import/Export), 'Danh mục' (Category) sử dụng state quản lý tab hiện tại. Mỗi tab là một component riêng biệt để dễ bảo trì và mở rộng.\n4. Tích hợp chức năng CRUD (Create, Read, Update, Delete) cho từng tab, sử dụng server actions từ crm-actions.ts (task 16) để thao tác dữ liệu kho: tạo mới, xem, cập nhật, xóa sản phẩm, danh mục, và quản lý nhập/xuất kho[1][2][3].\n5. Đảm bảo các thao tác CRUD tuân thủ best practices RESTful (nếu gọi API), xử lý lỗi và hiển thị thông báo rõ ràng cho người dùng.\n6. Ở tab Nhập/Xuất, xây dựng chức năng import/export dữ liệu kho qua file CSV/XLSX, xác thực dữ liệu đầu vào, cung cấp file mẫu và xử lý lỗi nhập sai.\n7. Áp dụng phân quyền thao tác (ví dụ: chỉ admin mới được xóa/xuất kho), xác thực quyền người dùng trước khi thực hiện các thao tác nhạy cảm[5].\n8. Tối ưu trải nghiệm người dùng với loading skeleton, xác nhận khi xóa, và cập nhật UI theo thời gian thực sau mỗi thao tác CRUD.\n9. Viết code theo kiến trúc component-based, tách biệt logic và UI, dễ mở rộng cho các module quản lý khác.",
@@ -1737,7 +1737,7 @@
         "updatedAt": "2025-11-24T02:44:14.157Z"
       },
       {
-        "id": "50",
+        "id": 50,
         "title": "Implement ReceiveMessageUseCase",
         "description": "Handle inbound messages from APIs/webhooks and store them in the repository.",
         "details": "Create the ReceiveMessageUseCase class to process incoming messages from the webhook routes. Convert the payload to the Message domain model and save it using the MessageRepository.",
@@ -1813,7 +1813,7 @@
         "updatedAt": "2025-11-26T02:33:23.667Z"
       },
       {
-        "id": "51",
+        "id": 51,
         "title": "Setup Webhook Routes",
         "description": "Create webhook routes for Facebook, Zalo, and TikTok to receive messages.",
         "details": "Define routes in /app/api/webhooks for each platform. Ensure each route receives payloads, converts them to the Message domain, and calls ReceiveMessageUseCase.",
@@ -1889,7 +1889,7 @@
         "updatedAt": "2025-11-26T02:38:12.925Z"
       },
       {
-        "id": "52",
+        "id": 52,
         "title": "Develop MessagingGateway Implementations",
         "description": "Implement platform-specific gateways for sending messages and fetching history.",
         "details": "Create FacebookGateway, ZaloGateway, and TikTokGateway classes implementing MessagingGateway. Implement sendMessage and fetchHistory methods for each platform.",
@@ -1967,7 +1967,7 @@
         "updatedAt": "2025-11-26T03:14:02.596Z"
       },
       {
-        "id": "53",
+        "id": 53,
         "title": "Implement MessagingGatewayFactory",
         "description": "Create a factory to select the correct messaging gateway based on the platform.",
         "details": "Develop MessagingGatewayFactory with a static create method that returns the appropriate gateway instance based on the platform parameter.",
@@ -1981,7 +1981,7 @@
         "updatedAt": "2025-11-26T03:19:56.139Z"
       },
       {
-        "id": "54",
+        "id": 54,
         "title": "Implement SendMessageUseCase",
         "description": "Allow agents to send messages from the CRM to the original platform.",
         "details": "Develop SendMessageUseCase to use MessagingGatewayFactory to send messages and save them in the MessageRepository.",
@@ -2061,7 +2061,7 @@
         "updatedAt": "2025-11-26T03:24:37.557Z"
       },
       {
-        "id": "55",
+        "id": 55,
         "title": "Design UI for Conversation Management",
         "description": "Create the UI components for managing conversations in the CRM.",
         "details": "Develop ConversationSidebar, MessageThread, MessageInput, and CustomerProfilePanel components using Next.js for the /crm/customers/message route.",
@@ -2140,7 +2140,7 @@
         "updatedAt": "2025-11-26T03:33:45.829Z"
       },
       {
-        "id": "56",
+        "id": 56,
         "title": "Integrate UI with Backend",
         "description": "Connect the UI components to the backend to display and manage conversations.",
         "details": "Use API calls to load conversation and message history into the UI components. Enable real-time updates and message sending.",
@@ -2220,7 +2220,7 @@
         "updatedAt": "2025-11-26T03:45:58.321Z"
       },
       {
-        "id": "57",
+        "id": 57,
         "title": "Implement SyncMessagesUseCase",
         "description": "Synchronize message history when reconnecting to a platform. The implementation is complete and includes fetching message history, filtering duplicates, validating conversation existence, and returning sync statistics.",
         "status": "done",
@@ -2245,7 +2245,7 @@
         "updatedAt": "2025-11-26T03:52:50.342Z"
       },
       {
-        "id": "58",
+        "id": 58,
         "title": "Develop AssignConversationUseCase",
         "description": "Enable assigning conversations to specific agents. The use case has been implemented to handle assignment and reassignment of conversations, ensuring that closed conversations cannot be assigned. It includes validation for conversation ID and agent ID, and provides descriptive error messages for all failure cases.",
         "status": "done",
@@ -2257,7 +2257,7 @@
         "updatedAt": "2025-11-26T03:48:38.920Z"
       },
       {
-        "id": "59",
+        "id": 59,
         "title": "Enhance Domain Models",
         "description": "Extend existing domain models to support new features, including enhancements to the Conversation and Message models.",
         "status": "done",
@@ -2269,7 +2269,7 @@
         "updatedAt": "2025-11-26T03:55:04.656Z"
       },
       {
-        "id": "60",
+        "id": 60,
         "title": "Implement TikTok OAuth Start Endpoint",
         "description": "Create an endpoint to initiate TikTok OAuth flow.",
         "details": "Implement the `/api/auth/tiktok/start` endpoint to redirect users to TikTok's authorization URL using the client key and redirect URI.",
@@ -2307,7 +2307,7 @@
         "updatedAt": "2025-11-26T14:36:24.003Z"
       },
       {
-        "id": "61",
+        "id": 61,
         "title": "Handle TikTok OAuth Callback",
         "description": "Create an endpoint to handle TikTok OAuth callback and exchange code for tokens.",
         "details": "Implement the `/api/auth/tiktok/callback` endpoint to receive the authorization code, exchange it for access and refresh tokens, and store them in MongoDB using the `SocialAuthRepository`.",
@@ -2359,7 +2359,7 @@
         "updatedAt": "2025-11-26T14:36:28.648Z"
       },
       {
-        "id": "62",
+        "id": 62,
         "title": "Develop Token Storage Mechanism",
         "description": "Store TikTok tokens securely in MongoDB.",
         "details": "Use the `SocialAuthRepository` to save `access_token`, `refresh_token`, `open_id`, and `expires_at` associated with the CRM user ID.",
@@ -2401,7 +2401,7 @@
         "updatedAt": "2025-11-26T14:33:31.104Z"
       },
       {
-        "id": "63",
+        "id": 63,
         "title": "Implement Video Publishing Feature",
         "description": "Enable video publishing to TikTok from CRM.",
         "details": "Develop the backend logic to allow users to select a video, hashtags, and title, then use `TikTokIntegration.publish()` to upload and publish the video.",
@@ -2452,7 +2452,7 @@
         "expansionPrompt": "Chia nhỏ thành các bước: (1) Xử lý upload video từ người dùng, (2) Gọi API TikTok để đăng video với thông tin tiêu đề, hashtag, (3) Xử lý phản hồi và lưu permalink, video ID vào CRM."
       },
       {
-        "id": "64",
+        "id": 64,
         "title": "Fetch TikTok Video Analytics",
         "description": "Retrieve engagement metrics for published TikTok videos.",
         "details": "Implement API calls to `/video/query/` to fetch likes, views, shares, and comments for videos and update the CRM dashboard.",
@@ -2491,7 +2491,7 @@
         "expansionPrompt": "Chia nhỏ thành các bước: (1) Gọi API TikTok để lấy dữ liệu phân tích video, (2) Cập nhật dữ liệu vào dashboard CRM."
       },
       {
-        "id": "65",
+        "id": 65,
         "title": "Implement Token Refresh Mechanism",
         "description": "Automatically refresh TikTok access tokens when expired.",
         "details": "Develop a mechanism using BullMQ worker or API trigger to refresh tokens when they expire, updating the stored tokens in MongoDB.",
@@ -2543,7 +2543,7 @@
         "updatedAt": "2025-11-26T14:50:50.625Z"
       },
       {
-        "id": "66",
+        "id": 66,
         "title": "Create Disconnect TikTok Feature",
         "description": "Allow users to disconnect their TikTok account from CRM.",
         "details": "Implement functionality to delete TikTok tokens from MongoDB and update the UI to reflect the disconnected state.",
@@ -2560,7 +2560,7 @@
         "updatedAt": "2025-11-26T14:36:32.982Z"
       },
       {
-        "id": "67",
+        "id": 67,
         "title": "UI Integration for TikTok Connection",
         "description": "Develop the UI for connecting and managing TikTok integration.",
         "details": "Create a page in the CRM for users to connect, view connection status, and manage their TikTok account integration.",
@@ -2614,7 +2614,7 @@
         "updatedAt": "2025-11-26T14:38:25.126Z"
       },
       {
-        "id": "68",
+        "id": 68,
         "title": "Role-Based Access Control for TikTok Features",
         "description": "Implement role-based permissions for TikTok features.",
         "details": "Ensure only users with the appropriate roles (Admin, Social Marketing) can access TikTok connection, video upload, and analytics features.",
@@ -2654,7 +2654,7 @@
         "updatedAt": "2025-11-26T14:39:06.262Z"
       },
       {
-        "id": "69",
+        "id": 69,
         "title": "Environment Configuration for TikTok Integration",
         "description": "Set up environment variables for TikTok API integration.",
         "details": "Configure `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`, and `TIKTOK_REDIRECT_URI` in the environment to enable TikTok API interactions.",
@@ -2669,7 +2669,7 @@
         "updatedAt": "2025-11-26T14:31:24.260Z"
       },
       {
-        "id": "70",
+        "id": 70,
         "title": "Implement Facebook Login Flow",
         "description": "Implement the user login flow to obtain a long-lived user access token from Facebook.",
         "details": "Use Facebook OAuth to allow users to log in and obtain a long-lived user access token. Implement the exchangeCodeForToken function to handle token exchange and retrieval of user pages.",
@@ -2681,7 +2681,7 @@
         "updatedAt": "2025-11-30T15:00:21.134Z"
       },
       {
-        "id": "71",
+        "id": 71,
         "title": "Fetch User Pages",
         "description": "Fetch the list of pages associated with the user using the user access token.",
         "details": "Call the Facebook Graph API endpoint /me/accounts with the user access token to retrieve the list of pages, page access tokens, and permissions.",
@@ -2694,7 +2694,7 @@
         "subtasks": []
       },
       {
-        "id": "72",
+        "id": 72,
         "title": "Redirect to Page Selection UI",
         "description": "Redirect users to the CRM interface to select a page from the list of fetched pages.",
         "details": "Implement a redirect to /crm/social/select-page with the user token and pages as query parameters.",
@@ -2707,7 +2707,7 @@
         "subtasks": []
       },
       {
-        "id": "73",
+        "id": 73,
         "title": "Create Page Selection API",
         "description": "Develop an API endpoint to handle user page selection and subscribe to webhook messages.",
         "details": "Create a POST endpoint /api/auth/facebook/select-page to receive page_id, page_name, and page_access_token. Subscribe to webhook messages for the selected page.",
@@ -2720,7 +2720,7 @@
         "subtasks": []
       },
       {
-        "id": "74",
+        "id": 74,
         "title": "Subscribe to Webhook Messages",
         "description": "Subscribe the selected page to receive webhook messages for specific events.",
         "details": "Use the Facebook Graph API to subscribe the selected page to messages and messaging_postbacks using the page access token.",
@@ -2733,7 +2733,7 @@
         "subtasks": []
       },
       {
-        "id": "75",
+        "id": 75,
         "title": "Save Page Token to Database",
         "description": "Store the selected page's access token and details in the database.",
         "details": "Implement database logic to save the page_id, page_name, and page_access_token using a use case pattern.",
@@ -2746,7 +2746,7 @@
         "subtasks": []
       },
       {
-        "id": "76",
+        "id": 76,
         "title": "Refactor Facebook Callback",
         "description": "Refactor the Facebook callback to allow user page selection instead of auto-selecting the first page.",
         "status": "done",
@@ -2760,7 +2760,7 @@
         "updatedAt": "2025-11-30T12:10:31.404Z"
       },
       {
-        "id": "77",
+        "id": 77,
         "title": "Implement Error Handling",
         "description": "Add comprehensive error handling for all API interactions and user flows.",
         "details": "Implement try-catch blocks and error responses for all API calls and user interactions to handle failures gracefully.",
@@ -2775,7 +2775,7 @@
         "subtasks": []
       },
       {
-        "id": "78",
+        "id": 78,
         "title": "UI Integration for Page Selection",
         "description": "Integrate the page selection UI to display pages and handle user selection.",
         "details": "Develop the frontend interface to display the list of pages and allow users to select one for further processing.",
@@ -2788,7 +2788,7 @@
         "subtasks": []
       },
       {
-        "id": "79",
+        "id": 79,
         "title": "End-to-End Testing",
         "description": "Conduct end-to-end testing of the entire Facebook integration flow.",
         "details": "Perform comprehensive testing from user login to page selection, webhook subscription, and database storage to ensure all components work together seamlessly.",
@@ -2809,7 +2809,7 @@
         "subtasks": []
       },
       {
-        "id": "80",
+        "id": 80,
         "title": "Update Conversation Domain",
         "description": "Enhance the Conversation domain to include new fields and update existing ones.",
         "details": "Add fields such as `channelId`, `contactId`, `agentId`, `assignedGroup`, `unreadCount`, `isBotActive`, `lastIncomingMessageAt`, `lastOutgoingMessageAt`. Update `assignedTo` to `agentId`.",
@@ -2821,7 +2821,7 @@
         "updatedAt": "2025-11-30T15:00:45.454Z"
       },
       {
-        "id": "81",
+        "id": 81,
         "title": "Update Message Domain",
         "description": "Enhance the Message domain to include new fields and update existing ones.",
         "details": "Add fields such as `channelId`, `senderType`, `senderPlatformId`, `messageType`. Ensure `conversationId` is optional.",
@@ -2833,7 +2833,7 @@
         "updatedAt": "2025-11-30T15:01:07.633Z"
       },
       {
-        "id": "82",
+        "id": 82,
         "title": "Implement Webhook Handler",
         "description": "Develop a function to handle incoming webhooks and process messages, including support for channelId, delivery/read/postback events, and a fire-and-forget pattern for platforms like Facebook, TikTok, and Zalo.",
         "status": "done",
@@ -2878,7 +2878,7 @@
         ]
       },
       {
-        "id": "83",
+        "id": 83,
         "title": "Develop ReceiveMessageUseCase",
         "description": "Implement the use case for receiving messages according to the new domain model with enhanced multi-channel support.",
         "status": "done",
@@ -2893,7 +2893,7 @@
         "subtasks": []
       },
       {
-        "id": "84",
+        "id": 84,
         "title": "Enhance SendMessageUseCase",
         "description": "Update the SendMessageUseCase to align with the new domain model and add necessary features.",
         "details": "Modify `SendMessageUseCase` to remove unnecessary fields, handle platformMessageId, and manage delivery status.",
@@ -2908,7 +2908,7 @@
         "updatedAt": "2025-11-30T14:57:54.942Z"
       },
       {
-        "id": "85",
+        "id": 85,
         "title": "Implement FacebookMessagingAdapter",
         "description": "Develop an adapter for sending messages via Facebook with enhanced features.",
         "details": "Create `FacebookMessagingAdapter` to send messages, handle attachments, and manage typing indicators and read receipts.",
@@ -2921,7 +2921,7 @@
         "subtasks": []
       },
       {
-        "id": "86",
+        "id": 86,
         "title": "Optimize Webhook Processing",
         "description": "Improve webhook processing to handle various event types and ensure idempotency.",
         "details": "Enhance webhook processing to handle message, delivery, read, and postback events. Implement idempotency checks.",
@@ -2935,7 +2935,7 @@
         "subtasks": []
       },
       {
-        "id": "87",
+        "id": 87,
         "title": "Implement MessageSendResult Interface",
         "description": "Create an interface for handling message send results with detailed status.",
         "details": "Define `MessageSendResult` to include success status, platformMessageId, and error details.",
@@ -2948,7 +2948,7 @@
         "subtasks": []
       },
       {
-        "id": "88",
+        "id": 88,
         "title": "Refactor ProcessEntry Function",
         "description": "Refactor the processEntry function to handle different event types modularly.",
         "details": "Modify `processEntry` to delegate handling to specific functions for message, delivery, read, and postback events.",
@@ -2961,7 +2961,7 @@
         "subtasks": []
       },
       {
-        "id": "89",
+        "id": 89,
         "title": "Enhance Logging and Error Handling",
         "description": "Improve logging and error handling across the messaging system.",
         "details": "Implement detailed logging and error handling to track message processing and API interactions.",
@@ -2978,7 +2978,7 @@
         "subtasks": []
       },
       {
-        "id": "90",
+        "id": 90,
         "title": "Create SSE Stream Endpoint",
         "description": "Develop the SSE stream endpoint to handle real-time updates.",
         "details": "Implement the `/api/events/stream` endpoint using Express.js. Use WritableStream to maintain active client connections. Ensure the endpoint supports multiple concurrent connections.",
@@ -2990,7 +2990,7 @@
         "updatedAt": "2025-12-01T03:36:38.157Z"
       },
       {
-        "id": "91",
+        "id": 91,
         "title": "Implement Client Connection Management",
         "description": "Manage client connections for the SSE stream.",
         "details": "Track active connections in memory. Implement connection cleanup on client disconnect. Ensure connections are closed gracefully.",
@@ -3004,7 +3004,7 @@
         "updatedAt": "2025-12-01T03:37:05.731Z"
       },
       {
-        "id": "92",
+        "id": 92,
         "title": "Create Broadcast Helper Function",
         "description": "Develop a helper function to broadcast events to clients.",
         "details": "Create a global `broadcastEvent(event, data)` function. Format events using SSE format and iterate through all connected clients to send events.",
@@ -3018,7 +3018,7 @@
         "updatedAt": "2025-12-01T03:37:28.418Z"
       },
       {
-        "id": "93",
+        "id": 93,
         "title": "Add Keep-Alive Ping Mechanism",
         "description": "Implement keep-alive pings to maintain client connections.",
         "details": "Send a ping message every 15 seconds to each connected client to keep the connection alive. Use `setInterval` for periodic pings.",
@@ -3032,7 +3032,7 @@
         "updatedAt": "2025-12-01T03:58:54.832Z"
       },
       {
-        "id": "94",
+        "id": 94,
         "title": "Integrate SSE Events in Webhook Handlers",
         "description": "Emit SSE events from webhook handlers for various platforms.",
         "details": "Modify Facebook, Zalo, and TikTok webhook handlers to emit `new_message` and `new_conversation` events using the `broadcastEvent` function.",
@@ -3046,7 +3046,7 @@
         "updatedAt": "2025-12-01T03:59:00.891Z"
       },
       {
-        "id": "95",
+        "id": 95,
         "title": "Integrate SSE Events in Server Actions",
         "description": "Emit SSE events from server actions for messages and customers.",
         "details": "Emit `message_sent`, `customer_created`, `customer_updated`, `customer_deleted`, and `conversation_updated` events from respective server actions.",
@@ -3060,7 +3060,7 @@
         "updatedAt": "2025-12-01T03:59:06.019Z"
       },
       {
-        "id": "96",
+        "id": 96,
         "title": "Create SSE Connection Hook",
         "description": "Develop a React hook for managing SSE connections.",
         "details": "Create a `useSSEConnection` hook to establish and manage an EventSource connection to `/api/events/stream`. Handle reconnection logic and cleanup on component unmount.",
@@ -3072,7 +3072,7 @@
         "updatedAt": "2025-12-01T03:39:19.540Z"
       },
       {
-        "id": "97",
+        "id": 97,
         "title": "Update Message Management Client",
         "description": "Replace polling with SSE for message updates.",
         "details": "Modify the MessageManagementClient to use the `useSSEConnection` hook. Handle real-time updates for messages and conversations.",
@@ -3086,7 +3086,7 @@
         "updatedAt": "2025-12-01T04:01:11.767Z"
       },
       {
-        "id": "98",
+        "id": 98,
         "title": "Update Customer Management",
         "description": "Implement SSE for real-time customer updates.",
         "details": "Update the customer management component to use SSE for real-time updates. Remove the need for manual refreshes.",
@@ -3099,7 +3099,7 @@
         "subtasks": []
       },
       {
-        "id": "99",
+        "id": 99,
         "title": "Implement Error Handling & Optimization",
         "description": "Enhance error handling and optimize SSE connections.",
         "details": "Implement reconnection logic with exponential backoff. Handle SSE connection errors gracefully and add a connection status indicator in the UI. Optimize event filtering to send only relevant events to each client.",
@@ -3116,7 +3116,7 @@
         "updatedAt": "2025-12-01T04:02:00.463Z"
       },
       {
-        "id": "100",
+        "id": 100,
         "title": "Extend Database Schema for Platform Configuration",
         "description": "Update the database schema to support platform-specific configurations.",
         "details": "Modify the SocialAuth domain entity to include optional fields for platform-specific configurations. Ensure backward compatibility. Implement necessary methods in SocialAuthService and SocialAuthRepository to handle these configurations.",
@@ -3187,7 +3187,7 @@
         "updatedAt": "2025-12-01T11:51:27.437Z"
       },
       {
-        "id": "101",
+        "id": 101,
         "title": "Create Platform Configuration API",
         "description": "Develop an API endpoint to save platform configurations.",
         "details": "Create a POST endpoint at /api/social-auth/config/route.ts to handle platform configuration updates. Implement validation for platform-specific fields. Use the UpdatePlatformConfigUseCase for business logic.",
@@ -3201,7 +3201,7 @@
         "updatedAt": "2025-12-01T11:51:42.478Z"
       },
       {
-        "id": "102",
+        "id": 102,
         "title": "Build Configuration Dialog UI",
         "description": "Develop the UI component for the configuration dialog with tabs for settings and webhook guide.",
         "details": "Create a ConfigurationDialog component with two tabs: Platform Settings and Webhook Setup. Implement dynamic forms for different platforms using PlatformSettingsForm and WebhookGuidePanel components.",
@@ -3215,7 +3215,7 @@
         "updatedAt": "2025-12-01T11:51:48.490Z"
       },
       {
-        "id": "103",
+        "id": 103,
         "title": "Integrate Dialog into Connection Flow",
         "description": "Integrate the configuration dialog into the existing social connection flow.",
         "details": "Update SocialConnectionsManager.tsx to detect successful OAuth callbacks and automatically display the configuration dialog. Manage dialog state and handle form submissions.",
@@ -3229,7 +3229,7 @@
         "updatedAt": "2025-12-01T11:51:54.305Z"
       },
       {
-        "id": "104",
+        "id": 104,
         "title": "Add Manual Configuration Trigger",
         "description": "Implement a manual trigger to reopen the configuration dialog for existing connections.",
         "details": "Add a 'Settings' button to connected platforms that allows users to reopen the configuration dialog. Pre-fill the dialog with existing configuration values.",
@@ -3242,7 +3242,7 @@
         "subtasks": []
       },
       {
-        "id": "105",
+        "id": 105,
         "title": "Test and Document Platform Configurations",
         "description": "Conduct thorough testing and update documentation for the new configuration flow.",
         "details": "Test the configuration flow for all supported platforms (Zalo, TikTok, Facebook). Update user documentation to reflect the new configuration process.",
@@ -3255,7 +3255,7 @@
         "subtasks": []
       },
       {
-        "id": "106",
+        "id": 106,
         "title": "Deploy Backend Changes",
         "description": "Deploy the backend changes including API routes and use cases.",
         "details": "Deploy the updated backend components to handle platform configuration updates. Ensure the database migration is executed smoothly.",
@@ -3268,7 +3268,7 @@
         "subtasks": []
       },
       {
-        "id": "107",
+        "id": 107,
         "title": "Deploy Frontend Changes",
         "description": "Deploy the frontend changes including UI components and integration.",
         "details": "Deploy the updated UI components and ensure they integrate seamlessly with the backend changes. Verify mobile responsiveness and error handling.",
@@ -3281,7 +3281,7 @@
         "subtasks": []
       },
       {
-        "id": "108",
+        "id": 108,
         "title": "Update User Documentation",
         "description": "Update the user documentation to include the new configuration flow and features.",
         "details": "Revise the user guide to include instructions for configuring social media webhooks and platform settings. Highlight new features and provide troubleshooting tips.",
@@ -3294,7 +3294,7 @@
         "subtasks": []
       },
       {
-        "id": "109",
+        "id": 109,
         "title": "Monitor and Gather Feedback",
         "description": "Monitor the deployment and gather user feedback to identify any issues or areas for improvement.",
         "details": "After deployment, monitor system performance and user feedback. Identify any issues and plan for future enhancements based on user needs.",
@@ -3307,7 +3307,7 @@
         "subtasks": []
       },
       {
-        "id": "110",
+        "id": 110,
         "title": "Create Settings Modal Component",
         "description": "Develop a modal component for settings in the CRM campaigns page.",
         "details": "Create a new component `PostContentSettings.tsx` with a form containing fields for product description, niche, style, and language. Implement state management to handle form inputs and save settings to localStorage or user preferences.",
@@ -3319,7 +3319,7 @@
         "updatedAt": "2025-12-03T08:05:51.108Z"
       },
       {
-        "id": "111",
+        "id": 111,
         "title": "Add Settings Button to Page",
         "description": "Add a settings button to the CRM campaigns page to open the settings modal.",
         "details": "In `page.tsx`, add a settings icon button that triggers the `PostContentSettings` modal. Ensure the button is styled according to the existing UI guidelines.",
@@ -3333,7 +3333,7 @@
         "updatedAt": "2025-12-03T08:05:56.074Z"
       },
       {
-        "id": "112",
+        "id": 112,
         "title": "Convert PostForm to Modal",
         "description": "Transform the PostForm component to open as a modal dialog.",
         "details": "Wrap the existing `<PostForm />` component in a Dialog/Modal component. Ensure it is triggered by the 'Create New Post' button.",
@@ -3345,7 +3345,7 @@
         "updatedAt": "2025-12-03T08:06:01.068Z"
       },
       {
-        "id": "113",
+        "id": 113,
         "title": "Trigger PostForm Modal from Button",
         "description": "Ensure the 'Create New Post' button opens the PostForm as a modal.",
         "details": "Modify the 'Create New Post' button in `page.tsx` to open the PostForm modal. Ensure seamless integration with the existing UI.",
@@ -3359,7 +3359,7 @@
         "updatedAt": "2025-12-03T08:31:13.237Z"
       },
       {
-        "id": "114",
+        "id": 114,
         "title": "Load Settings in PostForm",
         "description": "Load user settings into the PostForm when it opens.",
         "details": "Modify `PostForm.tsx` to load settings from localStorage or user preferences when the modal opens. Populate the form fields with these settings.",
@@ -3374,7 +3374,7 @@
         "updatedAt": "2025-12-03T08:31:17.834Z"
       },
       {
-        "id": "115",
+        "id": 115,
         "title": "Implement Product Description Field",
         "description": "Add and handle the product description field in the settings modal.",
         "details": "Ensure the product description field is functional in `PostContentSettings.tsx`, with validation and state management.",
@@ -3388,7 +3388,7 @@
         "updatedAt": "2025-12-03T08:31:22.524Z"
       },
       {
-        "id": "116",
+        "id": 116,
         "title": "Implement Niche/Category Field",
         "description": "Add and manage the niche/category field in the settings modal.",
         "details": "Add a dropdown or input for niche/category in `PostContentSettings.tsx`. Implement state management and persistence.",
@@ -3402,7 +3402,7 @@
         "updatedAt": "2025-12-03T08:31:27.077Z"
       },
       {
-        "id": "117",
+        "id": 117,
         "title": "Implement Content Style Field",
         "description": "Add and manage the content style field in the settings modal.",
         "details": "Add a selection input for content style in `PostContentSettings.tsx`. Ensure proper state management and persistence.",
@@ -3416,7 +3416,7 @@
         "updatedAt": "2025-12-03T08:31:31.756Z"
       },
       {
-        "id": "118",
+        "id": 118,
         "title": "Implement Language Selection",
         "description": "Add and handle the language selection field in the settings modal.",
         "details": "Provide options for Vietnamese and English in the language selection field. Ensure state management and persistence in `PostContentSettings.tsx`.",
@@ -3430,7 +3430,7 @@
         "updatedAt": "2025-12-03T08:31:36.721Z"
       },
       {
-        "id": "119",
+        "id": 119,
         "title": "Integrate Settings with PostForm",
         "description": "Ensure settings from the modal are applied to the PostForm.",
         "details": "Modify `PostForm.tsx` to apply settings from the modal to the form fields when creating a new post.",
@@ -3444,7 +3444,7 @@
         "updatedAt": "2025-12-03T08:31:41.266Z"
       },
       {
-        "id": "120",
+        "id": 120,
         "title": "Rename and Setup PostScheduler Component",
         "description": "Rename PostList.tsx to PostScheduler.tsx and set up the calendar component.",
         "details": "Rename the file from PostList.tsx to PostScheduler.tsx. Import FullCalendar components: @fullcalendar/react and @fullcalendar/daygrid. Initialize the calendar with the initialView set to 'dayGridMonth'.",
@@ -3456,7 +3456,7 @@
         "updatedAt": "2025-12-03T07:15:13.266Z"
       },
       {
-        "id": "121",
+        "id": 121,
         "title": "Transform Posts into Calendar Events",
         "description": "Map Post objects to calendar event format for display on the calendar.",
         "details": "Create a function to map Post[] to calendar events. Each event should have an id, title, start date, backgroundColor, and extendedProps containing the post object.",
@@ -3470,7 +3470,7 @@
         "updatedAt": "2025-12-03T07:15:18.166Z"
       },
       {
-        "id": "122",
+        "id": 122,
         "title": "Implement Date Click Handler",
         "description": "Handle clicks on calendar dates to open a modal for creating or editing posts.",
         "details": "Implement the dateClick handler to open the PostForm modal. Pass the clicked date as scheduledAt. Check post status to determine if editing is allowed.",
@@ -3484,7 +3484,7 @@
         "updatedAt": "2025-12-03T07:15:23.172Z"
       },
       {
-        "id": "123",
+        "id": 123,
         "title": "Ensure ScheduledAt is Required in PostForm",
         "description": "Update Post domain to make scheduledAt a required field when using the scheduler.",
         "details": "Modify the PostForm component to require the scheduledAt field. Ensure validation is in place to prevent form submission without this field.",
@@ -3498,7 +3498,7 @@
         "updatedAt": "2025-12-03T08:31:57.347Z"
       },
       {
-        "id": "124",
+        "id": 124,
         "title": "Display Posts on Calendar by Scheduled Date",
         "description": "Ensure posts are displayed on the calendar according to their scheduled dates.",
         "details": "Use the start date from the calendar events to position posts on the calendar. Ensure each post is displayed on its scheduled date.",
@@ -3512,7 +3512,7 @@
         "updatedAt": "2025-12-03T07:15:28.049Z"
       },
       {
-        "id": "125",
+        "id": 125,
         "title": "Limit Posts Per Day",
         "description": "Restrict the number of posts displayed per day to 1-2.",
         "details": "Implement logic to limit the number of posts shown per day to a maximum of two. Consider UI adjustments if more posts are scheduled.",
@@ -3526,7 +3526,7 @@
         "updatedAt": "2025-12-03T08:32:01.963Z"
       },
       {
-        "id": "126",
+        "id": 126,
         "title": "Implement Post Viewing Restrictions",
         "description": "Restrict editing of posts that are already published.",
         "details": "Check the status of each post's platforms. If any platform is published, disable editing in the PostForm modal.",
@@ -3540,7 +3540,7 @@
         "updatedAt": "2025-12-03T08:32:06.456Z"
       },
       {
-        "id": "127",
+        "id": 127,
         "title": "Integrate Platform Colors",
         "description": "Use platform-specific colors for post backgrounds in the calendar.",
         "details": "Assign background colors to calendar events based on the platform associated with each post. Use a predefined color scheme for consistency.",
@@ -3554,7 +3554,7 @@
         "updatedAt": "2025-12-03T08:32:11.210Z"
       },
       {
-        "id": "128",
+        "id": 128,
         "title": "Test Calendar Month View",
         "description": "Ensure the calendar displays correctly in month view with all functionalities.",
         "details": "Test the calendar's month view to ensure all posts are displayed correctly, and interactions like date clicks function as expected.",
@@ -3569,7 +3569,7 @@
         "updatedAt": "2025-12-03T07:15:33.495Z"
       },
       {
-        "id": "129",
+        "id": 129,
         "title": "Finalize and Review Implementation",
         "description": "Conduct a final review of the implementation to ensure all requirements are met.",
         "details": "Review the entire implementation against the PRD requirements. Ensure all functionalities are working as expected and make any necessary adjustments.",
@@ -3583,7 +3583,7 @@
         "updatedAt": "2025-12-03T08:32:15.919Z"
       },
       {
-        "id": "130",
+        "id": 130,
         "title": "Create Use Case for AI Content Generation",
         "description": "Develop the use case for generating AI-based social media content.",
         "details": "Implement the `GeneratePostContentUseCase` class in `generate-post-content.ts`. This should include loading settings, building the prompt, calling the AI service, and parsing the response using the provided schema.",
@@ -3595,7 +3595,7 @@
         "updatedAt": "2025-12-03T09:01:46.012Z"
       },
       {
-        "id": "131",
+        "id": 131,
         "title": "Implement Dependencies Factory",
         "description": "Set up the dependencies factory for the content generation use case.",
         "details": "Create a function `createGeneratePostContentUseCase` in `depends.ts` that returns an instance of `GeneratePostContentUseCase`. Ensure it correctly initializes the use case with necessary dependencies.",
@@ -3609,7 +3609,7 @@
         "updatedAt": "2025-12-03T09:02:34.926Z"
       },
       {
-        "id": "132",
+        "id": 132,
         "title": "Develop Server Action for Content Generation",
         "description": "Create a server action to handle AI content generation requests.",
         "details": "In `actions.ts`, implement `generatePostContentAction` to invoke the use case and handle success or error responses. Ensure it returns the generated content or an error message.",
@@ -3623,7 +3623,7 @@
         "updatedAt": "2025-12-03T09:03:36.103Z"
       },
       {
-        "id": "133",
+        "id": 133,
         "title": "Integrate AI Button in PostForm UI",
         "description": "Add a button to trigger AI content generation in the PostForm component.",
         "details": "Update `PostForm.tsx` to include a 'Generate with AI' button. Implement the `handleGenerateAI` function to manage the button's click event, calling the server action and updating the UI state.",
@@ -3637,7 +3637,7 @@
         "updatedAt": "2025-12-03T09:08:17.663Z"
       },
       {
-        "id": "134",
+        "id": 134,
         "title": "Implement Loading State in PostForm",
         "description": "Add a loading state to the PostForm to indicate AI generation is in progress.",
         "details": "Modify `PostForm.tsx` to include a loading spinner when the AI generation is in progress. Use the `isGenerating` state to toggle the spinner.",
@@ -3651,7 +3651,7 @@
         "updatedAt": "2025-12-03T09:08:23.663Z"
       },
       {
-        "id": "135",
+        "id": 135,
         "title": "Add Variations Selector in PostForm",
         "description": "Enable selection of content variations in the PostForm component.",
         "details": "Update `PostForm.tsx` to display a selector for content variations if they exist. Use the `variations` state to manage the available options.",
@@ -3665,7 +3665,7 @@
         "updatedAt": "2025-12-03T09:08:29.649Z"
       },
       {
-        "id": "136",
+        "id": 136,
         "title": "Validate AI Content Generation Flow",
         "description": "Conduct end-to-end testing of the AI content generation feature.",
         "details": "Perform comprehensive testing of the entire content generation flow, from button click to content display. Ensure all components interact correctly and handle errors gracefully.",
@@ -3679,7 +3679,7 @@
         "updatedAt": "2025-12-03T09:08:35.597Z"
       },
       {
-        "id": "137",
+        "id": 137,
         "title": "Optimize Prompt Building Logic",
         "description": "Refine the logic for building AI prompts to improve content quality.",
         "details": "Review and optimize the prompt construction in `GeneratePostContentUseCase` to enhance the relevance and creativity of generated content.",
@@ -3693,7 +3693,7 @@
         "updatedAt": "2025-12-03T14:18:58.962Z"
       },
       {
-        "id": "138",
+        "id": 138,
         "title": "Enhance Error Handling in Server Action",
         "description": "Improve error handling mechanisms in the server action for robustness.",
         "details": "Enhance `generatePostContentAction` to provide more detailed error messages and handle different failure scenarios more gracefully.",
@@ -3707,7 +3707,7 @@
         "updatedAt": "2025-12-03T14:19:05.633Z"
       },
       {
-        "id": "139",
+        "id": 139,
         "title": "Document AI Content Generation Feature",
         "description": "Create comprehensive documentation for the AI content generation feature.",
         "details": "Document the architecture, use case, server action, and UI integration of the AI content generation feature. Include usage instructions and troubleshooting tips.",
@@ -3721,7 +3721,7 @@
         "updatedAt": "2025-12-03T14:19:12.460Z"
       },
       {
-        "id": "140",
+        "id": 140,
         "title": "Implement GeneratePostContentUseCase",
         "description": "Create the use case for generating post content using AI.",
         "details": "Implement the GeneratePostContentUseCase class in TypeScript. This class should load settings, build a prompt, call the AI service, and parse the response using zod for validation.",
@@ -3733,7 +3733,7 @@
         "updatedAt": "2025-12-03T13:48:46.242Z"
       },
       {
-        "id": "141",
+        "id": 141,
         "title": "Create Dependencies Factory",
         "description": "Set up a factory for creating instances of GeneratePostContentUseCase.",
         "details": "Implement the createGeneratePostContentUseCase function in depends.ts to return an instance of GeneratePostContentUseCase.",
@@ -3747,7 +3747,7 @@
         "updatedAt": "2025-12-03T13:48:52.543Z"
       },
       {
-        "id": "142",
+        "id": 142,
         "title": "Develop Server Action for Content Generation",
         "description": "Create a server action to handle content generation requests.",
         "details": "Implement generatePostContentAction in actions.ts to use the GeneratePostContentUseCase for generating content based on provided parameters.",
@@ -3761,7 +3761,7 @@
         "updatedAt": "2025-12-03T13:48:58.814Z"
       },
       {
-        "id": "143",
+        "id": 143,
         "title": "Integrate AI Button into PostForm UI",
         "description": "Add a 'Generate with AI' button to the PostForm component.",
         "details": "Update PostForm.tsx to include a button that triggers content generation. Manage loading state and display generated variations.",
@@ -3775,7 +3775,7 @@
         "updatedAt": "2025-12-03T13:49:06.394Z"
       },
       {
-        "id": "144",
+        "id": 144,
         "title": "Implement Structured Memory with MongoDB",
         "description": "Migrate brand memory from localStorage to MongoDB.",
         "details": "Create domain entities and repositories for brand memory. Implement server actions to load and save brand memory data.",
@@ -3852,7 +3852,7 @@
         "updatedAt": "2025-12-03T13:56:46.778Z"
       },
       {
-        "id": "145",
+        "id": 145,
         "title": "Set Up Semantic Memory with Qdrant",
         "description": "Implement a vector database for semantic memory to prevent content duplication.",
         "details": "Set up Qdrant and implement services for storing and querying content embeddings. Integrate with the content generation use case.",
@@ -3928,7 +3928,7 @@
         "updatedAt": "2025-12-03T14:06:48.681Z"
       },
       {
-        "id": "146",
+        "id": 146,
         "title": "Develop Episodic Memory for Multi-pass Generation",
         "description": "Implement short-term memory for multi-pass content generation.",
         "details": "Create a caching service to store intermediate results of multi-pass generation. Implement use cases for each generation pass.",
@@ -4004,7 +4004,7 @@
         "updatedAt": "2025-12-03T14:14:41.591Z"
       },
       {
-        "id": "147",
+        "id": 147,
         "title": "Enhance PostForm with Generation Progress UI",
         "description": "Add UI elements to display the progress of multi-pass content generation.",
         "details": "Update PostForm.tsx to show progress indicators for each generation pass. Display warnings for similar content.",
@@ -4019,7 +4019,7 @@
         "updatedAt": "2025-12-03T14:16:10.398Z"
       },
       {
-        "id": "148",
+        "id": 148,
         "title": "Integration Testing for Content Generation Flow",
         "description": "Conduct integration tests for the entire content generation process.",
         "details": "Test the complete flow from UI interaction to content generation and storage. Ensure all components work together seamlessly.",
@@ -4036,7 +4036,7 @@
         "updatedAt": "2025-12-03T14:16:19.133Z"
       },
       {
-        "id": "149",
+        "id": 149,
         "title": "Add Unit Tests for New Features",
         "description": "Implement unit tests for new functionalities added during development.",
         "details": "Write unit tests for each new class and function to ensure they perform as expected under various conditions.",
@@ -4055,7 +4055,7 @@
         "updatedAt": "2025-12-03T14:16:26.410Z"
       },
       {
-        "id": "150",
+        "id": 150,
         "title": "Implement Scoring Logic in Multi-Pass Execution",
         "description": "Add scoring logic to the end of the multi-pass execution process.",
         "details": "Update `generate-post-multi-pass.ts` to include a scoring pass after the enhance pass. Implement a scoring system that evaluates content based on clarity, engagement, brand voice, platform fit, and safety. Return a JSON object with the score and breakdown.",
@@ -4067,7 +4067,7 @@
         "updatedAt": "2025-12-04T03:20:26.356Z"
       },
       {
-        "id": "151",
+        "id": 151,
         "title": "Update GeneratePostMultiPassResponse Interface",
         "description": "Enhance the response interface to include scoring details.",
         "details": "Modify the `GeneratePostMultiPassResponse` interface to include new fields: `score`, `scoreBreakdown`, `weaknesses`, and `suggestedFixes`. Ensure these fields are populated in the response object.",
@@ -4081,7 +4081,7 @@
         "updatedAt": "2025-12-04T03:20:43.330Z"
       },
       {
-        "id": "152",
+        "id": 152,
         "title": "Enhance PostForm UI for Scoring",
         "description": "Display scoring breakdown and weaknesses in the PostForm UI.",
         "details": "Update `PostForm.tsx` to display the score breakdown and weaknesses. Ensure the UI is intuitive and clearly presents the scoring information to the user.",
@@ -4095,7 +4095,7 @@
         "updatedAt": "2025-12-04T03:22:32.235Z"
       },
       {
-        "id": "153",
+        "id": 153,
         "title": "Create Perplexity Service Adapter",
         "description": "Develop an adapter to interact with the Perplexity API for research insights.",
         "details": "Implement `infrastructure/adapters/perplexity-service.ts` to handle API requests to Perplexity. Ensure it can search topics and return structured insights and citations.",
@@ -4107,7 +4107,7 @@
         "updatedAt": "2025-12-04T03:23:57.106Z"
       },
       {
-        "id": "154",
+        "id": 154,
         "title": "Develop Research Topic Use Case",
         "description": "Create a use case for researching topics using the Perplexity API.",
         "details": "Implement `core/application/usecases/marketing/post/research-topic.ts` to utilize the Perplexity service for gathering insights, risks, and recommended angles for a given topic.",
@@ -4121,7 +4121,7 @@
         "updatedAt": "2025-12-04T03:25:06.615Z"
       },
       {
-        "id": "155",
+        "id": 155,
         "title": "Integrate Research Insights into Multi-Pass",
         "description": "Incorporate research insights into the multi-pass generation process.",
         "details": "Modify `generate-post-multi-pass.ts` to call the research use case before the idea pass. Inject research insights into the prompts used in subsequent passes.",
@@ -4135,7 +4135,7 @@
         "updatedAt": "2025-12-04T06:31:00.824Z"
       },
       {
-        "id": "156",
+        "id": 156,
         "title": "Create RAG Knowledge Retrieval Use Case",
         "description": "Implement a use case for retrieving knowledge using vector search.",
         "details": "Develop `core/application/usecases/marketing/post/retrieve-knowledge.ts` to perform vector searches and retrieve relevant knowledge context for a given topic.",
@@ -4147,7 +4147,7 @@
         "updatedAt": "2025-12-04T06:31:58.588Z"
       },
       {
-        "id": "157",
+        "id": 157,
         "title": "Integrate RAG Context into Multi-Pass",
         "description": "Incorporate RAG knowledge retrieval into the multi-pass process.",
         "details": "Update `generate-post-multi-pass.ts` to include RAG context in the draft and enhance passes. Ensure the retrieved knowledge is effectively used to improve content quality.",
@@ -4161,7 +4161,7 @@
         "updatedAt": "2025-12-04T06:33:22.576Z"
       },
       {
-        "id": "158",
+        "id": 158,
         "title": "Enhance UI for Research and RAG Insights",
         "description": "Update UI to display research insights and RAG sources.",
         "details": "Modify `PostForm.tsx` to show research insights and RAG sources. Ensure the UI clearly presents this information alongside the content.",
@@ -4176,7 +4176,7 @@
         "updatedAt": "2025-12-04T06:33:28.658Z"
       },
       {
-        "id": "159",
+        "id": 159,
         "title": "Implement Progress Indicators in UI",
         "description": "Add progress indicators for each pass in the content generation process.",
         "details": "Update `PostForm.tsx` to include progress indicators for each stage of the multi-pass process, from idea to scoring.",
@@ -4188,7 +4188,7 @@
         "updatedAt": "2025-12-04T06:33:34.639Z"
       },
       {
-        "id": "160",
+        "id": 160,
         "title": "Inject QueueService into CreatePostUseCase",
         "description": "Modify CreatePostUseCase to include QueueService for scheduling posts.",
         "details": "Inject the QueueService into the CreatePostUseCase constructor to enable scheduling of posts instead of immediate publishing.",
@@ -4200,7 +4200,7 @@
         "updatedAt": "2025-12-04T06:59:12.169Z"
       },
       {
-        "id": "161",
+        "id": 161,
         "title": "Add Scheduling Logic to CreatePostUseCase",
         "description": "Implement logic to schedule posts if postStatus is 'scheduled'.",
         "details": "Add logic to CreatePostUseCase to calculate delay and use QueueService to add a job for scheduled posts.",
@@ -4214,7 +4214,7 @@
         "updatedAt": "2025-12-04T06:59:18.299Z"
       },
       {
-        "id": "162",
+        "id": 162,
         "title": "Update Dependency Injection for BullMQAdapter",
         "description": "Modify dependency injection to include BullMQAdapter in CreatePostUseCase.",
         "details": "Update app/api/posts/depends.ts to inject BullMQAdapter into CreatePostUseCase.",
@@ -4228,7 +4228,7 @@
         "updatedAt": "2025-12-04T06:59:24.400Z"
       },
       {
-        "id": "163",
+        "id": 163,
         "title": "Create Scheduled Post Worker",
         "description": "Develop a worker to handle scheduled post publishing.",
         "details": "Create infrastructure/queue/scheduled-post-worker.ts to process publish-scheduled-post jobs using BullMQ.",
@@ -4240,7 +4240,7 @@
         "updatedAt": "2025-12-04T07:00:12.080Z"
       },
       {
-        "id": "164",
+        "id": 164,
         "title": "Implement Post Publishing in Worker",
         "description": "Use PostingAdapterFactory to publish posts to platforms within the worker.",
         "details": "Implement logic in the worker to publish posts using PostingAdapterFactory and update PostRepository with results.",
@@ -4254,7 +4254,7 @@
         "updatedAt": "2025-12-04T07:00:18.235Z"
       },
       {
-        "id": "165",
+        "id": 165,
         "title": "Add Worker Script to Package.json",
         "description": "Create a script to start the scheduled post worker.",
         "details": "Add a script named worker:scheduled-posts to package.json to start the scheduled post worker.",
@@ -4268,7 +4268,7 @@
         "updatedAt": "2025-12-04T07:01:11.165Z"
       },
       {
-        "id": "166",
+        "id": 166,
         "title": "Create Standalone Worker Script",
         "description": "Develop a standalone script to run the scheduled post worker.",
         "details": "Create scripts/start-scheduled-post-worker.ts to initialize and run the worker in standalone mode.",
@@ -4282,7 +4282,7 @@
         "updatedAt": "2025-12-04T07:01:17.261Z"
       },
       {
-        "id": "167",
+        "id": 167,
         "title": "Remove Obsolete Code",
         "description": "Clean up old code related to scheduled post status updates.",
         "details": "Remove app/api/posts/update-scheduled-status/route.ts, UpdateScheduledPostsStatusUseCase, and useScheduledPostUpdater hook.",
@@ -4294,7 +4294,7 @@
         "updatedAt": "2025-12-04T07:01:23.233Z"
       },
       {
-        "id": "168",
+        "id": 168,
         "title": "Update Documentation for Scheduled Post Publishing",
         "description": "Revise documentation to reflect changes in scheduled post publishing.",
         "details": "Update SCHEDULED_POST_PUBLISHING.md to include new worker-based approach and remove references to old methods.",
@@ -4306,7 +4306,7 @@
         "updatedAt": "2025-12-04T07:01:29.183Z"
       },
       {
-        "id": "169",
+        "id": 169,
         "title": "Test and Validate Worker Deployment",
         "description": "Ensure the worker is correctly deployed and functioning in production environments.",
         "details": "Deploy the worker using pm2, Docker, or Kubernetes and verify it processes jobs as expected in production.",
@@ -4321,7 +4321,7 @@
         "updatedAt": "2025-12-04T07:01:35.248Z"
       },
       {
-        "id": "170",
+        "id": 170,
         "title": "Create Domain Entity for Resource",
         "description": "Define the Resource domain entity in TypeScript.",
         "details": "Create a new file `core/domain/marketing/resource.ts` and define the `Resource` interface with fields such as id, userId, name, fileType, s3Url, s3Key, size, chunkCount, and uploadedAt. Implement a validation function to ensure required fields are present.",
@@ -4332,7 +4332,7 @@
         "subtasks": []
       },
       {
-        "id": "171",
+        "id": 171,
         "title": "Implement Resource Service Interface",
         "description": "Define the interface for ResourceService.",
         "details": "Create a new file `core/application/interfaces/marketing/resource-service.ts` and define the `ResourceService` interface with methods for getAll, getById, create, and delete. Use the Resource interface defined in the previous task.",
@@ -4345,7 +4345,7 @@
         "subtasks": []
       },
       {
-        "id": "172",
+        "id": 172,
         "title": "Develop Resource Repository",
         "description": "Implement the ResourceRepository class for MongoDB operations.",
         "details": "In `infrastructure/repositories/marketing/resource-repo.ts`, implement the ResourceRepository class extending BaseRepository. Implement methods to interact with MongoDB for CRUD operations on Resource entities.",
@@ -4358,7 +4358,7 @@
         "subtasks": []
       },
       {
-        "id": "173",
+        "id": 173,
         "title": "Create UploadResource Use Case",
         "description": "Implement the use case for uploading resources to S3 and storing metadata.",
         "details": "In `core/application/usecases/marketing/resource/upload-resource.ts`, implement the UploadResourceUseCase class. Handle file upload to S3, text extraction, chunking, and storing metadata in MongoDB and VectorDB.",
@@ -4371,7 +4371,7 @@
         "subtasks": []
       },
       {
-        "id": "174",
+        "id": 174,
         "title": "Implement GetResources Use Case",
         "description": "Develop the use case to retrieve a list of resources.",
         "details": "Create `core/application/usecases/marketing/resource/get-resources.ts` and implement the GetResourcesUseCase class to fetch resources from the database for a given userId.",
@@ -4384,7 +4384,7 @@
         "subtasks": []
       },
       {
-        "id": "175",
+        "id": 175,
         "title": "Implement DeleteResource Use Case",
         "description": "Develop the use case to delete resources from S3, DB, and VectorDB.",
         "details": "In `core/application/usecases/marketing/resource/delete-resource.ts`, implement the DeleteResourceUseCase class. Ensure it deletes the resource from S3, MongoDB, and VectorDB.",
@@ -4397,7 +4397,7 @@
         "subtasks": []
       },
       {
-        "id": "176",
+        "id": 176,
         "title": "Create DocumentChunker Utility",
         "description": "Implement a utility for chunking text documents.",
         "details": "In `infrastructure/utils/document-chunker.ts`, implement the DocumentChunker class with a static method to chunk text based on specified size and overlap.",
@@ -4408,7 +4408,7 @@
         "subtasks": []
       },
       {
-        "id": "177",
+        "id": 177,
         "title": "Develop PDFParser Utility",
         "description": "Implement a utility to extract text from PDF files.",
         "details": "In `infrastructure/utils/pdf-parser.ts`, implement the PDFParser class using the `pdf-parse` library to extract text from PDF files.",
@@ -4419,7 +4419,7 @@
         "subtasks": []
       },
       {
-        "id": "178",
+        "id": 178,
         "title": "Update VectorDB Service",
         "description": "Enhance VectorDB service to handle new metadata fields.",
         "details": "Update the VectorDB service to include new metadata fields such as contentType, resourceId, and chunkIndex. Modify methods to handle these fields appropriately.",
@@ -4430,7 +4430,7 @@
         "subtasks": []
       },
       {
-        "id": "179",
+        "id": 179,
         "title": "Create API Routes for Resource Management",
         "description": "Develop API routes for managing resources.",
         "details": "Implement API routes in `app/api/resources/route.ts` for GET and POST requests, and in `app/api/resources/[id]/route.ts` for DELETE requests. Ensure they interact with the use cases correctly.",
@@ -4445,7 +4445,7 @@
         "subtasks": []
       },
       {
-        "id": "180",
+        "id": 180,
         "title": "Update Product Domain Model",
         "description": "Add a new field 'url' to the Product domain model.",
         "details": "Modify the Product constructor in `core/domain/catalog/product.ts` to include a new field `url` of type string.",
@@ -4457,7 +4457,7 @@
         "updatedAt": "2025-12-04T13:36:13.959Z"
       },
       {
-        "id": "181",
+        "id": 181,
         "title": "Update BrandMemory Domain Model",
         "description": "Rename 'productDescription' to 'brandDescription' and add new fields to BrandMemory domain model.",
         "details": "In `core/domain/brand-memory.ts`, rename `productDescription` to `brandDescription`. Add `contentsInstruction` and `selectedProductIds` fields.",
@@ -4469,7 +4469,7 @@
         "updatedAt": "2025-12-04T13:36:26.776Z"
       },
       {
-        "id": "182",
+        "id": 182,
         "title": "Update PostContentSettings Component",
         "description": "Modify PostContentSettings component to reflect domain model changes and add new UI elements.",
         "details": "In `app/(features)/crm/campaigns/posts/_components/PostContentSettings.tsx`, update the component to change `productDescription` to `brandDescription`. Add a multi-select product picker and a `contentsInstruction` textarea.",
@@ -4483,7 +4483,7 @@
         "updatedAt": "2025-12-04T13:36:38.708Z"
       },
       {
-        "id": "183",
+        "id": 183,
         "title": "Create GeneratePostSchedule Use Case",
         "description": "Develop a use case for generating a monthly post schedule using AI.",
         "details": "Create `GeneratePostScheduleUseCase` in `core/application/usecases/marketing/post/generate-post-schedule.ts` to generate 20-30 post ideas based on brand context.",
@@ -4495,7 +4495,7 @@
         "updatedAt": "2025-12-04T13:36:50.031Z"
       },
       {
-        "id": "184",
+        "id": 184,
         "title": "Add Post Schedule Button",
         "description": "Add a button to initiate post schedule generation in the posts page.",
         "details": "In `posts/page.tsx`, add a button labeled 'Lên kế hoạch Post' to trigger the post schedule generation process.",
@@ -4509,7 +4509,7 @@
         "updatedAt": "2025-12-04T13:37:02.873Z"
       },
       {
-        "id": "185",
+        "id": 185,
         "title": "Display and Save Post Schedule",
         "description": "Display the generated post schedule and provide an option to save it.",
         "details": "Implement functionality to display the generated schedule and allow users to save it to the scheduler.",
@@ -4523,7 +4523,7 @@
         "updatedAt": "2025-12-04T13:37:14.611Z"
       },
       {
-        "id": "186",
+        "id": 186,
         "title": "Enhance PostForm with Idea Field",
         "description": "Add an editable 'idea' field to PostForm, pre-filled from the schedule.",
         "details": "In `app/(features)/crm/campaigns/posts/_components/PostForm.tsx`, add an `idea` field that is pre-filled with data from the generated schedule.",
@@ -4537,7 +4537,7 @@
         "updatedAt": "2025-12-04T13:37:25.917Z"
       },
       {
-        "id": "187",
+        "id": 187,
         "title": "Add Product Dropdown to PostForm",
         "description": "Include a product dropdown in PostForm allowing selection of 0-1 product.",
         "details": "Modify `PostForm.tsx` to include a dropdown for selecting a single product from the list.",
@@ -4551,7 +4551,7 @@
         "updatedAt": "2025-12-04T13:37:37.368Z"
       },
       {
-        "id": "188",
+        "id": 188,
         "title": "Add DetailContentsInstruction to PostForm",
         "description": "Add a textarea for detailed content instructions in PostForm.",
         "details": "In `PostForm.tsx`, add a `detailContentsInstruction` textarea to capture additional instructions for content generation.",
@@ -4565,7 +4565,7 @@
         "updatedAt": "2025-12-04T13:37:49.737Z"
       },
       {
-        "id": "189",
+        "id": 189,
         "title": "Update Content Generation Logic",
         "description": "Enhance content generation logic to use idea, product, and detailed instructions.",
         "details": "Update the logic in `PostForm.tsx` to pass the selected product URL, idea, and detailed instructions to the LLM for content generation.",
@@ -4579,7 +4579,7 @@
         "updatedAt": "2025-12-04T13:38:04.176Z"
       },
       {
-        "id": "190",
+        "id": 190,
         "title": "Update SocialPlatform Type",
         "description": "Add 'wordpress' to the SocialPlatform type in the domain layer.",
         "details": "Update the SocialPlatform type in core/domain/social/social-auth.ts to include 'wordpress'.",
@@ -4591,7 +4591,7 @@
         "updatedAt": "2025-12-11T13:02:33.521Z"
       },
       {
-        "id": "191",
+        "id": 191,
         "title": "Create WordPress OAuth Gateway",
         "description": "Implement the WordPress OAuth Gateway in the infrastructure layer.",
         "details": "Create a new file infrastructure/adapters/external/social/auth/wordpress-oauth-gateway.ts. Implement the WordPressOAuthGateway class with methods getAuthorizationUrl, exchangeToken, and refreshToken.",
@@ -4605,9 +4605,9 @@
         "updatedAt": "2025-12-11T13:03:28.387Z"
       },
       {
-        "id": "192",
+        "id": 192,
         "title": "Implement WordPress Auth Service",
-        "description": "Develop the WordPress Auth Service extending BasePlatformAuthService.",
+        "description": "Develop the WordPress Auth Service extending BasePlatformOAuthService.",
         "details": "Create infrastructure/adapters/external/social/auth/wordpress-auth-service.ts. Implement WordPressAuthService with methods for authorization URL retrieval, token verification, and refresh.",
         "testStrategy": "Test each method for correct functionality and error handling, including token refresh and verification.",
         "priority": "medium",
@@ -4619,7 +4619,7 @@
         "updatedAt": "2025-12-11T13:04:41.653Z"
       },
       {
-        "id": "193",
+        "id": 193,
         "title": "Create WordPress Post Gateway",
         "description": "Develop the WordPress Post Gateway for publishing posts.",
         "details": "Create infrastructure/adapters/external/social/posts/wordpress-post-gateway.ts. Implement the WordPressPostGateway class with a publish method.",
@@ -4633,7 +4633,7 @@
         "updatedAt": "2025-12-11T13:05:33.280Z"
       },
       {
-        "id": "194",
+        "id": 194,
         "title": "Update Social Auth Repository",
         "description": "Extend the Social Auth Repository to support WordPress.",
         "details": "Either update the existing repository or create a new one at infrastructure/repositories/wordpress-auth-repo.ts extending BaseRepository.",
@@ -4646,7 +4646,7 @@
         "subtasks": []
       },
       {
-        "id": "195",
+        "id": 195,
         "title": "Detect WordPress Type Use Case",
         "description": "Implement the use case to detect WordPress type.",
         "details": "Create core/application/usecases/social/wordpress/detect-wordpress-type.ts. Implement the DetectWordPressTypeUseCase class to determine the WordPress type based on site URL.",
@@ -4660,7 +4660,7 @@
         "updatedAt": "2025-12-11T13:07:30.716Z"
       },
       {
-        "id": "196",
+        "id": 196,
         "title": "Get WordPress Authorization URL Use Case",
         "description": "Develop the use case to get WordPress authorization URL.",
         "details": "Create core/application/usecases/social/wordpress/get-wordpress-authorization-url.ts. Implement the GetWordPressAuthorizationUrlUseCase class to generate the authorization URL.",
@@ -4674,7 +4674,7 @@
         "updatedAt": "2025-12-11T13:07:39.060Z"
       },
       {
-        "id": "197",
+        "id": 197,
         "title": "Exchange WordPress Token Use Case",
         "description": "Implement the use case to exchange WordPress tokens.",
         "details": "Create core/application/usecases/social/wordpress/exchange-wordpress-token.ts. Implement the ExchangeWordPressTokenUseCase class to handle token exchange.",
@@ -4688,7 +4688,7 @@
         "updatedAt": "2025-12-11T13:07:47.890Z"
       },
       {
-        "id": "198",
+        "id": 198,
         "title": "Publish WordPress Post Use Case",
         "description": "Develop the use case to publish posts to WordPress.",
         "details": "Create core/application/usecases/social/wordpress/publish-wordpress-post.ts. Implement the PublishWordPressPostUseCase class to handle post publishing.",
@@ -4702,7 +4702,7 @@
         "updatedAt": "2025-12-11T13:07:56.270Z"
       },
       {
-        "id": "199",
+        "id": 199,
         "title": "Update Platform Auth Factory",
         "description": "Modify the factory pattern to include WordPress Auth Service.",
         "details": "Update infrastructure/factories/platform-auth-factory.ts to return a new instance of WordPressAuthService when 'wordpress' is specified.",
@@ -4714,16 +4714,279 @@
         "status": "done",
         "subtasks": [],
         "updatedAt": "2025-12-11T13:08:58.740Z"
+      },
+      {
+        "id": 200,
+        "title": "Triển khai Instagram OAuth Authentication Service",
+        "description": "Tạo InstagramAuthService kế thừa BasePlatformOAuthService tại infrastructure/adapters/external/social/auth/instagram-auth-service.ts với đầy đủ chức năng quản lý token, refresh token và xác thực.",
+        "details": "1. Tạo class InstagramAuthService extends BasePlatformOAuthService tại đường dẫn infrastructure/adapters/external/social/auth/infrastructure/adapters/external/social/auth/instagram-auth-service.ts.\n\n2. Sử dụng @microfox/instagramfb-oauth SDK (phiên bản mới nhất 1.1.0) để xử lý Instagram Business OAuth 2.0 qua Facebook Graph API v22.0[1].\n\n3. Implement các phương thức bắt buộc:\n   - `getAuthUrl()`: Tạo Instagram authorization URL với scopes cần thiết: INSTAGRAM_BASIC, INSTAGRAM_CONTENT_PUBLISH, PAGES_SHOW_LIST, PAGES_READ_ENGAGEMENT[1]\n   - `exchangeCodeForTokens(code: string)`: Exchange auth code lấy short-lived token\n   - `getLongLivedToken(shortToken: string)`: Chuyển đổi sang long-lived token (60 ngày)[1]\n   - `refreshToken(token: string)`: Implement refresh logic sử dụng Facebook Graph API\n   - `verifyToken(token: string)`: Validate token với Instagram Business Account API\n   - `getInstagramAccount(token: string)`: Lấy Instagram Business Account details (pageId, instagramAccountId, pageAccessToken)[1]\n\n4. Tích hợp Zod validation cho tất cả API responses theo pattern từ SDK[1].\n\n5. Implement token storage với Redis cache và database persistence, tự động refresh khi token gần expire (trong 24h).\n\n6. Xử lý error handling theo chuẩn Task 77 với custom InstagramAuthError.\n\n7. Config từ environment variables: INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET, INSTAGRAM_REDIRECT_URI.\n\n8. Đảm bảo type-safe với full TypeScript interfaces từ SDK[1].",
+        "testStrategy": "1. Unit test getAuthUrl() verify đúng scopes và redirect URI[1].\n2. Mock exchangeCodeForTokens() test token parsing và Zod validation.\n3. Test getLongLivedToken() với mock short-lived token.\n4. Test refreshToken() và verifyToken() với expired/valid tokens.\n5. Integration test full OAuth flow từ auth URL đến Instagram account retrieval.\n6. Error tests: invalid code, expired token, network failure.\n7. Load test token refresh với 100 concurrent requests.\n8. Verify tất cả tokens được cache đúng trong Redis và database.",
+        "status": "done",
+        "dependencies": [
+          "60",
+          "70"
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Tạo class InstagramAuthService và cài đặt SDK",
+            "description": "Tạo file instagram-auth-service.ts và implement class kế thừa BasePlatformOAuthService, cài đặt @microfox/instagramfb-oauth SDK v1.1.0",
+            "dependencies": [],
+            "details": "Tạo class InstagramAuthService extends BasePlatformOAuthService tại infrastructure/adapters/external/social/auth/instagram-auth-service.ts. Cài đặt SDK: npm i @microfox/instagramfb-oauth@1.1.0. Import và config Facebook Graph API v22.0 với environment variables.",
+            "status": "done",
+            "testStrategy": "Unit test: verify class extends đúng BasePlatformOAuthService, SDK version chính xác, environment variables load thành công",
+            "updatedAt": "2025-12-12T01:38:09.467Z",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement getAuthUrl() và exchangeCodeForTokens()",
+            "description": "Triển khai 2 phương thức OAuth flow cơ bản: tạo authorization URL và exchange code lấy short-lived token",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement getAuthUrl() với scopes: INSTAGRAM_BASIC, INSTAGRAM_CONTENT_PUBLISH, PAGES_SHOW_LIST, PAGES_READ_ENGAGEMENT. Implement exchangeCodeForTokens(code: string) sử dụng SDK exchange code qua POST /access_token endpoint.",
+            "status": "done",
+            "testStrategy": "Unit test getAuthUrl(): verify URL chứa đúng client_id, redirect_uri, scopes. Mock exchangeCodeForTokens(): test valid code trả short-lived token, Zod validation pass",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:38:16.425Z"
+          },
+          {
+            "id": 3,
+            "title": "Implement token management: long-lived, refresh, verify",
+            "description": "Triển khai getLongLivedToken(), refreshToken(), verifyToken() với full token lifecycle management",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "getLongLivedToken(shortToken): exchange sang 60-day token. refreshToken(token): sử dụng Graph API refresh endpoint. verifyToken(token): validate với Instagram Business Account API. Tích hợp Zod schema validation tất cả responses.",
+            "status": "done",
+            "testStrategy": "Unit test: mock short->long token exchange, refresh success/expired, verify valid/invalid tokens. Integration test full token flow.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:38:23.514Z"
+          },
+          {
+            "id": 4,
+            "title": "Implement getInstagramAccount() và token storage",
+            "description": "Lấy Instagram Business Account details và implement Redis cache + DB persistence với auto-refresh",
+            "dependencies": [
+              1,
+              3
+            ],
+            "details": "getInstagramAccount(token): Graph API call lấy pageId, instagramAccountId, pageAccessToken. Token storage: Redis TTL 24h trước expiry + DB backup. Auto-refresh logic khi get token gần expire.",
+            "status": "done",
+            "testStrategy": "Mock Graph API response test account details parsing. Redis unit test: set/get/expire token. DB integration test persistence.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:38:30.889Z"
+          },
+          {
+            "id": 5,
+            "title": "Error handling, TypeScript types và config validation",
+            "description": "Hoàn thiện error handling theo Task 77, full TypeScript interfaces và environment config validation",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Tạo InstagramAuthError extends custom error pattern Task 77. Define TypeScript interfaces từ SDK responses. Config validation: INSTAGRAM_CLIENT_ID, CLIENT_SECRET, REDIRECT_URI required. Export typed service.",
+            "status": "done",
+            "testStrategy": "Error test cases: invalid scopes, network error, expired token, missing env vars. Type check compile test. Full service integration test.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:38:37.999Z"
+          }
+        ],
+        "updatedAt": "2025-12-12T01:38:37.999Z"
+      },
+      {
+        "id": 201,
+        "title": "Implement Instagram Posting Adapter với 2-step publishing flow",
+        "description": "Triển khai InstagramPostingAdapter kế thừa BasePostingAdapter với quy trình publish 2 bước (tạo container -> publish), polling trạng thái video và lấy metrics.",
+        "details": "1. Tạo file infrastructure/adapters/external/social/posting/instagram-posting-adapter.ts\n\n2. Sử dụng Instagram Graph API (Meta API) thay vì instagram-private-api vì chỉ Meta API hỗ trợ publishing:\n   - Tạo container: POST /{ig-user-id}/media với image_url/video_url/caption\n   - Publish: POST /{ig-user-id}/media_publish với creation_id\n\n3. Implement các phương thức chính:\n```typescript\nimport { BasePostingAdapter } from './base-posting-adapter';\n\nexport class InstagramPostingAdapter extends BasePostingAdapter {\n  private igUserId: string;\n  private accessToken: string;\n\n  async createContainer(mediaUrl: string, caption: string): Promise<string> {\n    const response = await fetch(\n      `https://graph.facebook.com/v20.0/${this.igUserId}/media`,\n      {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },\n        body: new URLSearchParams({\n          image_url: mediaUrl,\n          caption: caption,\n          access_token: this.accessToken,\n        }),\n      }\n    );\n    const data = await response.json();\n    return data.id; // container ID\n  }\n\n  async publishContainer(containerId: string): Promise<string> {\n    const response = await fetch(\n      `https://graph.facebook.com/v20.0/${this.igUserId}/media_publish`,\n      {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },\n        body: new URLSearchParams({\n          creation_id: containerId,\n          access_token: this.accessToken,\n        }),\n      }\n    );\n    const data = await response.json();\n    return data.id; // published media ID\n  }\n\n  async pollVideoStatus(containerId: string, maxAttempts = 30): Promise<'finished' | 'error'> {\n    for (let i = 0; i < maxAttempts; i++) {\n      const response = await fetch(\n        `https://graph.facebook.com/v20.0/${containerId}?fields=status_code,status&access_token=${this.accessToken}`\n      );\n      const data = await response.json();\n      if (data.status_code === 200) return 'finished';\n      if (data.status === 'ERROR') return 'error';\n      await new Promise(resolve => setTimeout(resolve, 2000)); // 2s delay\n    }\n    throw new Error('Video processing timeout');\n  }\n\n  async fetchMetrics(mediaId: string): Promise<any> {\n    const response = await fetch(\n      `https://graph.facebook.com/v20.0/${mediaId}?fields=like_count,comments_count,media_product_type&access_token=${this.accessToken}`\n    );\n    return response.json();\n  }\n\n  async publish(mediaUrl: string, caption: string): Promise<any> {\n    const containerId = await this.createContainer(mediaUrl, caption);\n    \n    // Poll video status nếu là video\n    if (mediaUrl.includes('.mp4')) {\n      await this.pollVideoStatus(containerId);\n    }\n\n    const mediaId = await this.publishContainer(containerId);\n    const metrics = await this.fetchMetrics(mediaId);\n    \n    return {\n      platform: 'instagram',\n      mediaId,\n      metrics,\n      status: 'published'\n    };\n  }\n}\n```\n\n4. Xử lý Instagram Business Account:\n   - Lấy igUserId từ /me?fields=instagram_business_account\n   - Validate access_token có quyền instagram_graph_user_media\n\n5. Error handling theo chuẩn Task 77 với retry logic (3 lần) và exponential backoff\n\n6. Support carousel posts (tối đa 10 items) với children containers\n\n7. Rate limiting: 25 calls/hour cho container creation, implement queue nếu cần",
+        "testStrategy": "1. **Unit tests** (instagram-posting-adapter.spec.ts):\n   - Mock fetch API với MSW\n   - Test createContainer trả về đúng container ID\n   - Test publishContainer hoàn thành 2-step flow\n   - Test pollVideoStatus với các trạng thái: processing -> finished/error\n   - Test fetchMetrics parse đúng like_count, comments_count\n   - Test full publish() flow với image/video\n   - Test error cases: invalid token, timeout, rate limit\n\n2. **Integration tests**:\n   - Sử dụng Instagram test user (Meta cung cấp)\n   - Verify post xuất hiện trên Instagram profile\n   - Test video processing time < 60s\n   - Test metrics cập nhật sau 5 phút\n\n3. **E2E tests**:\n   - Tích hợp với Task 164 (Post Publishing Worker)\n   - Verify PostingAdapterFactory tạo đúng Instagram adapter\n   - Check post được lưu vào PostRepository với metrics\n\n4. **Edge cases**:\n   - Carousel post (3 images)\n   - Video > 60s (error handling)\n   - Invalid media URL\n   - Expired access token",
+        "status": "done",
+        "dependencies": [
+          "164"
+        ],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2025-12-12T01:39:12.169Z"
+      },
+      {
+        "id": 202,
+        "title": "Tạo 4 Instagram Use Cases",
+        "description": "Phát triển 4 use cases cho Instagram authentication: SaveInstagramTokenUseCase, GetInstagramAuthUseCase, RefreshInstagramTokenUseCase, và DisconnectInstagramUseCase.",
+        "details": "Tạo thư mục core/application/usecases/social/instagram/ và implement 4 use cases sau theo Clean Architecture pattern:\n\n1. **SaveInstagramTokenUseCase** (core/application/usecases/social/instagram/save-instagram-token.ts):\n- Input: { userId: string, accessToken: string, refreshToken?: string, expiresAt?: Date }\n- Repository: InstagramAuthRepository với method saveToken(userId, tokenData)\n- Validate token format và expiration theo Instagram Graph API (long-lived token 60 ngày)[7]\n- Log success/error với structured logging\n\n2. **GetInstagramAuthUseCase** (get-instagram-auth.ts):\n- Input: { userId: string }\n- Output: { accessToken, refreshToken?, expiresAt?, isValid: boolean }\n- Check token expiration và return isValid flag\n- Implement token validation logic theo Meta docs[6]\n\n3. **RefreshInstagramTokenUseCase** (refresh-instagram-token.ts):\n- Input: { userId: string }\n- Call Instagram Graph API /refresh_access_token endpoint[7]\n- Update token trong repository nếu refresh thành công\n- Handle 401/expired token errors và throw custom InstagramTokenExpiredError\n\n4. **DisconnectInstagramUseCase** (disconnect-instagram.ts):\n- Input: { userId: string }\n- Clear tất cả Instagram token data cho user\n- Optional: Call Instagram API để revoke token nếu supported\n\n**Best Practices:**\n- Sử dụng dependency injection với interfaces\n- Implement error handling với custom domain errors\n- TypeScript strict mode, readonly properties\n- Async/await pattern với proper error propagation\n- Follow Instagram Graph API requirements: Business/Creator accounts only[1][2]",
+        "testStrategy": "Unit tests với Jest:\n- **SaveInstagramToken**: Test valid/invalid token formats, expiration dates, duplicate saves\n- **GetInstagramAuth**: Test returns correct data, handles missing tokens, validates expiration\n- **RefreshInstagramToken**: Mock Instagram API responses (success, 401, network error), verify repository updates\n- **DisconnectInstagram**: Test clears all token data, handles non-existent user\n\nIntegration tests:\n- Test full flow: save → get → refresh → disconnect\n- Mock InstagramAuthRepository và verify method calls\n- Coverage >90% cho tất cả use cases\n\nManual tests:\n- Verify console logs và error messages\n- Test với real expired tokens từ Instagram API",
+        "status": "done",
+        "dependencies": [
+          "191"
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Tạo thư mục và implement SaveInstagramTokenUseCase",
+            "description": "Tạo file core/application/usecases/social/instagram/save-instagram-token.ts và implement use case lưu token Instagram với validation đầy đủ.",
+            "dependencies": [],
+            "details": "Implement input { userId: string, accessToken: string, refreshToken?: string, expiresAt?: Date }, sử dụng InstagramAuthRepository.saveToken(), validate token format và expiration 60 ngày theo Instagram Graph API, log structured success/error.",
+            "status": "pending",
+            "testStrategy": "Unit tests Jest: test valid/invalid token formats, expiration dates >60 ngày, duplicate saves, error handling với custom errors.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement GetInstagramAuthUseCase",
+            "description": "Tạo file get-instagram-auth.ts để lấy thông tin auth Instagram của user với kiểm tra validity.",
+            "dependencies": [
+              1
+            ],
+            "details": "Input { userId: string }, output { accessToken, refreshToken?, expiresAt?, isValid: boolean }, implement logic check expiration theo Meta docs, sử dụng repository để fetch data.",
+            "status": "pending",
+            "testStrategy": "Unit tests: test returns đúng data, handles missing tokens, validates expiration chính xác, edge cases như token sắp hết hạn.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement RefreshInstagramTokenUseCase",
+            "description": "Tạo file refresh-instagram-token.ts để refresh token Instagram qua Graph API.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Input { userId: string }, call /refresh_access_token endpoint, update repository nếu success, handle 401/expired với InstagramTokenExpiredError custom.",
+            "status": "pending",
+            "testStrategy": "Unit tests mock API: success refresh, 401 error, network error, verify repository update và error throwing đúng.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement DisconnectInstagramUseCase",
+            "description": "Tạo file disconnect-instagram.ts để xóa toàn bộ token Instagram của user.",
+            "dependencies": [
+              1
+            ],
+            "details": "Input { userId: string }, clear tất cả token data trong repository, optional call Instagram API revoke token nếu supported, log action.",
+            "status": "pending",
+            "testStrategy": "Unit tests: test clear data hoàn toàn, verify repository empty sau disconnect, handle missing user data.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Tích hợp dependency injection và viết unit tests đầy đủ",
+            "description": "Setup DI cho tất cả 4 use cases và hoàn thiện test suite theo Clean Architecture.",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Sử dụng interfaces cho InstagramAuthRepository, implement error handling custom domain errors, TypeScript strict mode, async/await proper, đảm bảo Business/Creator accounts only.",
+            "status": "pending",
+            "testStrategy": "Integration tests DI container, full coverage 4 use cases, mock repository và API calls, test error propagation và logging.",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-12-12T01:39:19.053Z"
+      },
+      {
+        "id": 203,
+        "title": "Implement Instagram OAuth API Routes for Business Account Integration",
+        "description": "Implement server-side Instagram OAuth 2.0 routes in Next.js/Node for initiating auth, handling callback and token exchange, selecting an Instagram Business account, refreshing tokens, and disconnecting accounts using shared factory helpers.",
+        "details": "### Scope & Goals\nImplement the full Instagram Business OAuth flow in `app/api/auth/instagram/` with the following route handlers:\n- `start/route.ts` – initiate OAuth\n- `callback/route.ts` – handle code exchange, long‑lived token acquisition, and initial account linking\n- `select-page/route.ts` – allow the user to select an Instagram Business account (via linked Facebook Page) and persist selection\n- `refresh/route.ts` – refresh long‑lived tokens before expiry\n- `disconnect/route.ts` – revoke/unlink Instagram integration for the current workspace/user\n- `depends.ts` – provide factory/helper functions for shared Instagram OAuth configuration, HTTP client, and persistence concerns.\n\nFollow current Instagram Business API + Facebook Login practices and align error‑handling and patterns with existing OAuth flows (e.g. TikTok, Facebook login, worker publishing logic).\n\n### Implementation Details\n\n#### 1. Shared configuration & factories (`depends.ts`)\n1. Define a typed config loader that reads and validates required env vars using zod (or existing config abstraction):\n   - `INSTAGRAM_CLIENT_ID`\n   - `INSTAGRAM_CLIENT_SECRET`\n   - `INSTAGRAM_REDIRECT_URI` (must match FB app settings and use HTTPS even in dev via proxy like ngrok)[2][4]\n   - Any additional: `INSTAGRAM_SCOPES`, `INSTAGRAM_API_BASE_URL`, `FACEBOOK_GRAPH_API_BASE_URL`.\n\n2. Implement a small Instagram OAuth service or wrap a maintained SDK (e.g. `@microfox/instagram-oauth`) to:\n   - Generate the authorization URL with proper query params: `client_id`, `redirect_uri`, `scope`, `response_type=code`, `state`[3][4].\n   - Exchange `code` for a short‑lived token (`/oauth/access_token`).\n   - Exchange short‑lived token for a long‑lived token (`GET /access_token` with `grant_type=ig_exchange_token`).\n   - Refresh long‑lived tokens when supported (`grant_type=ig_refresh_token`)[3][4][7].\n   - Optionally: validate and decode state for CSRF protection as recommended[3].\n\n3. Expose factory helpers, e.g.:\n   - `createInstagramOAuthClient()` – returns an object with `getAuthUrl`, `exchangeCodeForTokens`, `getLongLivedToken`, `refreshToken`.\n   - `createInstagramRepositoryDeps()` – adapter(s) to your persistence layer (e.g. User/WorkspaceSocialAccountRepository) for storing:\n     - Instagram user ID\n     - Associated Facebook Page ID & Instagram Business account ID\n     - Access token (encrypted/hashed) and `expiresAt`\n     - Granted scopes/permissions\n   - Optionally: `createLogger()`, `createErrorMapper()` to unify error formats consistent with Task 77 and 99.\n\n4. Ensure all external calls are wrapped with robust error mapping, returning domain‑level error objects instead of raw SDK/HTTP errors to fit existing error‑handling conventions (Task 77).\n\n#### 2. OAuth initiation route – `start/route.ts`\n1. Implement a Next.js route handler (e.g. `GET`):\n   - Resolve current user/workspace from session/auth middleware (follow existing TikTok/Facebook auth patterns).\n   - Instantiate the OAuth client via `createInstagramOAuthClient()`.\n   - Generate a `state` including:\n     - user/workspace identifier\n     - CSRF nonce\n     - optional `redirectTo` after success\n   - Persist state server‑side (e.g. short‑lived DB record or encrypted cookie) and include its ID/hash in the `state` parameter[3].\n   - Build and return a `307`/`302` redirect to the Instagram auth URL.\n\n2. Scopes:\n   - Request appropriate scopes for Instagram Business API via Facebook Login (e.g. `pages_show_list`, `instagram_basic`, `instagram_content_publish`, `instagram_manage_messages`, `public_profile`)[3][7].\n   - Centralize scope list in `depends.ts` for reuse and future changes.\n\n3. Security & best practices:\n   - Always use HTTPS redirect URIs (document in comments that localhost requires https/ngrok)[2].\n   - Do not leak `client_secret` to the client.\n   - Make `start` idempotent; repeated calls should simply redirect again.\n\n#### 3. Callback route – `callback/route.ts`\n1. Implement `GET` handler that:\n   - Parses `code`, `state`, and `error` from the query string.\n   - Validates `state` against stored value, returning 400/redirect with error on mismatch[3].\n   - If `error` is present, map it to a user‑friendly error and redirect back to the app with error code.\n\n2. On success (`code` present):\n   - Use `createInstagramOAuthClient().exchangeCodeForTokens(code)` to obtain a short‑lived access token[3][4].\n   - Immediately exchange for a long‑lived token via `getLongLivedToken`[3][4].\n   - Use Facebook Graph API to:\n     - Get the list of Facebook Pages for this user (`/me/accounts`)[7].\n     - For each Page, query linked Instagram Business account (`/{page-id}?fields=instagram_business_account`)[7].\n\n3. Persist a provisional Instagram auth record:\n   - Store long‑lived token, `expiresIn` -> `expiresAt`, user/workspace ID from state, and the candidate list of Pages/Instagram accounts.\n   - Mark status as `pending_page_selection` if multiple candidates exist.\n\n4. Redirect strategy:\n   - If only one valid Instagram Business account is found, immediately finalize linking and redirect to a success route.\n   - If multiple options are available, redirect to a front‑end route that will call `select-page` to finish selection.\n   - Always sign/encode a short‑lived identifier (e.g. `instagramAuthSessionId`) for the selection phase rather than exposing raw DB IDs.\n\n5. Error handling:\n   - Wrap all network calls in try/catch and return normalized JSON or redirects with structured error codes, leveraging patterns from Task 77 and 99.\n\n#### 4. Page selection route – `select-page/route.ts`\n1. Implement `POST` route that:\n   - Authenticates current user.\n   - Accepts a payload like `{ instagramAuthSessionId: string, pageId: string, instagramBusinessId: string }` validated with zod.\n   - Verifies that the session belongs to the current user/workspace and is in `pending_page_selection` state.\n   - Ensures the selected Page/Instagram ID is among the known candidates retrieved in the callback.\n\n2. On success:\n   - Update the Instagram account record to `active` with the chosen Page + Instagram Business account IDs.\n   - Persist any additional metadata needed by publishing and messaging components (for later integration with Task 164, 57, 50).\n\n3. Response:\n   - Return a small JSON DTO with the linked account info (IDs, username, profile picture URL if fetched, permissions) for immediate UI update.\n\n#### 5. Token refresh route – `refresh/route.ts`\n1. Implement `POST` or `PUT` handler for token rotation:\n   - Authenticates user and identifies the current workspace Instagram integration.\n   - Checks if token is near expiry (e.g. less than N days) before refreshing; allow forced refresh via query/body flag.\n   - Uses `createInstagramOAuthClient().refreshToken(currentLongLivedToken)`[3][4].\n\n2. Persist new token data:\n   - Replace stored token and update `expiresAt` atomically.\n   - Log refresh events for audit/troubleshooting.\n\n3. Return JSON with minimal yet useful info: `{ success: true, expiresAt: ..., lastRefreshedAt: ... }`.\n\n4. Consider background refresh:\n   - Keep route stateless enough so it can be triggered by a cron/worker as well as the UI.\n\n#### 6. Disconnect route – `disconnect/route.ts`\n1. Implement `POST` route that:\n   - Authenticates user and resolves the active Instagram integration for the workspace.\n   - Optionally calls Facebook Graph API/Instagram endpoint to invalidate token if supported.\n   - Marks the integration as `disconnected` in your DB and removes/rotates access tokens so they become unusable.\n\n2. Side‑effects and consistency:\n   - Detach Instagram from any scheduled posts or messaging configurations if necessary.\n   - Ensure worker publishing (Task 164) respects the disconnected state and no longer attempts to post.\n\n3. Response:\n   - Return `{ success: true }` or a structured error.\n\n#### 7. Cross‑cutting concerns & patterns\n1. **Error handling**\n   - Follow conventions from Task 77 and 99: consistent error shapes, logging of external API failures, and clear client messages without leaking secrets.\n   - Distinguish between user‑correctable errors (permission denied, account not business) and system errors (network, misconfiguration).\n\n2. **Security**\n   - Never expose access tokens or client secrets to the client.\n   - Use encrypted storage for tokens and consider token hashing if you only need them for outbound calls.\n   - Confirm CSRF protection by validating `state` and using same‑site cookies where applicable[3].\n\n3. **Extensibility**\n   - Design `depends.ts` so that additional Instagram API features (content publish, messages) can reuse the same client and configuration.\n   - Keep interfaces close to existing factories like `MessagingGatewayFactory` and `PostingAdapterFactory` to simplify future integration.\n\n4. **Documentation**\n   - Document required Facebook app configuration: redirect URIs, enabling Instagram Graph API/Instagram Basic Display, required scopes, and HTTPS restrictions[2][4][7].\n   - Add inline comments explaining key steps (state validation, long‑lived vs short‑lived tokens, page selection).\n",
+        "testStrategy": "1. **Unit tests for factories (`depends.ts`)**\n- Mock environment variables and assert that config loader validates required values and fails fast on missing/invalid config.\n- Mock HTTP/SDK layer to verify `createInstagramOAuthClient()`:\n  - Generates the correct auth URL (client_id, redirect_uri, scopes, response_type, state present).\n  - Calls token exchange and refresh endpoints with correct parameters and propagates typed results.\n\n2. **Route unit/integration tests – `start/route.ts`**\n- With a logged‑in user, call `GET /api/auth/instagram/start` and assert:\n  - Response is a redirect (302/307).\n  - `Location` header is Instagram auth URL with expected query params and state.\n  - A state record/cookie is created and associated with the user.\n- With missing or invalid config, assert a structured 500 error is returned with no secrets leaked.\n\n3. **Route tests – `callback/route.ts`**\n- Happy path:\n  - Mock Instagram token endpoints to return a short‑lived and long‑lived token.\n  - Mock Facebook Graph calls to return a single Page with an Instagram Business account.\n  - Call `GET /api/auth/instagram/callback?code=XYZ&state=VALID` and assert:\n    - State is validated and consumed.\n    - Final record stored with correct token, expiry, and linked Page/Instagram IDs.\n    - Response redirects to the expected success URL.\n- Multiple account path:\n  - Mock multiple candidate Pages/Instagram accounts and assert status `pending_page_selection` and redirect to selection UI.\n- Error paths:\n  - Invalid or mismatched state -> 400 or redirect with error.\n  - `error` query parameter from Instagram -> mapped error and redirect.\n  - Token exchange failure -> logged and surfaced as sanitized error.\n\n4. **Route tests – `select-page/route.ts`**\n- Valid selection:\n  - Pre‑seed a pending auth session with multiple candidates.\n  - POST a valid `{ instagramAuthSessionId, pageId, instagramBusinessId }` body.\n  - Assert:\n    - Payload is validated; incorrect shapes are rejected with 400.\n    - Ownership and candidate membership checks pass.\n    - Record transitions to `active` with correct IDs persisted.\n    - Response JSON matches the DTO contract.\n- Invalid session/user or page ID -> 403/404 with structured error.\n\n5. **Route tests – `refresh/route.ts`**\n- With an existing active Instagram integration close to expiry:\n  - Mock refresh endpoint to return a new token.\n  - Call the route and assert the DB record is updated with new token and `expiresAt`.\n  - Verify JSON response contains `success: true` and updated expiry.\n- When token far from expiry (no forced refresh) -> either no operation or explicit message, according to spec.\n- Handle external API errors gracefully and assert proper logging and HTTP status.\n\n6. **Route tests – `disconnect/route.ts`**\n- Happy path:\n  - With an active integration, call disconnect and assert:\n    - Integration marked as disconnected.\n    - Access token is removed/invalidated.\n    - Any dependent scheduling flags (if modeled) are cleared.\n    - Response `{ success: true }` is returned.\n- Invalid or missing integration -> 404 or appropriate error response.\n\n7. **End‑to‑end flow tests (API‑level, with mocks)**\n- Simulate a full flow:\n  1) `start` -> capture redirect URL and `state`.\n  2) `callback` with `code` + `state` -> long‑lived token + pending selection.\n  3) `select-page` -> finalize linking.\n  4) `refresh` -> rotate token.\n  5) `disconnect` -> unlink account.\n- Verify that at each step, the persisted data evolves as expected and no secrets leak into client responses.\n\n8. **Regression & robustness tests**\n- Add tests ensuring that error handling and response shapes comply with conventions from Task 77 and Task 99, including logging and SSE compatibility where relevant.\n- Confirm that tokens are never returned in API responses and that misconfiguration (e.g. missing HTTPS in redirect URI) is surfaced clearly in logs while keeping user‑facing messages generic.",
+        "status": "done",
+        "dependencies": [
+          "60",
+          "70",
+          "77",
+          "99",
+          "164"
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Thiết kế shared config, factory OAuth và repository trong depends.ts",
+            "description": "Thiết kế và triển khai file depends.ts để load cấu hình Instagram/Facebook, tạo client OAuth, adapter lưu trữ, logger và error mapper dùng chung cho tất cả route.",
+            "dependencies": [],
+            "details": "- Dùng zod (hoặc abstraction sẵn có) để load và validate các biến môi trường: INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET, INSTAGRAM_REDIRECT_URI (đảm bảo https), INSTAGRAM_SCOPES, INSTAGRAM_API_BASE_URL, FACEBOOK_GRAPH_API_BASE_URL.\n- Cài đặt hoặc wrap SDK/HTTP client (ví dụ axios hoặc @microfox/instagram-oauth nếu dùng) để tạo service Instagram OAuth: build auth URL (client_id, redirect_uri, scope, response_type=code, state), exchange code lấy short-lived token (/oauth/access_token), đổi sang long-lived token (GET /access_token với grant_type=ig_exchange_token), refresh token (grant_type=ig_refresh_token).\n- Cài đặt createInstagramOAuthClient() trả về các hàm: getAuthUrl, exchangeCodeForTokens, getLongLivedToken, refreshToken; xử lý state (encode/decode) cho CSRF.\n- Cài đặt createInstagramRepositoryDeps() để truy cập lớp persistence hiện có (User/WorkspaceSocialAccountRepository, v.v.) lưu: instagram user id, facebook page id, instagram business account id, access token (mã hoá/hash), expiresAt, scopes.\n- Thêm createLogger() và createErrorMapper() (hoặc reuse từ Task 77, 99) để map lỗi HTTP/SDK sang domain error chuẩn.\n- Đảm bảo mọi call external đều bọc qua lớp này và trả về error chuẩn cho các route sử dụng.\n<info added on 2025-12-12T01:41:05.993Z>\nĐã tạo xong start/route.ts với Instagram OAuth scopes và CSRF protection. File hoạt động chính xác với Facebook Graph API v19.0.\n</info added on 2025-12-12T01:41:05.993Z>\n<info added on 2025-12-12T01:46:05.395Z>\nĐã hoàn thành tích hợp Instagram OAuth với 5 routes: start, callback, select-page, refresh, disconnect. Đã triển khai 4 use cases, InstagramAuthService, và InstagramPostingAdapter. Cập nhật các loại miền (SocialPlatform, Platform) để hỗ trợ Instagram.\n</info added on 2025-12-12T01:46:05.395Z>",
+            "status": "done",
+            "testStrategy": "Viết unit test cho depends.ts: mock process.env để test validate config, mock HTTP/SDK để kiểm tra auth URL đúng tham số, luồng exchange/refresh token được gọi với endpoint & params chính xác, và error mapping trả về domain error như mong muốn.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:41:23.918Z"
+          },
+          {
+            "id": 2,
+            "title": "Triển khai route start/route.ts để khởi tạo Instagram OAuth",
+            "description": "Cài đặt route handler start/route.ts (GET) để khởi tạo flow OAuth Instagram Business, tạo state bảo mật và redirect người dùng tới authorization URL.",
+            "dependencies": [
+              1
+            ],
+            "details": "- Sử dụng middleware/auth hiện có để xác định user/workspace hiện tại, tái sử dụng pattern từ TikTok/Facebook auth.\n- Dùng createInstagramOAuthClient() và config/scopes tập trung từ depends.ts để tạo authorization URL theo chuẩn Instagram OAuth (client_id, redirect_uri, scope, response_type=code, state).\n- Tạo object state gồm: user/workspace id, CSRF nonce, optional redirectTo; lưu server-side (DB bản ghi tạm, Redis, hoặc encrypted cookie) và chỉ truyền ID/hash vào query state.\n- Đảm bảo dùng HTTPS redirect URI (có comment về yêu cầu https/ngrok trong dev), không bao giờ expose client_secret sang client.\n- Handler trả về 302/307 redirect sang auth URL; đảm bảo route idempotent (gọi nhiều lần vẫn tạo/ghi đè state hợp lệ và redirect).",
+            "status": "done",
+            "testStrategy": "Viết unit/integration test cho start route: mock user/session, mock InstagramOAuthClient.getAuthUrl, kiểm tra state được tạo và lưu, response status 302/307 và Location header là URL Instagram với đầy đủ query params; test gọi lặp lại không gây lỗi và vẫn redirect hợp lệ.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:42:55.428Z"
+          },
+          {
+            "id": 3,
+            "title": "Triển khai callback/route.ts xử lý code exchange và tạo session chọn page",
+            "description": "Cài đặt route callback/route.ts (GET) để validate state, trao đổi code lấy short/long-lived token, gọi Facebook Graph API lấy danh sách Page/Instagram Business, lưu bản ghi tạm và điều hướng phù hợp.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "- Parse các query param: code, state, error.\n- Validate state với dữ liệu đã lưu (CSRF + user/workspace), nếu mismatch trả về 400 hoặc redirect về frontend với error code chuẩn.\n- Nếu có error từ Instagram/Facebook, map qua error mapper và redirect về frontend kèm error.\n- Khi có code: dùng createInstagramOAuthClient().exchangeCodeForTokens(code) để lấy short-lived token, sau đó gọi getLongLivedToken để lấy long-lived token và thời gian hết hạn.\n- Gọi Facebook Graph API bằng access token: /me/accounts để lấy danh sách Page và với mỗi Page, gọi /{page-id}?fields=instagram_business_account để lấy instagram_business_account id.\n- Tạo bản ghi Instagram auth tạm trong persistence: lưu long-lived token (mã hoá/hash), expiresAt, user/workspace id, danh sách candidate Page/Instagram account, trạng thái pending_page_selection nếu có nhiều lựa chọn.\n- Xử lý redirect: nếu chỉ có một Instagram Business account hợp lệ thì finalize linking (update trạng thái active, gắn Page + IG business id) và redirect tới route success trên frontend; nếu nhiều lựa chọn thì tạo instagramAuthSessionId (ID ký/sign) và redirect tới frontend chọn page, không lộ raw DB id.\n- Tất cả call external bọc try/catch, dùng error mapper để trả về JSON/redirect với error shape thống nhất (theo Task 77, 99).",
+            "status": "done",
+            "testStrategy": "Viết unit/integration test: các case state invalid, error từ provider, thành công với 0/1/n account; mock HTTP layer cho Instagram/Facebook. Kiểm tra short-lived -> long-lived token được gọi đúng, bản ghi tạm được lưu với trạng thái đúng, và redirect URL chứa session id đã sign khi cần chọn page.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:43:47.337Z"
+          },
+          {
+            "id": 4,
+            "title": "Triển khai select-page/route.ts để hoàn tất liên kết Instagram Business",
+            "description": "Cài đặt route select-page/route.ts (POST) để xác thực người dùng, validate payload chọn page, kiểm tra session, cập nhật bản ghi Instagram account sang trạng thái active và trả về DTO cho UI.",
+            "dependencies": [
+              1,
+              3
+            ],
+            "details": "- Xây dựng schema zod cho body: { instagramAuthSessionId: string, pageId: string, instagramBusinessId: string }.\n- Xác thực user/workspace từ session, load session tạm tương ứng với instagramAuthSessionId qua repository.\n- Kiểm tra session thuộc về user/workspace hiện tại và trạng thái là pending_page_selection; xác minh cặp pageId/instagramBusinessId có trong danh sách candidate đã lưu từ callback.\n- Khi hợp lệ: cập nhật bản ghi Instagram account với trạng thái active, gán pageId, instagramBusinessId, lưu thêm metadata cần cho publish/messaging (liên kết với Task 164, 57, 50).\n- Xoá hoặc vô hiệu hoá session tạm để tránh reuse.\n- Trả về JSON DTO gọn: ids, username, avatar (nếu đã fetch được), permissions/scopes cho UI.\n- Dùng error mapper chung để trả về các lỗi validation/authorization/system theo format chuẩn.",
+            "status": "done",
+            "testStrategy": "Viết unit test cho select-page route: các case session không tồn tại, không thuộc user, sai trạng thái, pageId/instagramBusinessId không thuộc candidate; case thành công phải cập nhật record sang active với IDs đúng và trả về DTO chuẩn. Mock repository để không đụng DB thật.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:44:45.545Z"
+          },
+          {
+            "id": 5,
+            "title": "Triển khai refresh/route.ts và disconnect/route.ts cho quản lý vòng đời token",
+            "description": "Cài đặt hai route refresh/route.ts (POST/PUT) và disconnect/route.ts (POST) để hỗ trợ refresh token dài hạn, log sự kiện, và ngắt kết nối Instagram Business khỏi workspace.",
+            "dependencies": [
+              1,
+              3,
+              4
+            ],
+            "details": "- refresh route:\n  - Xác thực user/workspace, load integration Instagram hiện tại.\n  - Kiểm tra gần hết hạn (ví dụ còn < N ngày) hoặc cờ forceRefresh trong body/query.\n  - Gọi createInstagramOAuthClient().refreshToken(currentLongLivedToken) lấy token mới và thời gian hết hạn; update atomically token + expiresAt, log sự kiện refresh.\n  - Trả về JSON: { success: true, expiresAt, lastRefreshedAt }.\n  - Thiết kế handler stateless (dựa trên id workspace/integration) để có thể gọi từ cron/worker.\n- disconnect route:\n  - Xác thực user/workspace, load integration Instagram active.\n  - Nếu API hỗ trợ, gọi Facebook/Instagram revoke/invalidate token; xử lý lỗi nhưng đảm bảo trạng thái nội bộ vẫn được cập nhật.\n  - Đánh dấu integration là disconnected, xoá/rotate token để không thể dùng lại; detach khỏi scheduled posts, messaging config nếu có (theo pattern Task 164, 57, 50).\n  - Đảm bảo worker/publisher tôn trọng trạng thái disconnected.\n  - Trả về JSON { success: true } hoặc error chuẩn khi có lỗi không thể recover.\n- Cả hai route dùng logger + error mapper chung từ depends.ts/Task 77, 99.",
+            "status": "done",
+            "testStrategy": "Viết unit/integration test: với refresh route, test case token chưa gần hết hạn, gần hết hạn, forceRefresh=true, lỗi từ provider; assert token và expiresAt được update đúng và response JSON đúng. Với disconnect route, test khi không tìm thấy integration, khi revoke API lỗi, và khi ngắt thành công phải đánh dấu disconnected, clear token, và trả về { success: true }.",
+            "parentId": "undefined",
+            "updatedAt": "2025-12-12T01:44:52.609Z"
+          }
+        ],
+        "updatedAt": "2025-12-12T01:44:52.609Z"
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-12-11T13:08:58.744Z",
-      "taskCount": 199,
-      "completedCount": 187,
+      "lastModified": "2025-12-12T01:44:52.612Z",
+      "taskCount": 203,
+      "completedCount": 191,
       "tags": [
         "master"
-      ]
+      ],
+      "created": "2025-12-12T01:46:01.760Z",
+      "description": "Tasks for master context"
     }
   }
 }

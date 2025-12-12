@@ -1,16 +1,13 @@
 import type { SocialAuth } from "@/core/domain/social/social-auth"
-import { calculateExpiresAt } from "@/core/domain/social/social-auth"
 import type {
   SocialAuthService,
   RefreshTokenPayload,
 } from "@/core/application/interfaces/social/social-auth-service"
+import type { PlatformOAuthService } from "@/core/application/interfaces/social/platform-oauth-adapter"
 import { ObjectId } from "mongodb"
 
 export interface RefreshYouTubeTokenRequest {
   userId: ObjectId
-  newAccessToken: string
-  newRefreshToken: string
-  expiresInSeconds: number
 }
 
 export interface RefreshYouTubeTokenResponse {
@@ -20,18 +17,52 @@ export interface RefreshYouTubeTokenResponse {
 }
 
 export class RefreshYouTubeTokenUseCase {
-  constructor(private socialAuthService: SocialAuthService) {}
+  constructor(
+    private PlatformOAuthService: PlatformOAuthService, // External YouTube API
+    private socialAuthService: SocialAuthService      // MongoDB repository
+  ) { }
 
   async execute(
     request: RefreshYouTubeTokenRequest
   ): Promise<RefreshYouTubeTokenResponse> {
+    // Check if auth exists
+    const existing = await this.socialAuthService.getByUserAndPlatform(
+      request.userId,
+      "youtube"
+    )
+
+    if (!existing) {
+      return {
+        success: false,
+        message: "YouTube account not connected",
+      }
+    }
+
     try {
+      // 1. Call YouTube API to refresh token
+      if (!this.PlatformOAuthService.refreshToken) {
+        return {
+          success: false,
+          message: "Platform does not support token refresh",
+        }
+      }
+
+      const tokenResult = await this.PlatformOAuthService.refreshToken()
+
+      if (!tokenResult) {
+        return {
+          success: false,
+          message: "Failed to refresh token from platform",
+        }
+      }
+
+      // 2. Save new token to database
       const payload: RefreshTokenPayload = {
         userId: request.userId,
         platform: "youtube",
-        newAccessToken: request.newAccessToken,
-        newRefreshToken: request.newRefreshToken,
-        expiresInSeconds: request.expiresInSeconds
+        newAccessToken: tokenResult.accessToken,
+        newRefreshToken: existing.refreshToken, // YouTube refresh token is reusable
+        expiresInSeconds: tokenResult.expiresIn,
       }
 
       const socialAuth = await this.socialAuthService.refreshToken(payload)
@@ -39,7 +70,7 @@ export class RefreshYouTubeTokenUseCase {
       if (!socialAuth) {
         return {
           success: false,
-          message: "YouTube account not found or update failed",
+          message: "Failed to save refreshed token",
         }
       }
 

@@ -1,7 +1,7 @@
 import type { PostMetrics, PostMedia } from "@/core/domain/marketing/post";
 import type { WordPressAuthService } from "../auth/wordpress-auth-service";
 import { BasePostingAdapter } from "./base-posting-service";
-import type { PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/social/posting-adapter";
+import type { PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/marketing/posting-adapter";
 
 interface WordPressPostResponse {
     ID?: number; // WordPress.com uses uppercase ID
@@ -216,14 +216,39 @@ export class WordPressPostingAdapter extends BasePostingAdapter {
 
     async delete(postId: string): Promise<boolean> {
         try {
-            const endpoint = this.getEndpoint(`posts/${postId}`);
+            console.log(`[WordPressPostingAdapter] Deleting WordPress post:`, { postId });
+
+            // WordPress.com API uses POST to /delete/ endpoint instead of DELETE method
+            const endpoint = this.getEndpoint(`posts/${postId}/delete`);
+            console.log(`[WordPressPostingAdapter] Delete endpoint:`, endpoint);
+
             const response = await fetch(endpoint, {
-                method: "DELETE",
+                method: "POST", // Use POST method for WordPress.com delete endpoint
                 headers: this.getHeaders(),
             });
 
-            return response.ok;
+            console.log(`[WordPressPostingAdapter] Delete response:`, {
+                status: response.status,
+                ok: response.ok,
+                statusText: response.statusText
+            });
+
+            // WordPress.com delete endpoint returns 200 OK on successful deletion
+            if (response.ok) {
+                const data = await response.json();
+                console.log(`[WordPressPostingAdapter] Delete successful:`, data);
+                return true;
+            } else {
+                const errorText = await response.text();
+                console.error(`[WordPressPostingAdapter] Delete failed:`, {
+                    status: response.status,
+                    statusText: response.statusText,
+                    errorText
+                });
+                return false;
+            }
         } catch (error) {
+            console.error(`[WordPressPostingAdapter] Delete error:`, error);
             this.logError("Failed to delete WordPress post", error);
             return false;
         }

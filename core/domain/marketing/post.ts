@@ -2,8 +2,9 @@
  * Platform types for social media marketing
  * Note: "website" and "telegram" are messaging-only platforms
  * Note: "wordpress" for blog post publishing
+ * Note: "instagram" for Instagram Business Account posts
  */
-export type Platform = "facebook" | "youtube" | "tiktok" | "zalo" | "website" | "telegram" | "wordpress";
+export type Platform = "facebook" | "youtube" | "tiktok" | "zalo" | "website" | "telegram" | "wordpress" | "instagram";
 
 /**
  * Content types based on platform capabilities

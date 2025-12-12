@@ -1,6 +1,6 @@
 import type { Post, PostMedia, Platform, PlatformMetadata } from "@/core/domain/marketing/post"
 import type { PostService, PostPayload } from "@/core/application/interfaces/marketing/post-service"
-import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter"
+import type { PostingAdapterFactory } from "@/core/application/interfaces/marketing/posting-adapter"
 import type { QueueService } from "@/core/application/interfaces/shared/queue-service"
 
 export interface CreatePostRequest extends PostPayload {

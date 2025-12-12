@@ -1,9 +1,7 @@
-import axios from "axios";
-import { BasePlatformAuthService } from "./base-auth-service";
-import type { PlatformAuthConfig } from "@/core/application/interfaces/social/auth-service";
-import { WordPressOAuthGateway } from "./wordpress-oauth-gateway";
+import { BasePlatformOAuthService } from "./utils/base-auth-service";
+import type { PlatformOAuthConfig } from "@/core/application/interfaces/social/platform-oauth-adapter";
 
-export interface WordPressPlatformConfig extends PlatformAuthConfig {
+export interface WordPressAuthConfig extends PlatformOAuthConfig {
   siteUrl?: string; // WordPress site URL (blog_url from Jetpack)
   blogId?: string; // WordPress.com blog ID (unique identifier)
 }
@@ -12,27 +10,80 @@ export interface WordPressPlatformConfig extends PlatformAuthConfig {
  * WordPress Authentication Service using Jetpack OAuth
  * Works for both WordPress.com and self-hosted WordPress with Jetpack
  */
-export class WordPressAuthService extends BasePlatformAuthService {
-  private oauth: WordPressOAuthGateway;
+export class WordPressAuthService extends BasePlatformOAuthService {
+  protected baseUrl = "https://public-api.wordpress.com/rest/v1.1";
+  private _cachedAccessToken: string | null = null;
+  private _tokenExpireTime: number | null = null;
 
-  constructor(protected config: WordPressPlatformConfig) {
-    super(config);
-    this.oauth = new WordPressOAuthGateway({
-      clientId: process.env.WP_CLIENT_ID!,
-      clientSecret: process.env.WP_CLIENT_SECRET!,
-      redirectUri: process.env.WP_REDIRECT_URI!,
-      siteUrl: config.siteUrl,
-      blogId: config.blogId,
-    });
+  constructor(private wpConfig: WordPressAuthConfig) {
+    super(wpConfig);
   }
 
   /**
-   * Get WordPress OAuth authorization URL
-   * @param state Optional state parameter for CSRF protection
-   * @returns Authorization URL
+   * Exchange authorization code for access token
+   * Implements PlatformOAuthService.exchangeCodeForToken interface method
    */
-  getAuthorizationUrl(state?: string): string {
-    return this.oauth.getAuthorizationUrl(state);
+  async exchangeCodeForToken(
+    code: string,
+    clientId: string,
+    clientSecret: string,
+    redirectUri: string
+  ): Promise<{
+    access_token: string;
+    blog_id: string;
+    blog_url: string;
+    token_type: string;
+    scope: string;
+  }> {
+    const payload = new URLSearchParams({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: redirectUri,
+      client_id: clientId,
+      client_secret: clientSecret,
+    });
+
+    this.log(`Exchanging token with redirect_uri: ${redirectUri}`);
+
+    const res = await fetch("https://public-api.wordpress.com/oauth2/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: payload.toString(),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      this.log(`Token exchange failed: ${res.status} - ${errorText}`);
+      throw new Error(`Token exchange failed: ${res.status} - ${errorText}`);
+    }
+
+    const data = await res.json();
+
+    this.log(`Token exchange successful: blog_id=${data.blog_id}, blog_url=${data.blog_url}`);
+
+    return data;
+  }
+
+  /**
+   * Get valid access token, refreshing if necessary
+   */
+  private async getValidAccessToken(): Promise<string> {
+    // Check if we have a cached token that's still valid
+    if (this._cachedAccessToken && this._tokenExpireTime && Date.now() < this._tokenExpireTime) {
+      return this._cachedAccessToken;
+    }
+
+    // Check if the config token is expired
+    if (this.isExpired()) {
+      // Refresh the token
+      const { accessToken, expiresIn } = await this.refreshToken();
+      this._cachedAccessToken = accessToken;
+      this._tokenExpireTime = Date.now() + (expiresIn * 1000) - (5 * 60 * 1000); // 5 min buffer
+      return accessToken;
+    }
+
+    // Use the token from config
+    return this.getAccessToken();
   }
 
   /**
@@ -42,19 +93,25 @@ export class WordPressAuthService extends BasePlatformAuthService {
    */
   async verifyAuth(): Promise<boolean> {
     try {
-      if (!this.config.blogId) {
+      const token = await this.getValidAccessToken();
+
+      if (!this.wpConfig.blogId) {
         this.log("No blog ID available for verification");
         return false;
       }
 
-      // Use Jetpack API to verify access
-      const url = `https://public-api.wordpress.com/rest/v1.1/sites/${this.config.blogId}`;
-      await axios.get(url, {
-        headers: { Authorization: `Bearer ${this.getAccessToken()}` },
+      const url = `${this.baseUrl}/sites/${this.wpConfig.blogId}`;
+
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      return true;
-    } catch (err: any) {
-      this.logError("verifyAuth failed", err);
+
+      const data = await response.json();
+      return !data.error;
+    } catch (error) {
+      console.error("WordPress auth verification failed:", error);
       return false;
     }
   }
@@ -64,28 +121,13 @@ export class WordPressAuthService extends BasePlatformAuthService {
    * Note: Jetpack OAuth tokens don't expire, so this always returns null
    * @returns null (Jetpack tokens are permanent)
    */
-  async refreshToken(): Promise<{ accessToken: string; expiresIn: number } | null> {
+  async refreshToken(): Promise<{ accessToken: string; expiresIn: number }> {
     this.log("Jetpack OAuth tokens do not expire and cannot be refreshed");
-    return null;
-  }
-
-  /**
-   * Get WordPress site information via Jetpack API
-   * Works for both WordPress.com and self-hosted sites
-   * @returns Site info or null if failed
-   */
-  async getSiteInfo(): Promise<any> {
-    try {
-      if (!this.config.blogId) {
-        this.log("No blog ID available");
-        return null;
-      }
-
-      return await this.oauth.getSiteInfo(this.getAccessToken(), this.config.blogId);
-    } catch (err: any) {
-      this.logError("getSiteInfo failed", err);
-      return null;
-    }
+    // Return default values for compatibility with caching logic
+    return {
+      accessToken: this.getAccessToken(),
+      expiresIn: 3600, // 1 hour default
+    };
   }
 
   /**
@@ -94,35 +136,13 @@ export class WordPressAuthService extends BasePlatformAuthService {
    */
   getAuthData() {
     // Determine token type based on available data
-    const isWpCom = !!this.config.blogId && !this.config.siteUrl?.includes('wp-json');
+    const isWpCom = !!this.wpConfig.blogId && !this.wpConfig.siteUrl?.includes('wp-json');
 
     return {
       accessToken: this.getAccessToken(),
       tokenType: isWpCom ? "wpcom" as const : "self-host" as const,
-      siteUrl: this.config.siteUrl,
-      siteId: this.config.blogId,
+      siteUrl: this.wpConfig.siteUrl,
+      siteId: this.wpConfig.blogId,
     };
   }
-}
-
-/**
- * Create WordPress auth service for user
- */
-export async function createWordPressAuthServiceForUser(userId: string): Promise<WordPressAuthService> {
-  // Import here to avoid circular dependencies
-  const { SocialAuthRepository } = await import("@/infrastructure/repositories/social/social-auth-repo");
-  const { ObjectId } = await import("mongodb");
-
-  const repo = new SocialAuthRepository();
-  const authData = await repo.getByUserAndPlatform(new ObjectId(userId), "wordpress" as any);
-  if (!authData) {
-    throw new Error(`No WordPress authentication found for user ${userId}`);
-  }
-
-  return new WordPressAuthService({
-    accessToken: authData.accessToken,
-    expiresAt: authData.expiresAt,
-    siteUrl: authData.pageName, // Using pageName to store site URL for WordPress
-    blogId: authData.openId, // Using openId to store blog ID for WordPress
-  });
 }

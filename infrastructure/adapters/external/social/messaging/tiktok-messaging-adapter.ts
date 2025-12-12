@@ -1,4 +1,4 @@
-import type { SendMessageResult } from "@/core/application/interfaces/social/messaging-adapter";
+import type { SendMessageResult } from "@/core/application/interfaces/messaging/messaging-adapter";
 import type { TikTokAuthService } from "../auth/tiktok-auth-service";
 import { BaseMessagingAdapter } from "./messaging-service";
 

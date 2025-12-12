@@ -1,6 +1,6 @@
 import { Worker, Job, Queue } from 'bullmq'
 import Redis from 'ioredis'
-import { PostingAdapterFactory } from '@/core/application/interfaces/social/posting-adapter'
+import { PostingAdapterFactory } from '@/core/application/interfaces/marketing/posting-adapter'
 import { PostRepository } from '@/infrastructure/repositories/marketing/post-repo'
 import { getPostingAdapterFactory } from '@/infrastructure/adapters/external/social/factories/posting-adapter-factory'
 import type { Platform } from '@/core/domain/marketing/post'

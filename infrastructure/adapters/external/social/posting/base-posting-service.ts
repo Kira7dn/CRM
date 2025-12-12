@@ -1,5 +1,5 @@
 import type { Platform, PostMetrics } from "@/core/domain/marketing/post";
-import type { PostingService, PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/social/posting-adapter";
+import type { PostingService, PostingPublishRequest, PostingPublishResponse } from "@/core/application/interfaces/marketing/posting-adapter";
 
 /**
  * Base class for posting adapters with common utilities

@@ -6,7 +6,7 @@ import { CreatePostUseCase } from "@/core/application/usecases/marketing/post/cr
 import { UpdatePostUseCase } from "@/core/application/usecases/marketing/post/update-post";
 import { DeletePostUseCase } from "@/core/application/usecases/marketing/post/delete-post";
 
-import type { PostingAdapterFactory } from "@/core/application/interfaces/social/posting-adapter";
+import type { PostingAdapterFactory } from "@/core/application/interfaces/marketing/posting-adapter";
 import { getPostingAdapterFactory } from "@/infrastructure/adapters/external/social/factories/posting-adapter-factory";
 import { BullMQAdapter } from "@/infrastructure/queue/bullmq-adapter";
 import type { QueueService } from "@/core/application/interfaces/shared/queue-service";

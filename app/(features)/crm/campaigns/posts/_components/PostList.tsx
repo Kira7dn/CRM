@@ -6,6 +6,7 @@ import { usePostStore } from '../_store/usePostStore'
 import { deletePostAction } from '../actions'
 import { Button } from '@shared/ui/button'
 import { Trash2, Edit, Eye, Clock, CheckCircle, XCircle, Calendar } from 'lucide-react'
+import { toast } from 'sonner'
 import PostDetailModal from './PostDetailModal'
 import PostForm from './PostForm'
 
@@ -17,6 +18,7 @@ const PLATFORM_COLORS: Record<Platform, string> = {
   website: 'bg-gray-600 text-white',
   telegram: 'bg-blue-400 text-white',
   wordpress: 'bg-[#21759B] text-white',
+  instagram: 'bg-pink-600 text-white',
 }
 
 const PLATFORM_LABELS: Record<Platform, string> = {
@@ -27,6 +29,7 @@ const PLATFORM_LABELS: Record<Platform, string> = {
   website: 'WS',
   telegram: 'TG',
   wordpress: 'WP',
+  instagram: 'IG',
 }
 
 export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
@@ -44,10 +47,38 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
     p.title.toLowerCase().includes(filter.toLowerCase())
   )
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this post?')) {
       startTransition(async () => {
-        await deletePostAction(id)
+        try {
+          const result = await deletePostAction(id)
+
+          if (result.success) {
+            // Remove from local state
+            setPosts(posts.filter(p => p.id !== id))
+
+            // Check if any platforms were successfully deleted
+            const deletedPlatforms = Object.keys(result.deletedOnPlatforms || {}).filter(
+              platform => result.deletedOnPlatforms![platform]
+            )
+
+            if (deletedPlatforms.length > 0) {
+              toast.success(`Post deleted successfully from CRM and ${deletedPlatforms.join(', ')} platforms`)
+            } else {
+              toast.success("Post deleted from CRM", {
+                description: "Post was removed from database but not from external platforms"
+              })
+            }
+          } else {
+            toast.error("Delete failed", {
+              description: result.error || "Failed to delete post"
+            })
+          }
+        } catch (error) {
+          toast.error("Delete failed", {
+            description: error instanceof Error ? error.message : "An unexpected error occurred"
+          })
+        }
       })
     }
   }
