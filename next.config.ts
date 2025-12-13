@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push('bullmq', 'ioredis')
+    }
+    return config
+  },
   reactStrictMode: false,
   experimental: {
     serverActions: {

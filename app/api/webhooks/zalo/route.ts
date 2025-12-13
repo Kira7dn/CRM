@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { receiveMessageUseCase } from "@/app/api/messaging/depends";
-import { broadcastEvent } from "@/app/api/events/stream/route";
+import { broadcastEvent } from "@/app/api/events/stream";
 import crypto from "crypto";
 
 /**
