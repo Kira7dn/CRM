@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useToast } from "@/app/(features)/crm/campaigns/posts/_hooks/use-toast";
 import { Button } from "@shared/ui/button";
 import {
   Form,
@@ -32,6 +31,7 @@ import {
 import { DateTimePicker } from "./date-picker";
 import { ToastAction } from "@shared/ui/toast";
 import { useEvents } from "./context/events-context";
+import { useToast } from "@shared/hooks/use-toast";
 
 const eventAddFormSchema = z.object({
   title: z.string().min(1, { message: "Please enter a title." }),

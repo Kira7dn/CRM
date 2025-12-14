@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useToast } from "@/app/(features)/crm/campaigns/posts/_hooks/use-toast";
 import { Button } from "@shared/ui/button";
 import {
   AlertDialog,
@@ -14,6 +13,7 @@ import {
 } from "@shared/ui/alert-dialog";
 import { ToastAction } from "@shared/ui/toast";
 import { useEvents } from "./context/events-context";
+import { useToast } from "@/@shared/hooks/use-toast";
 
 interface EventDeleteFormProps {
   id?: string;

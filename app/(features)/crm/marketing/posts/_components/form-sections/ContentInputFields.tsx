@@ -14,8 +14,8 @@ interface ContentInputFieldsProps {
   setVariations: (variations: Array<{ title: string; content: string; style: string }>) => void
   idea?: string
   setIdea?: (idea: string) => void
-  detailContentsInstruction?: string
-  setDetailContentsInstruction?: (instruction: string) => void
+  contentInstruction?: string
+  setContentInstruction?: (instruction: string) => void
   selectedProduct?: { id: number; name: string; url?: string } | null
   setSelectedProduct?: (product: { id: number; name: string; url?: string } | null) => void
   products?: Array<{ id: number; name: string; url?: string }>
@@ -30,8 +30,8 @@ export default function ContentInputFields({
   setVariations,
   idea,
   setIdea,
-  detailContentsInstruction,
-  setDetailContentsInstruction,
+  contentInstruction,
+  setContentInstruction,
   selectedProduct,
   setSelectedProduct,
   products = [],
@@ -83,13 +83,13 @@ export default function ContentInputFields({
       )}
 
       {/* Detail Content Instruction (NEW) */}
-      {setDetailContentsInstruction && (
+      {setContentInstruction && (
         <div>
-          <Label htmlFor="detailContentsInstruction">Specific Instructions for this Post</Label>
+          <Label htmlFor="contentInstruction">Specific Instructions for this Post</Label>
           <textarea
-            id="detailContentsInstruction"
-            value={detailContentsInstruction || ''}
-            onChange={(e) => setDetailContentsInstruction(e.target.value)}
+            id="contentInstruction"
+            value={contentInstruction || ''}
+            onChange={(e) => setContentInstruction(e.target.value)}
             rows={3}
             placeholder="e.g., Emphasize premium quality, include customer testimonial, add urgency..."
             className="w-full border rounded-md p-3"

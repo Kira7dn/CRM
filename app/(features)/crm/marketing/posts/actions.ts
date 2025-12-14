@@ -41,7 +41,7 @@ export async function createPostAction(formData: FormData) {
   let media: PostMedia | undefined = undefined
   if (mediaJson) {
     const parsed = JSON.parse(mediaJson)
-    media = Array.isArray(parsed) ? parsed[0] : parsed
+    media = parsed
   }
 
   const hashtags = hashtagsStr
@@ -135,10 +135,8 @@ export async function updatePostAction(id: string, formData: FormData) {
     }))
   }
 
-  if (mediaJson) {
-    const parsed = JSON.parse(mediaJson)
-    updateData.media = Array.isArray(parsed) ? parsed[0] : parsed
-  }
+  if (mediaJson) updateData.media = JSON.parse(mediaJson)
+
 
   if (hashtagsStr !== undefined) {
     updateData.hashtags = hashtagsStr

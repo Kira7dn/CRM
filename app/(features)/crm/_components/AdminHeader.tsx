@@ -92,12 +92,12 @@ const NAV_GROUPS: Array<NavGroup & { key: string }> = [
     ],
   },
   {
-    key: "campaigns",
-    label: "Chiến dịch",
+    key: "marketing",
+    label: "Tiếp thị",
     items: [
-      { href: "/crm/campaigns", label: "Tổng quan", icon: BarChart3, roles: ["admin", "sale"] },
-      { href: "/crm/campaigns/banners", label: "Banner", icon: ImageIcon, roles: ["admin", "sale"] },
-      { href: "/crm/campaigns/posts", label: "Bài viết", icon: FileText, roles: ["admin", "sale"] },
+      { href: "/crm/marketing", label: "Tổng quan", icon: BarChart3, roles: ["admin", "sale"] },
+      { href: "/crm/marketing/banners", label: "Banner", icon: ImageIcon, roles: ["admin", "sale"] },
+      { href: "/crm/marketing/posts", label: "Bài viết", icon: FileText, roles: ["admin", "sale"] },
     ],
   },
   {

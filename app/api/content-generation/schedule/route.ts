@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server"
 import { GeneratePostScheduleUseCase } from "@/core/application/usecases/marketing/post/generate-post-schedule"
-import { getBrandMemoryAction } from "@/app/(features)/crm/campaigns/posts/actions"
+import { getBrandMemoryAction } from "@/app/(features)/crm/marketing/posts/actions"
 
 export async function POST(request: NextRequest) {
   try {

@@ -42,6 +42,7 @@ export default function PostForm({
 
   const [isSubmitting, startTransition] = useTransition()
   const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(post?.platforms.map(p => p.platform) || [])
+  const primaryPlatform = selectedPlatforms.at(0)
   const [contentType, setContentType] = useState<ContentType>(post?.contentType || 'post')
   const [media, setMedia] = useState<PostMedia | null>(post?.media || null)
   const [hashtags, setHashtags] = useState(post?.hashtags?.join(' ') || '')
@@ -76,7 +77,7 @@ export default function PostForm({
   const [idea, setIdea] = useState(initialIdea || '')
   const [selectedProduct, setSelectedProduct] = useState<{ id: number; name: string; url?: string } | null>(null)
   const [products, setProducts] = useState<Array<{ id: number; name: string; url?: string }>>([])
-  const [detailContentsInstruction, setDetailContentsInstruction] = useState('')
+  const [contentInstruction, setContentInstruction] = useState('')
 
   // Track if form has content
   const hasContent = () => {
@@ -118,11 +119,14 @@ export default function PostForm({
   const isVideoContent = ['video', 'reel', 'short'].includes(contentType)
 
   const handleCheckSimilarity = async (content: string, generatedTitle: string) => {
+    if (!primaryPlatform) {
+      throw new Error('At least one platform is required')
+    }
     try {
       const result = await checkContentSimilarityAction({
         content,
         title: generatedTitle,
-        platform: selectedPlatforms[0],
+        platform: primaryPlatform,
         similarityThreshold: 0.85
       })
 
@@ -148,13 +152,15 @@ export default function PostForm({
     try {
       if (generationMode === 'multi-pass') {
         setGenerationProgress(['🤔 Generating ideas...'])
-
+        if (!primaryPlatform) {
+          throw new Error('At least one platform is required')
+        }
         const result = await generatePostMultiPassAction({
           topic: title || idea || undefined, // Use idea if no title
-          platform: selectedPlatforms[0],
+          platform: primaryPlatform,
           idea: idea || undefined, // NEW
           productUrl: selectedProduct?.url, // NEW
-          detailInstruction: detailContentsInstruction || undefined, // NEW
+          detailInstruction: contentInstruction || undefined, // NEW
         })
 
         if (result.success) {
@@ -193,12 +199,15 @@ export default function PostForm({
         }
       } else {
         // Simple single-pass generation
+        if (!primaryPlatform) {
+          throw new Error('At least one platform is required')
+        }
         const result = await generatePostContentAction({
           topic: title || idea || undefined,
-          platform: selectedPlatforms[0],
+          platform: primaryPlatform,
           idea: idea || undefined, // NEW
           productUrl: selectedProduct?.url, // NEW
-          detailInstruction: detailContentsInstruction || undefined, // NEW
+          detailInstruction: contentInstruction || undefined, // NEW
         })
 
         if (result.success && result.content) {
@@ -271,7 +280,7 @@ export default function PostForm({
               postId: result.postId,
               content: body,
               title: title,
-              platform: selectedPlatforms[0],
+              platform: primaryPlatform,
               topic: title
             }).catch(err => console.error('Failed to store embedding:', err))
           }
@@ -395,6 +404,7 @@ export default function PostForm({
         similarityWarning={similarityWarning}
         handleGenerateAI={handleGenerateAI}
         isGenerating={isGenerating}
+        disabled={isGenerating || selectedPlatforms.length === 0}
       />
 
       {/* Quality Score Display */}
@@ -410,8 +420,8 @@ export default function PostForm({
         setVariations={setVariations}
         idea={idea}
         setIdea={setIdea}
-        detailContentsInstruction={detailContentsInstruction}
-        setDetailContentsInstruction={setDetailContentsInstruction}
+        contentInstruction={contentInstruction}
+        setContentInstruction={setContentInstruction}
         selectedProduct={selectedProduct}
         setSelectedProduct={setSelectedProduct}
         products={products}

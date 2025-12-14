@@ -14,6 +14,7 @@ interface AIGenerationSectionProps {
   similarityWarning: string | null
   handleGenerateAI: () => Promise<void>
   isGenerating: boolean
+  disabled?: boolean
 }
 
 export default function AIGenerationSection({
@@ -26,6 +27,7 @@ export default function AIGenerationSection({
   similarityWarning,
   handleGenerateAI,
   isGenerating,
+  disabled = false,
 }: AIGenerationSectionProps) {
   return (
     <div className="border rounded-lg p-4 bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 space-y-3">
@@ -100,7 +102,7 @@ export default function AIGenerationSection({
         type="button"
         variant="default"
         onClick={handleGenerateAI}
-        disabled={isGenerating}
+        disabled={isGenerating || disabled}
         className="w-full gap-2"
       >
         {isGenerating ? (
@@ -119,6 +121,14 @@ export default function AIGenerationSection({
           </>
         )}
       </Button>
+
+      {/* Disabled Hint */}
+      {disabled && !isGenerating && (
+        <div className="flex items-start gap-2 text-xs text-amber-600 dark:text-amber-400">
+          <AlertTriangle className="h-3 w-3 mt-0.5" />
+          <div>Please select at least one platform before generating content</div>
+        </div>
+      )}
 
       {/* Info */}
       <div className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400">

@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useToast } from "@/app/(features)/crm/campaigns/posts/_hooks/use-toast";
 import {
   Form,
   FormControl,
@@ -32,6 +31,7 @@ import { ToastAction } from "@shared/ui/toast";
 import { CalendarEvent } from "@shared/utils/data";
 import { Button } from "@shared/ui/button";
 import { useEvents } from "./context/events-context";
+import { useToast } from "@shared/hooks/use-toast";
 
 const eventEditFormSchema = z.object({
   id: z.string(),

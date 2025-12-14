@@ -16,8 +16,8 @@ import Script from "next/script";
 import { CalendarEvent, earliestTime, latestTime } from "@shared/utils/data";
 import { getDateFromMinutes } from "@/lib/utils";
 import { AvailabilityCheckerEventAddForm } from "./availability-checker-event-add-form";
-import { TimePicker } from "@/app/(features)/crm/campaigns/posts/_components/time-picker/time-picker";
 import { useEvents } from "./context/events-context";
+import { TimePicker } from "../time-picker/time-picker";
 
 export default function AvailabilityChecker() {
   const { events, setAvailabilityCheckerEventAddOpen } = useEvents();

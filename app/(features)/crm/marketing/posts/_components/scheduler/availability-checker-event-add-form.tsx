@@ -25,10 +25,10 @@ import {
   AlertDialogTitle,
 } from "@shared/ui/alert-dialog";
 import { DateTimePicker } from "./date-picker";
-import { useToast } from "@/app/(features)/crm/campaigns/posts/_hooks/use-toast";
-import { useEvents } from "./context/events-context";
-import { ToastAction } from "../../../../../../../@shared/ui/toast";
 import { Textarea } from "@shared/ui/textarea";
+import { useEvents } from "./context/events-context";
+import { useToast } from "@/@shared/hooks/use-toast";
+import { ToastAction } from "@/@shared/ui/toast";
 
 const eventAddFormSchema = z.object({
   title: z.string().min(1, { message: "Please enter a title." }),

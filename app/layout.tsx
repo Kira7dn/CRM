@@ -3,7 +3,6 @@ import { Montserrat } from "next/font/google";
 import { CopilotKit } from "@copilotkit/react-core";
 import "@copilotkit/react-ui/styles.css";
 import "./globals.css";
-import { ThemeProvider } from "@/app/(features)/crm/campaigns/posts/_components/scheduler/theme-provider";
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
