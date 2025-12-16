@@ -6,7 +6,7 @@ import useEmblaCarousel, {
 } from "embla-carousel-react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
-import { cn } from "@shared/utils"
+import { cn } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils"
 import { Button } from "@shared/ui/button"
 
 type CarouselApi = UseEmblaCarouselType[1]

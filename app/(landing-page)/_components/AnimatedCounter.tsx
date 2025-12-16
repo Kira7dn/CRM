@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@shared/utils";
+import { cn } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils";
 
 export interface AnimatedCounterProps
   extends React.HTMLAttributes<HTMLSpanElement> {

@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { months } from "@shared/utils/data";
-import { calendarRef } from "@shared/utils/data";
+import { months } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/data";
+import { calendarRef } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/data";
 import { Button } from "@shared/ui/button";
 import {
   generateDaysInMonth,
@@ -13,7 +13,7 @@ import {
   handleMonthChange,
   handleYearChange,
   setView,
-} from "@shared/utils/calendar-utils";
+} from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/calendar-utils";
 import { useState } from "react";
 import {
   Check,
@@ -68,7 +68,7 @@ export default function CalendarNav({
   const [monthSelectOpen, setMonthSelectOpen] = useState(false);
 
   return (
-    <div className="flex flex-wrap min-w-full justify-center gap-3 px-10 ">
+    <div className="flex flex-wrap min-w-full justify-center gap-10 px-10 ">
       <div className="flex flex-row space-x-1">
         {/* Navigate to previous date interval */}
 
@@ -81,61 +81,6 @@ export default function CalendarNav({
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
-
-        {/* Day Lookup */}
-
-        {currentView == "timeGridDay" && (
-          <Popover open={daySelectOpen} onOpenChange={setDaySelectOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                className="w-20 justify-between text-xs font-semibold"
-              >
-                {selectedDay
-                  ? dayOptions.find((day) => day.value === String(selectedDay))
-                    ?.label
-                  : "Select day..."}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
-              <Command>
-                <CommandInput placeholder="Search day..." />
-                <CommandList>
-                  <CommandEmpty>No day found.</CommandEmpty>
-                  <CommandGroup>
-                    {dayOptions.map((day) => (
-                      <CommandItem
-                        key={day.value}
-                        value={day.value}
-                        onSelect={(currentValue) => {
-                          handleDayChange(
-                            calendarRef,
-                            viewedDate,
-                            currentValue
-                          );
-                          //   setValue(currentValue === selectedMonth ? "" : currentValue);
-                          setDaySelectOpen(false);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            String(selectedDay) === day.value
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {day.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        )}
 
         {/* Month Lookup */}
 
@@ -230,53 +175,6 @@ export default function CalendarNav({
                 ? "This Month"
                 : null}
         </Button>
-
-        {/* Change view with tabs */}
-
-        <Tabs defaultValue="timeGridWeek">
-          <TabsList className="flex w-44 md:w-64">
-            <TabsTrigger
-              value="timeGridDay"
-              onClick={() =>
-                setView(calendarRef, "timeGridDay", setCurrentView)
-              }
-              className={`space-x-1 ${currentView === "timeGridDay" ? "w-1/2" : "w-1/4"
-                }`}
-            >
-              <GalleryVertical className="h-5 w-5" />
-              {currentView === "timeGridDay" && (
-                <p className="text-xs md:text-sm">Day</p>
-              )}
-            </TabsTrigger>
-            <TabsTrigger
-              value="timeGridWeek"
-              onClick={() =>
-                setView(calendarRef, "timeGridWeek", setCurrentView)
-              }
-              className={`space-x-1 ${currentView === "timeGridWeek" ? "w-1/2" : "w-1/4"
-                }`}
-            >
-              <Tally3 className="h-5 w-5" />
-              {currentView === "timeGridWeek" && (
-                <p className="text-xs md:text-sm">Week</p>
-              )}
-            </TabsTrigger>
-            <TabsTrigger
-              value="dayGridMonth"
-              onClick={() =>
-                setView(calendarRef, "dayGridMonth", setCurrentView)
-              }
-              className={`space-x-1 ${currentView === "dayGridMonth" ? "w-1/2" : "w-1/4"
-                }`}
-            >
-              <Table className="h-5 w-5 rotate-90" />
-              {currentView === "dayGridMonth" && (
-                <p className="text-xs md:text-sm">Month</p>
-              )}
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-
         {/* Add event button  */}
 
         <EventAddForm start={start} end={end} />

@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
-import { cn } from "@shared/utils"
+import { cn } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils"
 
 function Drawer({
   ...props

@@ -75,7 +75,6 @@ export class Post {
     public hashtags: string[],
     public mentions: string[],
     public userId: string | undefined,
-    public metrics: PostMetrics,
     public readonly createdAt: Date,
     public updatedAt: Date
   ) { }

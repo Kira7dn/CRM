@@ -5,10 +5,10 @@ import { Plus, Settings, Calendar, BookOpen, Loader2 } from 'lucide-react'
 import { Button } from '@shared/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog'
 import PostsView from './PostsView'
-import PostFormModal from './post-form/PostFormModal'
 import PostContentSettings from './PostContentSettings'
 import ResourceManager from './ResourceManager'
-import type { Post } from '@/core/domain/marketing/post'
+import type { ContentType, PostMedia, PostMetrics, PlatformMetadata } from '@/core/domain/marketing/post'
+import { Post } from '@/core/domain/marketing/post'
 import { toast } from 'sonner'
 import { createPostScheduleAction } from '../_actions/create-post-schedule-action'
 
@@ -25,12 +25,12 @@ interface PostScheduleItem {
 
 export default function PostsPageClient({ initialPosts }: PostsPageClientProps) {
   const [showSettings, setShowSettings] = useState(false)
-  const [showCreatePost, setShowCreatePost] = useState(false)
   const [showScheduleDialog, setShowScheduleDialog] = useState(false)
   const [showResourceManager, setShowResourceManager] = useState(false)
   const [generatedSchedule, setGeneratedSchedule] = useState<PostScheduleItem[]>([])
   const [generating, setGenerating] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [showCreatePost, setShowCreatePost] = useState(false)
 
   const handleGenerateSchedule = async () => {
     setGenerating(true)
@@ -62,6 +62,10 @@ export default function PostsPageClient({ initialPosts }: PostsPageClientProps) 
     } finally {
       setGenerating(false)
     }
+  }
+
+  const handleCreateNewPost = () => {
+    setShowCreatePost(true)
   }
 
   const handleSaveSchedule = async () => {
@@ -109,70 +113,12 @@ export default function PostsPageClient({ initialPosts }: PostsPageClientProps) 
   }
 
   return (
-    <div className="container mx-auto max-w-6xl p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Social Media Posts</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Manage multi-platform content for Facebook, TikTok, Zalo, and YouTube
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => setShowSettings(true)}
-            className="gap-2"
-          >
-            <Settings className="h-4 w-4" />
-            Settings
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => setShowResourceManager(true)}
-            className="gap-2"
-          >
-            <BookOpen className="h-4 w-4" />
-            Quản lý Tài liệu
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleGenerateSchedule}
-            disabled={generating}
-            className="gap-2"
-          >
-            <Calendar className="h-4 w-4" />
-            {generating ? 'Generating...' : 'Lên kế hoạch Post'}
-          </Button>
-          <Button
-            onClick={() => setShowCreatePost(true)}
-            className="gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Create New Post
-          </Button>
-        </div>
-      </div>
-
+    <div className="space-y-6">
       {/* Posts View (List or Calendar) */}
-      <PostsView initialPosts={initialPosts} />
-
-      {/* Create Post Modal */}
-      <PostFormModal
-        open={showCreatePost}
-        onClose={() => setShowCreatePost(false)}
-      />
-
-      {/* Settings Modal */}
-      <PostContentSettings
-        open={showSettings}
-        onClose={() => setShowSettings(false)}
-      />
-
-      {/* Resource Manager */}
-      <ResourceManager
-        open={showResourceManager}
-        onClose={() => setShowResourceManager(false)}
+      <PostsView
+        initialPosts={initialPosts}
+        showCreatePost={showCreatePost}
+        setShowCreatePost={setShowCreatePost}
       />
 
       {/* Schedule Dialog */}

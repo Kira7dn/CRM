@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@shared/utils";
+import { cn } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils";
 
 const headingVariants = cva(
   "font-bold tracking-tight",
@@ -55,7 +55,7 @@ const subtitleVariants = cva(
 
 export interface SectionHeadingProps
   extends Omit<React.HTMLAttributes<HTMLHeadingElement>, "color">,
-    VariantProps<typeof headingVariants> {
+  VariantProps<typeof headingVariants> {
   subtitle?: string;
   subtitleSize?: VariantProps<typeof subtitleVariants>["size"];
   subtitleColor?: VariantProps<typeof subtitleVariants>["color"];

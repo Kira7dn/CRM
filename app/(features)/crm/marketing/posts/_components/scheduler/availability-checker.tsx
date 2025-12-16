@@ -13,7 +13,7 @@ import { Calendar } from "@shared/ui/calendar";
 import { ScrollArea } from "@shared/ui/scroll-area";
 import { Card } from "@shared/ui/card";
 import Script from "next/script";
-import { CalendarEvent, earliestTime, latestTime } from "@shared/utils/data";
+import { CalendarEvent, earliestTime, latestTime } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/data";
 import { getDateFromMinutes } from "@/lib/utils";
 import { AvailabilityCheckerEventAddForm } from "./availability-checker-event-add-form";
 import { useEvents } from "./context/events-context";

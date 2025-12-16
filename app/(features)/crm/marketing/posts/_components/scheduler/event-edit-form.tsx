@@ -28,7 +28,7 @@ import {
 } from "@shared/ui/alert-dialog";
 import { DateTimePicker } from "./date-picker";
 import { ToastAction } from "@shared/ui/toast";
-import { CalendarEvent } from "@shared/utils/data";
+import { CalendarEvent } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/data";
 import { Button } from "@shared/ui/button";
 import { useEvents } from "./context/events-context";
 import { useToast } from "@shared/hooks/use-toast";

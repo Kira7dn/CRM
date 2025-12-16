@@ -1,16 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import FullCalendar from '@fullcalendar/react'
+import type { DateSelectArg, EventInput } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
 import type { EventClickArg, EventContentArg } from '@fullcalendar/core/index.js'
-import type { Post, Platform } from '@/core/domain/marketing/post'
+import type { Platform, ContentType, PostMedia, PlatformMetadata } from '@/core/domain/marketing/post'
+import { Post } from '@/core/domain/marketing/post'
 import { usePostStore } from '../_store/usePostStore'
 import { Card } from '@shared/ui/card'
-import PostFormModal from './post-form/PostFormModal'
 import PostDetailModal from './PostDetailModal'
 import { CheckCircle, Clock, XCircle } from 'lucide-react'
+import { startOfDay } from 'date-fns'
+import { fromZonedTime } from 'date-fns-tz'
+import { ThemeProvider } from './scheduler/theme-provider'
+import CalendarNav from './scheduler/calendar-nav'
+import { EventsProvider } from './scheduler/context/events-context'
 
 const PLATFORM_COLORS: Record<Platform, string> = {
   facebook: '#1877F2',
@@ -23,24 +30,27 @@ const PLATFORM_COLORS: Record<Platform, string> = {
   instagram: '#E4405F',
 }
 
-interface CalendarEvent {
-  id: string
-  title: string
-  start: Date
-  backgroundColor: string
-  borderColor: string
-  extendedProps: {
-    post: Post
-  }
+interface PostSchedulerProps {
+  initialPosts: Post[]
 }
 
-export default function PostScheduler({ initialPosts }: { initialPosts: Post[] }) {
+
+
+export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
   const { posts, setPosts, filter } = usePostStore()
-  const [events, setEvents] = useState<CalendarEvent[]>([])
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null)
-  const [showPostForm, setShowPostForm] = useState(false)
-  const [showDetailModal, setShowDetailModal] = useState(false)
+  const [events, setEvents] = useState<EventInput[]>([])
+  const router = useRouter()
+
+  const calendarRef = useRef<FullCalendar | null>(null);
+  const [selectedStart, setSelectedStart] = useState(new Date());
+  const [selectedEnd, setSelectedEnd] = useState(new Date());
+  const [viewedDate, setViewedDate] = useState(new Date());
+
+  const handleDateSelect = (info: DateSelectArg) => {
+    setSelectedStart(info.start);
+    setSelectedEnd(info.end);
+  };
+
 
   useEffect(() => {
     setPosts(initialPosts)
@@ -52,7 +62,7 @@ export default function PostScheduler({ initialPosts }: { initialPosts: Post[] }
       p.title.toLowerCase().includes(filter.toLowerCase())
     )
 
-    const calendarEvents: CalendarEvent[] = filtered.map((post) => {
+    const calendarEvents: EventInput[] = filtered.map((post) => {
       // Determine primary platform color (use first platform)
       const primaryPlatform = post.platforms[0]?.platform || 'website'
       const backgroundColor = PLATFORM_COLORS[primaryPlatform]
@@ -61,81 +71,35 @@ export default function PostScheduler({ initialPosts }: { initialPosts: Post[] }
       const isPublished = post.platforms.some(p => p.status === 'published')
       const isFailed = post.platforms.some(p => p.status === 'failed')
 
-      const eventStart = post.scheduledAt ? new Date(post.scheduledAt) : new Date(post.createdAt)
-
-      // Fix positioning: use same time for all events to avoid layout issues
-      const fixedStart = new Date(eventStart.getFullYear(), eventStart.getMonth(), eventStart.getDate(), 10, 0, 0)
-      const fixedEnd = new Date(eventStart.getFullYear(), eventStart.getMonth(), eventStart.getDate(), 10, 30, 0)
-
-      // Log date mismatches
-      const dbDate = eventStart.getDate()
-      const displayDate = fixedStart.getDate()
-      const dbMonth = eventStart.getMonth()
-      const displayMonth = fixedStart.getMonth()
-
-      if (dbDate !== displayDate || dbMonth !== displayMonth) {
-        console.log('[POST SCHEDULE MISMATCH]', {
-          postId: post.id,
-          title: post.title,
-          dbScheduledAt: post.scheduledAt,
-          dbDate: `${dbMonth + 1}/${dbDate}`,
-          displayDate: `${displayMonth + 1}/${displayDate}`,
-          eventStart: eventStart.toString(),
-          fixedStart: fixedStart.toString()
-        })
-      }
+      const start = post.scheduledAt
+        ? new Date(post.scheduledAt)
+        : new Date(post.createdAt)
 
       return {
         id: post.id,
         title: post.title,
-        start: fixedStart,
-        end: fixedEnd,
+        start: start,
+        allDay: true,
         backgroundColor: isPublished ? '#10B981' : isFailed ? '#EF4444' : backgroundColor,
         borderColor: isPublished ? '#059669' : isFailed ? '#DC2626' : backgroundColor,
-        extendedProps: {
-          post
-        }
+        extendedProps: { post }
       }
     })
 
     setEvents(calendarEvents)
   }, [posts, filter])
 
+
+
   const handleDateClick = (info: DateClickArg) => {
-    // Check if there are already posts on this date
-    const postsOnDate = posts.filter(p => {
-      const postDate = p.scheduledAt ? new Date(p.scheduledAt) : new Date(p.createdAt)
-      return postDate.toDateString() === info.date.toDateString()
-    })
-
-    // Limit: max 2 posts per day
-    if (postsOnDate.length >= 2) {
-      alert('Maximum 2 posts per day. Please select another date.')
-      return
-    }
-
-    setSelectedDate(info.date)
-    setSelectedPost(null)
-    setShowPostForm(true)
+    console.log(info);
+    router.push(`/crm/marketing/posts/new?scheduledAt=${info.dateStr}`)
   }
 
   const handleEventClick = (info: EventClickArg) => {
     const post = info.event.extendedProps.post as Post
-
-    // Check if any platform is published
-    const isPublished = post.platforms.some(p => p.status === 'published')
-
-    if (isPublished) {
-      // Published posts: view only
-      setSelectedPost(post)
-      setShowDetailModal(true)
-    } else {
-      // Draft/scheduled posts: allow edit
-      setSelectedPost(post)
-      setSelectedDate(null)
-      setShowPostForm(true)
-    }
   }
+
 
   const renderEventContent = (eventInfo: EventContentArg) => {
     const post = eventInfo.event.extendedProps.post as Post
@@ -144,62 +108,48 @@ export default function PostScheduler({ initialPosts }: { initialPosts: Post[] }
     const isScheduled = post.scheduledAt && new Date(post.scheduledAt) > new Date()
 
     return (
-      <div className="flex items-center gap-1 p-1 w-full overflow-hidden">
+      <div className="flex items-center gap-1 p-1 w-full overflow-hidden hover:opacity-100 opacity-80">
         {isPublished && <CheckCircle className="h-3 w-3 shrink-0" />}
         {isFailed && <XCircle className="h-3 w-3 shrink-0" />}
         {isScheduled && !isPublished && !isFailed && <Clock className="h-3 w-3 shrink-0" />}
-        <span className="text-xs font-medium truncate">{eventInfo.event.title}</span>
+        <div className="text-xs font-medium truncate cursor-pointer">
+          {eventInfo.event.title}
+        </div>
       </div>
     )
   }
 
   return (
-    <>
-      <Card className="p-4">
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth'
-          }}
-          events={events}
-          dateClick={handleDateClick}
-          eventClick={handleEventClick}
-          eventContent={renderEventContent}
-          height="auto"
-          firstDay={1}
-          displayEventTime={false}
-          displayEventEnd={false}
-          dayMaxEvents={2}
-          editable={false}
-          selectable={true}
+    <EventsProvider>
+      <div className="space-y-5">
+        <CalendarNav
+          calendarRef={calendarRef}
+          start={selectedStart}
+          end={selectedEnd}
+          viewedDate={viewedDate}
         />
-      </Card>
-
-      {/* Post Form Modal */}
-      <PostFormModal
-        open={showPostForm}
-        post={selectedPost || undefined}
-        initialScheduledAt={selectedDate || undefined}
-        onClose={() => {
-          setShowPostForm(false)
-          setSelectedPost(null)
-          setSelectedDate(null)
-        }}
-      />
-
-      {/* Detail Modal (for published posts) */}
-      {showDetailModal && selectedPost && (
-        <PostDetailModal
-          post={selectedPost}
-          onClose={() => {
-            setShowDetailModal(false)
-            setSelectedPost(null)
-          }}
-        />
-      )}
-    </>
+        <Card className="p-4">
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[dayGridPlugin, interactionPlugin]}
+            timeZone="local"
+            initialView="dayGridMonth"
+            headerToolbar={false}
+            events={events}
+            dateClick={handleDateClick}
+            eventClick={handleEventClick}
+            eventContent={renderEventContent}
+            datesSet={(dates) => setViewedDate(dates.view.currentStart)}
+            height="auto"
+            firstDay={1}
+            displayEventTime={false}
+            displayEventEnd={false}
+            dayMaxEvents={2}
+            editable={false}
+            selectable={true}
+          />
+        </Card>
+      </div>
+    </EventsProvider>
   )
 }

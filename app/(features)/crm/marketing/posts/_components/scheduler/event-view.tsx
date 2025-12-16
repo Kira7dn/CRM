@@ -6,7 +6,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@shared/ui/alert-dialog";
-import { CalendarEvent } from "@shared/utils/data";
+import { CalendarEvent } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/data";
 import { EventDeleteForm } from "./event-delete-form";
 import { EventEditForm } from "./event-edit-form";
 import { X } from "lucide-react";

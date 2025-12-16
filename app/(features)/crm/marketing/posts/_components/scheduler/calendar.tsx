@@ -18,7 +18,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 
 import { useRef, useState } from "react";
 import CalendarNav from "./calendar-nav";
-import { CalendarEvent, earliestTime, latestTime } from "@shared/utils/data";
+import { CalendarEvent, earliestTime, latestTime } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/data";
 import { getDateFromMinutes } from "@/lib/utils";
 import { Card } from "@shared/ui/card";
 import { EventEditForm } from "./event-edit-form";

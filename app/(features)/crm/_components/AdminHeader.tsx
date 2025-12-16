@@ -37,7 +37,7 @@ import {
   MessageCircleMore,
   LinkIcon
 } from "lucide-react"
-import { cn } from "@shared/utils"
+import { cn } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils"
 
 interface AdminHeaderProps {
   userName?: string

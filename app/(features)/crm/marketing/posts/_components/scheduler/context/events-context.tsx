@@ -1,5 +1,5 @@
 "use client";
-import { CalendarEvent, initialEvents } from "@shared/utils/data";
+import { CalendarEvent, initialEvents } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils/data";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 interface Event {

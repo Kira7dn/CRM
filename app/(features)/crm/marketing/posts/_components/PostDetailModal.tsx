@@ -195,68 +195,6 @@ export default function PostDetailModal({ post, onClose }: PostDetailModalProps)
             </div>
           )}
 
-          {/* Metrics */}
-          {post.metrics && Object.values(post.metrics).some(v => v && v > 0) && (
-            <div>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                <TrendingUp className="h-4 w-4" />
-                Engagement Metrics
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {post.metrics.views !== undefined && post.metrics.views > 0 && (
-                  <div className="border rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Eye className="h-4 w-4 text-gray-500" />
-                      <span className="text-xs text-gray-500">Views</span>
-                    </div>
-                    <p className="text-xl font-semibold">{post.metrics.views.toLocaleString()}</p>
-                  </div>
-                )}
-                {post.metrics.likes !== undefined && post.metrics.likes > 0 && (
-                  <div className="border rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Heart className="h-4 w-4 text-red-500" />
-                      <span className="text-xs text-gray-500">Likes</span>
-                    </div>
-                    <p className="text-xl font-semibold">{post.metrics.likes.toLocaleString()}</p>
-                  </div>
-                )}
-                {post.metrics.comments !== undefined && post.metrics.comments > 0 && (
-                  <div className="border rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <MessageCircle className="h-4 w-4 text-blue-500" />
-                      <span className="text-xs text-gray-500">Comments</span>
-                    </div>
-                    <p className="text-xl font-semibold">{post.metrics.comments.toLocaleString()}</p>
-                  </div>
-                )}
-                {post.metrics.shares !== undefined && post.metrics.shares > 0 && (
-                  <div className="border rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Share2 className="h-4 w-4 text-green-500" />
-                      <span className="text-xs text-gray-500">Shares</span>
-                    </div>
-                    <p className="text-xl font-semibold">{post.metrics.shares.toLocaleString()}</p>
-                  </div>
-                )}
-                {post.metrics.reach !== undefined && post.metrics.reach > 0 && (
-                  <div className="border rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <TrendingUp className="h-4 w-4 text-purple-500" />
-                      <span className="text-xs text-gray-500">Reach</span>
-                    </div>
-                    <p className="text-xl font-semibold">{post.metrics.reach.toLocaleString()}</p>
-                  </div>
-                )}
-              </div>
-              {post.metrics.lastSyncedAt && (
-                <p className="text-xs text-gray-500 mt-2">
-                  Last synced: {new Date(post.metrics.lastSyncedAt).toLocaleString()}
-                </p>
-              )}
-            </div>
-          )}
-
         </div>
 
         {/* Footer */}

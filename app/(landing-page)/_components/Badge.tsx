@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@shared/utils";
+import { cn } from "@/app/(features)/crm/marketing/posts/_components/scheduler/utils";
 
 const badgeVariants = cva(
   "inline-flex items-center justify-center rounded-full font-semibold transition-all",

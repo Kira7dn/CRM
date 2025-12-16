@@ -7,7 +7,6 @@ import { Button } from '@shared/ui/button'
 import { Trash2, Edit, Eye, Clock, CheckCircle, XCircle, Calendar } from 'lucide-react'
 import { toast } from 'sonner'
 import PostDetailModal from './PostDetailModal'
-import PostForm from './post-form/PostForm'
 import { deletePostAction } from '../_actions/delete-post-action'
 
 const PLATFORM_COLORS: Record<Platform, string> = {
@@ -32,11 +31,15 @@ const PLATFORM_LABELS: Record<Platform, string> = {
   instagram: 'IG',
 }
 
-export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
+interface PostListProps {
+  initialPosts: Post[]
+  onEdit?: (post: Post) => void
+}
+
+export default function PostList({ initialPosts, onEdit }: PostListProps) {
   const { posts, setPosts, filter } = usePostStore()
   const [pending, startTransition] = useTransition()
   const [selectedPost, setSelectedPost] = useState<Post | null>(null)
-  const [editingPost, setEditingPost] = useState<Post | null>(null)
   const [showDetail, setShowDetail] = useState(false)
 
   useEffect(() => {
@@ -89,7 +92,7 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
   }
 
   const handleEdit = (post: Post) => {
-    setEditingPost(post)
+    onEdit?.(post)
   }
 
   const getStatusIcon = (status: string) => {
@@ -105,17 +108,9 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
     }
   }
 
-  if (editingPost) {
-    return (
-      <div className="mt-4">
-        <PostForm post={editingPost} onClose={() => setEditingPost(null)} />
-      </div>
-    )
-  }
-
   return (
     <>
-      <div className="mt-4 space-y-3">
+      <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
             No posts found. Create your first post!
