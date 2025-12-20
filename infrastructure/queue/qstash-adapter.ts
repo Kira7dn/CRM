@@ -1,6 +1,6 @@
 // infrastructure/queue/qstash-adapter.ts
 import { Client } from "@upstash/qstash"
-import type { QueueService } from "@/core/application/interfaces/shared/queue-service"
+import type { QueueService } from "@/core/application/interfaces/queue-service"
 
 export class QStashAdapter implements QueueService {
   private client: Client

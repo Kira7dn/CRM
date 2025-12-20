@@ -5,8 +5,6 @@ import {
   copilotRuntimeNextJSAppRouterEndpoint,
 } from "@copilotkit/runtime";
 
-// Using Node.js runtime (not edge) because we need MongoDB support
-// export const runtime = "edge";
 
 const serviceAdapter = new OpenAIAdapter({
   model: process.env.OPENAI_MODEL || "gpt-4o",

@@ -27,7 +27,7 @@ export function InventoryList({ initialInventory, initialMovements, products }: 
 
   // Helper to get product name
   const getProductName = (productId: number): string => {
-    const product = products.find(p => p.id === productId)
+    const product = products.find(p => p.id === productId.toString())
     return product ? product.name : `Product #${productId}`
   }
 

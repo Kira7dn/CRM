@@ -3,9 +3,9 @@
  * Generates and stores embeddings for content in vector DB
  */
 
-import { getEmbeddingService } from "@/infrastructure/adapters/external/ai"
-import { getVectorDBService } from "@/infrastructure/adapters/external/ai"
-import { ContentEmbedding, EmbeddingCategory } from "@/infrastructure/adapters/external/ai/vector-db"
+import { getEmbeddingService } from "@/infrastructure/adapters/ai"
+import { getVectorDBService } from "@/infrastructure/adapters/ai"
+import { ContentEmbedding, EmbeddingCategory } from "@/infrastructure/adapters/ai/vector-db"
 
 export interface StoreContentEmbeddingRequest {
   embeddingCategory: EmbeddingCategory

@@ -5,7 +5,7 @@
 
 import type { ResourceService } from "@/core/application/usecases/marketing/post/resource/resource-service.interfaces"
 import type { Resource } from "@/core/domain/marketing/resource"
-import { createS3StorageService } from "@/infrastructure/adapters/storage/s3-storage-service"
+import { createS3StorageService } from "@/infrastructure/adapters/s3-storage-service"
 import { DocumentChunker } from "@/infrastructure/utils/document-chunker"
 import { PDFParser } from "@/infrastructure/utils/pdf-parser"
 import { StoreContentEmbeddingUseCase } from "../content-memory/store-content-embedding"

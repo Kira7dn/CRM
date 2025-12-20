@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import type { OperationalCost, CostCategory, CostType } from "@/core/domain/sales/operational-cost"
-import { createCostAction, updateCostAction } from "../actions"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@shared/ui/dialog"
 import { Button } from "@shared/ui/button"
 
@@ -35,12 +34,12 @@ export function CostForm({ cost, onClose }: CostFormProps) {
       if (orderId) formData.append("orderId", orderId)
       if (notes) formData.append("notes", notes)
 
-      if (cost) {
-        formData.append("id", cost.id.toString())
-        await updateCostAction(formData)
-      } else {
-        await createCostAction(formData)
-      }
+      // if (cost) {
+      //   formData.append("id", cost.id.toString())
+      //   await updateCostAction(formData)
+      // } else {
+      //   await createCostAction(formData)
+      // }
 
       onClose()
       window.location.reload() // Refresh to show updated data

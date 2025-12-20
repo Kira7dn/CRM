@@ -1,4 +1,4 @@
-import type { LocationService } from "@/core/application/interfaces/shared/location-service";
+import type { LocationService } from "@/core/application/interfaces/payments/location-service";
 
 export interface DecodeLocationRequest {
   token: string;

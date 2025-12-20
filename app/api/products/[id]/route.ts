@@ -11,7 +11,7 @@ export async function GET(
     if (isNaN(productId)) return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
 
     const useCase = await getProductByIdUseCase();
-    const result = await useCase.execute({ id: productId });
+    const result = await useCase.execute({ id });
     if (!result.product) return NextResponse.json({ message: "Product not found" }, { status: 404 });
     return NextResponse.json(result.product);
   } catch (error) {
@@ -30,7 +30,7 @@ export async function PUT(
 
     const body = await request.json();
     const useCase = await updateProductUseCase();
-    const result = await useCase.execute({ id: productId, ...body });
+    const result = await useCase.execute({ id, ...body });
     if (!result.product) return NextResponse.json({ message: "Product not found" }, { status: 404 });
     return NextResponse.json(result.product);
   } catch (error) {
@@ -48,7 +48,7 @@ export async function DELETE(
     if (isNaN(productId)) return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
 
     const useCase = await deleteProductUseCase();
-    const result = await useCase.execute({ id: productId });
+    const result = await useCase.execute({ id });
     if (!result.success) return NextResponse.json({ message: "Product not found" }, { status: 404 });
     return new Response(null, { status: 204 });
   } catch (error) {

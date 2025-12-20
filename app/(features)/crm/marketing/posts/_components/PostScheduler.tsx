@@ -12,7 +12,7 @@ import { Post } from '@/core/domain/marketing/post'
 import { usePostStore } from '../_store/usePostStore'
 import { Card } from '@shared/ui/card'
 import PostDetailModal from './PostDetailModal'
-import { CheckCircle, Clock, XCircle } from 'lucide-react'
+import { CheckCircle, Clock, XCircle, Sparkles, Loader2 } from 'lucide-react'
 import { startOfDay } from 'date-fns'
 import { fromZonedTime } from 'date-fns-tz'
 import { ThemeProvider } from './scheduler/theme-provider'
@@ -37,7 +37,7 @@ interface PostSchedulerProps {
 
 
 export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
-  const { posts, setPosts, filter } = usePostStore()
+  const { posts, setPosts, filter, previewPosts, isGeneratingSchedule } = usePostStore()
   const [events, setEvents] = useState<EventInput[]>([])
   const router = useRouter()
 
@@ -86,8 +86,23 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
       }
     })
 
-    setEvents(calendarEvents)
-  }, [posts, filter])
+    // Add preview posts as amber events
+    const previewEvents: EventInput[] = previewPosts.map((item, idx) => ({
+      id: `preview-${idx}`,
+      title: item.title,
+      start: new Date(item.scheduledDate),
+      allDay: true,
+      backgroundColor: '#F59E0B',  // Amber
+      borderColor: '#D97706',
+      className: 'preview-event',
+      extendedProps: {
+        isPreview: true,
+        scheduleItem: item
+      }
+    }))
+
+    setEvents([...calendarEvents, ...previewEvents])
+  }, [posts, filter, previewPosts])
 
 
 
@@ -102,6 +117,19 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
 
 
   const renderEventContent = (eventInfo: EventContentArg) => {
+    const isPreview = eventInfo.event.extendedProps.isPreview
+
+    if (isPreview) {
+      return (
+        <div className="flex items-center gap-1 p-1 w-full overflow-hidden opacity-90">
+          <Sparkles className="h-3 w-3 shrink-0 text-white" />
+          <div className="text-xs font-medium truncate italic text-white">
+            {eventInfo.event.title}
+          </div>
+        </div>
+      )
+    }
+
     const post = eventInfo.event.extendedProps.post as Post
     const isPublished = post.platforms.some(p => p.status === 'published')
     const isFailed = post.platforms.some(p => p.status === 'failed')
@@ -128,27 +156,37 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
           end={selectedEnd}
           viewedDate={viewedDate}
         />
-        <Card className="p-4">
-          <FullCalendar
-            ref={calendarRef}
-            plugins={[dayGridPlugin, interactionPlugin]}
-            timeZone="local"
-            initialView="dayGridMonth"
-            headerToolbar={false}
-            events={events}
-            dateClick={handleDateClick}
-            eventClick={handleEventClick}
-            eventContent={renderEventContent}
-            datesSet={(dates) => setViewedDate(dates.view.currentStart)}
-            height="auto"
-            firstDay={1}
-            displayEventTime={false}
-            displayEventEnd={false}
-            dayMaxEvents={2}
-            editable={false}
-            selectable={true}
-          />
-        </Card>
+
+        <div className="relative">
+          {isGeneratingSchedule && (
+            <div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-10 flex items-center justify-center rounded-lg">
+              <Loader2 className="h-8 w-8 animate-spin text-primary mr-2" />
+              <span className="text-sm font-medium">Generating schedule...</span>
+            </div>
+          )}
+
+          <Card className="p-4">
+            <FullCalendar
+              ref={calendarRef}
+              plugins={[dayGridPlugin, interactionPlugin]}
+              timeZone="local"
+              initialView="dayGridMonth"
+              headerToolbar={false}
+              events={events}
+              dateClick={handleDateClick}
+              eventClick={handleEventClick}
+              eventContent={renderEventContent}
+              datesSet={(dates) => setViewedDate(dates.view.currentStart)}
+              height="auto"
+              firstDay={1}
+              displayEventTime={false}
+              displayEventEnd={false}
+              dayMaxEvents={2}
+              editable={false}
+              selectable={true}
+            />
+          </Card>
+        </div>
       </div>
     </EventsProvider>
   )

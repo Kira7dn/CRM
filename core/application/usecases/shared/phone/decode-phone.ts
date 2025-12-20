@@ -1,4 +1,4 @@
-import type { PhoneService } from "@/core/application/interfaces/shared/phone-service";
+import type { PhoneService } from "@/core/application/interfaces/phone-service";
 
 export interface DecodePhoneRequest {
   token: string;

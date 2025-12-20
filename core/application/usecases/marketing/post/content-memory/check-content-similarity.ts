@@ -3,9 +3,9 @@
  * Checks if content is too similar to existing content
  */
 
-import { getEmbeddingService } from "@/infrastructure/adapters/external/ai"
-import { getVectorDBService } from "@/infrastructure/adapters/external/ai"
-import type { SimilarityResult } from "@/infrastructure/adapters/external/ai/vector-db"
+import { getEmbeddingService } from "@/infrastructure/adapters/ai"
+import { getVectorDBService } from "@/infrastructure/adapters/ai"
+import type { SimilarityResult } from "@/infrastructure/adapters/ai/vector-db"
 
 export interface CheckContentSimilarityRequest {
   content: string
@@ -47,12 +47,12 @@ export class CheckContentSimilarityUseCase {
     const similarResults: SimilarityResult[] = await vectorDB.searchSimilar(embedding, {
       limit,
       scoreThreshold: similarityThreshold * 0.8, // Lower threshold for search to get more candidates
-      category: "published_post",
-      filter: request.productId
-        ? {
+      filter: {
+        embeddingCategory: "published_post",
+        ...(request.productId && {
           productId: request.productId,
-        }
-        : undefined,
+        }),
+      },
     })
 
     // Map results

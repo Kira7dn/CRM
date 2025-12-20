@@ -4,8 +4,8 @@
  */
 
 import type { ResourceService } from "@/core/application/usecases/marketing/post/resource/resource-service.interfaces"
-import { createS3StorageService } from "@/infrastructure/adapters/storage/s3-storage-service"
-import { getVectorDBService } from "@/infrastructure/adapters/external/ai"
+import { createS3StorageService } from "@/infrastructure/adapters/s3-storage-service"
+import { getVectorDBService } from "@/infrastructure/adapters/ai"
 
 export interface DeleteResourceRequest {
   resourceId: string

@@ -12,7 +12,9 @@ interface BannerFormProps {
 
 export function BannerForm({ banner, onClose }: BannerFormProps) {
   const [loading, setLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState(banner?.url || "")
+  const [imageUrl, setImageUrl] = useState<{ type: "image" | "video"; url: string } | null>(
+    banner?.url ? { type: "image", url: banner.url } : null
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -20,7 +22,7 @@ export function BannerForm({ banner, onClose }: BannerFormProps) {
 
     try {
       const formData = new FormData(e.currentTarget)
-      formData.set("url", imageUrl)
+      formData.set("url", imageUrl?.url || "")
 
       if (banner) {
         formData.set("id", banner.id.toString())
@@ -47,7 +49,7 @@ export function BannerForm({ banner, onClose }: BannerFormProps) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Image Upload */}
             <MediaUpload
-              value={imageUrl}
+              value={imageUrl || undefined}
               onChange={(url) => setImageUrl(url)}
               folder="banners"
               disabled={loading}

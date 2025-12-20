@@ -53,7 +53,7 @@ export async function updateProductAction(formData: FormData) {
   const colors = colorsJson ? JSON.parse(colorsJson) : undefined
 
   await useCase.execute({
-    id: parseInt(formData.get("id")?.toString() || "0"),
+    id: formData.get("id")?.toString() || "",
     categoryId: formData.get("categoryId")?.toString()
       ? parseInt(formData.get("categoryId")?.toString() || "0")
       : undefined,
@@ -75,6 +75,6 @@ export async function updateProductAction(formData: FormData) {
 
 export async function deleteProductAction(id: number) {
   const useCase = await deleteProductUseCase()
-  await useCase.execute({ id })
+  await useCase.execute({ id: id.toString() })
   revalidatePath("/products")
 }

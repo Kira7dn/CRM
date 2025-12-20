@@ -1,6 +1,6 @@
 import { TicketList } from "./_components/TicketList";
 import { CreateTicketButton } from "./_components/CreateTicketButton";
-import { getTicketsUseCase } from "@/app/api/customer-care/tickets/depends";
+import { getTicketsUseCase } from "@/app/api/customers/tickets/depends";
 import { Ticket } from "lucide-react";
 
 export default async function TicketsPage() {

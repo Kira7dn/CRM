@@ -2,6 +2,7 @@
 // Streaming works perfectly fine with Node.js runtime on Vercel
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 
 import { createStreamMultiPassUseCase } from '@/app/api/posts/gen-content/depends'
 import { PostGenRequest } from '@/core/application/usecases/marketing/post/generate-post/stream-post-generationn'

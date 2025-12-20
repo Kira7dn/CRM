@@ -2,7 +2,7 @@ import type { ProductService } from "@/core/application/interfaces/catalog/produ
 import type { Product } from "@/core/domain/catalog/product";
 
 export interface GetProductByIdRequest {
-  id: number;
+  id: string;
 }
 
 export interface GetProductByIdResponse {

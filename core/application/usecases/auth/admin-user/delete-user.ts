@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import type { AdminUserService } from "@/core/application/interfaces/auth/admin-user-service"
+import type { AdminUserService } from "@/core/application/interfaces/users/admin-user-service"
 
 export interface DeleteAdminUserRequest {
   userId: string

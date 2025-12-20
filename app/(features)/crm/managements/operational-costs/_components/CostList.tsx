@@ -3,7 +3,6 @@
 import { useState } from "react"
 import type { OperationalCost, CostCategory } from "@/core/domain/sales/operational-cost"
 import { calculatePeriodCosts } from "@/core/domain/sales/operational-cost"
-import { deleteCostAction } from "../actions"
 import { CostForm } from "./CostForm"
 import { CategoryStats } from "./CategoryStats"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs"
@@ -39,12 +38,12 @@ export function CostList({ initialCosts }: CostListProps) {
       return
     }
 
-    try {
-      await deleteCostAction(id)
-      setCosts(costs.filter((c) => c.id !== id))
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Failed to delete cost")
-    }
+    // try {
+    //   await deleteCostAction(id)
+    //   setCosts(costs.filter((c) => c.id !== id))
+    // } catch (error) {
+    //   alert(error instanceof Error ? error.message : "Failed to delete cost")
+    // }
   }
 
   const handleEdit = (cost: OperationalCost) => {

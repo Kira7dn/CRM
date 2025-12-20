@@ -1,5 +1,4 @@
 import { getCurrentUserAction } from "../../_shared/actions/auth-actions"
-import { getDashboardStats } from "@/app/(features)/crm/_actions/dashboard_actions"
 import { CustomizableDashboard } from "./_components/dashboard/CustomizableDashboard"
 import { mapWidgetsFromConfig } from "./_components/dashboard/widgetMapper"
 import widgetsConfig from "./_components/dashboard/widgets.json"
@@ -9,20 +8,19 @@ export const revalidate = 300
 
 export default async function DashboardPage() {
   const user = await getCurrentUserAction()
-  const stats = await getDashboardStats()
 
-  if (!stats) {
-    return (
-      <div className="p-4 md:p-6">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-gray-600 dark:text-gray-400">Loading dashboard...</p>
-        </div>
-      </div>
-    )
-  }
+  // if (!stats) {
+  //   return (
+  //     <div className="p-4 md:p-6">
+  //       <div className="max-w-7xl mx-auto">
+  //         <p className="text-gray-600 dark:text-gray-400">Loading dashboard...</p>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
-  // Load widgets from JSON configuration and map to components
-  const widgets = mapWidgetsFromConfig(widgetsConfig, stats)
+  // // Load widgets from JSON configuration and map to components
+  // const widgets = mapWidgetsFromConfig(widgetsConfig, stats)
 
   return (
     <div className="p-4 md:p-6">
@@ -36,7 +34,7 @@ export default async function DashboardPage() {
             Role: <span className="font-semibold capitalize">{user?.role}</span>
           </p>
         </div>
-        <CustomizableDashboard widgets={widgets} />
+        {/* <CustomizableDashboard widgets={widgets} /> */}
       </div>
     </div>
   )

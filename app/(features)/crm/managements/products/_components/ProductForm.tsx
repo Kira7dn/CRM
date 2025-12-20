@@ -16,7 +16,9 @@ export function ProductForm({ product, categories, onClose }: ProductFormProps) 
   const [loading, setLoading] = useState(false)
   const [sizes, setSizes] = useState<SizeOption[]>(product?.sizes || [])
   const [colors, setColors] = useState<string[]>(product?.colors || [])
-  const [imageUrl, setImageUrl] = useState(product?.image || "")
+  const [imageUrl, setImageUrl] = useState<{ type: "image" | "video"; url: string } | null>(
+    product?.image ? { type: "image", url: product.image } : null
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -28,7 +30,7 @@ export function ProductForm({ product, categories, onClose }: ProductFormProps) 
       // Add sizes and colors as JSON strings
       formData.set("sizes", JSON.stringify(sizes))
       formData.set("colors", JSON.stringify(colors))
-      formData.set("image", imageUrl)
+      formData.set("image", imageUrl?.url || "")
 
       if (product) {
         formData.set("id", product.id.toString())
@@ -153,7 +155,7 @@ export function ProductForm({ product, categories, onClose }: ProductFormProps) 
 
             {/* Image Upload */}
             <MediaUpload
-              value={imageUrl}
+              value={imageUrl || undefined}
               onChange={(url) => setImageUrl(url)}
               folder="products"
               disabled={loading}

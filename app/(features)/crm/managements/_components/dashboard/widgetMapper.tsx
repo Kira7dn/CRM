@@ -26,10 +26,8 @@ import { AIRiskIdentifiedWidget } from "./widgets/risk/AIRiskIdentifiedWidget"
 import { AIRiskOpportunitiesWidget } from "./widgets/risk/AIRiskOpportunitiesWidget"
 import { OrderStatusWidget } from "./widgets/order/OrderStatusWidget"
 import { PaymentStatusWidget } from "./widgets/order/PaymentStatusWidget"
-import { getDashboardStats } from "@/app/(features)/crm/_actions/dashboard_actions"
 
 // Extract the return type from getDashboardStats function
-type DashboardStats = NonNullable<Awaited<ReturnType<typeof getDashboardStats>>>
 
 interface WidgetConfig {
   id: string
@@ -80,7 +78,7 @@ const WIDGET_TITLES: Record<string, string> = {
 /**
  * Maps widget IDs to their React components with stats data
  */
-export function createWidgetComponent(widgetId: string, stats: DashboardStats) {
+export function createWidgetComponent(widgetId: string, stats: any) {
   const componentMap: Record<string, React.ReactNode> = {
     "doanh-thu-7-ngay": (
       <WeekRevenueWidget
@@ -234,7 +232,7 @@ export function createWidgetComponent(widgetId: string, stats: DashboardStats) {
  */
 export function mapWidgetsFromConfig(
   config: WidgetMapperConfig,
-  stats: DashboardStats
+  stats: any
 ): Widget[] {
   return config.widgets.map((widgetConfig) => ({
     id: widgetConfig.id,

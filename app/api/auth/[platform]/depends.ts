@@ -1,5 +1,5 @@
 import { SocialAuthRepository } from "@/infrastructure/repositories/social/social-auth-repo"
-import { OAuthAdapterFactory } from "@/infrastructure/adapters/external/social/factories/oauth-adapter-factory"
+import { OAuthAdapterFactory } from "@/infrastructure/adapters/social/factories/oauth-adapter-factory"
 
 import { ConnectSocialAccountUseCase } from "@/core/application/usecases/social/connect-social"
 import { RefreshTokenUseCase } from "@/core/application/usecases/social/refresh-token"

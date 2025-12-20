@@ -3,10 +3,9 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card"
 import { TrendingUp, Brain, Calendar, Loader2 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
-import type { RevenueForecast as ForecastType } from "@/infrastructure/adapters/external/ai/revenue-forecast-service"
+import type { RevenueForecast as ForecastType } from "@/infrastructure/adapters/ai/revenue-forecast-service"
 import { useEffect, useState, useMemo, useCallback } from "react"
 import { Badge } from "@/@shared/ui/badge"
-import { generateRevenueForecast } from "@/app/(features)/crm/_actions/ai-actions"
 
 const CONFIDENCE_STYLES = {
   low: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
@@ -33,18 +32,18 @@ export function RevenueForecast() {
   const [error, setError] = useState<string | null>(null)
 
   const loadForecast = useCallback(async () => {
-    try {
-      const result = await generateRevenueForecast()
-      if (result.success && result.forecast) {
-        setForecast(result.forecast)
-      } else {
-        setError(result.error || "Không thể tải dự báo doanh thu")
-      }
-    } catch {
-      setError("Không thể tải dự báo doanh thu")
-    } finally {
-      setLoading(false)
-    }
+    // try {
+    //   const result = await generateRevenueForecast()
+    //   if (result.success && result.forecast) {
+    //     setForecast(result.forecast)
+    //   } else {
+    //     setError(result.error || "Không thể tải dự báo doanh thu")
+    //   }
+    // } catch {
+    //   setError("Không thể tải dự báo doanh thu")
+    // } finally {
+    //   setLoading(false)
+    // }
   }, [])
 
   useEffect(() => {

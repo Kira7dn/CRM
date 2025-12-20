@@ -4,7 +4,7 @@
  */
 import { PerplexityService } from "@/core/application/usecases/marketing/post/generate-post/perplexity.service"
 import { GenerationSession } from "@/core/application/usecases/marketing/post/generate-post/post-gen-service.interfaces"
-import { ResearchTopicUseCase } from "../../research-topic"
+import { ResearchTopicUseCase } from "../research-topic"
 import { GenerationEvent, GenerationPass, PassContext, PassType } from "../stream-post-generationn"
 
 export class ResearchPass implements GenerationPass {

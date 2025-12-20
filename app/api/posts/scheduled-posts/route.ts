@@ -43,7 +43,7 @@ export const POST = verifySignatureAppRouter(async (req: NextRequest) => {
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: Promise<{}> }
 ) {
     try {
         return NextResponse.json("12121");

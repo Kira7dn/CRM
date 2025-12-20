@@ -15,7 +15,9 @@ export function CampaignForm({ campaign, onClose }: CampaignFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState("")
-  const [imageUrl, setImageUrl] = useState(campaign?.image || "")
+  const [imageUrl, setImageUrl] = useState<{ type: "image" | "video"; url: string } | null>(
+    campaign?.image ? { type: "image", url: campaign.image } : null
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -23,7 +25,7 @@ export function CampaignForm({ campaign, onClose }: CampaignFormProps) {
     setError("")
 
     const formData = new FormData(e.currentTarget)
-    formData.set("image", imageUrl)
+    formData.set("image", imageUrl?.url || "")
 
     try {
       const result = campaign
@@ -93,7 +95,7 @@ export function CampaignForm({ campaign, onClose }: CampaignFormProps) {
           </div>
 
           <MediaUpload
-            value={imageUrl}
+            value={imageUrl || undefined}
             onChange={(url) => setImageUrl(url)}
             folder="campaigns"
             disabled={isSubmitting}

@@ -1,7 +1,7 @@
 import type { Post, PlatformMetadata, PostMedia } from "@/core/domain/marketing/post"
 import type { PostRepo, PostPayload } from "@/core/application/interfaces/marketing/post-repo"
 import type { PostingAdapterFactory } from "@/core/application/interfaces/marketing/posting-adapter"
-import type { QueueService } from "@/core/application/interfaces/shared/queue-service"
+import type { QueueService } from "@/core/application/interfaces/queue-service"
 
 export interface UpdatePostResponse {
   post: Post | null;

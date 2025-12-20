@@ -1,5 +1,5 @@
 import { PostRepo } from "@/core/application/interfaces/marketing/post-repo"
-import { PostingAdapterFactory } from "@/infrastructure/adapters/external/social"
+import { PostingAdapterFactory } from "@/infrastructure/adapters/social"
 import { PostStatus } from "@/core/domain/marketing/post"
 import { StoreContentEmbeddingUseCase } from "./content-memory/store-content-embedding"
 

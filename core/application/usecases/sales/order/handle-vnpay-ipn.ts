@@ -1,5 +1,4 @@
-import type { VnpayIpnRequest, VnpayIpnParams, VnpayIpnResult } from "@/infrastructure/adapters/external/payment/vnpay-gateway";
-import type { VnpayGateway } from "@/core/application/interfaces/shared/vnpay-gateway";
+import type { VnpayIpnRequest, VnpayIpnParams, VnpayIpnResult, VnpayGateway } from "@/infrastructure/adapters/payment/vnpay-gateway";
 import type { OrderService } from "@/core/application/interfaces/sales/order-service";
 import type { PaymentStatus } from "@/core/domain/sales/order";
 

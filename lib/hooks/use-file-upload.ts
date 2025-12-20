@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { AllowedFileType } from "@/infrastructure/adapters/storage/s3-storage-service";
+import type { AllowedFileType } from "@/infrastructure/adapters/s3-storage-service";
 import { uploadFileAction, deleteFileAction } from "@/app/actions/upload";
 
 export interface UseFileUploadOptions {
@@ -66,7 +66,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
       console.log('[useFileUpload] Converting file to ArrayBuffer');
       const arrayBuffer = await file.arrayBuffer();
       const bufferArray = Array.from(new Uint8Array(arrayBuffer));
-      
+
       console.log('[useFileUpload] Prepared file data for upload:', {
         name: file.name,
         type: file.type,
@@ -74,7 +74,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
         fileType: options.fileType,
         folder: options.folder
       });
-      
+
       // Call Server Action with file data
       console.log('[useFileUpload] Calling uploadFileAction');
       const result = await uploadFileAction({
@@ -117,7 +117,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
         error: errorMessage,
         stack: error instanceof Error ? error.stack : undefined
       });
-      
+
       setState({
         isUploading: false,
         progress: 0,

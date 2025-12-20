@@ -1,5 +1,5 @@
-import type { PaymentGateway } from '@/core/application/interfaces/shared/payment-gateway';
-import type { QueueService } from '@/core/application/interfaces/shared/queue-service';
+import type { PaymentGateway } from '@/core/application/payment-gateway';
+import type { QueueService } from '@/core/application/interfaces/queue-service';
 
 export interface CheckPaymentStatusRequest {
   orderId: number;

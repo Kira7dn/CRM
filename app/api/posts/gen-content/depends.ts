@@ -1,12 +1,10 @@
 import { LLMService } from "@/infrastructure/adapters/llm-service"
-import { BrandMemoryRepository } from "@/infrastructure/repositories/brand-memory-repo"
 import { PerplexityService as PerplexityServiceImpl } from "@/core/application/usecases/marketing/post/generate-post/perplexity.service"
 
 import type { ILLMService } from "@/core/application/usecases/marketing/post/generate-post/post-gen-service.interfaces"
 import type { ICacheService } from "@/core/application/usecases/marketing/post/generate-post/post-gen-service.interfaces"
-import type { BrandMemoryService } from "@/core/application/interfaces/brand-memory-service"
 import { StreamPostUseCase } from "@/core/application/usecases/marketing/post/generate-post/stream-post-generationn"
-import { PerplexityService, ResearchTopicUseCase } from "@/core/application/usecases/marketing/post/research-topic"
+import { PerplexityService, ResearchTopicUseCase } from "@/core/application/usecases/marketing/post/generate-post/research-topic"
 import { RedisCacheService } from "@/core/application/usecases/marketing/post/generate-post/redis-cache.service"
 
 /**
@@ -16,7 +14,6 @@ import { RedisCacheService } from "@/core/application/usecases/marketing/post/ge
  */
 let llmServiceInstance: ILLMService | null = null
 let cacheServiceInstance: ICacheService | null = null
-let brandMemoryRepoInstance: BrandMemoryService | null = null
 let streamMultiPassUseCaseInstance: StreamPostUseCase | null = null
 let perplexityServiceInstance: PerplexityService | null = null
 let researchTopicUseCaseInstance: ResearchTopicUseCase | null = null
@@ -26,7 +23,7 @@ let researchTopicUseCaseInstance: ResearchTopicUseCase | null = null
  * Services
  * ======================================================
  */
-const getLLMService = (): ILLMService => {
+export const getLLMService = (): ILLMService => {
     if (!llmServiceInstance) {
         llmServiceInstance = new LLMService()
     }
@@ -38,13 +35,6 @@ const getCacheService = (): ICacheService => {
         cacheServiceInstance = new RedisCacheService()
     }
     return cacheServiceInstance
-}
-
-const getBrandMemoryRepo = (): BrandMemoryService => {
-    if (!brandMemoryRepoInstance) {
-        brandMemoryRepoInstance = new BrandMemoryRepository()
-    }
-    return brandMemoryRepoInstance
 }
 
 const getPerplexityService = (): PerplexityService => {

@@ -5,7 +5,7 @@
 
 import { GenerationSession } from "@/core/application/usecases/marketing/post/generate-post/post-gen-service.interfaces";
 import { GenerationEvent, GenerationPass, PassContext, PassType } from "../stream-post-generationn";
-import { RetrieveKnowledgeUseCase } from "../../retrieve-knowledge";
+import { RetrieveKnowledgeUseCase } from "../retrieve-knowledge";
 
 export class RAGPass implements GenerationPass {
     readonly name: PassType = 'rag'

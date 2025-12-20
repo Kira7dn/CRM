@@ -9,7 +9,7 @@ import {
   assignTicketUseCase,
   resolveTicketUseCase,
   addTicketCommentUseCase,
-} from "@/app/api/customer-care/tickets/depends";
+} from "@/app/api/customers/tickets/depends";
 import type { TicketStatus, TicketPriority, TicketCategory, TicketSource } from "@/core/domain/customers/ticket";
 
 /**

@@ -3,7 +3,7 @@ import type {
   AdminUserService,
   AdminUserPayload,
   ChangePasswordPayload,
-} from "@/core/application/interfaces/auth/admin-user-service"
+} from "@/core/application/interfaces/users/admin-user-service"
 import bcrypt from "bcryptjs"
 import { ObjectId } from "mongodb"
 import { BaseRepository } from "@/infrastructure/db/base-repository"

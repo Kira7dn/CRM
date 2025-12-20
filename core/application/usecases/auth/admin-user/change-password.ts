@@ -1,5 +1,5 @@
 import { validatePassword } from "@/core/domain/auth/admin-user"
-import type { AdminUserService, ChangePasswordPayload } from "@/core/application/interfaces/auth/admin-user-service"
+import type { AdminUserService, ChangePasswordPayload } from "@/core/application/interfaces/users/admin-user-service"
 
 export interface ChangePasswordRequest extends ChangePasswordPayload { }
 

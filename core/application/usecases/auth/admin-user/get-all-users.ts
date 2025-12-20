@@ -1,5 +1,5 @@
 import type { AdminUser } from "@/core/domain/auth/admin-user"
-import type { AdminUserService } from "@/core/application/interfaces/auth/admin-user-service"
+import type { AdminUserService } from "@/core/application/interfaces/users/admin-user-service"
 
 export interface GetAllUsersRequest {
   role?: "admin" | "sale" | "warehouse"

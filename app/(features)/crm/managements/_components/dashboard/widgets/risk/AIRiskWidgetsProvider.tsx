@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { generateRiskAssessment } from "../../../../../_actions/ai-actions"
-import type { RiskAssessment } from "@/infrastructure/adapters/external/ai/risk-assessment-service"
+import type { RiskAssessment } from "@/infrastructure/adapters/ai/risk-assessment-service"
 
 /**
  * Provider component that fetches risk assessment data once
@@ -19,24 +18,24 @@ export function AIRiskWidgetsProvider({ children }: AIRiskWidgetsProviderProps) 
   useEffect(() => {
     let mounted = true
 
-    async function loadAssessment() {
-      try {
-        const result = await generateRiskAssessment()
-        if (mounted) {
-          if (result.success && result.assessment) {
-            setAssessment(result.assessment)
-          }
-        }
-      } catch (error) {
-        console.error("Failed to load risk assessment:", error)
-      } finally {
-        if (mounted) {
-          setLoading(false)
-        }
-      }
-    }
+    // async function loadAssessment() {
+    //   try {
+    //     const result = await generateRiskAssessment()
+    //     if (mounted) {
+    //       if (result.success && result.assessment) {
+    //         setAssessment(result.assessment)
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.error("Failed to load risk assessment:", error)
+    //   } finally {
+    //     if (mounted) {
+    //       setLoading(false)
+    //     }
+    //   }
+    // }
 
-    loadAssessment()
+    // loadAssessment()
 
     return () => {
       mounted = false

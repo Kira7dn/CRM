@@ -1,7 +1,7 @@
 "use server"
 
-import { createS3StorageService } from "@/infrastructure/adapters/storage/s3-storage-service"
-import type { AllowedFileType } from "@/infrastructure/adapters/storage/s3-storage-service"
+import { createS3StorageService } from "@/infrastructure/adapters/s3-storage-service"
+import type { AllowedFileType } from "@/infrastructure/adapters/s3-storage-service"
 
 export interface UploadResponse {
   success: boolean

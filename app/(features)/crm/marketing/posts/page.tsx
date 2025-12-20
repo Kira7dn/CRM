@@ -1,5 +1,6 @@
 import { getPostsUseCase } from '@/app/api/posts/depends'
 import PostsPageClient from './_components/PostsPageClient'
+import { PostsCopilotWrapper } from './_components/PostsCopilotWrapper'
 
 export default async function PostsPage() {
   const useCase = await getPostsUseCase()
@@ -7,6 +8,8 @@ export default async function PostsPage() {
   const plainPosts = JSON.parse(JSON.stringify(result.posts))
 
   return (
-    <PostsPageClient initialPosts={plainPosts} />
+    <PostsCopilotWrapper>
+      <PostsPageClient initialPosts={plainPosts} />
+    </PostsCopilotWrapper>
   )
 }

@@ -58,10 +58,13 @@ export default function PlatformMultiSelect({
         selectedPlatforms.filter(p => p.platform !== platform)
       )
     } else {
-      // Add platform with empty metadata
+      // Add platform with default metadata
       onPlatformsChange([
         ...selectedPlatforms,
-        { platform, metadata: {} }
+        {
+          platform,
+          status: "draft" as const,
+        }
       ])
     }
   }
@@ -144,7 +147,7 @@ export default function PlatformMultiSelect({
 
                       {/* Warning Icon */}
                       {hasWarning && !isUnsupported && (
-                        <AlertTriangle className="h-4 w-4 text-yellow-500" title="Limited support" />
+                        <AlertTriangle className="h-4 w-4 text-yellow-500" />
                       )}
                     </CommandItem>
                   )
@@ -180,7 +183,7 @@ export default function PlatformMultiSelect({
                 <span>{platformLabel}</span>
 
                 {compatibility === 'warning' && (
-                  <AlertTriangle className="h-3 w-3" title="Limited support" />
+                  <AlertTriangle className="h-3 w-3" />
                 )}
 
                 <button

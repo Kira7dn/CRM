@@ -1,5 +1,5 @@
 "use server"
-import { createCheckContentSimilarityUseCase } from "@/app/api/content-memory/depends"
+import { createCheckContentSimilarityUseCase } from "@/app/api/posts/content-memory/depends"
 
 /**
  * Check content similarity before generation

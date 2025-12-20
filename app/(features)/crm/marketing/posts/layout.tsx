@@ -1,5 +1,3 @@
-import PostHeader from "./_components/PostHeader"
-
 export default async function PostLayout({
   children,
 }: {
@@ -8,7 +6,7 @@ export default async function PostLayout({
 
   return (
     <div className="container mx-auto max-w-6xl p-6 space-y-6">
-      <PostHeader />
+      {/* <PostHeader /> */}
       {children}
     </div>
   )

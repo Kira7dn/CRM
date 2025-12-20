@@ -35,7 +35,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
 
     try {
       await deleteProductAction(id)
-      setProducts(products.filter((p) => p.id !== id))
+      setProducts(products.filter((p) => p.id !== id.toString()))
     } catch (error) {
       alert(error instanceof Error ? error.message : "Failed to delete product")
     }
@@ -169,7 +169,7 @@ export function ProductList({ initialProducts, categories }: ProductListProps) {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => handleDelete(parseInt(product.id))}
                   className="flex-1 px-3 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded hover:bg-red-200 dark:hover:bg-red-900/50 transition"
                 >
                   Delete

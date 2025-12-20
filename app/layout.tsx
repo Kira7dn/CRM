@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { CopilotKit } from "@copilotkit/react-core";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "@copilotkit/react-ui/styles.css";
 import "./globals.css";
 const montserrat = Montserrat({
@@ -106,16 +107,8 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} antialiased font-sans`}
       >
-        {/* <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        > */}
-        <CopilotKit publicLicenseKey="ck_pub_9f183f4c59f3d2b59e41ff75d5aace3e">
-          {children}
-        </CopilotKit>
-        {/* </ThemeProvider> */}
+        {children}
+        <SpeedInsights />
       </body>
     </html>
   );

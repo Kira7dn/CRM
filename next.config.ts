@@ -1,10 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, webpack }) => {
     if (isServer) {
       config.externals.push('bullmq', 'ioredis')
     }
+
+    // Ignore test files from dependencies to avoid build errors
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /\/test\//,
+        contextRegExp: /thread-stream/,
+      })
+    )
+
     return config
   },
   reactStrictMode: false,
@@ -13,7 +22,12 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '100mb',
     }
   },
-  serverExternalPackages: ['instrumentation'],
+  serverExternalPackages: [
+    'instrumentation',
+    '@copilotkit/runtime',
+    'pino',
+    'thread-stream'
+  ],
   allowedDevOrigins: ["crm.linkstrategy.io.vn"],
   images: {
     remotePatterns: [

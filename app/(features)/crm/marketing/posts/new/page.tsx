@@ -1,7 +1,6 @@
 import PostForm from '../_components/post-form/PostForm'
 import { filterProductsUseCase } from '@/app/api/products/depends'
-import { Product, ProductPlain } from '@/core/domain/catalog/product'
-import { getBrandMemoryAction } from '../_actions/brand-memory-action'
+import { ProductPlain } from '@/core/domain/catalog/product'
 
 export default async function PostsPage({
   searchParams,
@@ -15,10 +14,6 @@ export default async function PostsPage({
     ? new Date(scheduledAt)
     : undefined
 
-  // ===== bootstrap: brand memory =====
-  const brandMemoryResult = await getBrandMemoryAction()
-  const hasBrandMemory =
-    brandMemoryResult.success && Boolean(brandMemoryResult.brandMemory)
 
   // ===== bootstrap: products (USE CASE) =====
   const productUseCase = await filterProductsUseCase()
@@ -31,7 +26,6 @@ export default async function PostsPage({
     <PostForm
       initialScheduledAt={initialScheduledAt}
       products={products}
-      hasBrandMemory={hasBrandMemory}
     />
   )
 }

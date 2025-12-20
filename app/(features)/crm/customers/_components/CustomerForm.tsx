@@ -12,7 +12,9 @@ interface CustomerFormProps {
 
 export function CustomerForm({ customer, onClose }: CustomerFormProps) {
   const [loading, setLoading] = useState(false)
-  const [avatarUrl, setAvatarUrl] = useState(customer?.avatar || "")
+  const [avatarUrl, setAvatarUrl] = useState<{ type: "image" | "video"; url: string } | null>(
+    customer?.avatar ? { type: "image", url: customer.avatar } : null
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -20,7 +22,7 @@ export function CustomerForm({ customer, onClose }: CustomerFormProps) {
 
     try {
       const formData = new FormData(e.currentTarget)
-      formData.set("avatar", avatarUrl)
+      formData.set("avatar", avatarUrl?.url || "")
 
       if (customer) {
         await updateCustomerAction(formData)
@@ -143,7 +145,7 @@ export function CustomerForm({ customer, onClose }: CustomerFormProps) {
 
             {/* Avatar Upload */}
             <MediaUpload
-              value={avatarUrl}
+              value={avatarUrl || undefined}
               onChange={(url) => setAvatarUrl(url)}
               folder="avatars"
               disabled={loading}

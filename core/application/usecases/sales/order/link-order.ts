@@ -1,6 +1,6 @@
 import type { Order } from "@/core/domain/sales/order";
 import type { OrderService } from "@/core/application/interfaces/sales/order-service";
-import type { QueueService } from "@/core/application/interfaces/shared/queue-service";
+import type { QueueService } from "@/core/application/interfaces/queue-service";
 
 export interface LinkOrderRequest {
   orderId: number;

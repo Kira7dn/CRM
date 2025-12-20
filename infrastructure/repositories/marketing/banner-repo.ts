@@ -35,7 +35,7 @@ export class BannerRepository extends BaseRepository<Banner, number> implements 
     return this.toDomain(doc);
   }
 
-  async update(payload: BannerPayload): Promise<Banner | null> {
+  async update(payload: BannerPayload & { id: number }): Promise<Banner | null> {
     if (!payload.id) throw new Error("Banner ID is required for update");
 
     const now = new Date();

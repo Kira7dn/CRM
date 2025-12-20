@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card"
 import { PackageX, PackageOpen, Loader2, AlertTriangle } from "lucide-react"
-import { getInventoryAlerts } from "@/app/(features)/crm/_actions/dashboard_actions"
 
 interface InventoryAlert {
   lowStock: Array<{
@@ -32,22 +31,22 @@ export function InventoryAlertsWidget() {
   useEffect(() => {
     let mounted = true
 
-    async function loadAlerts() {
-      try {
-        const data = await getInventoryAlerts()
-        if (mounted) {
-          setAlerts(data)
-        }
-      } catch (error) {
-        console.error("Failed to load inventory alerts:", error)
-      } finally {
-        if (mounted) {
-          setLoading(false)
-        }
-      }
-    }
+    // async function loadAlerts() {
+    //   try {
+    //     const data = await getInventoryAlerts()
+    //     if (mounted) {
+    //       setAlerts(data)
+    //     }
+    //   } catch (error) {
+    //     console.error("Failed to load inventory alerts:", error)
+    //   } finally {
+    //     if (mounted) {
+    //       setLoading(false)
+    //     }
+    //   }
+    // }
 
-    loadAlerts()
+    // loadAlerts()
 
     return () => {
       mounted = false

@@ -1,5 +1,5 @@
 import { PostPayload, PostRepo } from "@/core/application/interfaces/marketing/post-repo"
-import { QueueService } from "@/core/application/interfaces/shared/queue-service"
+import { QueueService } from "@/core/application/interfaces/queue-service"
 import { PublishPostUseCase } from "./publish-post"
 import { Post, PostStatus } from "@/core/domain/marketing/post"
 

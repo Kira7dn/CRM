@@ -9,9 +9,9 @@ import { PublishPostUseCase } from "@/core/application/usecases/marketing/post/p
 import { StoreContentEmbeddingUseCase } from "@/core/application/usecases/marketing/post/content-memory/store-content-embedding"
 
 import type { PostingAdapterFactory } from "@/core/application/interfaces/marketing/posting-adapter"
-import { getPostingAdapterFactory } from "@/infrastructure/adapters/external/social/factories/posting-adapter-factory"
+import { getPostingAdapterFactory } from "@/infrastructure/adapters/social/factories/posting-adapter-factory"
 
-import type { QueueService } from "@/core/application/interfaces/shared/queue-service"
+import type { QueueService } from "@/core/application/interfaces/queue-service"
 import { QStashAdapter } from "@/infrastructure/queue/qstash-adapter"
 import { getStoreContentEmbeddingUseCase } from "../resources/depends"
 

@@ -10,14 +10,14 @@ export default async function FeaturesLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {user && (
+      {/* {user && (
         <CopilotAgent
           userId={user.id?.toString() || ""}
           userRole={(user.role as 'admin' | 'sales' | 'warehouse') || 'admin'}
-        >
-          <main>{children}</main>
-        </CopilotAgent>
-      )}
+        > */}
+      <main>{children}</main>
+      {/* </CopilotAgent>
+      )} */}
     </div>
   )
 }

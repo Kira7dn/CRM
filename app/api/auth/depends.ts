@@ -1,5 +1,5 @@
 import { AdminUserRepository } from "@/infrastructure/repositories/auth/admin-user-repo"
-import type { AdminUserService } from "@/core/application/interfaces/auth/admin-user-service"
+import type { AdminUserService } from "@/core/application/interfaces/users/admin-user-service"
 
 // Use cases
 import { LoginUseCase } from "@/core/application/usecases/auth/admin-user/login"

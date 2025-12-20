@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { createS3StorageService } from "@/infrastructure/adapters/storage/s3-storage-service";
-import type { AllowedFileType } from "@/infrastructure/adapters/storage/s3-storage-service";
+import { createS3StorageService } from "@/infrastructure/adapters/s3-storage-service";
+import type { AllowedFileType } from "@/infrastructure/adapters/s3-storage-service";
 
 const getContentTypeFromExtension = (filename: string): string => {
   const extension = filename.split('.').pop()?.toLowerCase();

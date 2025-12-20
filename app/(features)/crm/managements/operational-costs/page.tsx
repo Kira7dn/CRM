@@ -1,11 +1,6 @@
-import { getCostsAction } from "./actions"
 import { CostList } from "./_components/CostList"
 
 export default async function OperationalCostsPage() {
-  const costs = await getCostsAction()
-
-  // Serialize to plain objects (convert Date objects)
-  const serializedCosts = JSON.parse(JSON.stringify(costs))
 
   return (
     <div className="p-8">
@@ -21,7 +16,7 @@ export default async function OperationalCostsPage() {
         </div>
 
         {/* Cost List */}
-        <CostList initialCosts={serializedCosts} />
+        {/* <CostList initialCosts={serializedCosts} /> */}
       </div>
     </div>
   )

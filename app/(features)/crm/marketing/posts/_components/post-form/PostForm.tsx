@@ -11,7 +11,6 @@ import { Product, ProductPlain } from '@/core/domain/catalog/product'
 interface PostFormProps {
   post?: Post
   products?: ProductPlain[]
-  hasBrandMemory: boolean
   initialScheduledAt?: Date
   initialIdea?: string
 }

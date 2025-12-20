@@ -1,7 +1,7 @@
 import type { ProductService } from "@/core/application/interfaces/catalog/product-service";
 
 export interface DeleteProductRequest {
-  id: number;
+  id: string;
 }
 
 export interface DeleteProductResponse {
@@ -9,10 +9,10 @@ export interface DeleteProductResponse {
 }
 
 export class DeleteProductUseCase {
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   async execute(request: DeleteProductRequest): Promise<DeleteProductResponse> {
-    const success = await this.productService.delete(request.id);
+    const success = await this.productService.delete(request.id.toString());
     return { success };
   }
 }
