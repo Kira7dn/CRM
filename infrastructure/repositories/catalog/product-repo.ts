@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/infrastructure/db/base-repository";
+import { BaseRepository, type PaginationOptions } from "@/infrastructure/db/base-repository";
 import { Product, SizeOption } from "@/core/domain/catalog/product";
 import type { ProductService, ProductPayload, FilterProductsParams } from "@/core/application/interfaces/catalog/product-service";
 
@@ -37,8 +37,9 @@ export class ProductRepository extends BaseRepository<Product, string> implement
     return doc ? this.toDomain(doc) : null;
   }
 
-  async filter(params: FilterProductsParams): Promise<Product[]> {
+  async filter(params: FilterProductsParams & PaginationOptions): Promise<Product[]> {
     const collection = await this.getCollection();
+    const { page, limit, skip } = this.buildPaginationQuery(params);
     const query: Record<string, unknown> = {};
 
     if (params.categoryId !== undefined) {
@@ -51,7 +52,13 @@ export class ProductRepository extends BaseRepository<Product, string> implement
       query.name = { $regex: params.search, $options: "i" };
     }
 
-    const docs = await collection.find(query).sort({ _id: 1 }).toArray();
+    const docs = await collection
+      .find(query)
+      .sort({ _id: 1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
     return docs.map(doc => this.toDomain(doc));
   }
 

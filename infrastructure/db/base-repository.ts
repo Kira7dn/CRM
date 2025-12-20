@@ -1,6 +1,19 @@
 import type { MongoClient } from 'mongodb';
 import clientPromise from './mongo';
 
+export interface PaginationOptions {
+  page?: number
+  limit?: number
+}
+
+export interface PaginatedResult<T> {
+  data: T[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
 export abstract class BaseRepository<T extends { id: ID }, ID> {
   protected abstract collectionName: string;
 
@@ -18,6 +31,15 @@ export abstract class BaseRepository<T extends { id: ID }, ID> {
   protected async getCollection() {
     const client = await this.getClient();
     return client.db(process.env.MONGODB_DB).collection(this.collectionName);
+  }
+
+  /** Helper to build paginated query */
+  protected buildPaginationQuery(options: PaginationOptions = {}) {
+    const page = options.page || 1
+    const limit = options.limit || 50
+    const skip = (page - 1) * limit
+
+    return { page, limit, skip }
   }
 
   /** Convert _id from DB to domain id - default implementation */

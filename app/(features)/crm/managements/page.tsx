@@ -1,4 +1,4 @@
-import { getCurrentUserAction } from "../../_shared/actions/auth-actions"
+import { cookies } from "next/headers"
 import { CustomizableDashboard } from "./_components/dashboard/CustomizableDashboard"
 import { mapWidgetsFromConfig } from "./_components/dashboard/widgetMapper"
 import widgetsConfig from "./_components/dashboard/widgets.json"
@@ -7,7 +7,12 @@ import widgetsConfig from "./_components/dashboard/widgets.json"
 export const revalidate = 300
 
 export default async function DashboardPage() {
-  const user = await getCurrentUserAction()
+  // Auth already checked in layout - just get user info from cookies
+  const cookieStore = await cookies()
+  const userRole = cookieStore.get("admin_user_role")?.value || "admin"
+
+  // Simplified user object (full user already validated in layout)
+  const user = { name: "Admin", role: userRole }
 
   // if (!stats) {
   //   return (

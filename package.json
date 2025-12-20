@@ -17,6 +17,8 @@
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "seed:crm": "npx tsx --env-file=.env scripts/seed-crm-data.ts",
     "create-indexes": "npx tsx --env-file=.env scripts/create-indexes.ts",
+    "db:indexes": "npx tsx --env-file=.env scripts/setup-db-indexes.ts setup",
+    "db:indexes:drop": "npx tsx --env-file=.env scripts/setup-db-indexes.ts drop",
     "warm-cache": "npx tsx --env-file=.env scripts/warm-cache.ts",
     "worker:campaign": "npx tsx --env-file=.env infrastructure/queue/campaign-worker.ts",
     "worker:tiktok": "npx tsx --env-file=.env scripts/start-tiktok-worker.ts",

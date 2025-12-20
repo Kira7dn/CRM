@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/infrastructure/db/base-repository"
+import { BaseRepository, type PaginationOptions } from "@/infrastructure/db/base-repository"
 import type { Customer } from "@/core/domain/customers/customer"
 import type {
   CustomerService,
@@ -9,11 +9,17 @@ import type {
 export class CustomerRepository extends BaseRepository<Customer, string> implements CustomerService {
   protected collectionName = "customers"
 
-  async getAll(): Promise<Customer[]> {
+  async getAll(options: PaginationOptions = {}): Promise<Customer[]> {
     const collection = await this.getCollection()
-    const docs = await collection.find({})
+    const { page, limit, skip } = this.buildPaginationQuery(options)
+
+    const docs = await collection
+      .find({})
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .toArray()
+
     return docs.map(doc => this.toDomain(doc))
   }
 

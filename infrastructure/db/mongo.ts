@@ -2,8 +2,21 @@ import { MongoClient } from "mongodb"
 
 const uri = process.env.MONGODB_URI as string
 const options = {
+  // Connection pool settings for better performance
+  maxPoolSize: 10,
+  minPoolSize: 2,
+
+  // Timeout settings
   serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 10000,
+
+  // Retry settings
   retryWrites: true,
+  retryReads: true,
+
+  // Compression for faster network transfer
+  compressors: ['zlib'],
 } as any
 
 let client: MongoClient

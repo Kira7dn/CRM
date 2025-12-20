@@ -2,6 +2,9 @@ import { cookies } from "next/headers"
 import { ObjectId } from "mongodb"
 import SocialConnectionsManager from "./_components/SocialConnectionsManager"
 
+// Enable ISR with 60 second revalidation
+export const revalidate = 60
+
 export default async function SocialConnectionsPage() {
   // Get current user ID from session
   const cookieStore = await cookies()

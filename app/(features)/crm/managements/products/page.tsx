@@ -2,6 +2,9 @@ import { filterProductsUseCase } from "@/app/api/products/depends"
 import { getCategoriesUseCase } from "@/app/api/categories/depends"
 import { ProductList } from "./_components/ProductList"
 
+// Enable ISR with 60 second revalidation
+export const revalidate = 60
+
 export default async function ProductsPage() {
   // Get products and categories using injected use cases
   const productsUseCase = await filterProductsUseCase()

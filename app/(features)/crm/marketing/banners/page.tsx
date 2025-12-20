@@ -1,6 +1,9 @@
 import { getBannersUseCase } from "@/app/api/banners/depends"
 import { BannerList } from "./_components/BannerList"
 
+// Enable ISR with 60 second revalidation
+export const revalidate = 60
+
 export default async function BannersPage() {
   // Get banners using injected use case
   const useCase = await getBannersUseCase()

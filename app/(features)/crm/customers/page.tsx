@@ -1,6 +1,9 @@
 import { getAllCustomersUseCase } from "@/app/api/customers/depends"
 import { CustomerList } from "./_components/CustomerList"
 
+// Enable ISR with 60 second revalidation
+export const revalidate = 60
+
 export default async function CustomersPage() {
   // Get customers using injected use case
   const useCase = await getAllCustomersUseCase()

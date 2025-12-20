@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/infrastructure/db/base-repository";
+import { BaseRepository, type PaginationOptions, type PaginatedResult } from "@/infrastructure/db/base-repository";
 import { Post } from "@/core/domain/marketing/post";
 import type { PostRepo, PostPayload } from "@/core/application/interfaces/marketing/post-repo";
 import { ObjectId } from "mongodb";
@@ -6,10 +6,36 @@ import { ObjectId } from "mongodb";
 export class PostRepository extends BaseRepository<Post, string> implements PostRepo {
   protected collectionName = "posts";
 
-  async getAll(): Promise<Post[]> {
+  async getAll(options: PaginationOptions = {}): Promise<Post[]> {
     const collection = await this.getCollection();
-    const docs = await collection.find({}).sort({ _id: -1 }).toArray();
+    const { page, limit, skip } = this.buildPaginationQuery(options);
+
+    const docs = await collection
+      .find({})
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
     return docs.map(doc => this.toDomain(doc));
+  }
+
+  async getAllPaginated(options: PaginationOptions = {}): Promise<PaginatedResult<Post>> {
+    const collection = await this.getCollection();
+    const { page, limit, skip } = this.buildPaginationQuery(options);
+
+    const [docs, total] = await Promise.all([
+      collection.find({}).sort({ _id: -1 }).skip(skip).limit(limit).toArray(),
+      collection.countDocuments({})
+    ]);
+
+    return {
+      data: docs.map(doc => this.toDomain(doc)),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
+    };
   }
 
   async getById(id: string): Promise<Post | null> {
