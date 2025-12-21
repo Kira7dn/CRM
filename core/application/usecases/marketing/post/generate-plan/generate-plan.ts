@@ -25,10 +25,10 @@ export interface GeneratePostScheduleResponse {
 }
 
 /**
- * GeneratePostScheduleUseCase
+ * GeneratePlanUseCase
  * Generates 1-month content calendar based on brand context
  */
-export class GeneratePostScheduleUseCase {
+export class GeneratePlanUseCase {
   async execute(request: GeneratePostScheduleRequest): Promise<GeneratePostScheduleResponse> {
     const llm = getLLMService()
 

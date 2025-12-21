@@ -1,17 +1,17 @@
 "use server"
 
-import { GeneratePostScheduleUseCase } from '@/core/application/usecases/marketing/post/generate-plan/generate-schedule'
+import { GeneratePlanUseCase } from '@/core/application/usecases/marketing/post/generate-plan/generate-plan'
 import { BrandMemory } from '@/core/domain/brand-memory'
 import { Product } from '@/core/domain/catalog/product'
 
-interface GenerateScheduleParams {
+interface GeneratePlanParams {
   brandMemory: BrandMemory
   selectedProducts: Product[]
 }
 
-export async function generateScheduleAction(params: GenerateScheduleParams) {
+export async function generatePlanAction(params: GeneratePlanParams) {
   try {
-    const useCase = new GeneratePostScheduleUseCase()
+    const useCase = new GeneratePlanUseCase()
     const startDate = new Date()
     const endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
 
@@ -27,7 +27,7 @@ export async function generateScheduleAction(params: GenerateScheduleParams) {
       schedule: result.schedule
     }
   } catch (error) {
-    console.error('[GenerateScheduleAction] Error:', error)
+    console.error('[generatePlanAction] Error:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to generate schedule',

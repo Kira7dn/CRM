@@ -225,8 +225,8 @@ export function AdminHeader({ userName, userRole = 'sale' }: AdminHeaderProps) {
     if (href === "/crm/customers") {
       return pathname === "/crm/customers"
     }
-    if (href === "/crm/campaigns") {
-      return pathname === "/crm/campaigns"
+    if (href === "/crm/marketing") {
+      return pathname === "/crm/marketing"
     }
     return pathname?.startsWith(href)
   }

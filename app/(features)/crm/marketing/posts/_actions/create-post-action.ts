@@ -4,8 +4,6 @@ import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 
 import { createPostUseCase } from "@/app/api/posts/depends"
-import { createStoreContentEmbeddingUseCase } from "@/app/api/posts/content-memory/depends"
-
 import type { PostStatus } from "@/core/domain/marketing/post"
 import { PostPayload } from "@/core/application/interfaces/marketing/post-repo"
 

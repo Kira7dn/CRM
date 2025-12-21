@@ -2,6 +2,7 @@
 
 import { Button } from '@shared/ui/button'
 import { Loader2, Trash2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { usePostFormContext } from '../PostFormContext'
 
 // Sections
@@ -25,6 +26,7 @@ import ContentInputSection from './ContentInputSection'
  * - Mobile: Stacked - AI Tools → Form Fields → Actions
  */
 export default function PostFormView() {
+  const router = useRouter()
   const {
     state,
     post,
@@ -38,6 +40,16 @@ export default function PostFormView() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     actions.submit()
+  }
+
+  const handleCancel = () => {
+    if (isDirty) {
+      if (confirm('Bạn có thay đổi chưa được lưu. Bạn có chắc muốn rời đi?')) {
+        router.push('/crm/marketing/posts')
+      }
+    } else {
+      router.push('/crm/marketing/posts')
+    }
   }
 
   return (
@@ -65,7 +77,7 @@ export default function PostFormView() {
               <Button
                 type="button"
                 variant="destructive"
-                // onClick={actions.delete}
+                onClick={() => actions.delete()}
                 disabled={isSubmitting}
               >
                 <Trash2 className="h-4 w-4 mr-1" />
@@ -77,7 +89,7 @@ export default function PostFormView() {
               <Button
                 type="button"
                 variant="outline"
-                // onClick={actions.saveDraft}
+                onClick={() => actions.saveDraft()}
                 disabled={isSubmitting}
               >
                 Save as Draft
@@ -89,7 +101,7 @@ export default function PostFormView() {
             <Button
               type="button"
               variant="outline"
-              // onClick={actions.close}
+              onClick={handleCancel}
               disabled={isSubmitting}
             >
               Cancel

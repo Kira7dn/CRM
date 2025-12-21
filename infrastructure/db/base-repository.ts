@@ -17,7 +17,7 @@ export interface PaginatedResult<T> {
 export abstract class BaseRepository<T extends { id: ID }, ID> {
   protected abstract collectionName: string;
 
-  constructor(protected client?: MongoClient) {}
+  constructor(protected client?: MongoClient) { }
 
   /** Get MongoDB client */
   protected async getClient(): Promise<MongoClient> {
@@ -44,8 +44,8 @@ export abstract class BaseRepository<T extends { id: ID }, ID> {
 
   /** Convert _id from DB to domain id - default implementation */
   protected convertId(value: any): ID {
-    // Default: assume ID type matches the value type
-    return value as ID;
+    // Convert ObjectId to string for client-side serialization
+    return value?.toString() || value as ID;
   }
 
   /** Convert Mongo document → Domain entity */

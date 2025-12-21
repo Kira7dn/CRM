@@ -8,7 +8,7 @@ import type { Platform, ContentType } from "@/core/domain/marketing/post"
 /**
  * Save schedule items as draft posts
  */
-export async function createPostScheduleAction(scheduleItems: Array<{
+export async function createPlanAction(scheduleItems: Array<{
   title: string
   idea: string
   scheduledDate: string
@@ -51,7 +51,12 @@ export async function createPostScheduleAction(scheduleItems: Array<{
           updatedAt: now,
         })
 
-        results.push({ success: true, postId: result.id, title: item.title })
+        // Convert ObjectId to string for Client Component serialization
+        results.push({
+          success: true,
+          postId: String(result.id),
+          title: item.title
+        })
       } catch (error) {
         console.error(`[SaveSchedule] Failed to save item "${item.title}":`, error)
         errors.push({ title: item.title, error: error instanceof Error ? error.message : 'Unknown error' })

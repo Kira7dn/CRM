@@ -1,10 +1,11 @@
 import { usePostStore } from '../_store/usePostStore'
 import { usePostSettingStore } from '../_store/usePostSettingStore'
-import { generateScheduleAction } from '../_actions/generate-schedule-action'
+import { generatePlanAction } from '../_actions/generate-plan-action'
 import { toast } from 'sonner'
+import { createPlanAction } from '../_actions/create-planner-action'
 
 export function useGenerateSchedule() {
-  const { setPreviewPosts, setIsGeneratingSchedule } = usePostStore()
+  const { previewPosts, setPreviewPosts, clearPreviewPosts, setIsGeneratingSchedule } = usePostStore()
   const { brand, products } = usePostSettingStore()
 
   const generateSchedule = async () => {
@@ -22,7 +23,7 @@ export function useGenerateSchedule() {
       )
 
       // 3. Call server action to generate schedule
-      const result = await generateScheduleAction({
+      const result = await generatePlanAction({
         brandMemory: brand,
         selectedProducts
       })
@@ -45,5 +46,45 @@ export function useGenerateSchedule() {
     }
   }
 
-  return { generateSchedule }
+  const saveSchedule = async () => {
+    if (previewPosts.length === 0) {
+      toast.error('No schedule to save. Please generate a schedule first.')
+      return { success: false, savedCount: 0 }
+    }
+
+    try {
+      const result = await createPlanAction(previewPosts)
+      if (result.success) {
+        clearPreviewPosts()
+        toast.success(`Saved ${result.savedCount} posts successfully`)
+        return { success: true, savedCount: result.savedCount }
+      } else {
+        throw new Error(result.error)
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to save schedule'
+      toast.error(message)
+      return { success: false, savedCount: 0 }
+    }
+  }
+
+  const undoSchedule = () => {
+    if (previewPosts.length === 0) {
+      toast.info('No schedule to undo. The preview is already empty.')
+      return { success: false, discardedCount: 0 }
+    }
+
+    const count = previewPosts.length
+    clearPreviewPosts()
+    toast.info(`Discarded ${count} preview posts`)
+    return { success: true, discardedCount: count }
+  }
+
+  return {
+    generateSchedule,
+    saveSchedule,
+    undoSchedule,
+    hasPreview: previewPosts.length > 0,
+    previewCount: previewPosts.length
+  }
 }

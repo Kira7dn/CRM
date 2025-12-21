@@ -1,15 +1,16 @@
 'use client'
 
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Post } from '@/core/domain/marketing/post'
 import { PostFormProvider } from './PostFormContext'
 import PostFormView from './views'
 import { usePostFormState } from './state/usePostFormState'
 import { PostFormActions } from './actions/post-form-actions'
 import { Product, ProductPlain } from '@/core/domain/catalog/product'
+import { usePostStore } from '../../_store/usePostStore'
 
 interface PostFormProps {
-  post?: Post
+  postId?: string
   products?: ProductPlain[]
   initialScheduledAt?: Date
   initialIdea?: string
@@ -24,11 +25,21 @@ interface PostFormProps {
  * - Provide context to view
  */
 export default function PostForm({
-  post,
+  postId,
   products,
   initialScheduledAt,
   initialIdea,
 }: PostFormProps) {
+  const { findPostById } = usePostStore()
+  const [post, setPost] = useState<Post | undefined>(undefined)
+
+  // Load post if postId is provided
+  useEffect(() => {
+    if (postId) {
+      findPostById(postId).then(setPost)
+    }
+  }, [postId, findPostById])
+
 
   // ========== Form State ==========
   const {

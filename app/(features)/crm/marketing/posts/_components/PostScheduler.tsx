@@ -12,6 +12,7 @@ import { Post } from '@/core/domain/marketing/post'
 import { usePostStore } from '../_store/usePostStore'
 import { Card } from '@shared/ui/card'
 import PostDetailModal from './PostDetailModal'
+import DayScheduleDialog from './DayScheduleDialog'
 import { CheckCircle, Clock, XCircle, Sparkles, Loader2 } from 'lucide-react'
 import { startOfDay } from 'date-fns'
 import { fromZonedTime } from 'date-fns-tz'
@@ -45,6 +46,11 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
   const [selectedStart, setSelectedStart] = useState(new Date());
   const [selectedEnd, setSelectedEnd] = useState(new Date());
   const [viewedDate, setViewedDate] = useState(new Date());
+
+  // Dialog state
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  const [selectedDatePosts, setSelectedDatePosts] = useState<Post[]>([])
 
   const handleDateSelect = (info: DateSelectArg) => {
     setSelectedStart(info.start);
@@ -107,12 +113,25 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
 
 
   const handleDateClick = (info: DateClickArg) => {
-    console.log(info);
-    router.push(`/crm/marketing/posts/new?scheduledAt=${info.dateStr}`)
+    const clickedDate = startOfDay(info.date)
+
+    // Filter posts for the clicked date
+    const postsOnDate = posts.filter((post) => {
+      const postDate = post.scheduledAt
+        ? startOfDay(new Date(post.scheduledAt))
+        : startOfDay(new Date(post.createdAt))
+      return postDate.getTime() === clickedDate.getTime()
+    })
+
+    setSelectedDate(clickedDate)
+    setSelectedDatePosts(postsOnDate)
+    setDialogOpen(true)
   }
 
   const handleEventClick = (info: EventClickArg) => {
     const post = info.event.extendedProps.post as Post
+    router.push(`/crm/marketing/posts/edit?id=${post.id}`)
+
   }
 
 
@@ -122,8 +141,8 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
     if (isPreview) {
       return (
         <div className="flex items-center gap-1 p-1 w-full overflow-hidden opacity-90">
-          <Sparkles className="h-3 w-3 shrink-0 text-white" />
-          <div className="text-xs font-medium truncate italic text-white">
+          <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0 text-white" />
+          <div className="text-[10px] sm:text-xs font-medium truncate italic text-white">
             {eventInfo.event.title}
           </div>
         </div>
@@ -137,10 +156,10 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
 
     return (
       <div className="flex items-center gap-1 p-1 w-full overflow-hidden hover:opacity-100 opacity-80">
-        {isPublished && <CheckCircle className="h-3 w-3 shrink-0" />}
-        {isFailed && <XCircle className="h-3 w-3 shrink-0" />}
-        {isScheduled && !isPublished && !isFailed && <Clock className="h-3 w-3 shrink-0" />}
-        <div className="text-xs font-medium truncate cursor-pointer">
+        {isPublished && <CheckCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />}
+        {isFailed && <XCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />}
+        {isScheduled && !isPublished && !isFailed && <Clock className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />}
+        <div className="text-[10px] sm:text-xs font-medium truncate cursor-pointer">
           {eventInfo.event.title}
         </div>
       </div>
@@ -149,7 +168,7 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
 
   return (
     <EventsProvider>
-      <div className="space-y-5">
+      <div className="space-y-4 sm:space-y-5">
         <CalendarNav
           calendarRef={calendarRef}
           start={selectedStart}
@@ -160,12 +179,12 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
         <div className="relative">
           {isGeneratingSchedule && (
             <div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-10 flex items-center justify-center rounded-lg">
-              <Loader2 className="h-8 w-8 animate-spin text-primary mr-2" />
-              <span className="text-sm font-medium">Generating schedule...</span>
+              <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-primary mr-2" />
+              <span className="text-xs sm:text-sm font-medium">Generating schedule...</span>
             </div>
           )}
 
-          <Card className="p-4">
+          <Card className="p-2 sm:p-4">
             <FullCalendar
               ref={calendarRef}
               plugins={[dayGridPlugin, interactionPlugin]}
@@ -187,6 +206,14 @@ export default function PostScheduler({ initialPosts }: PostSchedulerProps) {
             />
           </Card>
         </div>
+
+        {/* Day Schedule Dialog */}
+        <DayScheduleDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          selectedDate={selectedDate}
+          posts={selectedDatePosts}
+        />
       </div>
     </EventsProvider>
   )

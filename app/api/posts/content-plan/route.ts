@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server"
-import { GeneratePostScheduleUseCase } from "@/core/application/usecases/marketing/post/generate-plan/generate-schedule"
+import { GeneratePlanUseCase } from "@/core/application/usecases/marketing/post/generate-plan/generate-plan"
 import { Product } from "@/core/domain/catalog/product"
 
 export async function POST(request: NextRequest) {
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     // }
 
     // // Generate schedule
-    // const useCase = new GeneratePostScheduleUseCase()
+    // const useCase = new GeneratePlanUseCase()
     // const result = await useCase.execute({
     //   brandMemory,
     //   products: selectedProducts,
