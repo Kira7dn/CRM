@@ -51,7 +51,7 @@ export default function CalendarNav({
   calendarRef,
   viewedDate,
 }: CalendarNavProps) {
-  const { previewPosts, isGeneratingSchedule } = usePostStore();
+  const { previewPosts, isGeneratingSchedule, isSavingSchedule } = usePostStore();
   const { generateSchedule, saveSchedule, undoSchedule } = useGenerateSchedule();
   const router = useRouter();
 
@@ -98,7 +98,7 @@ export default function CalendarNav({
                     <ChevronsUpDown className="ml-2 h-3.5 w-3.5 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0" align="start">
+                <PopoverContent className="w-50 p-0" align="start">
                   <Command>
                     <CommandInput placeholder="Search month..." />
                     <CommandList>
@@ -134,7 +134,7 @@ export default function CalendarNav({
                 type="number"
                 value={selectedYear}
                 onChange={(e) => handleYearChange(calendarRef, viewedDate, e)}
-                className="h-8 w-[80px] font-semibold text-center border-0 bg-transparent hover:bg-background focus-visible:ring-1"
+                className="h-8 w-20 font-semibold text-center border-0 bg-transparent hover:bg-background focus-visible:ring-1"
               />
 
               <Button
@@ -145,7 +145,7 @@ export default function CalendarNav({
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
-              <div className="h-8 w-[80px] font-semibold text-center border-0 bg-transparent hover:bg-background focus-visible:ring-1">
+              <div className="h-8 w-20 font-semibold text-center border-0 bg-transparent hover:bg-background focus-visible:ring-1">
                 {!isCurrentMonth() && (
                   <Button
                     variant="outline"
@@ -168,7 +168,7 @@ export default function CalendarNav({
                   className="gap-2 h-9"
                   size="sm"
                 >
-                  <Sparkles className="h-4 w-4" />
+                  <Sparkles className={cn("h-4 w-4", isGeneratingSchedule && "animate-spin")} />
                   <span className="hidden sm:inline">
                     {isGeneratingSchedule ? "Generating..." : "Lên lịch đăng"}
                   </span>
@@ -192,14 +192,17 @@ export default function CalendarNav({
                   </Button>
                   <Button
                     onClick={saveSchedule}
+                    disabled={isSavingSchedule}
                     className="gap-2 h-9"
                     size="sm"
                   >
-                    <Save className="h-4 w-4" />
+                    <Save className={cn("h-4 w-4", isSavingSchedule && "animate-pulse")} />
                     <span className="hidden sm:inline">
-                      Save {previewPosts.length} Posts
+                      {isSavingSchedule ? "Saving..." : `Save ${previewPosts.length} Posts`}
                     </span>
-                    <span className="sm:hidden">Save</span>
+                    <span className="sm:hidden">
+                      {isSavingSchedule ? "..." : "Save"}
+                    </span>
                   </Button>
                 </>
               )}

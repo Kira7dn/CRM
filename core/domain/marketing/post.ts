@@ -68,17 +68,18 @@ export interface PostMetrics {
 export class Post {
   constructor(
     public readonly id: string,
-    public title: string,
+    public idea: string | undefined,
+    public title: string | undefined,
     public body: string | undefined,
     public contentType: ContentType,
     public platforms: PlatformMetadata[],
-    public media: PostMedia,
+    public media: PostMedia | undefined,
     public scheduledAt: Date | undefined,
-    public hashtags: string[],
-    public mentions: string[],
+    public hashtags: string[]| undefined,
+    public mentions: string[]| undefined,
     public userId: string | undefined,
     public readonly createdAt: Date,
-    public updatedAt: Date
+    public updatedAt: Date| undefined
   ) { }
 }
 
@@ -87,10 +88,6 @@ export class Post {
  */
 export function validatePost(data: Partial<Post>): string[] {
   const errors: string[] = []
-
-  if (!data.title || data.title.trim().length === 0) {
-    errors.push("Post title is required")
-  }
 
   if (data.title && data.title.length > 500) {
     errors.push("Post title must not exceed 500 characters")
@@ -105,9 +102,6 @@ export function validatePost(data: Partial<Post>): string[] {
     errors.push(`Invalid content type. Must be one of: ${validContentTypes.join(", ")}`)
   }
 
-  if (!data.platforms || data.platforms.length === 0) {
-    errors.push("At least one platform is required")
-  }
 
   if (data.platforms) {
     const validPlatforms: Platform[] = ["facebook", "youtube", "tiktok", "zalo"]
