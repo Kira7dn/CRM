@@ -59,6 +59,6 @@ export async function createPostAction(input: SubmitPostInput) {
 
   return {
     success: true,
-    postId: post.id.toString(),
+    post,
   }
 }

@@ -3,8 +3,12 @@
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { createPostUseCase } from "@/app/api/posts/depends"
-import type { Platform, ContentType } from "@/core/domain/marketing/post"
-import { PostScheduleItem } from "../_store/usePostStore"
+import type { Platform, ContentType, Post } from "@/core/domain/marketing/post"
+
+interface PostScheduleItem {
+  idea: string
+  scheduledDate: string // YYYY-MM-DD format
+}
 
 /**
  * Save schedule items as draft posts

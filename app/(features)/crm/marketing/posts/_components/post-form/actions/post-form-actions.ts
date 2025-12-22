@@ -23,8 +23,8 @@ export type SubmitMode = 'draft' | 'schedule' | 'publish'
 export interface PostFormActionsDeps {
   getState: () => PostFormState
   post?: Post
-  createPost: (payload: PostPayload) => Promise<{ success: boolean; postId: string }>
   updatePost: (postId: string, payload: PostPayload) => Promise<{ success: boolean }>
+  createPost: (payload: PostPayload) => Promise<{ success: boolean; post: Post }>
   deletePost: (postId: string) => Promise<void>
 }
 
@@ -34,16 +34,16 @@ export interface PostFormActionsDeps {
  * PostFormActions
  *
  * Plain action factory (NO React, NO hook)
+ * Modal closing is handled automatically by usePostStore.createPost/updatePost
  */
 export function PostFormActions({
   getState,
   post,
-  createPost,
   updatePost,
-  deletePost: deletePostFn,
+  createPost,
+  deletePost,
 }: PostFormActionsDeps): PostFormActions {
   // ===== submit (publish / schedule) =====
-
   const submit = async (): Promise<void> => {
     const state = getState()
 
@@ -107,7 +107,7 @@ export function PostFormActions({
       throw new Error('No post to delete')
     }
 
-    await deletePostFn(post.id)
+    await deletePost(post.id)
   }
 
   return {

@@ -41,6 +41,7 @@ export class EnhanceStreamingPass implements GenerationPass {
             - Make the content sound more natural and human
             - Refine wording for better engagement WITHOUT changing meaning
             - Adjust the call-to-action only if it improves clarity or matches the user intent
+            - Add/Change suitable emojis
 
             Product handling:
             - ONLY refine product mentions if they already exist

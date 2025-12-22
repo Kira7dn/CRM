@@ -1,6 +1,6 @@
 import PostForm from '../_components/post-form/PostForm'
 import { filterProductsUseCase } from '@/app/api/products/depends'
-import { ProductPlain } from '@/core/domain/catalog/product'
+import { Product } from '@/core/domain/catalog/product'
 
 export default async function PostsPage({
   searchParams,
@@ -19,13 +19,15 @@ export default async function PostsPage({
   const productUseCase = await filterProductsUseCase()
   const productResult = await productUseCase.execute({})
 
-  const products: ProductPlain[] = productResult.products.map(product => product.toPlain())
+  const products: Product[] = productResult.products
 
   // ===== render =====
   return (
-    <PostForm
-      initialScheduledAt={initialScheduledAt}
-      products={products}
-    />
+    <div className="container mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Create New Post</h1>
+      <PostForm
+        initialScheduledAt={initialScheduledAt}
+      />
+    </div>
   )
 }

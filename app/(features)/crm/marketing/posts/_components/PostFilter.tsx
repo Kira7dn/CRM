@@ -11,7 +11,7 @@ export default function PostFilter() {
       value={filter}
       onChange={(e) => setFilter(e.target.value)}
       placeholder="Search posts..."
-      className="border px-2 py-1 rounded w-full"
+      className="px-2 py-1 rounded w-full"
     />
   )
 }

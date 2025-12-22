@@ -2,21 +2,15 @@
 
 import { useState } from 'react'
 import { Button } from '@shared/ui/button'
-import { Loader2, Trash2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { Trash2 } from 'lucide-react'
 import { usePostFormContext } from '../PostFormContext'
+import { usePostStore } from '../../../_store/usePostStore'
 
 // Sections
 import AIGenerationSection from './AIGenerationSection'
-import QualityScoreDisplay from './QualityScoreDisplaySection'
-import PlatformSelector from './PlatformSelectorSection'
 import MediaHashtagScheduleSection from './MediaHashtagScheduleSection'
 import ContentInputSection from './ContentInputSection'
-
-// Routes
-const ROUTES = {
-  POSTS_LIST: '/crm/marketing/posts',
-} as const
+import PlatformSelectorModal from './PlatformSelectorModal'
 
 /**
  * Pure presentational component for Post Form
@@ -32,31 +26,29 @@ const ROUTES = {
  * - Mobile: Stacked - AI Tools → Form Fields → Actions
  */
 export default function PostFormView() {
-  const router = useRouter()
-  const [isNavigating, setIsNavigating] = useState(false)
+  const [showPlatformModal, setShowPlatformModal] = useState(false)
+  const { closePostFormModal } = usePostStore()
 
   const {
     state,
     post,
     actions,
-    isDirty,
     isSubmitting,
   } = usePostFormContext()
-
-  const hasPlatformError = state.platforms.length === 0
-
-  const navigateToList = () => {
-    setIsNavigating(true)
-    router.push(ROUTES.POSTS_LIST)
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    // Show platform selector modal instead of submitting directly
+    setShowPlatformModal(true)
+  }
+
+  const handleConfirmSubmit = async () => {
     try {
       await actions.submit()
-      // On success, redirect to posts list
-      navigateToList()
+      // Close modal after successful submit
+      setShowPlatformModal(false)
+      closePostFormModal(true) // Force close without dirty check
     } catch (error) {
       // Error toast already handled by store
       console.error('[PostForm] Submit failed:', error)
@@ -66,8 +58,8 @@ export default function PostFormView() {
   const handleSaveDraft = async () => {
     try {
       await actions.saveDraft()
-      // On success, redirect to posts list
-      navigateToList()
+      // Close modal after successful save
+      closePostFormModal(true) // Force close without dirty check
     } catch (error) {
       console.error('[PostForm] Save draft failed:', error)
     }
@@ -80,45 +72,58 @@ export default function PostFormView() {
 
     try {
       await actions.delete()
-      // On success, redirect to posts list
-      navigateToList()
+      // Close modal after successful delete
+      closePostFormModal(true) // Force close without dirty check
     } catch (error) {
       console.error('[PostForm] Delete failed:', error)
     }
   }
 
-  const handleCancel = () => {
-    if (isDirty) {
-      if (confirm('Bạn có thay đổi chưa được lưu. Bạn có chắc muốn rời đi?')) {
-        navigateToList()
-      }
-    } else {
-      navigateToList()
-    }
-  }
-
-  const isActionDisabled = isSubmitting || isNavigating
+  const isActionDisabled = isSubmitting
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-6 bg-white dark:bg-gray-800 rounded-lg border"
+      className="flex flex-col h-full overflow-hidden"
     >
-      {/* ===== Header - Full Width ===== */}
-      <header className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <h2 className="text-xl font-semibold">
+      {/* ===== Header - Compact and Clean ===== */}
+      <header className="shrink-0 pb-4 border-b">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold">
             {post ? 'Edit Post' : 'Create New Post'}
           </h2>
-
-          {isDirty && !post && (
-            <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
-              • Unsaved changes
-            </span>
-          )}
         </div>
-        {/* Actions - Sticky at bottom of right column */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2 bg-white dark:bg-gray-800">
+      </header>
+
+      {/* ===== Main Content - Scrollable ===== */}
+      <div className="flex-1 overflow-y-auto py-6">
+        {/* ===== Two Column Layout ===== */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6">
+
+          {/* ===== LEFT COLUMN - Form Fields (60%) ===== */}
+          <div className="space-y-6 order-2 lg:order-1">
+            {/* Content Input - Idea, Product, Title, Body */}
+            <ContentInputSection />
+
+            {/* Media / Hashtag / Schedule - MOVED UP */}
+            {/* Media upload auto-detects content type */}
+            <MediaHashtagScheduleSection />
+          </div>
+
+          {/* ===== RIGHT COLUMN - AI Tools + Actions (40%) ===== */}
+          <div className="order-1 lg:order-2 lg:sticky lg:top-0 flex flex-col gap-6">
+            {/* AI Tools Container - Scrollable */}
+            <div className="space-y-6">
+              {/* AI Generation with Quality Score integrated */}
+              <AIGenerationSection />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ===== Footer Actions - Sticky Bottom ===== */}
+      <footer className="shrink-0 pt-4 border-t bg-white dark:bg-gray-800 sticky bottom-0">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex gap-2">
             {post && (
               <Button
@@ -128,7 +133,7 @@ export default function PostFormView() {
                 disabled={isActionDisabled}
               >
                 <Trash2 className="h-4 w-4 mr-1" />
-                Xóa
+                Delete
               </Button>
             )}
 
@@ -144,69 +149,24 @@ export default function PostFormView() {
             )}
           </div>
 
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCancel}
-              disabled={isActionDisabled}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              type="submit"
-              disabled={isActionDisabled || hasPlatformError}
-              className="min-w-[140px]"
-            >
-              {isSubmitting || isNavigating ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {isNavigating ? 'Redirecting...' : 'Saving...'}
-                </>
-              ) : post ? (
-                'Update Post'
-              ) : state.scheduledAt ? (
-                'Schedule Post'
-              ) : (
-                'Publish Now'
-              )}
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            disabled={isActionDisabled}
+            className="sm:min-w-[140px]"
+          >
+            {post ? 'Update Post' : state.scheduledAt ? 'Schedule Post' : 'Publish Now'}
+          </Button>
         </div>
-      </header>
+      </footer>
 
-      {/* ===== Two Column Layout ===== */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6">
-
-        {/* ===== LEFT COLUMN - Form Fields (60%) ===== */}
-        <div className="space-y-6 order-2 lg:order-1">
-          {/* Content Input - Idea, Product, Title, Body */}
-          <ContentInputSection />
-
-          {/* Media / Hashtag / Schedule - MOVED UP */}
-          {/* Media upload auto-detects content type */}
-          <MediaHashtagScheduleSection />
-
-          {/* Platform Selector - MOVED DOWN */}
-          {/* Platforms filtered by content type from media */}
-          <PlatformSelector />
-        </div>
-
-        {/* ===== RIGHT COLUMN - AI Tools + Actions (40%) ===== */}
-        <div className="order-1 lg:order-2 lg:top-6 lg:self-start flex flex-col">
-          {/* AI Tools Container - Scrollable */}
-          <div className="ai-tools-scroll space-y-6 lg:overflow-y-auto lg:pr-2">
-            {/* AI Generation */}
-            <AIGenerationSection />
-
-            {/* Quality Score */}
-            <QualityScoreDisplay />
-          </div>
-
-
-        </div>
-      </div>
+      {/* Platform Selector Modal */}
+      <PlatformSelectorModal
+        open={showPlatformModal}
+        onOpenChange={setShowPlatformModal}
+        onConfirm={handleConfirmSubmit}
+        isSubmitting={isSubmitting}
+        submitButtonText={post ? 'Update Post' : state.scheduledAt ? 'Schedule Post' : 'Publish Now'}
+      />
     </form>
   )
 }

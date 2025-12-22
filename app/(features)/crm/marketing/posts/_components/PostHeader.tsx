@@ -1,46 +1,19 @@
 "use client"
 
 import { Button } from "@/@shared/ui/button"
-import { BookOpen, Plus, Settings, Sparkles, Save, Undo2 } from "lucide-react"
-import { useMemo, useState } from "react"
+import { BookOpen, Settings } from "lucide-react"
+import { useState } from "react"
 
 import PostContentSettings from "./PostContentSettings"
 import ResourceManager from "./ResourceManager"
+import { usePostStore } from "../_store/usePostStore"
 
 
 type Props = {}
 
 export default function PostHeader(props: Props) {
-
-  const [showSettings, setShowSettings] = useState(false)
+  const { openPostContentSettings } = usePostStore()
   const [showResourceManager, setShowResourceManager] = useState(false)
-
-
- 
-  // useCopilotChatSuggestions(
-  //   {
-  //     instructions: "Suggest user to create schedule then suggest save or undo after hasPreview",
-  //     minSuggestions: 1,
-  //     maxSuggestions: 2,
-  //   },
-  //   [],
-  // );
-
-  // Use CopilotKit's built-in hook for dynamic suggestions
-  // useCopilotChatSuggestions({
-  //   instructions: hasPreview
-  //     ? "User has generated a post schedule with preview posts. Suggest actions to save, undo, or regenerate the schedule."
-  //     : "User hasn't generated a post schedule yet. Suggest creating a new schedule.",
-  //   suggestions: hasPreview
-  //     ? [
-  //       { title: "💾 Save schedule", message: "Save the generated post schedule to database." },
-  //       { title: "↩️ Undo schedule", message: "Discard the generated schedule and start over." },
-  //       { title: "🔄 Regenerate schedule", message: "Generate a new post schedule with different ideas." }
-  //     ]
-  //     : [
-  //       { title: "Create post schedule", message: "Create a post schedule for next month with selected products." }
-  //     ]
-  // }, [hasPreview])
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -53,7 +26,7 @@ export default function PostHeader(props: Props) {
       <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:gap-2">
         <Button
           variant="outline"
-          onClick={() => setShowSettings(true)}
+          onClick={openPostContentSettings}
           className="gap-2 text-xs sm:text-sm px-2 sm:px-3"
           size="sm"
         >
@@ -70,13 +43,10 @@ export default function PostHeader(props: Props) {
           <span className="hidden sm:inline">Quản lý Tài liệu</span>
         </Button>
 
-        
+
       </div>
       {/* Settings Modal */}
-      <PostContentSettings
-        open={showSettings}
-        onClose={() => setShowSettings(false)}
-      />
+      <PostContentSettings />
 
       {/* Resource Manager */}
       <ResourceManager

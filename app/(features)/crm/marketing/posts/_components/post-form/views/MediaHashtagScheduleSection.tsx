@@ -92,9 +92,7 @@ function MediaHashtagScheduleSection() {
         <Label>Media</Label>
         <div className={cn(
           "transition-all duration-300 ease-in-out",
-          state.media
-            ? "min-h-64" // Expanded when media present (16rem)
-            : "min-h-32"  // Compact when empty (8rem)
+          state.media && "min-h-64" // Expanded when media present (16rem)
         )}>
           <MediaUpload
             value={state.media}

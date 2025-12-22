@@ -144,11 +144,13 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border: 1px solid hsl(var(--border));
+    outline: 2px solid hsl(var(--ring) / 0.5);
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 
   html {
@@ -177,11 +179,12 @@
   }
 
   .ai-tools-scroll::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 dark:bg-gray-600 rounded-sm;
+    background-color: rgb(209 213 219);
+    border-radius: 0.125rem;
   }
 
   .ai-tools-scroll::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400 dark:bg-gray-500;
+    background-color: rgb(156 163 175);
   }
 
   /* Firefox scrollbar styling */
@@ -202,11 +205,118 @@
 
 /* FullCalendar mobile responsive styles */
 @layer components {
+
+  /* Day cell events container */
   .fc-daygrid-day-events {
-    @apply flex md:block justify-start flex-wrap gap-0! p-0.5 mb-0! md:mb-2!;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.125rem !important;
+    /* gap-0.5 = 2px */
+    padding: 0.125rem !important;
+    /* p-0.5 = 2px */
+    margin-bottom: 0 !important;
+    min-height: 20px;
+    /* Ensure space for dots */
   }
 
+  .fc-more-popover {
+    display: hidden !important;
+  }
+
+  @media (min-width: 768px) {
+    .fc-daygrid-day-events {
+      display: block;
+      padding: 0.25rem !important;
+      /* md:p-1 = 4px */
+      margin-bottom: 0.5rem !important;
+      /* md:mb-2 = 8px */
+    }
+  }
+
+
   .fc-daygrid-day-events .fc-daygrid-event {
-    @apply !w-auto;
+    width: auto !important;
+    margin-bottom: 0 !important;
+    /* Remove default margin on mobile */
+    padding: 0 !important;
+    /* Remove all padding from events */
+  }
+
+  @media (min-width: 768px) {
+    .fc-daygrid-day-events .fc-daygrid-event {
+      width: 100% !important;
+    }
+  }
+
+  /* Event harness wrapper */
+  .fc-daygrid-day-events .fc-daygrid-event-harness {
+    width: auto !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+  }
+
+  @media (min-width: 768px) {
+    .fc-daygrid-day-events .fc-daygrid-event-harness {
+      width: 100% !important;
+    }
+  }
+
+  /* Mobile: Compact event display - dots only */
+  @media (max-width: 639px) {
+    .fc-daygrid-event {
+      padding: 0 !important;
+      min-width: 4px !important;
+      /* Exact dot size */
+    }
+
+    .fc-daygrid-day-frame {
+      min-height: 50px;
+      /* Space for wrapped dots */
+    }
+
+    .fc-daygrid-day-events {
+      gap: 1px !important;
+      /* Small gap between dots */
+    }
+  }
+
+  /* Tablet: Slightly larger dots */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .fc-daygrid-event {
+      padding: 0 !important;
+      min-width: 8px !important;
+    }
+  }
+
+  /* Desktop: Full event display with title */
+  @media (min-width: 1024px) {
+    .fc-daygrid-event {
+      margin-bottom: 2px !important;
+      padding: 2px !important;
+    }
+  }
+
+  /* Mobile: Show "+X" instead of "+X more" (remove "more" text, keep number) */
+  /* @media (max-width: 639px) {
+    .fc-daygrid-more-link {
+      font-size: 10px !important;
+      font-weight: 600 !important;
+      width: 20px !important;
+      white-space: nowrap !important;
+      display: inline-block !important;
+      pointer-events: none !important;
+      cursor: default !important;
+    }
+  } */
+  @media (max-width: 639px) {
+    .fc-event-end {
+      margin-right: 0px !important;
+    }
+
+    .fc-event-start {
+      margin-right: 0px !important;
+    }
   }
 }

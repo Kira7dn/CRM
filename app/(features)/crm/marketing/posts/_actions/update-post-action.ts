@@ -29,7 +29,7 @@ export async function updatePostAction(input: UpdatePostInput) {
 
     // ---------- UseCase ----------
     const useCase = await updatePostUseCase()
-    await useCase.execute(
+    const result = await useCase.execute(
         {
             id: postId,
             title: payload.title,
@@ -48,5 +48,5 @@ export async function updatePostAction(input: UpdatePostInput) {
     // ---------- Cache ----------
     revalidatePath("/crm/posts")
 
-    return { success: true }
+    return { success: true, post: result.post }
 }

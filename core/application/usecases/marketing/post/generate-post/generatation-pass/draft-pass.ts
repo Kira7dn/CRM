@@ -52,11 +52,11 @@ export class DraftStreamingPass implements GenerationPass {
             - Follow the outline, but do not explicitly label sections
             - Allow the content to flow as a single cohesive post
             - End with a soft, optional call-to-action (curiosity-driven or reflective)
+            - Add/Change suitable emojis
 
             Output rules:
             - Return ONLY plain text of post body, no title
             - No markdown
-            - No emojis unless aligned with brand voice
             - No explanations or meta commentary
             `.trim();
 

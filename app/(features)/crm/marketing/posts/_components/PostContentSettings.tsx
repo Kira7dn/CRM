@@ -21,33 +21,30 @@ import {
   SelectValue,
 } from '@shared/ui/select'
 import type { BrandMemory } from '@/core/domain/brand-memory'
-import { usePostSettingStore } from '../_store/usePostSettingStore'
+import { usePostStore } from '../_store/usePostStore'
 
-interface PostContentSettingsProps {
-  open: boolean
-  onClose: () => void
-}
-
-export default function PostContentSettings({ open, onClose }: PostContentSettingsProps) {
+export default function PostContentSettings() {
   const {
+    isPostContentSettingsOpen,
+    closePostContentSettings,
     brand: settings,
     products,
-    isLoading,
-    error,
+    isLoadingProducts,
+    productsError,
     loadProducts,
     setBrand: setSettings,
     toggleProduct,
-    reset
-  } = usePostSettingStore()
+    resetSettings,
+  } = usePostStore()
 
   useEffect(() => {
-    if (open) {
+    if (isPostContentSettingsOpen) {
       loadProducts()
     }
-  }, [open, loadProducts])
+  }, [isPostContentSettingsOpen, loadProducts])
 
   const handleReset = () => {
-    reset()
+    resetSettings()
   }
 
   // Helper to add item to array field
@@ -97,20 +94,20 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
         ...settings,
         brandVoice: {
           ...settings.brandVoice,
-          writingPatterns: settings.brandVoice.writingPatterns.filter((_, i) => i !== index)
+          writingPatterns: settings.brandVoice.writingPatterns.filter((_: any, i: number) => i !== index)
         }
       })
     } else {
       setSettings({
         ...settings,
-        [field]: settings[field].filter((_, i) => i !== index)
+        [field]: settings[field].filter((_: any, i: number) => i !== index)
       })
     }
   }
 
-  if (isLoading) {
+  if (isLoadingProducts) {
     return (
-      <Dialog open={open} onOpenChange={onClose}>
+      <Dialog open={isPostContentSettingsOpen} onOpenChange={closePostContentSettings}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Brand Settings</DialogTitle>
@@ -123,15 +120,15 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
     )
   }
 
-  if (error) {
+  if (productsError) {
     return (
-      <Dialog open={open} onOpenChange={onClose}>
+      <Dialog open={isPostContentSettingsOpen} onOpenChange={closePostContentSettings}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Brand Settings</DialogTitle>
           </DialogHeader>
           <div className="flex items-center justify-center py-8">
-            <div className="text-red-500">Error: {error}</div>
+            <div className="text-red-500">Error: {productsError}</div>
           </div>
         </DialogContent>
       </Dialog>
@@ -139,7 +136,7 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
   }
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={isPostContentSettingsOpen} onOpenChange={closePostContentSettings}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Brand Settings</DialogTitle>
@@ -276,7 +273,7 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
               </span>
             </Label>
             <div className="space-y-2">
-              {settings.brandVoice.writingPatterns.map((pattern, index) => (
+              {settings.brandVoice.writingPatterns.map((pattern: string, index: number) => (
                 <div key={index} className="flex gap-2">
                   <Input
                     value={pattern}
@@ -315,7 +312,7 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
               </span>
             </Label>
             <div className="space-y-2">
-              {settings.ctaLibrary.map((cta, index) => (
+              {settings.ctaLibrary.map((cta: string, index: number) => (
                 <div key={index} className="flex gap-2">
                   <Input
                     value={cta}
@@ -354,7 +351,7 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
               </span>
             </Label>
             <div className="space-y-2">
-              {settings.keyPoints.map((point, index) => (
+              {settings.keyPoints.map((point: string, index: number) => (
                 <div key={index} className="flex gap-2">
                   <Input
                     value={point}
@@ -393,7 +390,7 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
               </span>
             </Label>
             <div className="border rounded-md p-3 space-y-2 max-h-48 overflow-y-auto">
-              {products.map(product => (
+              {products.map((product: any) => (
                 <label key={product.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
                   <input
                     type="checkbox"
@@ -444,7 +441,7 @@ export default function PostContentSettings({ open, onClose }: PostContentSettin
               Reset to Default
             </Button>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={onClose}>
+              <Button variant="outline" onClick={closePostContentSettings}>
                 Close
               </Button>
             </div>

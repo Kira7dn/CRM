@@ -6,10 +6,7 @@
 import { getLLMService } from "@/app/api/posts/gen-content/depends"
 import type { BrandMemory } from "@/core/domain/brand-memory"
 import type { Product } from "@/core/domain/catalog/product"
-export interface PostScheduleItem {
-  idea: string
-  scheduledDate: string  // ISO date string YYYY-MM-DD
-}
+import { Post } from "@/core/domain/marketing/post"
 
 export interface GeneratePostScheduleRequest {
   brandMemory: BrandMemory
@@ -19,7 +16,7 @@ export interface GeneratePostScheduleRequest {
 }
 
 export interface GeneratePostScheduleResponse {
-  schedule: PostScheduleItem[]
+  schedule: Post[]
 }
 
 /**
@@ -58,7 +55,7 @@ export class GeneratePlanUseCase {
       "schedule": [
         {
           "idea": "Brief 1-2 sentence idea description",
-          "scheduledDate": "YYYY-MM-DD",
+          "scheduledAt": "YYYY-MM-DD",
         }
       ]
     }`

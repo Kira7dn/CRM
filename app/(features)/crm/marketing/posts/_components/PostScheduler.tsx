@@ -2,17 +2,18 @@
 
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-import type { EventInput, EventClickArg } from '@fullcalendar/core'
+import type { EventInput, EventClickArg, EventSegment } from '@fullcalendar/core'
 import type { EventContentArg } from '@fullcalendar/core/index.js'
 import type { DateClickArg } from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import type { Platform } from '@/core/domain/marketing/post'
+import type { Platform, PostStatus } from '@/core/domain/marketing/post'
 import { Post } from '@/core/domain/marketing/post'
 import { usePostStore } from '../_store/usePostStore'
 import { Card } from '@shared/ui/card'
 import DayScheduleDialog from './DayScheduleDialog'
-import { CheckCircle, Clock, XCircle, Sparkles, Loader2 } from 'lucide-react'
+import PostFormModal from './PostFormModal'
+import { Loader2 } from 'lucide-react'
 import { startOfDay } from 'date-fns'
 import CalendarNav from './scheduler/calendar-nav'
 import { EventsProvider } from './scheduler/context/events-context'
@@ -33,6 +34,15 @@ const PLATFORM_COLORS: Record<Platform, string> = {
   instagram: '#E4405F',
 }
 
+// Color mapping based on Status (stronger, more saturated colors)
+const STATUS_COLOR_MAP: Record<PostStatus, { bg: string; border: string; text: string }> = {
+  draft: { bg: '#6B7280', border: '#4B5563', text: '#FFFFFF' },      // Gray (darker)
+  scheduled: { bg: '#2563EB', border: '#1D4ED8', text: '#FFFFFF' },  // Blue (strong)
+  published: { bg: '#10B981', border: '#059669', text: '#FFFFFF' },  // Green
+  failed: { bg: '#DC2626', border: '#B91C1C', text: '#FFFFFF' },     // Red
+  archived: { bg: '#D97706', border: '#B45309', text: '#FFFFFF' },   // Amber
+}
+
 
 export default function PostScheduler() {
   const {
@@ -41,15 +51,20 @@ export default function PostScheduler() {
     previewPosts,
     isGeneratingSchedule,
     loadPostsByMonth,
-    loadedMonths
+    loadedMonths,
+    openDayScheduleDialog,
   } = usePostStore()
   const [events, setEvents] = useState<EventInput[]>([])
   const calendarRef = useRef<any>(null)
   const [viewedDate, setViewedDate] = useState(new Date())
 
-  // Dialog state
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  // Get post status based on platform statuses (matching DayScheduleDialog logic)
+  const getPostStatus = (post: Post): PostStatus => {
+    if (post.platforms.some((p) => p.status === 'published')) return 'published'
+    if (post.platforms.some((p) => p.status === 'failed')) return 'failed'
+    if (post.platforms.some((p) => p.status === 'scheduled')) return 'scheduled'
+    return 'draft'
+  }
 
   // Load posts when calendar month changes
   useEffect(() => {
@@ -67,17 +82,13 @@ export default function PostScheduler() {
   // Transform posts to calendar events
   useEffect(() => {
     const filtered = posts.filter((p) =>
-      p.title.toLowerCase().includes(filter.toLowerCase())
+      p.title?.toLowerCase().includes(filter.toLowerCase())
     )
 
     const calendarEvents: EventInput[] = filtered.map((post) => {
-      // Determine primary platform color (use first platform)
-      const primaryPlatform = post.platforms[0]?.platform || 'website'
-      const backgroundColor = PLATFORM_COLORS[primaryPlatform]
-
-      // Check if any platform is published
-      const isPublished = post.platforms.some(p => p.status === 'published')
-      const isFailed = post.platforms.some(p => p.status === 'failed')
+      // Get post status and apply color based on status
+      const status = getPostStatus(post)
+      const statusColor = STATUS_COLOR_MAP[status]
 
       const start = post.scheduledAt
         ? new Date(post.scheduledAt)
@@ -88,20 +99,23 @@ export default function PostScheduler() {
         title: post.title,
         start: start,
         allDay: true,
-        backgroundColor: isPublished ? '#10B981' : isFailed ? '#EF4444' : backgroundColor,
-        borderColor: isPublished ? '#059669' : isFailed ? '#DC2626' : backgroundColor,
-        extendedProps: { post },
+        backgroundColor: statusColor.bg,
+        borderColor: statusColor.border,
+        textColor: statusColor.text,
+        extendedProps: { post, status },
       }
     })
 
     // Add preview posts as amber events
     const previewEvents: EventInput[] = previewPosts.map((item, idx) => ({
       id: `preview-${idx}`,
-      title: item.title,
-      start: new Date(item.scheduledDate),
+      title: item.idea,
+      start: item.scheduledAt ? new Date(item.scheduledAt) : new Date(),
       allDay: true,
-      backgroundColor: '#F59E0B',  // Amber
-      borderColor: '#D97706',
+      // Use stronger amber for preview to make it more visible
+      backgroundColor: '#D97706',
+      borderColor: '#B45309',
+      textColor: '#FFFFFF',
       className: 'preview-event',
       extendedProps: {
         isPreview: true,
@@ -116,15 +130,35 @@ export default function PostScheduler() {
 
   const handleDateClick = (info: DateClickArg) => {
     const clickedDate = startOfDay(info.date)
-    setSelectedDate(clickedDate)
-    setDialogOpen(true)
+    openDayScheduleDialog(clickedDate)
   }
 
   const handleEventClick = (info: EventClickArg) => {
     // Extract date from the clicked event and show all posts for that day
     const clickedDate = startOfDay(info.event.start || new Date())
-    setSelectedDate(clickedDate)
-    setDialogOpen(true)
+    openDayScheduleDialog(clickedDate)
+  }
+
+  const handleMoreClick = (info: any) => {
+    console.log(info);
+
+    // Extract date from the clicked event and show all posts for that day
+    const clickedDate = startOfDay(info.date || new Date())
+    openDayScheduleDialog(clickedDate)
+  }
+  // Thay đổi nội dung liên kết "more"
+  function renderMoreLinkContent(arg: any) {
+    return (
+      <>
+
+        <span style={{ color: "red" }}>
+          +{arg.num}
+        </span>
+        <span className='hidden md:inline'>
+          {` more`}
+        </span>
+      </>
+    );
   }
 
   const renderEventContent = (eventInfo: EventContentArg) => {
@@ -132,9 +166,10 @@ export default function PostScheduler() {
 
     if (isPreview) {
       return (
-        <div className="flex items-center gap-1 p-1 w-full overflow-hidden opacity-90">
-          <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0 text-white" />
-          <div className="text-[10px] sm:text-xs font-medium truncate italic text-white">
+        <div className="flex items-center gap-1 p-0 sm:p-1 w-full overflow-hidden opacity-90 text-gray-400">
+          {/* Amber dot for preview - 4x4px on mobile */}
+          <div className="h-1 w-1 sm:h-2 sm:w-2 md:h-2.5 md:w-2.5 rounded-full bg-white shrink-0" />
+          <div className="hidden md:block text-[10px] sm:text-xs font-medium truncate italic text-white">
             {eventInfo.event.title}
           </div>
         </div>
@@ -142,16 +177,13 @@ export default function PostScheduler() {
     }
 
     const post = eventInfo.event.extendedProps.post as Post
-    const isPublished = post.platforms.some(p => p.status === 'published')
-    const isFailed = post.platforms.some(p => p.status === 'failed')
-    const isScheduled = post.scheduledAt && new Date(post.scheduledAt) > new Date()
 
     return (
-      <div className=" flex items-center gap-1 p-0 md:p-1 overflow-hidden hover:opacity-100 opacity-80">
-        {isPublished && <CheckCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />}
-        {isFailed && <XCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />}
-        {isScheduled && !isPublished && !isFailed && <Clock className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0" />}
-        <div className="hidden md:block text-[10px] sm:text-xs font-medium truncate cursor-default p-0">
+      <div className="flex items-center gap-0.5 sm:gap-1 p-0 sm:p-1 w-full min-w-0 hover:opacity-100 opacity-80">
+        {/* Colored dot - 4x4px on mobile, 8px tablet, 10px desktop */}
+        <div className="h-1 w-1 sm:h-2 sm:w-2 md:h-2.5 md:w-2.5 rounded-full sm:bg-white shrink-0" />
+        {/* Title - Desktop only */}
+        <div className="hidden md:block text-[10px] sm:text-xs font-medium truncate min-w-0">
           {eventInfo.event.title}
         </div>
       </div>
@@ -186,19 +218,19 @@ export default function PostScheduler() {
               height="auto"
               displayEventTime={false}
               displayEventEnd={false}
-              dayMaxEvents={2}
+              dayMaxEvents={4} // Allow all events to show (will wrap on mobile)
               editable={false}
               selectable={false}
               handleWindowResize={true}
+              moreLinkClick="month"
+              moreLinkContent={renderMoreLinkContent}
             />
           </div>
         </div>
 
-        <DayScheduleDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          selectedDate={selectedDate}
-        />
+        {/* Modals - controlled by Zustand store */}
+        <DayScheduleDialog />
+        <PostFormModal />
       </Card>
     </EventsProvider>
   )

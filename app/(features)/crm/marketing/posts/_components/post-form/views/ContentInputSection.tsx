@@ -16,30 +16,7 @@ import { usePostFormContext } from '../PostFormContext'
  * 3. Stable event references
  */
 function ContentInputSection() {
-  const { state, setField, products } = usePostFormContext()
-
-  const onIdeaChange = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      setField('idea', e.target.value)
-    },
-    [setField]
-  )
-
-  const onProductChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      const productId = e.target.value
-      const selectedProduct = products?.find(p => String(p.id) === productId)
-      setField('product', selectedProduct || null)
-    },
-    [setField, products]
-  )
-
-  // const onInstructionChange = useCallback(
-  //   (e: ChangeEvent<HTMLTextAreaElement>) => {
-  //     setField('contentInstruction', e.target.value)
-  //   },
-  //   [setField]
-  // )
+  const { state, setField } = usePostFormContext()
 
   const onTitleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,57 +49,6 @@ function ContentInputSection() {
 
   return (
     <>
-      {/* Post Idea */}
-      <div>
-        <Label htmlFor="idea">Post Idea (from schedule or custom)</Label>
-        <textarea
-          id="idea"
-          value={state.idea || ''}
-          onChange={onIdeaChange}
-          rows={2}
-          placeholder="e.g., Highlight sustainable fishing practices..."
-          className="w-full border rounded-md p-3"
-        />
-      </div>
-
-      {/* Product Selection */}
-      {products && products.length > 0 && (
-        <div>
-          <Label htmlFor="product">Product (optional)</Label>
-          <select
-            id="product"
-            value={state.product?.id || ''}
-            onChange={onProductChange}
-            className="w-full border rounded-md p-2"
-          >
-            <option value="">None (no specific product)</option>
-            {products.map((product: any) => (
-              <option key={String(product.id)} value={String(product.id)}>
-                {product.name}
-              </option>
-            ))}
-          </select>
-          {state.product?.url && (
-            <p className="text-xs text-gray-500 mt-1">
-              Product URL: <a href={state.product.url} target="_blank" rel="noopener noreferrer" className="underline">{state.product.url}</a>
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Detail Content Instruction */}
-      {/* <div>
-        <Label htmlFor="contentInstruction">Specific Instructions for this Post</Label>
-        <textarea
-          id="contentInstruction"
-          value={state.contentInstruction || ''}
-          onChange={onInstructionChange}
-          rows={3}
-          placeholder="e.g., Emphasize premium quality, include customer testimonial, add urgency..."
-          className="w-full border rounded-md p-3"
-        />
-      </div> */}
-
       {/* Title */}
       <div>
         <Label htmlFor="title">Title *</Label>

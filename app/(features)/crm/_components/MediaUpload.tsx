@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useFileUpload } from "@/lib/hooks/use-file-upload";
-import { Upload, X, Loader2 } from "lucide-react";
+import { Image, Video, X, Loader2 } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
 import type { PostMedia } from "@/core/domain/marketing/post";
@@ -16,19 +16,14 @@ export interface MediaUploadProps {
 }
 
 /**
- * MediaUpload - Smart media upload component with auto-detection
+ * MediaUpload - Compact button-based media upload component
  *
  * Features:
- * - Accepts both images and videos
+ * - Compact button interface for photo/video and reel uploads
  * - Auto-detects file type from MIME
  * - Returns PostMedia object with type and URL
  * - Type-specific size limits (200MB video, 10MB image)
  * - Preview display (image or video player)
- *
- * Breaking Change from v1:
- * - value: string → PostMedia
- * - onChange: (url: string) → (media: PostMedia | null)
- * - Removed type prop (auto-detected)
  */
 export function MediaUpload({
   value,
@@ -37,7 +32,8 @@ export function MediaUpload({
   maxSize,
   disabled = false,
 }: MediaUploadProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   // Accept both images and videos
   const fileAccept = "image/*,video/*";
@@ -88,13 +84,16 @@ export function MediaUpload({
 
   const handleRemove = () => {
     onChange(null); // Pass null instead of empty string
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    if (photoInputRef.current) {
+      photoInputRef.current.value = "";
+    }
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
     }
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {value?.url ? (
         <div className="relative border rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-900">
           {value.type === "video" ? (
@@ -119,36 +118,50 @@ export function MediaUpload({
           </Button>
         </div>
       ) : (
-        <div
-          onClick={() => !disabled && !isUploading && fileInputRef.current?.click()}
-          className={`w-full h-24 border-2 border-dashed rounded-lg flex flex-col items-center justify-center ${!disabled && !isUploading
-            ? "cursor-pointer hover:border-primary transition-colors"
-            : "opacity-50 cursor-not-allowed"
-            }`}
-        >
-          {isUploading ? (
-            <>
-              <Loader2 className="h-10 w-10 animate-spin text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mt-2">Uploading...</p>
-            </>
-          ) : (
-            <>
-              <Upload className="h-6 w-6 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mt-2">
-                Click to upload image or video
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Max 10MB for images, 200MB for videos
-              </p>
-            </>
-          )}
+        <div className="flex gap-3">
+          {/* Photo/video button */}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => !disabled && !isUploading && photoInputRef.current?.click()}
+            disabled={disabled || isUploading}
+            className="cursor-pointer flex items-center gap-2 rounded-full px-4 py-2 bg-green-50 hover:bg-green-100 dark:bg-green-950 dark:hover:bg-green-900 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300"
+          >
+            {isUploading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Image className="h-4 w-4" />
+            )}
+            <span className="text-sm font-medium">Photo</span>
+          </Button>
+
+          {/* Reel button */}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => !disabled && !isUploading && videoInputRef.current?.click()}
+            disabled={disabled || isUploading}
+            className="cursor-pointer flex items-center gap-2 rounded-full px-4 py-2 bg-pink-50 hover:bg-pink-100 dark:bg-pink-950 dark:hover:bg-pink-900 border-pink-200 dark:border-pink-800 text-pink-700 dark:text-pink-300"
+          >
+            <Video className="h-4 w-4" />
+            <span className="text-sm font-medium">Video</span>
+          </Button>
         </div>
       )}
 
+      {/* Hidden file inputs */}
       <Input
-        ref={fileInputRef}
+        ref={photoInputRef}
         type="file"
-        accept={fileAccept}
+        accept="image/*"
+        onChange={handleFileChange}
+        disabled={disabled || isUploading}
+        className="hidden"
+      />
+      <Input
+        ref={videoInputRef}
+        type="file"
+        accept="video/*"
         onChange={handleFileChange}
         disabled={disabled || isUploading}
         className="hidden"

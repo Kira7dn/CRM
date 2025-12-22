@@ -37,7 +37,6 @@ import {
 } from "@shared/ui/popover";
 import { Input } from "@shared/ui/input";
 import { usePostStore } from "../../_store/usePostStore";
-import { useGenerateSchedule } from "../../_hooks/useGenerateSchedule";
 import { useRouter } from "next/navigation";
 import PostFilter from "../PostFilter";
 
@@ -51,9 +50,29 @@ export default function CalendarNav({
   calendarRef,
   viewedDate,
 }: CalendarNavProps) {
-  const { previewPosts, isGeneratingSchedule, isSavingSchedule } = usePostStore();
-  const { generateSchedule, saveSchedule, undoSchedule } = useGenerateSchedule();
+  const {
+    previewPosts,
+    isGeneratingSchedule,
+    isSavingSchedule,
+    brand,
+    products,
+    generateSchedule: generateScheduleStore,
+    savePlannerPosts,
+    undoSchedule,
+  } = usePostStore();
   const router = useRouter();
+
+  // Helper function that was in the hook
+  const generateSchedule = async () => {
+    const selectedProducts = products.filter((p: any) =>
+      brand.selectedProductIds?.includes(p.id)
+    )
+    return generateScheduleStore(brand, selectedProducts)
+  }
+
+  const saveSchedule = async () => {
+    return savePlannerPosts()
+  }
 
   const selectedMonth = viewedDate.getMonth() + 1;
   const selectedYear = viewedDate.getFullYear();
@@ -69,19 +88,23 @@ export default function CalendarNav({
   };
 
   return (
-    <div className="w-full bg-background border-b">
+    <div className="w-full border-b overflow-x-hidden">
       <div className="container mx-auto px-4 py-3">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-          {/* Left Section: Date Navigation */}
-          <div className="flex items-center gap-2 w-full lg:w-full justify-between lg:justify-between">
-            <div className="flex items-center gap-2">
+        {/* Mobile: Stack vertically, Desktop: Horizontal */}
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
+
+          <div className="flex gap-2 flex-1 min-w-0 flex-col lg:flex-row justify-start md:justify-between">
+            {/* Filter - Always visible */}
+            <div className="shrink-0">
               <PostFilter />
             </div>
-            <div className="flex items-center gap-1 rounded-lg p-1">
+
+            {/* Date Navigation Controls */}
+            <div className="flex items-center gap-1 justify-center lg:justify-start min-w-0">
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 hover:bg-background"
+                className="h-8 w-8 shrink-0 hover:bg-background"
                 onClick={() => goPrev(calendarRef)}
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -92,10 +115,12 @@ export default function CalendarNav({
                   <Button
                     variant="ghost"
                     role="combobox"
-                    className="h-8 px-3 font-semibold hover:bg-background min-w-[100px] justify-between"
+                    className="h-8 px-2 sm:px-3 font-semibold hover:bg-background min-w-20 sm:min-w-25 justify-between"
                   >
-                    {months.find((m) => m.value === String(selectedMonth))?.label}
-                    <ChevronsUpDown className="ml-2 h-3.5 w-3.5 opacity-50" />
+                    <span className="truncate">
+                      {months.find((m) => m.value === String(selectedMonth))?.label}
+                    </span>
+                    <ChevronsUpDown className="ml-1 sm:ml-2 h-3.5 w-3.5 opacity-50 shrink-0" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-50 p-0" align="start">
@@ -134,46 +159,43 @@ export default function CalendarNav({
                 type="number"
                 value={selectedYear}
                 onChange={(e) => handleYearChange(calendarRef, viewedDate, e)}
-                className="h-8 w-20 font-semibold text-center border-0 bg-transparent hover:bg-background focus-visible:ring-1"
+                className="h-8 w-16 sm:w-20 font-semibold text-center border-0 bg-transparent hover:bg-background focus-visible:ring-1 shrink-0"
               />
 
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 hover:bg-background"
+                className="h-8 w-8 shrink-0 hover:bg-background"
                 onClick={() => goNext(calendarRef)}
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
-              <div className="h-8 w-20 font-semibold text-center border-0 bg-transparent hover:bg-background focus-visible:ring-1">
+              {/* <div className="h-8 shrink-0 w-20">
                 {!isCurrentMonth() && (
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 hidden sm:flex"
                     onClick={() => goToday(calendarRef)}
                   >
                     Today
                   </Button>
                 )}
-              </div>
+              </div> */}
             </div>
-            {/* Right Section: Action Buttons */}
-            <div className="flex items-center gap-2 w-full lg:w-auto justify-center lg:justify-end">
+
+            {/*Action Buttons */}
+            <div className="flex items-center gap-2 shrink-0 justify-start">
               {previewPosts.length === 0 ? (
                 <Button
                   variant="outline"
                   onClick={generateSchedule}
                   disabled={isGeneratingSchedule}
-                  className="gap-2 h-9"
+                  className="gap-2"
                   size="sm"
                 >
                   <Sparkles className={cn("h-4 w-4", isGeneratingSchedule && "animate-spin")} />
                   <span className="hidden sm:inline">
                     {isGeneratingSchedule ? "Generating..." : "Lên lịch đăng"}
-                  </span>
-                  <span className="sm:hidden">
-                    {isGeneratingSchedule ? "..." : "AI"}
                   </span>
                 </Button>
               ) : (
@@ -209,16 +231,14 @@ export default function CalendarNav({
 
               <Button
                 onClick={() => router.push("/crm/marketing/posts/new")}
-                className="gap-2 h-9"
+                className="gap-2"
                 size="sm"
               >
                 <Plus className="h-4 w-4" />
                 <span className="hidden sm:inline">New Post</span>
-                <span className="sm:hidden">New</span>
               </Button>
             </div>
           </div>
-
         </div>
       </div>
     </div>

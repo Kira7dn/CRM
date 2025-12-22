@@ -11,6 +11,11 @@ import type { ContentType } from '@/core/domain/marketing/post'
 interface BatchSaveItem {
   idea: string
   scheduledDate: string
+  // Optional fields from batchDraft
+  title?: string
+  body?: string
+  hashtags?: string[]
+  contentType?: ContentType
 }
 
 interface BatchSaveRequest {
@@ -62,12 +67,14 @@ export async function POST(request: NextRequest) {
               const [year, month, day] = item.scheduledDate.split('-').map(Number)
               const scheduledAt = new Date(year, month - 1, day, 10, 0, 0) // Default to 10:00 AM
 
-              // Create post
+              // Create post with optional fields from batchDraft
               const post = await useCase.execute({
                 userId,
-                title: item.idea,
-                body: item.idea,
-                contentType: 'post' as ContentType,
+                idea: item.idea,
+                title: item.title || item.idea,
+                body: item.body || item.idea,
+                contentType: item.contentType || ('post' as ContentType),
+                hashtags: item.hashtags || [],
                 scheduledAt,
               })
 
