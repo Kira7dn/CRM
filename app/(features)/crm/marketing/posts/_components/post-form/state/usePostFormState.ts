@@ -24,7 +24,6 @@ export interface PostFormState {
 
 function mapPostToFormState(
     post: Post,
-    initialIdea?: string,
     initialScheduledAt?: Date
 ): PostFormState {
     return {
@@ -38,7 +37,7 @@ function mapPostToFormState(
             ? new Date(post.scheduledAt)
             : initialScheduledAt,
 
-        idea: initialIdea ?? '',
+        idea: post.idea ?? '',
         product: undefined,
         contentInstruction: '',
         variations: [],
@@ -46,7 +45,6 @@ function mapPostToFormState(
 }
 
 function createEmptyState(
-    initialIdea?: string,
     initialScheduledAt?: Date
 ): PostFormState {
     return {
@@ -57,7 +55,7 @@ function createEmptyState(
         platforms: [],
         contentType: 'post',
         scheduledAt: initialScheduledAt,
-        idea: initialIdea ?? '',
+        idea: '',
         product: undefined,
         contentInstruction: '',
         variations: [],
@@ -68,35 +66,34 @@ function createEmptyState(
 
 export function usePostFormState({
     post,
-    initialIdea,
     initialScheduledAt,
 }: {
     post?: Post
-    initialIdea?: string
     initialScheduledAt?: Date
 }) {
     // snapshot ban đầu
     const initialStateRef = useRef<PostFormState>(
         post
-            ? mapPostToFormState(post, initialIdea, initialScheduledAt)
-            : createEmptyState(initialIdea, initialScheduledAt)
+            ? mapPostToFormState(post, initialScheduledAt)
+            : createEmptyState(initialScheduledAt)
     )
-
     const isDirtyRef = useRef(false)
 
     const [state, setState] = useState<PostFormState>(
         initialStateRef.current
     )
+    console.log(state);
+
 
     // reset khi đổi post (edit post khác / click calendar)
     useEffect(() => {
         initialStateRef.current = post
-            ? mapPostToFormState(post, initialIdea, initialScheduledAt)
-            : createEmptyState(initialIdea, initialScheduledAt)
+            ? mapPostToFormState(post, initialScheduledAt)
+            : createEmptyState(initialScheduledAt)
 
         isDirtyRef.current = false
         setState(initialStateRef.current)
-    }, [post?.id, initialIdea, initialScheduledAt])
+    }, [post?.id, initialScheduledAt])
 
     // ---------- setters ----------
 

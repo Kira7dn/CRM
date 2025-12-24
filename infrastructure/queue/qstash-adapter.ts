@@ -26,6 +26,7 @@ export class QStashAdapter implements QueueService {
     options: { delay?: number; jobId?: string } = {}
   ): Promise<string> {
     const res = await this.client.publishJSON({
+      // url: `http://localhost:4001/api/posts/${queueName}`,
       url: `${process.env.APP_URL}/api/posts/${queueName}`,
       body: {
         type: jobName,
@@ -34,6 +35,7 @@ export class QStashAdapter implements QueueService {
       },
       delay: Math.floor((options.delay ?? 0) / 1000),
     })
+    console.log("addJob", res);
 
     return options.jobId ?? res.messageId
   }

@@ -16,6 +16,7 @@ import { Card } from '@shared/ui/card'
 import { Post } from '@/core/domain/marketing/post'
 import type { Platform, PostStatus } from '@/core/domain/marketing/post'
 import { usePostStore } from '../_store/usePostStore'
+import { getPostStatus } from '../_lib/post-status'
 
 interface DayScheduleDialogProps {
   // No props needed - uses store for state
@@ -116,14 +117,6 @@ export default function DayScheduleDialog({ }: DayScheduleDialogProps) {
     } finally {
       setDeletingId(null)
     }
-  }
-
-  const getPostStatus = (post: Post): PostStatus => {
-    // Check platform statuses to determine overall status
-    if (post.platforms.some((p) => p.status === 'published')) return 'published'
-    if (post.platforms.some((p) => p.status === 'failed')) return 'failed'
-    if (post.platforms.some((p) => p.status === 'scheduled')) return 'scheduled'
-    return 'draft'
   }
 
   return (

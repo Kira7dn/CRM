@@ -48,7 +48,7 @@ export async function createPostAction(input: SubmitPostInput) {
     contentType: payload.contentType,
     platforms: payload.platforms?.map(platform => ({
       platform: platform.platform,
-      status: (scheduledAt ? "scheduled" : "draft") as PostStatus
+      status: platform.status,
     })),
     media: payload.media,
     hashtags: payload.hashtags,

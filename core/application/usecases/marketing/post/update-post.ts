@@ -17,13 +17,15 @@ export class UpdatePostUseCase {
   ) { }
 
   async execute(request: PostPayload): Promise<UpdatePostResponse> {
-    if (!request.id) {
-      return { post: null, error: "Post ID is required" }
+    // Validation
+    if (!request.id || request.id.trim() === "") {
+      return { post: null, error: "Post ID is required and cannot be empty" }
     }
 
+    // Check if post exists
     const before = await this.postRepo.getById(request.id)
     if (!before) {
-      return { post: null, error: "Post not found" }
+      return { post: null, error: `Post not found with ID: ${request.id}` }
     }
 
     // ---------- 1️⃣ Scheduling ----------
@@ -35,21 +37,45 @@ export class UpdatePostUseCase {
     const scheduleChanged =
       String(nextScheduledAt ?? "") !== String(before.scheduledAt ?? "")
 
-    let platforms = before.platforms
+    let platforms = request.platforms && request.platforms.length > 0
+      ? request.platforms
+      : before.platforms
 
-    if (scheduleChanged) {
+    // Check if any platform status changed to/from 'scheduled'
+    const hadScheduledPlatform = before.platforms.some(p => p.status === 'scheduled')
+    const hasScheduledPlatform = platforms.some(p => p.status === 'scheduled')
+    const platformScheduleChanged = hadScheduledPlatform !== hasScheduledPlatform
+
+    console.log("[UpdatePostUseCase] Schedule check:", {
+      before: before.scheduledAt,
+      next: nextScheduledAt,
+      scheduleChanged,
+      hadScheduledPlatform,
+      hasScheduledPlatform,
+      platformScheduleChanged,
+      shouldUpdateQueue: scheduleChanged || platformScheduleChanged
+    })
+
+    if (scheduleChanged || platformScheduleChanged) {
       // luôn remove theo postId (chuẩn với CreatePostUseCase)
       await this.queueService.removeJob("scheduled-posts", before.id)
 
       const isScheduled =
         !!nextScheduledAt && new Date(nextScheduledAt) > new Date()
 
-      platforms = platforms.map(p => ({
-        ...p,
-        status: isScheduled ? "scheduled" : "draft",
-      }))
+      // Only auto-update platform status if NOT explicitly provided in request
+      // If user explicitly set platform.status (e.g. saveDraft sets to 'draft'), respect that
+      if (!request.platforms || request.platforms.length === 0) {
+        platforms = platforms.map(p => ({
+          ...p,
+          status: isScheduled ? "scheduled" : "draft",
+        }))
+      }
 
-      if (isScheduled) {
+      // Add job to queue if platforms are scheduled AND scheduledAt is in future
+      const shouldAddJob = hasScheduledPlatform && isScheduled
+
+      if (shouldAddJob) {
         const delay =
           new Date(nextScheduledAt).getTime() - Date.now()
 
@@ -69,19 +95,38 @@ export class UpdatePostUseCase {
     }
 
     // ---------- 2️⃣ Update DB ----------
-    const after = await this.postRepo.update({
-      id: before.id,
-      title: request.title ?? before.title,
-      body: request.body ?? before.body,
-      media: request.media ?? before.media,
-      hashtags: request.hashtags ?? before.hashtags,
-      mentions: request.mentions ?? before.mentions,
-      scheduledAt: nextScheduledAt,
-      platforms,
-    })
+    console.log("[UpdatePostUseCase] Final platforms before update:", platforms)
+
+    let after: Post | null = null
+    try {
+      after = await this.postRepo.update({
+        id: before.id,
+        idea: request.idea ?? before.idea,
+        title: request.title ?? before.title,
+        body: request.body ?? before.body,
+        contentType: request.contentType ?? before.contentType,
+        media: request.media ?? before.media,
+        hashtags: request.hashtags ?? before.hashtags,
+        mentions: request.mentions ?? before.mentions,
+        scheduledAt: nextScheduledAt,
+        platforms,
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown database error"
+      console.error("[UpdatePostUseCase] Database error:", error)
+      return {
+        post: null,
+        error: `Database update failed: ${errorMessage}`
+      }
+    }
+
+    console.log("[UpdatePostUseCase] After update:", after)
 
     if (!after) {
-      return { post: null, error: "Update failed" }
+      return {
+        post: null,
+        error: "Database update failed: Repository returned null. Post may have been deleted or database connection lost."
+      }
     }
 
     // ---------- 3️⃣ Optional: sync published platforms ----------
@@ -118,17 +163,35 @@ export class UpdatePostUseCase {
 
         platformUpdated ||= result.success
         meta.error = result.success ? undefined : result.error
+
+        if (!result.success) {
+          const platformError = `${meta.platform} update failed: ${result.error || "Unknown error"}`
+          console.warn(`[UpdatePostUseCase] ${platformError}`)
+          lastError = lastError
+            ? `${lastError}; ${platformError}`
+            : platformError
+        }
       } catch (e) {
-        lastError =
-          e instanceof Error ? e.message : "Platform update failed"
-        meta.error = lastError
+        const errorMsg = e instanceof Error ? e.message : "Unknown error"
+        const platformError = `${meta.platform} update exception: ${errorMsg}`
+        console.error(`[UpdatePostUseCase]`, e)
+        meta.error = errorMsg
+        lastError = lastError
+          ? `${lastError}; ${platformError}`
+          : platformError
       }
     }
 
-    await this.postRepo.update({
-      id: after.id,
-      platforms: after.platforms,
-    })
+    // Update platform metadata with error states
+    try {
+      await this.postRepo.update({
+        id: after.id,
+        platforms: after.platforms,
+      })
+    } catch (error) {
+      console.error("[UpdatePostUseCase] Failed to update platform metadata:", error)
+      // Don't fail the entire operation if metadata update fails
+    }
 
     return {
       post: after,

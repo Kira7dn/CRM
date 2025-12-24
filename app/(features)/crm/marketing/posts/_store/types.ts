@@ -59,7 +59,7 @@ export interface PostStoreActions {
 
   // ===== CRUD Actions =====
   createPost: (payload: PostPayload) => Promise<{ success: boolean; post: Post }>
-  updatePost: (postId: string, payload: PostPayload) => Promise<{ success: boolean }>
+  updatePost: (postId: string, payload: PostPayload) => Promise<{ success: boolean; post: Post | null }>
   deletePost: (postId: string) => Promise<void>
 
   // ===== Modal Actions =====

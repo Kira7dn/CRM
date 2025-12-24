@@ -15,10 +15,13 @@ export class CreatePostUseCase {
       !!payload.scheduledAt &&
       new Date(payload.scheduledAt) > new Date()
 
+    // Use provided platform status if available, otherwise auto-set based on scheduledAt
     const platforms = payload.platforms?.map(p => ({
       platform: p.platform,
-      status: (isScheduled ? "scheduled" : "draft") as PostStatus,
+      status: p.status,
     })) ?? []
+
+    const hasScheduledPlatform = platforms.some(p => p.status === 'scheduled')
 
     // 1️⃣ Create post
     const post = await this.postRepo.create({
@@ -26,12 +29,28 @@ export class CreatePostUseCase {
       platforms,
     })
 
-    // 2️⃣ Scheduled → enqueue
-    if (isScheduled) {
+    // 2️⃣ Scheduled → enqueue (only if platforms are scheduled AND scheduledAt is valid)
+    const shouldAddJob = hasScheduledPlatform && isScheduled
+
+    console.log("[CreatePostUseCase] Queue check:", {
+      hasScheduledPlatform,
+      isScheduled,
+      shouldAddJob,
+      scheduledAt: payload.scheduledAt,
+      platforms
+    })
+
+    if (shouldAddJob) {
       const delay =
         new Date(payload.scheduledAt!).getTime() - Date.now()
 
-      await this.queueService.addJob(
+      console.log("[CreatePostUseCase] Adding job to queue:", {
+        postId: post.id,
+        delay,
+        scheduledAt: payload.scheduledAt
+      })
+
+      const queue_result = await this.queueService.addJob(
         "scheduled-posts",
         "publish-scheduled-post",
         {
@@ -44,8 +63,10 @@ export class CreatePostUseCase {
         } as any
       )
 
+      console.log("queue_result", queue_result);
       return post
     }
+
 
     // 3️⃣ Immediate publish
     if (!payload.userId) {

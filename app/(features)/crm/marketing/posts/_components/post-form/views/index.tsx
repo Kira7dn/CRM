@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { Button } from '@shared/ui/button'
+import { Badge } from '@shared/ui/badge'
 import { Trash2 } from 'lucide-react'
 import { usePostFormContext } from '../PostFormContext'
 import { usePostStore } from '../../../_store/usePostStore'
+import { getPostFormMode, getAvailableActions } from '../../../_lib/post-status'
 
 // Sections
 import AIGenerationSection from './AIGenerationSection'
@@ -32,8 +34,9 @@ export default function PostFormView() {
   const {
     state,
     post,
-    actions,
+    actions: formActions,
     isSubmitting,
+    isDirty,
   } = usePostFormContext()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +48,7 @@ export default function PostFormView() {
 
   const handleConfirmSubmit = async () => {
     try {
-      await actions.submit()
+      await formActions.submit()
       // Close modal after successful submit
       setShowPlatformModal(false)
       closePostFormModal(true) // Force close without dirty check
@@ -57,7 +60,7 @@ export default function PostFormView() {
 
   const handleSaveDraft = async () => {
     try {
-      await actions.saveDraft()
+      await formActions.saveDraft()
       // Close modal after successful save
       closePostFormModal(true) // Force close without dirty check
     } catch (error) {
@@ -71,7 +74,7 @@ export default function PostFormView() {
     }
 
     try {
-      await actions.delete()
+      await formActions.delete()
       // Close modal after successful delete
       closePostFormModal(true) // Force close without dirty check
     } catch (error) {
@@ -81,6 +84,10 @@ export default function PostFormView() {
 
   const isActionDisabled = isSubmitting
 
+  // Determine form mode and available actions
+  const formMode = getPostFormMode(post, isDirty)
+  const availableActions = getAvailableActions(formMode, isDirty, !!state.scheduledAt)
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -89,9 +96,32 @@ export default function PostFormView() {
       {/* ===== Header - Compact and Clean ===== */}
       <header className="shrink-0 pb-4 border-b">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">
-            {post ? 'Edit Post' : 'Create New Post'}
-          </h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold">
+              {post ? 'Edit Post' : 'Create New Post'}
+            </h2>
+
+            {/* Mode Indicator - for debugging */}
+            {post && process.env.NODE_ENV === 'development' && (
+              <Badge variant="outline" className="text-xs">
+                Mode: {formMode}
+              </Badge>
+            )}
+          </div>
+
+          {/* Delete button - separated in header for safety */}
+          {post && (
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              onClick={handleDelete}
+              disabled={isActionDisabled}
+            >
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete
+            </Button>
+          )}
         </div>
       </header>
 
@@ -125,28 +155,26 @@ export default function PostFormView() {
       <footer className="shrink-0 pt-4 border-t bg-white dark:bg-gray-800 sticky bottom-0">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex gap-2">
-            {post && (
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={isActionDisabled}
-              >
-                <Trash2 className="h-4 w-4 mr-1" />
-                Delete
-              </Button>
-            )}
+            {/* Cancel button - leftmost for easy modal closing */}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => closePostFormModal()}
+              disabled={isActionDisabled}
+            >
+              Cancel
+            </Button>
 
-            {!post && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleSaveDraft}
-                disabled={isActionDisabled}
-              >
-                Save as Draft
-              </Button>
-            )}
+            {/* Save as Draft - secondary action, keep position stable */}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleSaveDraft}
+              disabled={isActionDisabled}
+              className={availableActions.canSaveDraft ? '' : 'invisible pointer-events-none'}
+            >
+              {availableActions.saveDraftLabel}
+            </Button>
           </div>
 
           <Button
@@ -154,7 +182,7 @@ export default function PostFormView() {
             disabled={isActionDisabled}
             className="sm:min-w-[140px]"
           >
-            {post ? 'Update Post' : state.scheduledAt ? 'Schedule Post' : 'Publish Now'}
+            {availableActions.primaryActionLabel}
           </Button>
         </div>
       </footer>
@@ -165,7 +193,7 @@ export default function PostFormView() {
         onOpenChange={setShowPlatformModal}
         onConfirm={handleConfirmSubmit}
         isSubmitting={isSubmitting}
-        submitButtonText={post ? 'Update Post' : state.scheduledAt ? 'Schedule Post' : 'Publish Now'}
+        submitButtonText={availableActions.primaryActionLabel}
       />
     </form>
   )

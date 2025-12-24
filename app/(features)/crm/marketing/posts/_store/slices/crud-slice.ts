@@ -10,7 +10,7 @@ import type { PostStore } from "../types"
  */
 export interface CrudSlice {
   createPost: (payload: PostPayload) => Promise<{ success: boolean; post: Post }>
-  updatePost: (postId: string, payload: PostPayload) => Promise<{ success: boolean }>
+  updatePost: (postId: string, payload: PostPayload) => Promise<{ success: boolean; post: Post | null }>
   deletePost: (postId: string) => Promise<void>
 }
 
@@ -30,9 +30,20 @@ export const createCrudSlice: StateCreator<
       // Update posts list
       get().setPosts([...get().posts, result.post])
 
-      // Remove from preview if it was a temp post
-      if (payload.id?.startsWith("temp")) {
-        get().removePreviewPost(payload.id)
+      // Clean up preview post from previewPosts array if it was one
+      // Preview posts are identified by matching idea or scheduledAt
+      const { previewPosts } = get()
+      if (previewPosts.length > 0) {
+        // Find and remove matching preview (by idea + scheduledAt match)
+        const matchingPreview = previewPosts.find(
+          p => p.idea === payload.idea &&
+               String(p.scheduledAt) === String(payload.scheduledAt)
+        )
+        if (matchingPreview) {
+          get().setPreviewPosts(
+            previewPosts.filter(p => p !== matchingPreview)
+          )
+        }
       }
 
       // Close all modals on successful create
@@ -70,14 +81,21 @@ export const createCrudSlice: StateCreator<
         // Close all modals on successful update
         get().closeAllModals()
 
+        // Show success with optional warning for platform errors
         toast({
           title: "Post updated successfully",
-          description: `Changes to "${result.post?.title}" have been saved`,
+          description: result.error
+            ? `Changes saved. Warning: ${result.error}`
+            : `Changes to "${result.post.title}" have been saved`,
+          variant: result.error ? "default" : "default",
         })
       } else {
+        // Show specific error message from server
+        const errorMessage = result.error || "Failed to update post. Please try again."
+
         toast({
           title: "Update failed",
-          description: "Failed to update post",
+          description: errorMessage,
           variant: "destructive",
         })
       }
@@ -85,7 +103,7 @@ export const createCrudSlice: StateCreator<
       return result
     } catch (error) {
       console.error("[PostStore] Failed to update post:", error)
-      const message = error instanceof Error ? error.message : "Failed to update post"
+      const message = error instanceof Error ? error.message : "An unexpected error occurred while updating the post"
       toast({
         title: "Update failed",
         description: message,

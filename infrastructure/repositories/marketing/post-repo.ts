@@ -96,7 +96,14 @@ export class PostRepository extends BaseRepository<Post, string> implements Post
   }
 
   async update(payload: PostPayload): Promise<Post | null> {
-    if (!payload.id) throw new Error("Post ID is required for update");
+    if (!payload.id || payload.id.trim() === "") {
+      throw new Error("Post ID is required for update and cannot be empty");
+    }
+
+    // Validate ObjectId format
+    if (!ObjectId.isValid(payload.id)) {
+      throw new Error(`Invalid Post ID format: ${payload.id}. Must be a valid MongoDB ObjectId.`);
+    }
 
     const now = new Date();
     const { id, ...updateFields } = payload;
@@ -117,14 +124,42 @@ export class PostRepository extends BaseRepository<Post, string> implements Post
       updateObj.createdAt = new Date(updateObj.createdAt);
     }
 
-    const collection = await this.getCollection();
-    const result = await collection.findOneAndUpdate(
-      { _id: new ObjectId(id) } as any,
-      { $set: updateObj },
-      { returnDocument: "after" }
-    );
+    console.log("[PostRepo.update] Input:", { id, updateObj });
 
-    return result && result.value ? this.toDomain(result.value) : null;
+    try {
+      const collection = await this.getCollection();
+      const result = await collection.findOneAndUpdate(
+        { _id: new ObjectId(id) } as any,
+        { $set: updateObj },
+        { returnDocument: "after" }
+      );
+
+      console.log("[PostRepo.update] MongoDB result:", result);
+      console.log("[PostRepo.update] MongoDB result type:", typeof result);
+      console.log("[PostRepo.update] MongoDB result.value:", result?.value);
+
+      if (!result) {
+        console.warn(`[PostRepo.update] No document found with ID: ${id}`);
+        return null;
+      }
+
+      // MongoDB driver returns the document directly when using findOneAndUpdate
+      // with returnDocument: "after", not wrapped in a { value: ... } object
+      if (result.value) {
+        // If it has a .value property, use it (older MongoDB driver behavior)
+        return this.toDomain(result.value);
+      } else if (result._id) {
+        // If it has _id, it's the document itself (current MongoDB driver behavior)
+        return this.toDomain(result);
+      }
+
+      console.warn(`[PostRepo.update] Unexpected result structure from MongoDB`);
+      return null;
+    } catch (error) {
+      console.error("[PostRepo.update] MongoDB error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown database error";
+      throw new Error(`Failed to update post in database: ${errorMessage}`);
+    }
   }
 
   async delete(id: string): Promise<boolean> {

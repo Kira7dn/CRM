@@ -16,7 +16,7 @@ export type SubmitMode = 'draft' | 'schedule' | 'publish'
 export interface PostFormActionsDeps {
   getState: () => PostFormState
   post?: Post
-  updatePost: (postId: string, payload: PostPayload) => Promise<{ success: boolean }>
+  updatePost: (postId: string, payload: PostPayload) => Promise<{ success: boolean; post: Post | null }>
   createPost: (payload: PostPayload) => Promise<{ success: boolean; post: Post }>
   deletePost: (postId: string) => Promise<void>
 }
@@ -50,7 +50,7 @@ export function PostFormActions({
       contentType: state.contentType,
       platforms: state.platforms.map((platform) => ({
         platform: platform.platform,
-        status: (state.scheduledAt ? 'scheduled' : 'draft') as PostStatus,
+        status: 'scheduled' as PostStatus,
       })),
       media: state.media || undefined,
       hashtags: parseHashtags(state.hashtags),
@@ -82,7 +82,7 @@ export function PostFormActions({
       })),
       media: state.media || undefined,
       hashtags: parseHashtags(state.hashtags),
-      scheduledAt: undefined,
+      scheduledAt: state.scheduledAt ? new Date(state.scheduledAt) : undefined,
     }
 
     if (post?.id) {
