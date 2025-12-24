@@ -34,7 +34,7 @@ export default function PostForm({
   })
 
   // ========== Store Methods ==========
-  const { updatePost, createPost, deletePost, setPostFormDirty } = usePostStore()
+  const { updatePost, createPost, deletePost, setPostFormDirty, products } = usePostStore()
 
   // ========== Sync isDirty to Store ==========
   useEffect(() => {
@@ -66,13 +66,14 @@ export default function PostForm({
     () => ({
       state,
       post,
+      products,
       actions,
       isSubmitting: false,
       isDirty,
       setField,
       updateMultipleFields,
     }),
-    [state, post, actions, isDirty, setField, updateMultipleFields]
+    [state, post, products, actions, isDirty, setField, updateMultipleFields]
   )
   return (
     <PostFormProvider value={contextValue}>

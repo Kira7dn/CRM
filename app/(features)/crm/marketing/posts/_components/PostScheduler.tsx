@@ -1,5 +1,16 @@
 'use client'
 
+/**
+ * PostScheduler Component
+ *
+ * NOTE: This component uses FullCalendar library which handles Date objects internally.
+ * This is an EXCEPTION to CRM Date Standards because:
+ * 1. FullCalendar is a third-party UI library that requires Date objects
+ * 2. All dates from backend (ISO strings) are converted to Date at component boundary
+ * 3. The library handles timezone display internally based on browser timezone
+ * 4. Data sent back to backend is always converted to ISO strings
+ */
+
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import type { EventInput, EventClickArg, EventSegment } from '@fullcalendar/core'
@@ -93,6 +104,7 @@ export default function PostScheduler() {
       const status = getPostStatus(post)
       const statusColor = STATUS_COLOR_MAP[status]
 
+      // Convert ISO string to Date object for FullCalendar (third-party library requirement)
       const start = post.scheduledAt
         ? new Date(post.scheduledAt)
         : new Date(post.createdAt)
@@ -115,6 +127,7 @@ export default function PostScheduler() {
     const previewEvents: EventInput[] = previewPosts.map((item, idx) => ({
       id: `preview-${idx}`,
       title: item.idea,
+      // Convert ISO string to Date object for FullCalendar
       start: item.scheduledAt ? new Date(item.scheduledAt) : new Date(),
       allDay: true,
       // Use stronger amber for preview to make it more visible

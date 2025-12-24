@@ -1,7 +1,11 @@
 import type { Post } from "@/core/domain/marketing/post"
 import type { PaginationOptions, PaginatedResult } from "@/infrastructure/db/base-repository"
 
-export interface PostPayload extends Partial<Post> { }
+// PostPayload for API/Server Actions
+// Note: scheduledAt can be string (ISO) from frontend or Date from domain
+export interface PostPayload extends Partial<Post> {
+  scheduledAt?: string | Date
+}
 
 export interface DateRangeFilter {
   startDate: Date

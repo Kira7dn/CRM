@@ -135,8 +135,9 @@ export default function PostFormView() {
             {/* Content Input - Idea, Product, Title, Body */}
             <ContentInputSection />
 
-            {/* Media / Hashtag / Schedule - MOVED UP */}
+            {/* Media / Hashtag - MOVED UP */}
             {/* Media upload auto-detects content type */}
+            {/* Note: Schedule input has been moved to PlatformSelectorModal */}
             <MediaHashtagScheduleSection />
           </div>
 

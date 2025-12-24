@@ -6,6 +6,7 @@ import type { ICacheService } from "@/core/application/usecases/marketing/post/g
 import { StreamPostUseCase } from "@/core/application/usecases/marketing/post/generate-post/stream-post-generationn"
 import { PerplexityService, ResearchTopicUseCase } from "@/core/application/usecases/marketing/post/generate-post/research-topic"
 import { RedisCacheService } from "@/core/application/usecases/marketing/post/generate-post/redis-cache.service"
+import { CacheService } from "@/infrastructure/adapters/cache-service"
 
 /**
  * ======================================================
@@ -31,8 +32,11 @@ export const getLLMService = (): ILLMService => {
 }
 
 const getCacheService = (): ICacheService => {
+    // if (!cacheServiceInstance) {
+    //     cacheServiceInstance = new RedisCacheService()
+    // }
     if (!cacheServiceInstance) {
-        cacheServiceInstance = new RedisCacheService()
+        cacheServiceInstance = new CacheService()
     }
     return cacheServiceInstance
 }

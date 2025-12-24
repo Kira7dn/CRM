@@ -54,7 +54,7 @@ export function PostFormActions({
       })),
       media: state.media || undefined,
       hashtags: parseHashtags(state.hashtags),
-      scheduledAt: state.scheduledAt ? new Date(state.scheduledAt) : undefined,
+      scheduledAt: state.scheduledAt ? state.scheduledAt : undefined,
     }
 
     // update
@@ -82,7 +82,7 @@ export function PostFormActions({
       })),
       media: state.media || undefined,
       hashtags: parseHashtags(state.hashtags),
-      scheduledAt: state.scheduledAt ? new Date(state.scheduledAt) : undefined,
+      scheduledAt: state.scheduledAt ? state.scheduledAt : undefined,
     }
 
     if (post?.id) {

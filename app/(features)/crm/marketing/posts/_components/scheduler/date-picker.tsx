@@ -1,6 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
+/**
+ * DateTimePicker Component (Third-party UI Library)
+ *
+ * NOTE: This file uses date-fns and Date object mutations for UI library purposes.
+ * This is an EXCEPTION to CRM Date Standards because:
+ * 1. It's a reusable third-party component (DayPicker, TimePicker)
+ * 2. All dates are converted to/from ISO strings at component boundaries
+ * 3. The component handles timezone conversions internally
+ * 4. Parent components must use date-utils when sending/receiving data
+ */
+
 import { Button, buttonVariants } from "@shared/ui/button";
 import type { CalendarProps } from "@shared/ui/calendar";
 import { Input } from "@shared/ui/input";

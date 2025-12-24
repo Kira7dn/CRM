@@ -3,6 +3,7 @@
 import { GeneratePlanUseCase } from '@/core/application/usecases/marketing/post/generate-plan/generate-plan'
 import { BrandMemory } from '@/core/domain/brand-memory'
 import { Product } from '@/core/domain/catalog/product'
+import { add } from 'date-fns'
 
 interface GeneratePlanParams {
   brandMemory: BrandMemory
@@ -13,7 +14,8 @@ export async function generatePlanAction(params: GeneratePlanParams) {
   try {
     const useCase = new GeneratePlanUseCase()
     const startDate = new Date()
-    const endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+    // Use date-fns add() instead of manual timestamp arithmetic (CRM Date Standard)
+    const endDate = add(startDate, { days: 30 })
 
     const result = await useCase.execute({
       brandMemory: params.brandMemory,

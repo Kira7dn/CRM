@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -24,9 +25,20 @@ export default function PostFormModal() {
     closePostFormModal,
     selectedPost,
     selectedDate,
+    loadProducts,
+    products,
   } = usePostStore()
 
   const isPreview = isPreviewPost(selectedPost || undefined)
+  const hasAttemptedLoad = useRef(false)
+
+  // Load products when modal opens (only once per session)
+  useEffect(() => {
+    if (isPostFormModalOpen && products.length === 0 && !hasAttemptedLoad.current) {
+      hasAttemptedLoad.current = true
+      loadProducts()
+    }
+  }, [isPostFormModalOpen, products.length, loadProducts])
 
   return (
     <Dialog open={isPostFormModalOpen} onOpenChange={closePostFormModal}>

@@ -34,6 +34,7 @@ export async function createPostAction(input: SubmitPostInput) {
   }
 
   // ---------- Parse schedule ----------
+  // payload.scheduledAt is ISO string: "2025-01-15T08:00:00.000Z"
   const scheduledAt = payload.scheduledAt
     ? new Date(payload.scheduledAt)
     : undefined

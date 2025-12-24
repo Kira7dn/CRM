@@ -64,6 +64,15 @@ export const createDataSlice: StateCreator<
       return
     }
 
+    // Clear cache when force reloading
+    if (force) {
+      console.log('[PostStore] Force reload - clearing posts and cache')
+      set({
+        posts: [],
+        loadedMonths: new Set<string>(),
+      })
+    }
+
     // Load current month and adjacent months
     const now = new Date()
     const currentYear = now.getFullYear()

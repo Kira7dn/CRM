@@ -6,6 +6,7 @@ import { useCopilotAction, useCopilotChatSuggestions, useCopilotReadable, useFro
 import { usePostStore } from '../_store/usePostStore'
 import type { Post } from '@/core/domain/marketing/post'
 import { parseHashtags } from './post-form/views/utils'
+import { calendarDateWithLocalTime } from '@/lib/date-utils'
 
 export function PostsCopilot() {
   const {
@@ -228,7 +229,7 @@ export function PostsCopilot() {
   // Adds posts to previewPosts instead of creating them immediately
   useFrontendTool({
     name: 'batchDraft',
-    description: 'Create a strategic 30-day marketing content calendar with 15-30 posts following AIDA framework and 70-20-10 rule. Each post must include scheduledAt (YYYY-MM-DD). Posts added to preview (not saved to DB).',
+    description: 'Use this to create more than  1 Post. Each post must include scheduledAt (YYYY-MM-DD). Posts added to preview (not saved to DB).',
     parameters: [
       {
         name: "posts",
@@ -262,11 +263,12 @@ export function PostsCopilot() {
 
       // Parse dates and hashtags, filter out invalid keys
       const parsedPosts = args.posts.map((post: any) => {
-        // Convert scheduledAt string to Date object if needed
-        let scheduledAt = post.scheduledAt;
-        if (scheduledAt && typeof scheduledAt === 'string') {
-          const [year, month, day] = scheduledAt.split('-').map(Number);
-          scheduledAt = new Date(year, month - 1, day, 10, 0, 0);
+        // Convert scheduledAt YYYY-MM-DD to UTC ISO string with default 8:00 PM local time
+        let scheduledAt: string | undefined;
+        if (post.scheduledAt && typeof post.scheduledAt === 'string') {
+          const [year, month, day] = post.scheduledAt.split('-').map(Number);
+          // Default publish time: 8:00 PM local time (20:00)
+          scheduledAt = calendarDateWithLocalTime(year, month, day, 20, 0);
         }
 
         // Parse hashtags to ensure consistent format
@@ -278,7 +280,7 @@ export function PostsCopilot() {
           idea: post.idea,
           title: post.title,
           body: post.body,
-          scheduledAt,
+          scheduledAt, // ISO string, not Date object
           hashtags,
           mentions: post.mentions,
         };

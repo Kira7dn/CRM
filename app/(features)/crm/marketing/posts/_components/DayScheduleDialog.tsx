@@ -17,6 +17,7 @@ import { Post } from '@/core/domain/marketing/post'
 import type { Platform, PostStatus } from '@/core/domain/marketing/post'
 import { usePostStore } from '../_store/usePostStore'
 import { getPostStatus } from '../_lib/post-status'
+import { isSameCalendarDay } from '@/lib/date-utils'
 
 interface DayScheduleDialogProps {
   // No props needed - uses store for state
@@ -59,33 +60,26 @@ export default function DayScheduleDialog({ }: DayScheduleDialogProps) {
     return null
   }
 
-  // Filter real posts for the selected date from store
+  // Filter real posts for the selected date from store (CRM Date Standard)
   const posts = allPosts.filter((post) => {
     if (!post.scheduledAt) return false
-    const postDate = new Date(post.scheduledAt)
-    return (
-      postDate.getDate() === selectedDate.getDate() &&
-      postDate.getMonth() === selectedDate.getMonth() &&
-      postDate.getFullYear() === selectedDate.getFullYear()
-    )
+    // Use isSameCalendarDay utility for consistent date comparison
+    return isSameCalendarDay(post.scheduledAt, selectedDate)
   })
 
-  // Filter preview posts for the selected date
+  // Filter preview posts for the selected date (CRM Date Standard)
   const previews = previewPosts.filter((preview) => {
     if (!preview.scheduledAt) return false
 
-    // Handle both Date and string formats
-    const previewDate = typeof preview.scheduledAt === 'string'
+    // Validate date before comparison
+    const testDate = typeof preview.scheduledAt === 'string'
       ? new Date(preview.scheduledAt)
       : preview.scheduledAt
 
-    if (isNaN(previewDate.getTime())) return false
+    if (isNaN(testDate.getTime())) return false
 
-    return (
-      previewDate.getDate() === selectedDate.getDate() &&
-      previewDate.getMonth() === selectedDate.getMonth() &&
-      previewDate.getFullYear() === selectedDate.getFullYear()
-    )
+    // Use isSameCalendarDay utility for consistent date comparison
+    return isSameCalendarDay(preview.scheduledAt, selectedDate)
   })
 
   const totalPosts = posts.length + previews.length

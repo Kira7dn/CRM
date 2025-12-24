@@ -124,7 +124,6 @@ export class PostRepository extends BaseRepository<Post, string> implements Post
       updateObj.createdAt = new Date(updateObj.createdAt);
     }
 
-    console.log("[PostRepo.update] Input:", { id, updateObj });
 
     try {
       const collection = await this.getCollection();
@@ -133,10 +132,6 @@ export class PostRepository extends BaseRepository<Post, string> implements Post
         { $set: updateObj },
         { returnDocument: "after" }
       );
-
-      console.log("[PostRepo.update] MongoDB result:", result);
-      console.log("[PostRepo.update] MongoDB result type:", typeof result);
-      console.log("[PostRepo.update] MongoDB result.value:", result?.value);
 
       if (!result) {
         console.warn(`[PostRepo.update] No document found with ID: ${id}`);

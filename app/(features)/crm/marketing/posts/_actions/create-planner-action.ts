@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { createPostUseCase } from "@/app/api/posts/depends"
 import type { Platform, ContentType, Post } from "@/core/domain/marketing/post"
+import { calendarDateWithLocalTime } from "@/lib/date-utils"
 
 interface PostScheduleItem {
   idea: string
@@ -27,11 +28,11 @@ export async function createPlanAction(scheduleItems: Array<PostScheduleItem>) {
 
     for (const item of scheduleItems) {
       try {
-        // Parse scheduled date (YYYY-MM-DD format)
+        // Parse scheduled date (YYYY-MM-DD format) - CRM Date Standard
         const [year, month, day] = item.scheduledDate.split('-').map(Number)
-        const scheduledAt = new Date(year, month - 1, day, 10, 0, 0) // Default to 10:00 AM
-
-        const now = new Date()
+        // Default publish time: 8:00 PM local time (20:00)
+        const scheduledAtISO = calendarDateWithLocalTime(year, month, day, 20, 0)
+        const scheduledAt = new Date(scheduledAtISO)
 
         const result = await useCase.execute({
           userId: userIdCookie.value,

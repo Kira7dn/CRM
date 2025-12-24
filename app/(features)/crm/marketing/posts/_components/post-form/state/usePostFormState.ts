@@ -12,7 +12,7 @@ export interface PostFormState {
     hashtags: string
     platforms: PlatformMetadata[]
     contentType: ContentType
-    scheduledAt?: Date
+    scheduledAt?: string // ISO string ONLY: "2025-01-15T08:00:00.000Z"
 
     // ===== AI / helper =====
     idea: string
@@ -33,9 +33,10 @@ function mapPostToFormState(
         hashtags: post.hashtags?.join(' ') ?? '',
         platforms: post.platforms,
         contentType: post.contentType ?? 'post',
+        // Convert Date to ISO string
         scheduledAt: post.scheduledAt
-            ? new Date(post.scheduledAt)
-            : initialScheduledAt,
+            ? new Date(post.scheduledAt).toISOString()
+            : (initialScheduledAt ? initialScheduledAt.toISOString() : undefined),
 
         idea: post.idea ?? '',
         product: undefined,
@@ -54,7 +55,8 @@ function createEmptyState(
         hashtags: '',
         platforms: [],
         contentType: 'post',
-        scheduledAt: initialScheduledAt,
+        // Convert Date to ISO string
+        scheduledAt: initialScheduledAt ? initialScheduledAt.toISOString() : undefined,
         idea: '',
         product: undefined,
         contentInstruction: '',
@@ -82,7 +84,6 @@ export function usePostFormState({
     const [state, setState] = useState<PostFormState>(
         initialStateRef.current
     )
-    console.log(state);
 
 
     // reset khi đổi post (edit post khác / click calendar)

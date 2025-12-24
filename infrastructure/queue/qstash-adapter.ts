@@ -35,7 +35,7 @@ export class QStashAdapter implements QueueService {
       },
       delay: Math.floor((options.delay ?? 0) / 1000),
     })
-    console.log("addJob", res);
+    console.log("[QStashAdapter] addJob", options.jobId);
 
     return options.jobId ?? res.messageId
   }

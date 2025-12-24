@@ -1,7 +1,9 @@
 'use client'
 
+import { useCallback, ChangeEvent } from 'react'
 import { Label } from '@shared/ui/label'
 import { Button } from '@shared/ui/button'
+import { Input } from '@shared/ui/input'
 import { Loader2 } from 'lucide-react'
 import {
   Dialog,
@@ -13,6 +15,7 @@ import {
 } from '@/@shared/ui/dialog'
 import { usePostFormContext } from '../PostFormContext'
 import PlatformMultiSelect from './PlatformMultiSelect'
+import { datetimeLocalToUTC, utcToDatetimeLocal } from '@/lib/date-utils'
 
 interface PlatformSelectorModalProps {
   open: boolean
@@ -23,11 +26,12 @@ interface PlatformSelectorModalProps {
 }
 
 /**
- * PlatformSelectorModal - Modal for platform selection before publishing
+ * PlatformSelectorModal - Modal for platform selection and scheduling before publishing
  *
  * Features:
  * - Shows current content type for context
- * - Multi-select dropdown with search
+ * - Multi-select dropdown with search for platforms
+ * - Schedule datetime input (optional) - uses CRM Date Standard
  * - Selected platforms displayed as badges
  * - Validation error display
  * - Confirms selection before publishing
@@ -40,11 +44,31 @@ export default function PlatformSelectorModal({
   submitButtonText,
 }: PlatformSelectorModalProps) {
   const { state, setField } = usePostFormContext()
-  const { contentType, platforms } = state
+  const { contentType, platforms, scheduledAt } = state
 
   const hasError = platforms?.length === 0
   const errorMessage = "Please select at least one platform"
   const isActionDisabled = isSubmitting || hasError
+
+  // ===== Schedule Handler (CRM Standard) =====
+  const handleScheduledAtChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      if (!value) {
+        setField('scheduledAt', undefined)
+        return
+      }
+
+      // Convert local datetime to UTC instant using standard util
+      const isoString = datetimeLocalToUTC(value)
+      setField('scheduledAt', isoString)
+    },
+    [setField]
+  )
+
+  // Display UTC as local datetime using standard util
+  const scheduledAtValue = scheduledAt ? utcToDatetimeLocal(scheduledAt) : ''
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -78,6 +102,20 @@ export default function PlatformSelectorModal({
               {errorMessage}
             </p>
           )}
+
+          {/* Schedule Input */}
+          <div className="space-y-1">
+            <Label htmlFor="scheduledAt">Schedule (optional)</Label>
+            <Input
+              type="datetime-local"
+              id="scheduledAt"
+              value={scheduledAtValue}
+              onChange={handleScheduledAtChange}
+            />
+            <p className="text-xs text-muted-foreground">
+              Leave empty to publish immediately
+            </p>
+          </div>
         </div>
 
         <DialogFooter>

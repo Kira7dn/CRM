@@ -42,7 +42,9 @@ export default function PlatformMultiSelect({
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
 
-  const selectedPlatformValues = selectedPlatforms.map(p => p.platform)
+  // Safe array access - handle undefined/null
+  const platforms = selectedPlatforms || []
+  const selectedPlatformValues = platforms.map(p => p.platform)
 
   const togglePlatform = (platform: Platform) => {
     const compatibility = getPlatformCompatibility(platform, contentType)
@@ -55,12 +57,12 @@ export default function PlatformMultiSelect({
     if (isSelected) {
       // Remove platform
       onPlatformsChange(
-        selectedPlatforms.filter(p => p.platform !== platform)
+        platforms.filter(p => p.platform !== platform)
       )
     } else {
       // Add platform with default metadata
       onPlatformsChange([
-        ...selectedPlatforms,
+        ...platforms,
         {
           platform,
           status: "draft" as const,
@@ -71,7 +73,7 @@ export default function PlatformMultiSelect({
 
   const removePlatform = (platform: Platform) => {
     onPlatformsChange(
-      selectedPlatforms.filter(p => p.platform !== platform)
+      platforms.filter(p => p.platform !== platform)
     )
   }
 
@@ -94,9 +96,9 @@ export default function PlatformMultiSelect({
             type="button"
           >
             <span className="text-sm">
-              {selectedPlatforms.length === 0
+              {platforms.length === 0
                 ? 'Select platforms...'
-                : `${selectedPlatforms.length} platform${selectedPlatforms.length > 1 ? 's' : ''} selected`}
+                : `${platforms.length} platform${platforms.length > 1 ? 's' : ''} selected`}
             </span>
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -165,9 +167,9 @@ export default function PlatformMultiSelect({
       </Popover>
 
       {/* Selected Platform Badges */}
-      {selectedPlatforms.length > 0 && (
+      {platforms.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {selectedPlatforms.map((pm) => {
+          {platforms.map((pm) => {
             const platformLabel = getPlatformLabel(pm.platform)
             const compatibility = getPlatformCompatibility(pm.platform, contentType)
             const colorClass = PLATFORM_COLORS[pm.platform] || 'bg-gray-600 text-white'

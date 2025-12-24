@@ -10,13 +10,15 @@ import type { PostMedia } from '@/core/domain/marketing/post'
 import { autoDetectContentType, filterCompatiblePlatforms } from './platform-utils'
 
 /**
- * MediaHashtagScheduleSection - Media upload, hashtags, and schedule
+ * MediaHashtagScheduleSection - Media upload and hashtags
  *
  * Features:
  * - Auto-detects content type from uploaded media (image → 'post', video → 'short')
  * - Adaptive media box sizing (small when empty, expand when filled)
- * - 2-column layout for hashtags and schedule
+ * - Hashtags input with space-separated format
  * - Filters incompatible platforms when content type changes
+ *
+ * Note: Schedule input has been moved to PlatformSelectorModal
  */
 function MediaHashtagScheduleSection() {
   const { state, setField, post } = usePostFormContext()
@@ -69,22 +71,6 @@ function MediaHashtagScheduleSection() {
     [setField]
   )
 
-  // ===== Schedule Handler =====
-
-  const handleScheduledAtChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value
-      setField('scheduledAt', value ? new Date(value) : undefined)
-    },
-    [setField]
-  )
-
-  // ===== Helpers =====
-
-  const scheduledAtValue = state.scheduledAt
-    ? new Date(state.scheduledAt).toISOString().slice(0, 16)
-    : ''
-
   return (
     <section className="space-y-4">
       {/* ===== Media - Adaptive Height ===== */}
@@ -106,35 +92,18 @@ function MediaHashtagScheduleSection() {
         </p>
       </div>
 
-      {/* ===== Two-Column: Hashtags | Schedule ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Hashtags - Left Column */}
-        <div className="space-y-1">
-          <Label htmlFor="hashtags">Hashtags</Label>
-          <Input
-            id="hashtags"
-            value={state.hashtags}
-            onChange={handleHashtagsChange}
-            placeholder="#seafood #fresh #cotoisland"
-          />
-          <p className="text-xs text-muted-foreground">
-            Space-separated hashtags
-          </p>
-        </div>
-
-        {/* Schedule - Right Column */}
-        <div className="space-y-1">
-          <Label htmlFor="scheduledAt">Schedule (optional)</Label>
-          <Input
-            type="datetime-local"
-            id="scheduledAt"
-            value={scheduledAtValue}
-            onChange={handleScheduledAtChange}
-          />
-          <p className="text-xs text-muted-foreground">
-            Leave empty to publish immediately
-          </p>
-        </div>
+      {/* ===== Hashtags ===== */}
+      <div className="space-y-1">
+        <Label htmlFor="hashtags">Hashtags</Label>
+        <Input
+          id="hashtags"
+          value={state.hashtags}
+          onChange={handleHashtagsChange}
+          placeholder="#seafood #fresh #cotoisland"
+        />
+        <p className="text-xs text-muted-foreground">
+          Space-separated hashtags
+        </p>
       </div>
     </section>
   )
