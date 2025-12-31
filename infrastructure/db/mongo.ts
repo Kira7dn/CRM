@@ -1,44 +1,40 @@
-import { MongoClient } from "mongodb"
+import { MongoClient } from "mongodb";
+import { attachDatabasePool } from "@vercel/functions";
 
-const uri = process.env.MONGODB_URI as string
+const uri = process.env.MONGODB_URI as string;
 const options = {
-  // Connection pool settings for better performance
   maxPoolSize: 10,
-  minPoolSize: 2,
-
-  // Timeout settings
-  serverSelectionTimeoutMS: 5000,
+  minPoolSize: 1,
+  serverSelectionTimeoutMS: 10000,
   socketTimeoutMS: 45000,
-  connectTimeoutMS: 10000,
+  connectTimeoutMS: 30000, // Vẫn nên để cao để tránh Cold Start timeout
+};
 
-  // Retry settings
-  retryWrites: true,
-  retryReads: true,
-
-  // Compression for faster network transfer
-  compressors: ['zlib'],
-} as any
-
-let client: MongoClient
-let clientPromise: Promise<MongoClient>
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
 
 declare global {
-  var _mongoClientPromise: Promise<MongoClient> | undefined
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
 if (!process.env.MONGODB_URI) {
-  throw new Error("Please add MONGODB_URI to your environment variables")
+  throw new Error("Please add MONGODB_URI to your environment variables");
 }
 
 if (process.env.NODE_ENV === "development") {
   if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options)
-    global._mongoClientPromise = client.connect()
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
   }
-  clientPromise = global._mongoClientPromise
+  clientPromise = global._mongoClientPromise;
 } else {
-  client = new MongoClient(uri, options)
-  clientPromise = client.connect()
+  // Trong Production
+  client = new MongoClient(uri, options);
+
+  // CHIẾN LƯỢC MỚI: Gắn pool vào lifecycle của Vercel
+  attachDatabasePool(client);
+
+  clientPromise = client.connect();
 }
 
-export default clientPromise
+export default clientPromise;
